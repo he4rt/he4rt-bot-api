@@ -8,10 +8,12 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
-    use Authenticatable, Authorizable, HasFactory;
+    use Authenticatable, Authorizable, HasFactory, HasApiTokens;
+
 
     /**
      * The attributes that are mass assignable.
@@ -19,9 +21,24 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email',
+        'discord_id',
+        'twitch_id',
+        'email',
+        'level',
+        'current_exp',
+        'money',
+        'git',
+        'name',
+        'nickname',
+        'language',
+        'about',
+        'daily',
+        'reputation',
+        'twitch'
     ];
 
+
+    protected $dates = ['daily'];
     /**
      * The attributes excluded from the model's JSON form.
      *
@@ -30,4 +47,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password',
     ];
+
+    public function validateForPassportPasswordGrant($password)
+    {
+        return (int) $password == (int) $this->discord_id;
+    }
 }

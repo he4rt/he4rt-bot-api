@@ -16,3 +16,6 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->get('/auth/oauth/{provider}', 'AuthController@authenticate');
+$router->get('/auth/logout', 'AuthController@logout');
