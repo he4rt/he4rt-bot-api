@@ -17,5 +17,11 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+if (env('APP_ENV') !== "production") {
+    $router->get('swagger', function () {
+        return view('swagger');
+    });
+}
+
 $router->get('/auth/oauth/{provider}', 'AuthController@authenticate');
 $router->get('/auth/logout', 'AuthController@logout');
