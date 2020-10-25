@@ -21,6 +21,30 @@ class AuthController
         $this->repository = $repository;
     }
 
+    /**
+     * @OA\Post(
+     *     path="/auth/oauth/{provider}",
+     *     summary="Autenticação de usuário",
+     *     operationId="AuthLogin",
+     *     tags={"auth"},
+     *     @OA\Parameter(
+     *         name="code",
+     *         in="query",
+     *         description="Token de autorização da Twitch",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="...",
+     *     )
+     * )
+     * @param Request $request
+     * @param string $provider
+     * @return \Illuminate\Http\JsonResponse
+     */
 
     public function authenticate(Request $request, string $provider)
     {

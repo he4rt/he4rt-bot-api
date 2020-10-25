@@ -5,6 +5,23 @@ info:
     email: hey@danielheart.dev
   version: 0.0.0
 paths:
+  '/auth/oauth/{provider}':
+    post:
+      tags:
+        - auth
+      summary: 'Autenticação de usuário'
+      operationId: AuthLogin
+      parameters:
+        -
+          name: code
+          in: query
+          description: 'Token de autorização da Twitch'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
   /:
     get:
       description: 'Home page'
