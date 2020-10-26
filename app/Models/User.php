@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Gamification\Message;
+use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -31,7 +32,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'git',
         'name',
         'nickname',
-        'language',
         'about',
         'daily',
         'reputation',
@@ -40,6 +40,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
 
     protected $dates = ['daily'];
+
     /**
      * The attributes excluded from the model's JSON form.
      *
@@ -48,24 +49,35 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function validateForPassportPasswordGrant($password)
     {
-        return (int) $password == (int) $this->discord_id;
+        return (int)$password == (int)$this->discord_id;
     }
 
-    public function updateExp(int $exp) {
+    public function updateExp(int $exp)
+    {
         $this->update([
             'current_exp' => $this->attributes['current_exp'] + $exp
         ]);
     }
 
-    public function levelUp() {
+    public function levelUp()
+    {
         $this->update([
             'level' => $this->attributes['level'] + 1,
             'current_exp' => 0
         ]);
     }
 
+    public function dailyPoints(int $value)
+    {
+        $this->update([
+            'money' => $this->attributes['money'] + $value,
+            'daily' => Carbon::now()->addDay()
+        ]);
+    }
 
-    public function messages() {
+
+    public function messages()
+    {
         return $this->hasMany(Message::class);
     }
 

@@ -26,5 +26,13 @@ if (env('APP_ENV') !== "production") {
 $router->get('/auth/oauth/{provider}', 'AuthController@authenticate');
 $router->get('/auth/logout', 'AuthController@logout');
 
+$router->group(['prefix' => 'users'], function ($router) {
+    $router->get('/', 'Users\UsersController@getUsers');
+    $router->post('/', 'Users\UsersController@postUser');
+    $router->post('/', 'Users\UsersController@postUser');
+    $router->post('/daily', 'Users\UsersController@postDaily');
+    $router->get('/{discordId}', 'Users\UsersController@getUser');
+    $router->delete('/{discordId}', 'Users\UsersController@deleteUser');
+});
 
-$router->post('/bot/gamification/levelup','Gamification\LevelupController@postLevelUp');
+$router->post('/bot/gamification/levelup', 'Gamification\LevelupController@postLevelUp');

@@ -22,6 +22,192 @@ paths:
       responses:
         '200':
           description: ...
+  /bot/gamification/levelup:
+    post:
+      tags:
+        - gamification-bot
+      summary: 'Gamification Level Up'
+      operationId: PostLevelUp
+      parameters:
+        -
+          name: discord_id
+          in: query
+          description: 'ID do Discord do usuário'
+          required: true
+          schema:
+            type: string
+        -
+          name: donator
+          in: query
+          description: 'Se o usuário é um apoiador ou não (apoia-se)'
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+  /users:
+    get:
+      tags:
+        - users
+      summary: 'Lista todos os usuários'
+      operationId: GetUsers
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: 'Authorization: he4rt-{key}'
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+    post:
+      tags:
+        - users
+      summary: 'Cria um novo usuário'
+      operationId: PostUser
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: 'Authorization: he4rt-{key}'
+          required: false
+          schema:
+            type: string
+        -
+          name: discord_id
+          in: query
+          description: 'ID do usuário do Discord'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+  '/users/{discordId}':
+    get:
+      tags:
+        - users
+      summary: 'Mostra as informações de um usuário'
+      operationId: GetUser
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: 'Authorization: he4rt-{key}'
+          required: false
+          schema:
+            type: string
+        -
+          name: discordId
+          in: path
+          description: 'ID do usuário do Discord'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+    put:
+      tags:
+        - users
+      summary: 'Altera um usuário'
+      operationId: PutUser
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: 'Authorization: he4rt-{key}'
+          required: false
+          schema:
+            type: string
+        -
+          name: discordId
+          in: path
+          description: 'ID do usuário do Discord'
+          required: true
+          schema:
+            type: string
+        -
+          name: name
+          in: query
+          description: 'Nome da pessoa'
+          required: false
+          schema:
+            type: string
+        -
+          name: nickname
+          in: query
+          description: 'Apelido da pessoa'
+          required: false
+          schema:
+            type: string
+        -
+          name: git
+          in: query
+          description: 'Link do git'
+          required: false
+          schema:
+            type: string
+        -
+          name: about
+          in: query
+          description: 'Informações pessoais do usuário'
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+    delete:
+      tags:
+        - users
+      summary: 'Apaga um usuário'
+      operationId: DeleteUser
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: 'Authorization: he4rt-{key}'
+          required: false
+          schema:
+            type: string
+        -
+          name: discordId
+          in: path
+          description: 'ID do usuário do Discord'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+  /users/daily:
+    post:
+      tags:
+        - users
+      summary: 'Gerador de hCoins diário'
+      operationId: postUserDailyCoins
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: 'Authorization: he4rt-{key}'
+          required: false
+          schema:
+            type: string
+        -
+          name: discord_id
+          in: query
+          description: 'ID do usuário do Discord'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
   /:
     get:
       description: 'Home page'
