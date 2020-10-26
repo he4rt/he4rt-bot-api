@@ -49,16 +49,9 @@ class AuthController
     public function authenticate(Request $request, string $provider)
     {
         $auth = $this->repository->authenticateUser($provider, $request->get('code'));
-
         $response = $this->passportAuth($auth->email, $auth->discord_id);
 
         return response()->json($response['message'], $response['status']);
-    }
-
-    public function logout()
-    {
-        Auth::logout();
-        return response()->redirectTo('/?logout');
     }
 
     public function getPassportPasswordKey()

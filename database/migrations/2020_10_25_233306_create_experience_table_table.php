@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExpTable extends Migration
+class CreateExperienceTableTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateExpTable extends Migration
      */
     public function up()
     {
-        Schema::create('exp', function (Blueprint $table) {
+        Schema::create('experience_table', function (Blueprint $table) {
             $table->id();
-            $table->integer('required_exp');
+            $table->integer('required');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class CreateExpTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exp');
+        Schema::dropIfExists('experience_table');
     }
 }

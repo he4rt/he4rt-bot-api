@@ -25,3 +25,6 @@ if (env('APP_ENV') !== "production") {
 
 $router->get('/auth/oauth/{provider}', 'AuthController@authenticate');
 $router->get('/auth/logout', 'AuthController@logout');
+
+
+$router->post('/bot/gamification/levelup','Gamification\LevelupController@postLevelUp');

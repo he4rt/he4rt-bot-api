@@ -44,12 +44,24 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var array
      */
-    protected $hidden = [
-        'password',
-    ];
 
     public function validateForPassportPasswordGrant($password)
     {
         return (int) $password == (int) $this->discord_id;
     }
+
+    public function updateExp(int $exp) {
+        $this->update([
+            'current_exp' => $this->attributes['current_exp'] + $exp
+        ]);
+    }
+
+    public function levelUp() {
+        $this->update([
+            'level' => $this->attributes['level'] + 1,
+            'current_exp' => 0
+        ]);
+    }
+
+
 }
