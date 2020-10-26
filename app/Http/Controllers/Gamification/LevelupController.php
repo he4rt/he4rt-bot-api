@@ -58,11 +58,13 @@ class LevelupController extends Controller
     {
         $this->validate($request,[
             'discord_id' => 'required|exists:users',
+            'message' => 'required'
         ]);
 
         $result = $this->repository->handle(
             $request->input('discord_id'),
-            $request->input('donator')
+            $request->input('donator'),
+            $request->input('message')
         );
 
         return response()->json($result);

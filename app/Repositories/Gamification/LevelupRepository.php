@@ -17,6 +17,7 @@ class LevelupRepository
     {
         $this->model = new User();
     }
+
     private function fetchExpTableLevel($currentLevel)
     {
         return \DB::table('experience_table')->find($currentLevel);
@@ -27,15 +28,16 @@ class LevelupRepository
         return rand(50, 100) * ($isDonator ? 2 : 1);
     }
 
-    public function handle(string $discordId, $isDonator): array
+    public function handle(string $discordId, $isDonator, $message): array
     {
         $this->model = $this->model->where('discord_id', $discordId)->first();
+
+        $this->model->messages()->create(['message' => $message]);
         $this->model->updateExp($this->generateExp($isDonator));
         $this->model = $this->levelUp($this->model);
 
         return $this->model->only(['is_levelup', 'level']);
     }
-
 
 
     public function levelUp(User $model): User

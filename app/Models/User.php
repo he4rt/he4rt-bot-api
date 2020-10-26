@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Gamification\Message;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -63,5 +64,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         ]);
     }
 
+
+    public function messages() {
+        return $this->hasMany(Message::class);
+    }
 
 }
