@@ -35,4 +35,10 @@ $router->group(['prefix' => 'users'], function ($router) {
     $router->delete('/{discordId}', 'Users\UsersController@deleteUser');
 });
 
-$router->post('/bot/gamification/levelup', 'Gamification\LevelupController@postLevelUp');
+$router->group(['prefix' => 'bot'], function ($router) {
+    $router->group(['prefix' => 'gambling'], function ($router) {
+        $router->put('money','Gamification\GamblingController@putMoney');
+    });
+    $router->post('gamification/levelup', 'Gamification\LevelupController@postLevelUp');
+});
+

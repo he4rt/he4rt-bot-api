@@ -75,6 +75,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         ]);
     }
 
+    public function updateMoney(string $operation, $value)
+    {
+        $balance = $operation == "add" ?
+            $this->attributes['money'] + $value :
+            $this->attributes['money'] - $value;
+
+        $this->update([
+            'money' => $balance
+        ]);
+    }
 
     public function messages()
     {

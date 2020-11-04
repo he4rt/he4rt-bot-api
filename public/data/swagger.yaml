@@ -22,6 +22,44 @@ paths:
       responses:
         '200':
           description: ...
+  /bot/gambling/money:
+    put:
+      tags:
+        - gamification-bot
+      summary: 'Atualiza a economia do usuário'
+      operationId: PutGamblingMoney
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: 'Authorization: he4rt-{key}'
+          required: false
+          schema:
+            type: string
+        -
+          name: discord_id
+          in: query
+          description: 'ID do usuário do Discord'
+          required: true
+          schema:
+            type: string
+        -
+          name: operation
+          in: query
+          description: 'Add || Reduce'
+          required: true
+          schema:
+            type: string
+        -
+          name: value
+          in: query
+          description: 'Valor a ser mutado'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
   /bot/gamification/levelup:
     post:
       tags:
