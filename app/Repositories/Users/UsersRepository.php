@@ -5,7 +5,7 @@ namespace App\Repositories\Users;
 
 
 use App\Exceptions\DailyRewardException;
-use App\Models\User;
+use App\Models\User\User;
 use Carbon\Carbon;
 
 class UsersRepository

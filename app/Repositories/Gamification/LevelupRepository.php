@@ -4,7 +4,7 @@
 namespace App\Repositories\Gamification;
 
 
-use App\Models\User;
+use App\Models\User\User;
 
 class LevelupRepository
 {

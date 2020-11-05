@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Users;
 
 use App\Exceptions\DailyRewardException;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\User\User;
 use App\Repositories\Users\UsersRepository;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;

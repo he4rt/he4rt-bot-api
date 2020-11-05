@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\User;
 
 use App\Models\Gamification\Message;
 use App\Repositories\Gamification\LevelupRepository;

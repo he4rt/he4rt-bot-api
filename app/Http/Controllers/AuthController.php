@@ -7,7 +7,6 @@ namespace App\Http\Controllers;
 use App\Repositories\AuthRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AuthController
 {
