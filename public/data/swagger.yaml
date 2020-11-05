@@ -75,9 +75,50 @@ paths:
           schema:
             type: string
         -
+          name: message
+          in: query
+          description: 'Mensagem do usuário'
+          required: true
+          schema:
+            type: string
+        -
           name: donator
           in: query
           description: 'Se o usuário é um apoiador ou não (apoia-se)'
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+  /ranking/general:
+    get:
+      tags:
+        - ranking
+      summary: 'Retorna o ranking de Level/exp global'
+      operationId: getRankingGeneral
+      parameters:
+        -
+          name: type
+          in: path
+          description: 'Nem existe ainda mas vo deixa documentado'
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+  /ranking/messages:
+    get:
+      tags:
+        - ranking
+      summary: 'Retorna o ranking de Mensagens'
+      operationId: getRankingMessages
+      parameters:
+        -
+          name: type
+          in: path
+          description: 'week = ultima semana | month = ultimo mes'
           required: false
           schema:
             type: string

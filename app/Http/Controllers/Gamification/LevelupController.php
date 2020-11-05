@@ -36,6 +36,15 @@ class LevelupController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
+     *         name="message",
+     *         in="query",
+     *         description="Mensagem do usuário",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *         )
+     *     ),
+     *     @OA\Parameter(
      *         name="donator",
      *         in="query",
      *         description="Se o usuário é um apoiador ou não (apoia-se)",

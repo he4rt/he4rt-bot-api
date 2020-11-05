@@ -18,7 +18,7 @@ class LevelupRepository
         $this->model = new User();
     }
 
-    private function fetchExpTableLevel($currentLevel)
+    public function fetchExpTableLevel($currentLevel)
     {
         return \DB::table('experience_table')->find($currentLevel);
     }
@@ -42,14 +42,14 @@ class LevelupRepository
 
     public function levelUp(User $model): User
     {
-        $result = $this->fetchExpTableLevel($model->level);
-        if ($model->current_exp >= $result->required) {
+
+        if ($model->current_exp >= $model->levelup_exp->required) {
             $model->levelUp();
             $model->is_levelup = true;
         } else {
             $model->is_levelup = false;
         }
-        $model->required_exp = $result->required;
+        $model->required_exp = $model->levelup_exp->required;
 
         return $model;
     }

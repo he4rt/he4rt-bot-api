@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Gamification\Message;
+use App\Repositories\Gamification\LevelupRepository;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -41,6 +42,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     protected $dates = ['daily'];
 
+    protected $appends = [
+        'levelup_exp'
+    ];
+
     /**
      * The attributes excluded from the model's JSON form.
      *
@@ -50,6 +55,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function validateForPassportPasswordGrant($password)
     {
         return (int)$password == (int)$this->discord_id;
+    }
+
+    public function getlevelUpExpAttribute()
+    {
+        return app(LevelupRepository::class)->fetchExpTableLevel($this->attributes['level']);
     }
 
     public function updateExp(int $exp)

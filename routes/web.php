@@ -42,3 +42,7 @@ $router->group(['prefix' => 'bot'], function ($router) {
     $router->post('gamification/levelup', 'Gamification\LevelupController@postLevelUp');
 });
 
+$router->group(['prefix' => 'ranking'], function ($router) {
+    $router->get('general', 'Gamification\RankingController@getGeneralLevelRanking');
+    $router->get('messages', 'Gamification\RankingController@getGeneralMessageRanking');
+});
