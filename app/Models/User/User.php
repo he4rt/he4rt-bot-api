@@ -71,10 +71,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function levelUp()
     {
+        $level = $this->attributes['level'] + 1;
         $this->update([
             'level' => $this->attributes['level'] + 1,
             'current_exp' => 0
         ]);
+
+        return $level;
     }
 
     public function wipe()
@@ -112,6 +115,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function seasonInfo()
     {
         return $this->hasMany(Season::class);
+    }
+
+    public function levelupLog()
+    {
+        return $this->hasMany(Level::class);
     }
 
 }

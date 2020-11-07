@@ -49,7 +49,11 @@ class LevelupRepository
     {
 
         if ($model->current_exp >= $model->levelup_exp->required) {
-            $model->levelUp();
+            $currentLevel = $model->levelUp();
+            $model->levelupLog()->create([
+                'season_id' => env('APP_SEASON'),
+                'level' => $currentLevel
+            ]);
             $model->is_levelup = true;
         } else {
             $model->is_levelup = false;
