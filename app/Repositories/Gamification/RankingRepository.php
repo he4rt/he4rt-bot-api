@@ -32,8 +32,8 @@ class RankingRepository
             ->orderByDesc('level')
             ->orderBy('current_exp')
             ->select(['nickname','level','current_exp'])
-            ->has('messages', '>', 0)
-            ->orderByDesc('messages_count')
+//            ->has('messages', '>', 0)
+//            ->orderByDesc('messages_count')
             ->withCount('messages')
             ->paginate($this->paginate);
     }
