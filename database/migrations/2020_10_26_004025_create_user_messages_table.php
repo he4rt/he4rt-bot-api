@@ -15,6 +15,7 @@ class CreateUserMessagesTable extends Migration
     {
         Schema::create('user_messages', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('season_id')->references('id')->on('seasons');
             $table->foreignId('user_id')->references('id')->on('users');
             $table->string('message');
             $table->timestamps();

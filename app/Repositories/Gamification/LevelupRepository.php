@@ -32,7 +32,10 @@ class LevelupRepository
     {
         $this->model = $this->model->where('discord_id', $discordId)->first();
 
-        $this->model->messages()->create(['message' => $message]);
+        $this->model->messages()->create([
+            'season_id' => env('APP_SEASON'),
+            'message' => $message
+        ]);
         $this->model->updateExp($this->generateExp($isDonator));
         $this->model = $this->levelUp($this->model);
 

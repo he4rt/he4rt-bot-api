@@ -1,8 +1,8 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\User;
 
-use App\Models\User;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
@@ -22,8 +22,13 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name,
+            'discord_id' => $this->faker->unique()->randomNumber(8),
+            'twitch_id' => $this->faker->unique()->randomNumber(8),
             'email' => $this->faker->unique()->safeEmail,
+            'level' => $this->faker->numberBetween(1,30),
+            'current_exp' => $this->faker->numberBetween(100,5000),
+            'money' => $this->faker->numberBetween(1,10000) ,
+            'nickname' => $this->faker->userName
         ];
     }
 }
