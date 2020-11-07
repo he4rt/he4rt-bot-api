@@ -46,6 +46,9 @@ class UsersController extends Controller
      *           type="string"
      *         )
      *     ),
+     *     security={{
+     *          "api_key":{}
+     *     }},
      *     @OA\Response(
      *         response=200,
      *         description="...",
@@ -84,6 +87,9 @@ class UsersController extends Controller
      *           type="string",
      *         )
      *     ),
+     *     security={{
+     *          "api_key":{}
+     *     }},
      *     @OA\Response(
      *         response=200,
      *         description="...",
@@ -125,6 +131,9 @@ class UsersController extends Controller
      *           type="string",
      *         )
      *     ),
+     *     security={{
+     *          "api_key":{}
+     *     }},
      *     @OA\Response(
      *         response=200,
      *         description="...",
@@ -208,7 +217,10 @@ class UsersController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="...",
-     *     )
+     *     ),
+     *     security={{
+     *          "api_key":{}
+     *     }},
      * )
      */
     public function putUser(Request $request, string $discordId)

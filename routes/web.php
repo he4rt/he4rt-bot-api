@@ -26,16 +26,17 @@ if (env('APP_ENV') !== "production") {
 $router->get('/auth/oauth/{provider}', 'AuthController@authenticate');
 $router->get('/auth/logout', 'AuthController@logout');
 
-$router->group(['prefix' => 'users'], function ($router) {
+$router->group(['prefix' => 'users', 'middleware' => 'bot-auth'], function ($router) {
     $router->get('/', 'Users\UsersController@getUsers');
     $router->post('/', 'Users\UsersController@postUser');
-    $router->post('/', 'Users\UsersController@postUser');
-    $router->post('/daily', 'Users\UsersController@postDaily');
     $router->get('/{discordId}', 'Users\UsersController@getUser');
+    $router->put('/{discordId}', 'Users\UsersController@putUser');
     $router->delete('/{discordId}', 'Users\UsersController@deleteUser');
+
+    $router->post('/daily', 'Users\UsersController@postDaily');
 });
 
-$router->group(['prefix' => 'bot'], function ($router) {
+$router->group(['prefix' => 'bot', 'middleware' => 'bot-auth'], function ($router) {
     $router->group(['prefix' => 'gambling'], function ($router) {
         $router->put('money','Gamification\GamblingController@putMoney');
     });

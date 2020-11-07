@@ -53,6 +53,9 @@ class LevelupController extends Controller
      *           type="string",
      *         )
      *     ),
+     *     security={{
+     *          "api_key":{}
+     *     }},
      *     @OA\Response(
      *         response=200,
      *         description="...",
