@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\MigrateUsers;
 use App\Console\Commands\SeasonStart;
 use App\Console\Commands\SeasonWipe;
 use Illuminate\Console\Scheduling\Schedule;
@@ -16,7 +17,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         SeasonWipe::class,
-        SeasonStart::class
+        SeasonStart::class,
+        MigrateUsers::class,
     ];
 
     /**
