@@ -77,6 +77,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         ]);
     }
 
+    public function wipe()
+    {
+        $this->update([
+            'level' => 1,
+            'current_exp' => 0
+        ]);
+    }
+
     public function dailyPoints(int $value)
     {
         $this->update([
@@ -99,6 +107,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function messages()
     {
         return $this->hasMany(Message::class);
+    }
+
+    public function seasonInfo()
+    {
+        return $this->hasMany(Season::class);
     }
 
 }

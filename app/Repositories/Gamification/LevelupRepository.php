@@ -31,12 +31,14 @@ class LevelupRepository
     public function handle(string $discordId, $isDonator, $message): array
     {
         $this->model = $this->model->where('discord_id', $discordId)->first();
+        $obtainedExperience = $this->generateExp($isDonator);
 
         $this->model->messages()->create([
             'season_id' => env('APP_SEASON'),
-            'message' => $message
+            'message' => $message,
+            'obtained_experience' => $obtainedExperience
         ]);
-        $this->model->updateExp($this->generateExp($isDonator));
+        $this->model->updateExp($obtainedExperience);
         $this->model = $this->levelUp($this->model);
 
         return $this->model->only(['is_levelup', 'level']);

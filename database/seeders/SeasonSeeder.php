@@ -14,10 +14,19 @@ class SeasonSeeder extends Seeder
      */
     public function run()
     {
+
         DB::table('seasons')->insert([
             'name' => 'fodase',
-            'duration' => '2020-12-30',
+            'start' => '2019-01-01',
+            'end' => '2020-12-30',
             'status' => true
+        ]);
+
+        DB::table('seasons')->insert([
+            'name' => 'season 2 do granchase',
+            'start' => '2021-01-01',
+            'end' => '2021-12-30',
+            'status' => false
         ]);
     }
 }

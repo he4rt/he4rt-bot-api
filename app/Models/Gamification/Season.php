@@ -12,7 +12,15 @@ class Season extends Model
 
     protected $fillable = [
         'name',
-        'duration',
+        'start',
+        'end',
         'status'
     ];
+
+    public function seasonStatus($status)
+    {
+        $this->update([
+            'status' => $status
+        ]);
+    }
 }

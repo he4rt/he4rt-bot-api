@@ -17,6 +17,7 @@ class CreateUserMessagesTable extends Migration
             $table->id();
             $table->foreignId('season_id')->references('id')->on('seasons');
             $table->foreignId('user_id')->references('id')->on('users');
+            $table->integer('obtained_experience');
             $table->string('message');
             $table->timestamps();
         });
