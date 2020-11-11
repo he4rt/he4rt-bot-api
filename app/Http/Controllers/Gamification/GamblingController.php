@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers\Gamification;
-
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Gamification\GamblingRepository;
@@ -92,5 +90,4 @@ class GamblingController extends Controller
 
         return $this->success($result);
     }
-
 }

@@ -42,7 +42,7 @@
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-install-cmd": [
-            "bash contrib/setup_hooks.sh"
+            "bash development/setup_ci.sh"
         ]
     }
 }

@@ -33,7 +33,7 @@ then
     git stash -u --keep-index
 
     echo -e "\033[0;32m"Running Code Sniffer..."\033[0m"
-	./vendor/bin/phpcs --standard=PSR2 --encoding=utf-8 -n -p $FILES
+	php ./phpcs --standard=PSR2 --encoding=utf-8 -n -p $FILES
 
 	if [ $? != 0 ]
 	then
@@ -46,4 +46,4 @@ then
 
 fi
 
-exit $?
+exit $?
