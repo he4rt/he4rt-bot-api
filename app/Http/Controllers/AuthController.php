@@ -40,6 +40,7 @@ class AuthController
      *         description="...",
      *     )
      * )
+     *
      * @param Request $request
      * @param string $provider
      * @return \Illuminate\Http\JsonResponse
