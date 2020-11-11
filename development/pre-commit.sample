@@ -46,4 +46,6 @@ then
 
 fi
 
+php ./vendor/bin/phpunit --testdox
+
 exit $?
