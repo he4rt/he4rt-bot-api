@@ -22,9 +22,10 @@ class UsersRepository
 
     public function create(string $discordId)
     {
-        return $this->model->create([
+        $this->model->create([
             'discord_id' => $discordId
         ]);
+        return $this;
     }
 
     public function findById(string $discordId)
@@ -51,7 +52,7 @@ class UsersRepository
         $this->model = $this->findById($discordId);
 
         if (!$this->validateReedemDailyPoints($this->model->daily)) {
-            $time = Carbon::parse($this->model->daily)->locale('pt_BR')->diffForHumans();
+            $time = Carbon::parse($this->model->daily)->timezone('America/Sao_Paulo')->toRfc3339String();
             throw new DailyRewardException($time);
         }
         $points = $this->generateDailyPoints($isDonator);
