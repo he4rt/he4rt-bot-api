@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Repositories\Gamification;
-
 
 use App\Models\User\User;
 
@@ -31,7 +29,7 @@ class RankingRepository
         return $this->model
             ->orderByDesc('level')
             ->orderBy('current_exp')
-            ->select(['nickname','level','current_exp'])
+            ->select(['nickname','level','current_exp', 'discord_id'])
 //            ->has('messages', '>', 0)
 //            ->orderByDesc('messages_count')
             ->withCount('messages')
@@ -43,15 +41,15 @@ class RankingRepository
         $this->model = $this->model
             ->has('messages', '>', 0)
             ->orderByDesc('messages_count')
-            ->select(['nickname','level','current_exp'])
+            ->select(['nickname','level','current_exp', 'discord_id'])
             ->withCount('messages');
 
         if (array_key_exists('type', $options)) {
-            if ($options['type'] == "week") {
+            if ($options['type'] == 'week') {
                 $this->model = $this->model
                     ->whereDate('created_at', '>' , date('Y-m-d', strtotime('-7 day')));
             }
-            if ($options['type'] == "month") {
+            if ($options['type'] == 'month') {
                 $this->model = $this->model
                     ->whereDate('created_at', '>' , date('Y-m-d', strtotime('-30 day')));
             }

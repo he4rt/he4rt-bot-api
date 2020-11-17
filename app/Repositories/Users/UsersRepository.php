@@ -54,11 +54,13 @@ class UsersRepository
             $time = Carbon::parse($this->model->daily)->locale('pt_BR')->diffForHumans();
             throw new DailyRewardException($time);
         }
-
+        $points = $this->generateDailyPoints($isDonator);
         $this->model->dailyPoints(
-            $this->generateDailyPoints($isDonator)
+            $points
         );
-        return $this->model;
+        return [
+            'points' => $points
+        ];
     }
 
     public function generateDailyPoints(bool $donator)
