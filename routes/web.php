@@ -38,7 +38,7 @@ $router->group(['prefix' => 'users', 'middleware' => 'bot-auth'], function ($rou
 
 $router->group(['prefix' => 'bot', 'middleware' => 'bot-auth'], function ($router) {
     $router->group(['prefix' => 'gambling'], function ($router) {
-        $router->put('money','Gamification\GamblingController@putMoney');
+        $router->put('money', 'Gamification\GamblingController@putMoney');
     });
     $router->post('gamification/levelup', 'Gamification\LevelupController@postLevelUp');
 });
@@ -46,4 +46,11 @@ $router->group(['prefix' => 'bot', 'middleware' => 'bot-auth'], function ($route
 $router->group(['prefix' => 'ranking'], function ($router) {
     $router->get('general', 'Gamification\RankingController@getGeneralLevelRanking');
     $router->get('messages', 'Gamification\RankingController@getGeneralMessageRanking');
+});
+
+$router->group(['prefix' => 'badges'], function ($router) {
+    $router->get('/', 'Gamification\BadgeController@getBadges');
+    $router->post('/', 'Gamification\BadgeController@postBadge');
+    $router->get('/{badgeId}', 'Gamification\BadgeController@getBadge');
+    $router->delete('/{badgeId}', 'Gamification\BadgeController@deleteBadge');
 });
