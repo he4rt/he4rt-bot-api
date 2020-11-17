@@ -22,6 +22,84 @@ paths:
       responses:
         '200':
           description: ...
+  /badges:
+    get:
+      tags:
+        - badges
+      summary: 'Retorna a lista de badges paginada'
+      operationId: GetBadges
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          api_key: []
+    post:
+      tags:
+        - badges
+      summary: 'Cria uma nova insignia no sistema'
+      operationId: PostBadges
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                name:
+                  description: 'Nome da insignia'
+                  type: string
+                description:
+                  description: 'Descrição da insignia'
+                  type: string
+                image:
+                  description: 'Imagem da insignia'
+                  type: file
+              type: object
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          api_key: []
+  '/badges/{badgeId}':
+    get:
+      tags:
+        - badges
+      summary: 'Retorna uma badge especifica'
+      operationId: GetBadge
+      parameters:
+        -
+          name: badgeId
+          in: query
+          description: 'ID da insignia'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          api_key: []
+    delete:
+      tags:
+        - badges
+      summary: 'Deleta uma badge especifica'
+      operationId: DeleteBadge
+      parameters:
+        -
+          name: badgeId
+          in: query
+          description: 'ID da insignia'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          api_key: []
   /bot/gambling/money:
     put:
       tags:

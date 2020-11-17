@@ -21,13 +21,66 @@ class BadgeController extends Controller
         $this->repository = $repository;
     }
 
+    /**
+     * @OA\Get(
+     *     path="/badges",
+     *     summary="Retorna a lista de badges paginada",
+     *     operationId="GetBadges",
+     *     tags={"badges"},
+     *     security={{
+     *          "api_key":{}
+     *     }},
+     *     @OA\Response(
+     *         response=200,
+     *         description="...",
+     *     )
+     * )
+     */
+
     public function getBadges(Request $request)
     {
-        // TODO: checar se tem qualquer validação pra integrar
         $result = $this->repository->fetchBadges();
         return $this->success($result);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/badges",
+     *     summary="Cria uma nova insignia no sistema",
+     *     operationId="PostBadges",
+     *     tags={"badges"},
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="name",
+     *                      description="Nome da insignia",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="description",
+     *                      description="Descrição da insignia",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="image",
+     *                      description="Imagem da insignia",
+     *                      type="file"
+     *                   ),
+     *               ),
+     *           ),
+     *     ),
+     *     security={{
+     *          "api_key":{}
+     *     }},
+     *     @OA\Response(
+     *         response=200,
+     *         description="...",
+     *     )
+     * )
+     */
     public function postBadge(Request $request)
     {
         $this->validate($request, [
@@ -45,6 +98,31 @@ class BadgeController extends Controller
         return $this->success($result);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/badges/{badgeId}",
+     *     summary="Retorna uma badge especifica",
+     *     operationId="GetBadge",
+     *     tags={"badges"},
+     *     @OA\Parameter(
+     *         name="badgeId",
+     *         in="query",
+     *         description="ID da insignia",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *         )
+     *     ),
+     *     security={{
+     *          "api_key":{}
+     *     }},
+     *     @OA\Response(
+     *         response=200,
+     *         description="...",
+     *     )
+     * )
+     */
+
     public function getBadge(Request $request, int $badgeId)
     {
         $request->merge(['badge_id' => $badgeId]);
@@ -56,6 +134,30 @@ class BadgeController extends Controller
         return $this->success($result);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/badges/{badgeId}",
+     *     summary="Deleta uma badge especifica",
+     *     operationId="DeleteBadge",
+     *     tags={"badges"},
+     *     @OA\Parameter(
+     *         name="badgeId",
+     *         in="query",
+     *         description="ID da insignia",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *         )
+     *     ),
+     *     security={{
+     *          "api_key":{}
+     *     }},
+     *     @OA\Response(
+     *         response=200,
+     *         description="...",
+     *     )
+     * )
+     */
     public function deleteBadge(Request $request, int $badgeId)
     {
         $request->merge(['badge_id' => $badgeId]);
