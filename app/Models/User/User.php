@@ -90,7 +90,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function dailyPoints(int $value)
     {
-        $this->update([
+        return $this->update([
             'money' => $this->attributes['money'] + $value,
             'daily' => Carbon::now()->addDay()
         ]);

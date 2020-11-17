@@ -55,11 +55,12 @@ class UsersRepository
             throw new DailyRewardException($time);
         }
         $points = $this->generateDailyPoints($isDonator);
-        $this->model->dailyPoints(
+        $this->model = $this->model->dailyPoints(
             $points
         );
         return [
-            'points' => $points
+            'points' => $points,
+            'date' => $this->model->daily
         ];
     }
 
