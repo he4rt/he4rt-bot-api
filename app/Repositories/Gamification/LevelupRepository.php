@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Repositories\Gamification;
-
 
 use App\Models\User\User;
 
@@ -25,7 +23,7 @@ class LevelupRepository
 
     private function generateExp($isDonator)
     {
-        return rand(50, 100) * ($isDonator ? 2 : 1);
+        return rand(1, 5) * ($isDonator ? 2 : 1);
     }
 
     public function handle(string $discordId, $isDonator, $message): array
@@ -62,6 +60,4 @@ class LevelupRepository
 
         return $model;
     }
-
-
 }
