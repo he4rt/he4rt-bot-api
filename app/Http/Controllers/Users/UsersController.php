@@ -149,7 +149,10 @@ class UsersController extends Controller
             'discord_id' => 'required|exists:users'
         ]);
 
-        $result = $this->repository->findById($request->input('discord_id'));
+        $result = $this->repository->findById(
+            $request->input('discord_id'),
+            $request->input('includes')
+        );
 
         return $this->success($result);
     }

@@ -6,6 +6,7 @@ namespace App\Repositories\Users;
 
 use App\Exceptions\DailyRewardException;
 use App\Models\User\User;
+use App\Transformers\ChecklistTransformer;
 use Carbon\Carbon;
 
 class UsersRepository
@@ -28,9 +29,18 @@ class UsersRepository
         return $this;
     }
 
-    public function findById(string $discordId)
+    public function findById(string $discordId, array $includes = [])
     {
-        return $this->model->where('discord_id', $discordId)->first();
+        $user = $this->model
+            ->where('discord_id', $discordId)
+            ->first()
+            ->toArray();
+
+        if (in_array('checklist', $includes)) {
+            $user['checklist'] = app(ChecklistTransformer::class)->handle($discordId);
+        }
+
+        return $user;
     }
 
     public function update(string $discordId, array $payload)
