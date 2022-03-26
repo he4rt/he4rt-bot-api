@@ -28,7 +28,12 @@ class UserFactory extends Factory
             'level' => $this->faker->numberBetween(1,30),
             'current_exp' => $this->faker->numberBetween(100,5000),
             'money' => $this->faker->numberBetween(1,10000) ,
-            'nickname' => $this->faker->userName
+            'nickname' => $this->faker->userName,
+            'git' => $this->faker->url,
+            'name' => $this->faker->name,
+            'about' => $this->faker->sentence(),
+            'daily' => null,
+            'reputation' => 0,
         ];
     }
 }

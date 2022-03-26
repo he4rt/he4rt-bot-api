@@ -20,7 +20,7 @@ class BotAuthentication
             return response()->json(['error' => 'Chave não encontrada'], 401);
         }
 
-        if ($apiKey !== env('BOT_SECRET')) {
+        if ($apiKey !== config('he4rt.server_key')) {
             return response()->json(['error' => 'Chave incorreta'], 401);
         }
         return $next($request);

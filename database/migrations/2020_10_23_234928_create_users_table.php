@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->integer('current_exp')->default(0);
             $table->decimal('money',8,2)->default(0);
             $table->timestamp('daily')->nullable();
+            $table->integer('reputation')->default(0);
             $table->timestamps();
         });
     }

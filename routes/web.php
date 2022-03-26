@@ -29,7 +29,7 @@ $router->get('/auth/logout', 'AuthController@logout');
 $router->group(['prefix' => 'users', 'middleware' => 'bot-auth'], function ($router) {
     $router->get('/', 'Users\UsersController@getUsers');
     $router->post('/', 'Users\UsersController@postUser');
-    $router->get('/{discordId}', 'Users\UsersController@getUser');
+    $router->get('/{discordId}', ['uses' => 'Users\UsersController@getUser', 'as' => 'user-get']);
     $router->put('/{discordId}', 'Users\UsersController@putUser');
     $router->delete('/{discordId}', 'Users\UsersController@deleteUser');
 

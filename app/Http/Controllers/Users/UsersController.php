@@ -16,13 +16,8 @@ class UsersController extends Controller
 
     use ApiResponse;
 
-    /**
-     * @var User
-     */
     private $model;
-    /**
-     * @var UsersRepository
-     */
+
     private $repository;
 
     public function __construct(User $model, UsersRepository $repository)
@@ -31,31 +26,6 @@ class UsersController extends Controller
         $this->repository = $repository;
     }
 
-    /**
-     * @OA\Get(
-     *     path="/users",
-     *     summary="Lista todos os usuários",
-     *     operationId="GetUsers",
-     *     tags={"users"},
-     *     @OA\Parameter(
-     *         name="Authorization",
-     *         in="header",
-     *         description="Authorization: he4rt-{key}",
-     *         required=false,
-     *         @OA\Schema(
-     *           type="string"
-     *         )
-     *     ),
-     *     security={{
-     *          "api_key":{}
-     *     }},
-     *     @OA\Response(
-     *         response=200,
-     *         description="...",
-     *     )
-     * )
-     */
-
     public function getUsers(Request $request)
     {
         $query = $this->model->paginate(15);
@@ -63,39 +33,6 @@ class UsersController extends Controller
         return $this->success($query);
     }
 
-    /**
-     * @OA\Post(
-     *     path="/users",
-     *     summary="Cria um novo usuário",
-     *     operationId="PostUser",
-     *     tags={"users"},
-     *     @OA\Parameter(
-     *         name="Authorization",
-     *         in="header",
-     *         description="Authorization: he4rt-{key}",
-     *         required=false,
-     *         @OA\Schema(
-     *           type="string"
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="discord_id",
-     *         in="query",
-     *         description="ID do usuário do Discord",
-     *         required=true,
-     *         @OA\Schema(
-     *           type="string",
-     *         )
-     *     ),
-     *     security={{
-     *          "api_key":{}
-     *     }},
-     *     @OA\Response(
-     *         response=200,
-     *         description="...",
-     *     )
-     * )
-     */
     public function postUser(Request $request)
     {
         $this->validate($request, [
@@ -107,40 +44,6 @@ class UsersController extends Controller
 
     }
 
-    /**
-     * @OA\Get(
-     *     path="/users/{discordId}",
-     *     summary="Mostra as informações de um usuário",
-     *     operationId="GetUser",
-     *     tags={"users"},
-     *     @OA\Parameter(
-     *         name="Authorization",
-     *         in="header",
-     *         description="Authorization: he4rt-{key}",
-     *         required=false,
-     *         @OA\Schema(
-     *           type="string"
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="discordId",
-     *         in="path",
-     *         description="ID do usuário do Discord",
-     *         required=true,
-     *         @OA\Schema(
-     *           type="string",
-     *         )
-     *     ),
-     *     security={{
-     *          "api_key":{}
-     *     }},
-     *     @OA\Response(
-     *         response=200,
-     *         description="...",
-     *     )
-     * )
-     */
-
     public function getUser(Request $request, string $discordId)
     {
         $request->merge(['discord_id' => $discordId]);
@@ -151,81 +54,13 @@ class UsersController extends Controller
 
         $result = $this->repository->findById(
             $request->input('discord_id'),
-            $request->input('includes')
+            $request->input('includes') ?? []
         );
 
         return $this->success($result);
     }
 
-    /**
-     * @OA\Put(
-     *     path="/users/{discordId}",
-     *     summary="Altera um usuário",
-     *     operationId="PutUser",
-     *     tags={"users"},
-     *     @OA\Parameter(
-     *         name="Authorization",
-     *         in="header",
-     *         description="Authorization: he4rt-{key}",
-     *         required=false,
-     *         @OA\Schema(
-     *           type="string"
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="discordId",
-     *         in="path",
-     *         description="ID do usuário do Discord",
-     *         required=true,
-     *         @OA\Schema(
-     *           type="string",
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="name",
-     *         in="query",
-     *         description="Nome da pessoa",
-     *         required=false,
-     *         @OA\Schema(
-     *           type="string",
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="nickname",
-     *         in="query",
-     *         description="Apelido da pessoa",
-     *         required=false,
-     *         @OA\Schema(
-     *           type="string",
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="git",
-     *         in="query",
-     *         description="Link do git",
-     *         required=false,
-     *         @OA\Schema(
-     *           type="string",
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="about",
-     *         in="query",
-     *         description="Informações pessoais do usuário",
-     *         required=false,
-     *         @OA\Schema(
-     *           type="string",
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="...",
-     *     ),
-     *     security={{
-     *          "api_key":{}
-     *     }},
-     * )
-     */
+
     public function putUser(Request $request, string $discordId)
     {
         $request->merge(['discord_id' => $discordId]);
@@ -245,72 +80,11 @@ class UsersController extends Controller
         return $this->success($result);
     }
 
-    /**
-     * @OA\Delete(
-     *     path="/users/{discordId}",
-     *     summary="Apaga um usuário",
-     *     operationId="DeleteUser",
-     *     tags={"users"},
-     *     @OA\Parameter(
-     *         name="Authorization",
-     *         in="header",
-     *         description="Authorization: he4rt-{key}",
-     *         required=false,
-     *         @OA\Schema(
-     *           type="string"
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="discordId",
-     *         in="path",
-     *         description="ID do usuário do Discord",
-     *         required=true,
-     *         @OA\Schema(
-     *           type="string",
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="...",
-     *     )
-     * )
-     */
 
     public function deleteUser(string $discordId)
     {
         return $this->success($this->repository->delete($discordId));
     }
-
-    /**
-     * @OA\Post(
-     *     path="/users/daily",
-     *     summary="Gerador de hCoins diário",
-     *     operationId="postUserDailyCoins",
-     *     tags={"users"},
-     *     @OA\Parameter(
-     *         name="Authorization",
-     *         in="header",
-     *         description="Authorization: he4rt-{key}",
-     *         required=false,
-     *         @OA\Schema(
-     *           type="string"
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="discord_id",
-     *         in="query",
-     *         description="ID do usuário do Discord",
-     *         required=true,
-     *         @OA\Schema(
-     *           type="string",
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="...",
-     *     )
-     * )
-     */
 
     public function postDaily(Request $request)
     {
