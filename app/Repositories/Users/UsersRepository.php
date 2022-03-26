@@ -33,11 +33,11 @@ class UsersRepository
     {
         $user = $this->model
             ->where('discord_id', $discordId)
-            ->first()
-            ->toArray();
+            ->first();
+
 
         if (in_array('checklist', $includes)) {
-            $user['checklist'] = app(ChecklistTransformer::class)->handle($discordId);
+            $user->checklist = app(ChecklistTransformer::class)->handle($discordId);
         }
 
         return $user;
