@@ -10,9 +10,9 @@ use Discord\WebSockets\Intents;
 use Illuminate\Console\Command;
 use Discord\Discord;
 
-class TestCommand extends Command
+class SendLevelupMessage extends Command
 {
-    protected $signature = 'test :discordId :level';
+    protected $signature = 'test {discordId} {level}';
     protected $description = 'Wipe database and start the next season';
     protected array $member = [];
 
@@ -30,7 +30,7 @@ class TestCommand extends Command
         ]);
 
         $member = $discordClient->getUser(
-            $this->option('discordId')
+            $this->argument('discordId')
         );
 
         $discord->on('ready', function (Discord $discord) use ($member) {

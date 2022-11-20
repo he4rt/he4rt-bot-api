@@ -12,6 +12,7 @@
         "laravel/lumen-framework": "^8.0",
         "laravel/passport": "^10.0",
         "league/flysystem": "^1.1",
+        "team-reflex/discord-php": "^7.3",
         "zircote/swagger-php": "^3.1"
     },
     "require-dev": {
