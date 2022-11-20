@@ -25,6 +25,7 @@ class UpdateUserTest extends TestCase
             'nickname' => 'danielhe4rt',
             'git' => 'https://github.com/danielhe4rt',
             'about' => 'eu faço lives codando php',
+            'linkedin' => 'https://linkedin.com/in/danielheart'
         ];
 
         $response = $this->put(

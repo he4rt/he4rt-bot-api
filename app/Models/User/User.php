@@ -34,6 +34,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'current_exp',
         'money',
         'git',
+        'linkedin',
         'name',
         'nickname',
         'about',
@@ -42,7 +43,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
     protected $casts = [
-        'discord_id' => 'int'
+        'discord_id' => 'int',
     ];
 
 

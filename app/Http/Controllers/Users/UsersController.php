@@ -43,14 +43,12 @@ class UsersController extends Controller
         return response()->json($action->handle($payload['discord_id']), Response::HTTP_CREATED);
     }
 
-    public function getUser(Request $request, string $discordId, FindUser $action)
+    public function getUser(Request $request, string $discordId, FindUser $action): JsonResponse
     {
         $request->merge(['discord_id' => $discordId]);
         $this->validate($request, ['discord_id' => 'required|exists:users']);
 
-        return response()->json(
-            $action->handle($discordId)
-        );
+        return response()->json($action->handle($discordId));
     }
 
 
@@ -63,11 +61,10 @@ class UsersController extends Controller
             'nickname' => 'string',
             'git' => 'string',
             'about' => 'string',
+            'linkedin' => 'string'
         ]);
 
-        return response()->json(
-            $action->handle($discordId, $validated)
-        );
+        return response()->json($action->handle($discordId, $validated));
     }
 
 
