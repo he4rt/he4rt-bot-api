@@ -4,6 +4,7 @@ namespace App\Actions\Gamefication;
 
 use App\Models\User\User;
 use App\Repositories\Users\UsersRepository;
+use Illuminate\Support\Facades\Artisan;
 
 class ExperienceLeveling
 {
@@ -29,6 +30,13 @@ class ExperienceLeveling
 
         $currentExp = $userExperience - $experienceNeededToLevelUp;
         $this->userRepository->levelUp($userId, $currentExp);
+        $user = $user->refresh();
+
+        Artisan::call('discord:level-up', [
+            'discordId' => $user->discord_id,
+            'level' => $user->level,
+            'messagesCount' => $user->seasonMessagesCount()
+        ]);
 
         return $givenExp;
     }

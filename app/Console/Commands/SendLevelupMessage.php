@@ -12,7 +12,7 @@ use Discord\Discord;
 
 class SendLevelupMessage extends Command
 {
-    protected $signature = 'test {discordId} {level}';
+    protected $signature = 'discord:level-up {discordId} {level} {messagesCount}';
     protected $description = 'Wipe database and start the next season';
     protected array $member = [];
 
@@ -49,7 +49,7 @@ class SendLevelupMessage extends Command
         $embed = new Embed($discord);
         $embed
             ->setTitle(sprintf('🆙 %s subiu para o nível %s!', $member['username'], $this->argument('level')))
-            ->setDescription(sprintf('Mensagens nessa Temporada: %s', 10))
+            ->setDescription(sprintf('Mensagens nessa Temporada: %s', $this->argument('messagesCount')))
             ->setThumbnail(sprintf(
                 'https://cdn.discordapp.com/avatars/%s/%s.png?size=256',
                 $member['id'],

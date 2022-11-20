@@ -4,7 +4,9 @@ namespace Feature\Gamefication;
 
 use App\Models\Gamefication\Season;
 use App\Models\User\User;
+use Illuminate\Support\Facades\Artisan;
 use Laravel\Lumen\Testing\DatabaseMigrations;
+use Mockery as m;
 use TestCase;
 
 class ExperienceLevelingTest extends TestCase
@@ -20,6 +22,7 @@ class ExperienceLevelingTest extends TestCase
 
     public function test_user_can_level_up()
     {
+        Artisan::shouldReceive('call')->with('discord:level-up', m::type('array'));
         $user = User::factory()->create(['current_exp' => 9]);
         $user->messages()->create([
             'message' => 'fodase'
@@ -34,5 +37,6 @@ class ExperienceLevelingTest extends TestCase
             'id' => $user->getKey(),
             'current_exp' => 9
         ]);
+        Artisan::shouldReceive('call');
     }
 }

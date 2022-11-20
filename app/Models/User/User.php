@@ -108,6 +108,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(Message::class);
     }
 
+    public function seasonMessagesCount(): int
+    {
+        return $this->messages()->where('season_id', config('he4rt.season'))->count();
+    }
+
     public function seasonInfo()
     {
         return $this->hasMany(Season::class);
