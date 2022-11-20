@@ -4,7 +4,6 @@ namespace App\Enums;
 
 abstract class Enum
 {
-
     final public function __construct($value = "")
     {
         $reflectionClass = new \ReflectionClass($this);

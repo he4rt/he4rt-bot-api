@@ -47,11 +47,11 @@ class RankingRepository
         if (array_key_exists('type', $options)) {
             if ($options['type'] == 'week') {
                 $this->model = $this->model
-                    ->whereDate('created_at', '>' , date('Y-m-d', strtotime('-7 day')));
+                    ->whereDate('created_at', '>', date('Y-m-d', strtotime('-7 day')));
             }
             if ($options['type'] == 'month') {
                 $this->model = $this->model
-                    ->whereDate('created_at', '>' , date('Y-m-d', strtotime('-30 day')));
+                    ->whereDate('created_at', '>', date('Y-m-d', strtotime('-30 day')));
             }
         }
         return $this->model->paginate($this->paginate);

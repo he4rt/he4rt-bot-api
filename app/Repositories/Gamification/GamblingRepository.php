@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Repositories\Gamification;
-
 
 use App\Models\User\User;
 

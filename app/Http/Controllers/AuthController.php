@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers;
-
 
 use App\Repositories\AuthRepository;
 use Carbon\Carbon;
@@ -94,6 +92,5 @@ class AuthController
                 'status' => 401, 'message' => ['Unauthorized']
             ];
         }
-
     }
 }

@@ -19,6 +19,7 @@ abstract class Job implements ShouldQueue
     | provides access to the "queueOn" and "delay" queue helper methods.
     |
     */
-
-    use InteractsWithQueue, Queueable, SerializesModels;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers\Gamification;
-
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Gamification\SeasonRepository;
@@ -11,7 +9,6 @@ use Illuminate\Http\Request;
 
 class SeasonController extends Controller
 {
-
     use ApiResponse;
 
     /**

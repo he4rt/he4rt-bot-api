@@ -2,7 +2,6 @@
 
 namespace App\Transformers;
 
-use App\Models\Gamification\Message;
 use App\Models\User\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +19,8 @@ class ChecklistTransformer
 
     private function transformLastActivityOnPast7Days(string $discordId)
     {
-        $query = sprintf('
+        $query = sprintf(
+            '
             SELECT
                 u.nickname, u.id
             FROM

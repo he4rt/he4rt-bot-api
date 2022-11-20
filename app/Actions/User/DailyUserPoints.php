@@ -51,7 +51,7 @@ class DailyUserPoints
     }
 
 
-    private function transformResult(User $user,int $points): array
+    private function transformResult(User $user, int $points): array
     {
         return [
             'points' => $points,

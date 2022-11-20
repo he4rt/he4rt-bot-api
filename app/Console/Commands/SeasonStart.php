@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Console\Commands;
-
 
 use App\Models\Gamification\Season;
 use Illuminate\Console\Command;
@@ -51,5 +49,4 @@ class SeasonStart extends Command
         $this->info('Beleza tá tudo certo pode deixa a galera se matar por pontinho');
         $this->info('Te vejo ano que vem, é nois <3');
     }
-
 }

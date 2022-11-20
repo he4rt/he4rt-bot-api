@@ -1,12 +1,9 @@
 <?php
 
-
 namespace App\Models\User;
 
-
-
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Gamification\Season as SeasonModel;
+use Illuminate\Database\Eloquent\Model;
 
 class Season extends Model
 {
@@ -19,11 +16,13 @@ class Season extends Model
         'messages_count'
     ];
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function season() {
+    public function season()
+    {
         return $this->belongsTo(SeasonModel::class);
     }
 }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers\Gamification;
-
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Gamification\LevelupRepository;
@@ -68,7 +66,7 @@ class LevelupController extends Controller
 
     public function postLevelUp(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'discord_id' => 'required|exists:users',
             'message' => 'required'
         ]);
@@ -81,5 +79,4 @@ class LevelupController extends Controller
 
         return response()->json($result);
     }
-
 }

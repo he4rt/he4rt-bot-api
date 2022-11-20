@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Clients;
-
 
 use App\Contracts\OAuthServiceContract;
 use GuzzleHttp\Client;
@@ -15,7 +13,8 @@ class DiscordAuthService implements OAuthServiceContract
      */
     private $client;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->client = new Client([
             'base_uri' => 'https://discord.com/api/v6',
             'timeout' => 5.0,
@@ -44,7 +43,6 @@ class DiscordAuthService implements OAuthServiceContract
         } catch (GuzzleException $exception) {
             return ["deu merda: " . $exception->getMessage()];
         }
-
     }
 
     public function getAuthenticatedUser(string $token): array

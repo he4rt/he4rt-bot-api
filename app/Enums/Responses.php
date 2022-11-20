@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Enums;
 
 abstract class Responses extends Enum

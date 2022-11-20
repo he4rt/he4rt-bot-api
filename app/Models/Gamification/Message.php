@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Models\Gamification;
-
 
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +13,8 @@ class Message extends Model
         'user_id', 'message', 'obtained_experience','season_id'
     ];
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 }

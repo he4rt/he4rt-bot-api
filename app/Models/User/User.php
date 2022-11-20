@@ -15,7 +15,10 @@ use Laravel\Passport\HasApiTokens;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
-    use Authenticatable, Authorizable, HasFactory, HasApiTokens;
+    use Authenticatable;
+    use Authorizable;
+    use HasFactory;
+    use HasApiTokens;
 
 
     /**
@@ -126,5 +129,4 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasMany(Level::class);
     }
-
 }

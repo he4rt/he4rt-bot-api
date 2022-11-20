@@ -1,13 +1,10 @@
 <?php
 
-
 namespace App\Http\Controllers\Gamification;
-
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Gamification\RankingRepository;
 use App\Traits\ApiResponse;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class RankingController extends Controller

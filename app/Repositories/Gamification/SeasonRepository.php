@@ -1,11 +1,8 @@
 <?php
 
-
 namespace App\Repositories\Gamification;
 
-
 use App\Models\Gamification\Season;
-use Illuminate\Support\Facades\DB;
 
 class SeasonRepository
 {
@@ -71,5 +68,4 @@ class SeasonRepository
 
         return true;
     }
-
 }

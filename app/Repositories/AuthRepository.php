@@ -1,13 +1,10 @@
 <?php
 
-
 namespace App\Repositories;
 
-
+use App\Clients\DiscordAuthService;
 use App\Contracts\OAuthServiceContract;
 use App\Models\User\User;
-use App\Clients\DiscordAuthService;
-use Illuminate\Support\Facades\Auth;
 
 class AuthRepository
 {
@@ -19,10 +16,7 @@ class AuthRepository
 
 
             $response = $authService->getAuthenticatedUser($authData['access_token']);
-            $authUser = $this->findOrCreate($provider, $response);
-
-            return $authUser;
-
+            return $this->findOrCreate($provider, $response);
         } catch (\Exception $exception) {
             return false;
         }

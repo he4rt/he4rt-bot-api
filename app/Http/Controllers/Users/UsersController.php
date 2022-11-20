@@ -1,18 +1,16 @@
 <?php
 
-
 namespace App\Http\Controllers\Users;
 
-
+use App\Actions\User\CreateUser;
 use App\Actions\User\DailyUserPoints;
+use App\Actions\User\DeleteUser;
+use App\Actions\User\FindUser;
+use App\Actions\User\UpdateUser;
 use App\Exceptions\DailyRewardException;
 use App\Http\Controllers\Controller;
 use App\Models\User\User;
 use App\Repositories\Users\UsersRepository;
-use App\Actions\User\CreateUser;
-use App\Actions\User\DeleteUser;
-use App\Actions\User\FindUser;
-use App\Actions\User\UpdateUser;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -20,7 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UsersController extends Controller
 {
-
     use ApiResponse;
 
     private $model;
@@ -95,5 +92,4 @@ class UsersController extends Controller
             return response()->json($e->getMessage(), $e->getCode());
         }
     }
-
 }

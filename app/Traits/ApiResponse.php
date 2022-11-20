@@ -2,17 +2,16 @@
 
 namespace App\Traits;
 
+use App\Enums\Responses;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\App;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use App\Enums\Responses;
+use Illuminate\Support\Facades\Log;
 
 trait ApiResponse
 {
-
     /**
      * Return HTTP Continue (100)
      *

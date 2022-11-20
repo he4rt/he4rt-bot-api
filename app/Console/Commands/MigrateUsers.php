@@ -1,10 +1,7 @@
 <?php
 
-
 namespace App\Console\Commands;
 
-
-use App\Models\Gamification\Season;
 use App\Models\User\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -46,7 +43,7 @@ class MigrateUsers extends Command
             ->table('users')
             ->orderBy('id')
             ->chunk(500, function ($users) {
-                foreach($users as $user) {
+                foreach ($users as $user) {
                     User::create([
                         'discord_id' => $user->discord_id,
                         'name' =>  $user->name,

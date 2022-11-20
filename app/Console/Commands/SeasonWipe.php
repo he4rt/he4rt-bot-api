@@ -48,9 +48,9 @@ class SeasonWipe extends Command
         $activeSeason = Season::find(env('APP_SEASON'));
 
         $this->info('Finalização de temporada iniciada!');
-        DB::transaction(function () use($activeSeason) {
+        DB::transaction(function () use ($activeSeason) {
             User::orderBy('id')
-                ->chunk(300, function ($users) use($activeSeason) {
+                ->chunk(300, function ($users) use ($activeSeason) {
                     foreach ($users as $user) {
                         $messagesCount = $user->messages()
                             ->whereBetween('created_at', [
