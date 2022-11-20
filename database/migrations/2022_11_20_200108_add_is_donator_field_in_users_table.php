@@ -15,7 +15,7 @@ class AddIsDonatorFieldInUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->boolean('is_donator')
-                ->after('reputation')
+                ->after('daily')
                 ->default(false);
         });
     }
