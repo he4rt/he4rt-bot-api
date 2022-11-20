@@ -14,18 +14,13 @@ class UserFactory extends Factory
      */
     protected $model = User::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
-    public function definition()
+    public function definition(): array
     {
         return [
             'discord_id' => $this->faker->unique()->randomNumber(8),
             'twitch_id' => $this->faker->unique()->randomNumber(8),
             'email' => $this->faker->unique()->safeEmail,
-            'level' => $this->faker->numberBetween(1,30),
+            'level' => 1,
             'current_exp' => $this->faker->numberBetween(100,5000),
             'money' => $this->faker->numberBetween(1,10000) ,
             'nickname' => $this->faker->userName,

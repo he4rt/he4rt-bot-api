@@ -6,7 +6,7 @@ namespace App\Repositories;
 
 use App\Contracts\OAuthServiceContract;
 use App\Models\User\User;
-use App\Service\DiscordAuthService;
+use App\Clients\DiscordAuthService;
 use Illuminate\Support\Facades\Auth;
 
 class AuthRepository

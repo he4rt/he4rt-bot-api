@@ -5,7 +5,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^7.3",
+        "php": "^7.4",
         "ext-json": "*",
         "dusterio/lumen-passport": "^0.3.1",
         "guzzlehttp/guzzle": "^7.0",
@@ -41,9 +41,6 @@
     "scripts": {
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-        ],
-        "post-install-cmd": [
-            "bash development/setup_ci.sh"
         ]
     }
 }

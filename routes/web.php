@@ -27,13 +27,13 @@ $router->get('/auth/oauth/{provider}', 'AuthController@authenticate');
 $router->get('/auth/logout', 'AuthController@logout');
 
 $router->group(['prefix' => 'users', 'middleware' => 'bot-auth'], function ($router) {
-    $router->get('/', 'Users\UsersController@getUsers');
-    $router->post('/', 'Users\UsersController@postUser');
-    $router->get('/{discordId}', ['uses' => 'Users\UsersController@getUser', 'as' => 'user-get']);
-    $router->put('/{discordId}', 'Users\UsersController@putUser');
-    $router->delete('/{discordId}', 'Users\UsersController@deleteUser');
+    $router->post('/{discordId}/daily', ['uses' => 'Users\UsersController@postDaily', 'as' => 'users.dailyPoints']);
 
-    $router->post('/daily', 'Users\UsersController@postDaily');
+    $router->get('/', 'Users\UsersController@getUsers');
+    $router->post('/', ['uses' => 'Users\UsersController@postUser', 'as' => 'users.store']);
+    $router->get('/{discordId}', ['uses' => 'Users\UsersController@getUser', 'as' => 'users.show']);
+    $router->put('/{discordId}', ['uses' => 'Users\UsersController@putUser', 'as' => 'users.update']);
+    $router->delete('/{discordId}', ['uses' => 'Users\UsersController@deleteUser', 'as' => 'users.destroy']);
 });
 
 $router->group(['prefix' => 'bot', 'middleware' => 'bot-auth'], function ($router) {

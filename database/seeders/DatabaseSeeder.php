@@ -13,10 +13,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        if (env('APP_ENV') !== "production") {
-            $this->call(UserSeeder::class);
-        }
-
         $this->call(ExpTableSeeder::class);
         $this->call(SeasonSeeder::class);
     }

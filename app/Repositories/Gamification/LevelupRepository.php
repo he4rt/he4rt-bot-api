@@ -3,6 +3,7 @@
 namespace App\Repositories\Gamification;
 
 use App\Models\User\User;
+use Illuminate\Support\Facades\DB;
 
 class LevelupRepository
 {
@@ -18,7 +19,7 @@ class LevelupRepository
 
     public function fetchExpTableLevel($currentLevel)
     {
-        return \DB::table('experience_table')->find($currentLevel);
+        return DB::table('experience_table')->find($currentLevel);
     }
 
     private function generateExp($isDonator)

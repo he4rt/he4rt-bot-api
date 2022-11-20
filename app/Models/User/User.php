@@ -38,6 +38,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'reputation',
     ];
 
+    protected $casts = [
+        'discord_id' => 'int'
+    ];
+
 
     protected $dates = ['daily'];
 

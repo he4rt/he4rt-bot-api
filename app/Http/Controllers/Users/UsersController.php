@@ -4,12 +4,19 @@
 namespace App\Http\Controllers\Users;
 
 
+use App\Actions\User\DailyUserPoints;
 use App\Exceptions\DailyRewardException;
 use App\Http\Controllers\Controller;
 use App\Models\User\User;
 use App\Repositories\Users\UsersRepository;
+use App\Actions\User\CreateUser;
+use App\Actions\User\DeleteUser;
+use App\Actions\User\FindUser;
+use App\Actions\User\UpdateUser;
 use App\Traits\ApiResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class UsersController extends Controller
 {
@@ -33,78 +40,59 @@ class UsersController extends Controller
         return $this->success($query);
     }
 
-    public function postUser(Request $request)
+    public function postUser(Request $request, CreateUser $action): JsonResponse
     {
-        $this->validate($request, [
-            'discord_id' => 'required|unique:users|numeric',
-        ]);
-        $result = $this->repository->create($request->input('discord_id'));
-
-        return $this->success($result);
-
+        $payload = $this->validate($request, ['discord_id' => 'required|unique:users|numeric']);
+        return response()->json($action->handle($payload['discord_id']), Response::HTTP_CREATED);
     }
 
-    public function getUser(Request $request, string $discordId)
+    public function getUser(Request $request, string $discordId, FindUser $action)
     {
         $request->merge(['discord_id' => $discordId]);
+        $this->validate($request, ['discord_id' => 'required|exists:users']);
 
-        $this->validate($request, [
-            'discord_id' => 'required|exists:users'
-        ]);
-
-        $result = $this->repository->findById(
-            $request->input('discord_id'),
-            $request->input('includes') ?? []
+        return response()->json(
+            $action->handle($discordId)
         );
-
-        return $this->success($result);
     }
 
 
-    public function putUser(Request $request, string $discordId)
+    public function putUser(Request $request, string $discordId, UpdateUser $action): JsonResponse
     {
         $request->merge(['discord_id' => $discordId]);
-        $this->validate($request, [
+        $validated = $this->validate($request, [
             'discord_id' => 'required|exists:users',
             'name' => 'string',
             'nickname' => 'string',
             'git' => 'string',
-            'about' => 'string'
+            'about' => 'string',
         ]);
 
-        $result = $this->repository->update(
-            $request->input('discord_id'),
-            $request->only(['name', 'nickname', 'git', 'about'])
+        return response()->json(
+            $action->handle($discordId, $validated)
         );
-
-        return $this->success($result);
     }
 
 
-    public function deleteUser(string $discordId)
+    public function deleteUser(string $discordId, DeleteUser $action): JsonResponse
     {
-        return $this->success($this->repository->delete($discordId));
+        $action->handle($discordId);
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
-    public function postDaily(Request $request)
-    {
-        $this->validate($request, [
-            'discord_id' => 'required|exists:users',
-        ]);
+    public function postDaily(
+        Request $request,
+        string $discordId,
+        DailyUserPoints $action
+    ): JsonResponse {
+        $request->merge(['discord_id' => $discordId]);
+        $isDonator = $request->has('donator') ? $request->input('donator') : false;
+        $this->validate($request, ['discord_id' => 'required|exists:users']);
 
         try {
-            $isDonator = $request->has('donator') ? $request->input('donator') : false;
-            $result = $this->repository->dailyPoints(
-                $request->input('discord_id'),
-                $isDonator
-            );
-
-            return $this->success($result);
-        } catch (DailyRewardException $exception) {
-            return $this->unprocessable([
-                'message' => 'Command already used today',
-                'time' => $exception->getMessage()
-            ]);
+            return response()->json($action->handle($discordId, $isDonator));
+        } catch (DailyRewardException $e) {
+            return response()->json($e->getMessage(), $e->getCode());
         }
     }
 

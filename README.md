@@ -1,24 +1,54 @@
-# Lumen PHP Framework
+# He4rtBot Discord API
+<p align="center">
+  <a href="https://discord.gg/he4rt">
+    <img src="./.github/logo.png" height="220">
+  </a>
+</p>
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/lumen-framework/v/stable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://packagist.org/packages/laravel/lumen-framework)
+<h1 align="center">
+He4rt Discord Bot API
+</h1>
+<p align="center">
+  <a href="https://discord.gg/he4rt"><img src="https://img.shields.io/endpoint?url=https://github.com/he4rt/he4rt-bot-api/blob/main/version.json"></a>
+  <a href="https://discord.gg/he4rt"><img src="https://img.shields.io/github/license/he4rt/he4rt-bot-api?color=A655FF&style=for-the-badge"></a>
+<p>
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+## Features
 
-## Official Documentation
+* [x] Gerenciamento de Usuários 
+* [x] Pontos Diários
+* [] Sistemas de Temporada 
+* [] Sistema de Apostas
+* [] Ranking
+* [] Sistema de Leveling 
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
+## Endpoints
 
-## Contributing
+TODO: documentar
 
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Requirements
 
-## Security Vulnerabilities
+- [PHP 7.4](https://php.net)
+- [Composer 2](https://getcomposer.org)
 
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+### Run
 
-## License
+```bash
+php artisan migrate --seed
 
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+php -S 0.0.0.0:8000
+vendor/bin/phpunit 
+```
+
+## Differences to [v1](https://github.com/he4rt/He4rt-Bot)
+
+- PHP 5.6 > PHP 7.4;
+- Lumen 6 > Lumen 8;
+- Implementação de Actions
+- Adição de Testes de Integração
+- Documentação Apropriada
+
+### Lista de Refatoração
+
+- Banco de dados
+- Isolar Requests
