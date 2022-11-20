@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Gamification;
+namespace App\Models\Gamefication;
 
 use Illuminate\Database\Eloquent\Model;
 

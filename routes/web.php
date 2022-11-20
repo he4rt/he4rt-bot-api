@@ -27,20 +27,35 @@ $router->get('/auth/oauth/{provider}', 'AuthController@authenticate');
 $router->get('/auth/logout', 'AuthController@logout');
 
 $router->group(['prefix' => 'users', 'middleware' => 'bot-auth'], function ($router) {
-    $router->post('/{discordId}/daily', ['uses' => 'Users\UsersController@postDaily', 'as' => 'users.dailyPoints']);
+    /*
+    |--------------------------------------------------------------------------
+    | Basic User Routes
+    |--------------------------------------------------------------------------
+    | Only for CRUD operations
+    */
 
     $router->get('/', 'Users\UsersController@getUsers');
     $router->post('/', ['uses' => 'Users\UsersController@postUser', 'as' => 'users.store']);
     $router->get('/{discordId}', ['uses' => 'Users\UsersController@getUser', 'as' => 'users.show']);
     $router->put('/{discordId}', ['uses' => 'Users\UsersController@putUser', 'as' => 'users.update']);
     $router->delete('/{discordId}', ['uses' => 'Users\UsersController@deleteUser', 'as' => 'users.destroy']);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Specific Gamefication Routes
+    |--------------------------------------------------------------------------
+    | For gamefication and other stuff
+    */
+
+    $router->post('/{discordId}/daily', ['uses' => 'Users\UsersController@postDaily', 'as' => 'users.dailyPoints']);
+    $router->post('/{discordId}/message', ['uses' => 'Users\MessagesController@postMessage', 'as' => 'users.messages.store']);
+
 });
 
 $router->group(['prefix' => 'bot', 'middleware' => 'bot-auth'], function ($router) {
     $router->group(['prefix' => 'gambling'], function ($router) {
         $router->put('money', 'Gamification\GamblingController@putMoney');
     });
-    $router->post('gamification/levelup', 'Gamification\LevelupController@postLevelUp');
 });
 
 $router->group(['prefix' => 'ranking'], function ($router) {

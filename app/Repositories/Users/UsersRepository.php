@@ -14,6 +14,11 @@ class UsersRepository
         ]);
     }
 
+    public function find(int $userId): User
+    {
+        return User::find($userId);
+    }
+
     public function findById(string $discordId): User
     {
         return User::where('discord_id', $discordId)->first();
@@ -30,5 +35,11 @@ class UsersRepository
     public function delete(string $discordId): ?bool
     {
         return $this->findById($discordId)->delete();
+    }
+
+    public function levelUp(int $userId, int $currentExp): void
+    {
+        $model = $this->find($userId);
+        $model->levelUp($currentExp);
     }
 }

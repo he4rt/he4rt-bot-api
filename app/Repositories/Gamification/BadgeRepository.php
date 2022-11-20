@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Gamification;
 
-use App\Models\Gamification\Badge;
+use App\Models\Gamefication\Badge;
 use Illuminate\Http\UploadedFile;
 
 class BadgeRepository

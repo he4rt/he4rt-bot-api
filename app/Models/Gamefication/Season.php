@@ -1,11 +1,15 @@
 <?php
 
-namespace App\Models\Gamification;
+namespace App\Models\Gamefication;
 
+use App\Models\User\Message;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Season extends Model
 {
+    use HasFactory;
+
     protected $table = 'seasons';
 
     protected $fillable = [
@@ -14,6 +18,13 @@ class Season extends Model
         'end',
         'status'
     ];
+
+    protected $casts = [
+        'status' => 'bool'
+    ];
+    // TODO: mudar campo status para is_over
+    // TODO: mudar start status para started_at
+    // TODO: mudar end status para ended_at
 
     public function seasonStatus($status)
     {

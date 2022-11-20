@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Gamification\Season;
+use App\Models\Gamefication\Season;
 use App\Models\User\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Gamification\Season;
+use App\Models\Gamefication\Season;
 use Illuminate\Console\Command;
 
 class SeasonStart extends Command

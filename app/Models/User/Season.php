@@ -2,7 +2,7 @@
 
 namespace App\Models\User;
 
-use App\Models\Gamification\Season as SeasonModel;
+use App\Models\Gamefication\Season as SeasonModel;
 use Illuminate\Database\Eloquent\Model;
 
 class Season extends Model

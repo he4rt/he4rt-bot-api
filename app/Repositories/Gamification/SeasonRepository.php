@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Gamification;
 
-use App\Models\Gamification\Season;
+use App\Models\Gamefication\Season;
 
 class SeasonRepository
 {

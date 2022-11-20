@@ -2,7 +2,7 @@
 
 namespace App\Models\User;
 
-use App\Models\Gamification\Message;
+use App\Models\Gamefication\ExperienceTable;
 use App\Repositories\Gamification\LevelupRepository;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
@@ -10,6 +10,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\HasApiTokens;
 
@@ -20,12 +21,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     use HasFactory;
     use HasApiTokens;
 
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'discord_id',
         'twitch_id',
@@ -40,10 +35,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'about',
         'daily',
         'reputation',
+        'is_donator'
     ];
 
     protected $casts = [
         'discord_id' => 'int',
+        'is_donator' => 'boolean'
     ];
 
 
@@ -64,27 +61,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return (int)$password == (int)$this->discord_id;
     }
 
-    public function getlevelUpExpAttribute()
+    public function nextLevel(): HasOne
     {
-        return app(LevelupRepository::class)->fetchExpTableLevel($this->attributes['level']);
+        return $this->hasOne(ExperienceTable::class, 'id', 'level');
     }
 
-    public function updateExp(int $exp)
+    public function levelUp(int $currentExp): void
     {
-        $this->update([
-            'current_exp' => $this->attributes['current_exp'] + $exp
-        ]);
-    }
+        $currentLevel = $this->attributes['level'] + 1;
 
-    public function levelUp()
-    {
-        $level = $this->attributes['level'] + 1;
-        $this->update([
-            'level' => $this->attributes['level'] + 1,
-            'current_exp' => 0
-        ]);
-
-        return $level;
+        $this->update(['level' => $currentLevel, 'current_exp' => $currentExp]);
+        $this->levelupLog()->create(['season_id' => config('he4rt.season'), 'level' => $currentLevel]);
     }
 
     public function wipe()
