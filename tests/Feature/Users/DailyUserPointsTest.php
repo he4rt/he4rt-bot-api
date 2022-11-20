@@ -47,8 +47,7 @@ class DailyUserPointsTest extends TestCase
             $this->getHeaders()
         );
 
-        $response->seeStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->seeJsonStructure(['message', 'time']);
+        $response->seeStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function test_bot_without_a_key_should_not_grant_points_to_a_user()
