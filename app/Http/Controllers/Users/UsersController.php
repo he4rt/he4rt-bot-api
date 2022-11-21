@@ -61,7 +61,8 @@ class UsersController extends Controller
             'nickname' => 'string',
             'git' => 'string',
             'about' => 'string',
-            'linkedin' => 'string'
+            'linkedin' => 'string',
+            'is_donator' => 'bool'
         ]);
 
         return response()->json($action->handle($discordId, $validated));
@@ -80,11 +81,10 @@ class UsersController extends Controller
         DailyUserPoints $action
     ): JsonResponse {
         $request->merge(['discord_id' => $discordId]);
-        $isDonator = $request->has('donator') ? $request->input('donator') : false;
         $this->validate($request, ['discord_id' => 'required|exists:users']);
 
         try {
-            return response()->json($action->handle($discordId, $isDonator));
+            return response()->json($action->handle($discordId));
         } catch (DailyRewardException $e) {
             return response()->json($e->getMessage(), $e->getCode());
         }

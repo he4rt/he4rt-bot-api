@@ -46,16 +46,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     protected $dates = ['daily'];
 
-    protected $appends = [
-        'levelup_exp'
-    ];
-
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-
     public function validateForPassportPasswordGrant($password)
     {
         return (int)$password == (int)$this->discord_id;

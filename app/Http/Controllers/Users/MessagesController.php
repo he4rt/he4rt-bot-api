@@ -15,8 +15,7 @@ class MessagesController extends Controller
 
         $payload = $this->validate($request, [
             'discord_id' => ['required','exists:users'],
-            'message' => ['string', 'required'],
-            'donator' => ['required','boolean']
+            'message' => ['string', 'required']
         ]);
 
         $action->handle($discordId, $payload['message'], $payload['donator']);

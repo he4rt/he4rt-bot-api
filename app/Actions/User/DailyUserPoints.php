@@ -19,10 +19,11 @@ class DailyUserPoints
     /**
      * @throws DailyRewardException
      */
-    public function handle(string $discordId, bool $isDonator): array
+    public function handle(string $discordId): array
     {
         $user = $this->repository->findById($discordId);
         $nextRedeemDate = $user->daily;
+        $isDonator = $user->is_donator;
 
         if (!$this->isAlreadyTimeToRedeemPoints($nextRedeemDate)) {
             throw DailyRewardException::alreadyRedeemed($nextRedeemDate);
