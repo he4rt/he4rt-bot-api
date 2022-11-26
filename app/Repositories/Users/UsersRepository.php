@@ -42,4 +42,10 @@ class UsersRepository
         $model = $this->find($userId);
         $model->levelUp($currentExp);
     }
+
+    public function incrementExperience(int $userId, int $givenExperience): void
+    {
+        $this->find($userId)
+            ->increment('current_exp', $givenExperience);
+    }
 }

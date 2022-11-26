@@ -2,7 +2,6 @@
 
 namespace App\Actions\Gamefication;
 
-use App\Models\User\User;
 use App\Repositories\Users\UsersRepository;
 use Illuminate\Support\Facades\Artisan;
 
@@ -25,6 +24,7 @@ class ExperienceLeveling
         $experienceNeededToLevelUp = $user->nextLevel->required;
         $userExperience = $actualExperience + $givenExp;
         if ($userExperience < $experienceNeededToLevelUp) {
+            $this->userRepository->incrementExperience($userId, $givenExp);
             return $givenExp;
         }
 

@@ -22,11 +22,13 @@ class CreateMessageTest extends TestCase
 
     public function test_bot_can_create_a_user_message()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'level' => 3,
+            'current_exp' => 1
+        ]);
 
         $payload = [
             'message' => 'me dá sub ai namoral',
-            'donator' => false
         ];
 
         $response = $this->post(
