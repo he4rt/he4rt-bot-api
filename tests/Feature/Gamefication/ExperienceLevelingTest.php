@@ -39,4 +39,17 @@ class ExperienceLevelingTest extends TestCase
         ]);
         Artisan::shouldReceive('call');
     }
+
+    public function test_user_can_gain_experience()
+    {
+        $user = User::factory()->create(['current_exp' => 0]);
+        $user->messages()->create([
+            'message' => 'fodase'
+        ]);
+
+        $this->notSeeInDatabase('users', [
+            'id' => $user->getKey(),
+            'current_exp' => 0
+        ]);
+    }
 }
