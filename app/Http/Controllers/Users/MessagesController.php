@@ -18,7 +18,7 @@ class MessagesController extends Controller
             'message' => ['string', 'required']
         ]);
 
-        $action->handle($discordId, $payload['message'], $payload['donator']);
+        $action->handle($discordId, $payload['message']);
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 }

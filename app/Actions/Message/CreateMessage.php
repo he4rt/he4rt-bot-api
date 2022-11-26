@@ -13,7 +13,7 @@ class CreateMessage
         $this->repository = $repository;
     }
 
-    public function handle(string $discordId, string $message, bool $isDonator): void
+    public function handle(string $discordId, string $message): void
     {
         $this->repository->create($discordId, $message);
     }
