@@ -57,6 +57,7 @@ class UsersController extends Controller
         $request->merge(['discord_id' => $discordId]);
         $validated = $this->validate($request, [
             'discord_id' => 'required|exists:users',
+            'email' => 'email',
             'name' => 'string',
             'nickname' => 'string',
             'git' => 'string',

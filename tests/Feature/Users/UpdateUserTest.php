@@ -25,6 +25,7 @@ class UpdateUserTest extends TestCase
             'nickname' => 'danielhe4rt',
             'git' => 'https://github.com/danielhe4rt',
             'about' => 'eu faço lives codando php',
+            'email' => 'daniel@he4rtdevs.com',
             'linkedin' => 'https://linkedin.com/in/danielheart',
             'is_donator' => true
         ];
@@ -38,5 +39,7 @@ class UpdateUserTest extends TestCase
         $response->seeStatusCode(Response::HTTP_OK)
             ->seeJsonStructure(array_keys($user->toArray()))
             ->seeJsonContains($payload);
+
+        $this->seeInDatabase('users', array_merge($payload, ['id' => $user->getKey()]));
     }
 }
