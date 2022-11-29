@@ -17,8 +17,7 @@ class MessageRepository
     public function create(
         string $discordId,
         string $message
-    ): Message
-    {
+    ): Message {
         $user = $this->userRepository->findById($discordId);
 
         return Message::create([

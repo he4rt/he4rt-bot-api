@@ -2,7 +2,6 @@
 
 namespace App\Models\Gamefication;
 
-use App\Models\User\Message;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

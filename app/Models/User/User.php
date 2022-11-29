@@ -3,7 +3,6 @@
 namespace App\Models\User;
 
 use App\Models\Gamefication\ExperienceTable;
-use App\Repositories\Gamification\LevelupRepository;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;

@@ -4,11 +4,11 @@ namespace App\Console\Commands;
 
 use App\Clients\DiscordClient;
 use Discord\Builders\MessageBuilder;
+use Discord\Discord;
 use Discord\Http\Endpoint;
 use Discord\Parts\Embed\Embed;
 use Discord\WebSockets\Intents;
 use Illuminate\Console\Command;
-use Discord\Discord;
 
 class SendLevelupMessage extends Command
 {
@@ -19,7 +19,6 @@ class SendLevelupMessage extends Command
     public function __construct()
     {
         parent::__construct();
-
     }
 
     public function handle(DiscordClient $discordClient): int

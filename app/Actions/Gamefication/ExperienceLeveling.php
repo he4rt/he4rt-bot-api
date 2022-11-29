@@ -45,5 +45,4 @@ class ExperienceLeveling
     {
         return rand(1, 5) * ($isDonator ? 2 : 1);
     }
-
 }

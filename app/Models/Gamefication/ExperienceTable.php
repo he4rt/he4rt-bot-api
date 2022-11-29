@@ -13,6 +13,4 @@ class ExperienceTable extends Model
     protected $fillable = [
         'required'
     ];
-
-
 }

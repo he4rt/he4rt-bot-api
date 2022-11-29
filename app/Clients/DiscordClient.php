@@ -26,5 +26,4 @@ class DiscordClient
 
         return json_decode($response->getBody(), true);
     }
-
 }
