@@ -2,6 +2,7 @@
 
 namespace App\Models\User;
 
+use App\Models\Events\Badge;
 use App\Models\Gamefication\ExperienceTable;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
@@ -9,6 +10,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\HasApiTokens;
@@ -110,5 +112,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function levelupLog()
     {
         return $this->hasMany(Level::class);
+    }
+
+    public function badges(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Badge::class,
+            'user_badges',
+            'user_id',
+            'badge_id'
+        );
     }
 }

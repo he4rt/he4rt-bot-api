@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Events;
 
+use App\Actions\Event\Badge\ClaimBadge;
 use App\Actions\Event\Badge\CreateBadge;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
@@ -22,6 +23,22 @@ class BadgesController extends Controller
 
         return response()->json(
             $action->handle($payload),
+            Response::HTTP_CREATED
+        );
+    }
+
+    public function postClaimBadge(Request $request, string $discordId, ClaimBadge $action): JsonResponse
+    {
+        $request->merge(['discord_id' => $discordId]);
+
+        $payload = $this->validate($request, [
+            'discord_id' => ['required','exists:users'],
+            'redeem_code' => ['string', 'required', 'exists:badges'],
+        ]);
+
+
+        return response()->json(
+            ['message' => $action->handle($discordId, $payload['redeem_code'])],
             Response::HTTP_CREATED
         );
     }

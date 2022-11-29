@@ -13,7 +13,7 @@ class BadgeFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'description' => $this->faker->words(),
+            'description' => $this->faker->text(100),
             'image_url' => $this->faker->imageUrl(),
             'redeem_code' => $this->faker->slug(2),
             'active' => false

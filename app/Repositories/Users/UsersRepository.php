@@ -48,4 +48,11 @@ class UsersRepository
         $this->find($userId)
             ->increment('current_exp', $givenExperience);
     }
+
+    public function attachBadge(string $discordId, int $badgeId): void
+    {
+        $this->findById($discordId)
+            ->badges()
+            ->attach($badgeId);
+    }
 }

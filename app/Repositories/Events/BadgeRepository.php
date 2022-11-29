@@ -10,4 +10,9 @@ class BadgeRepository
     {
         return Badge::create($payload);
     }
+
+    public function findByRedeemCode(string $redeemCode): Badge
+    {
+        return Badge::where('redeem_code', $redeemCode)->first();
+    }
 }

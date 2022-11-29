@@ -49,6 +49,7 @@ $router->group(['prefix' => 'users', 'middleware' => 'bot-auth'], function ($rou
 
     $router->post('/{discordId}/daily', ['uses' => 'Users\UsersController@postDaily', 'as' => 'users.dailyPoints']);
     $router->post('/{discordId}/message', ['uses' => 'Users\MessagesController@postMessage', 'as' => 'users.messages.store']);
+    $router->post('/{discordId}/claim-badge', ['uses' => 'Events\BadgesController@postClaimBadge', 'as' => 'users.badges.claim']);
 
 });
 
