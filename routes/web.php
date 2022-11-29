@@ -52,6 +52,13 @@ $router->group(['prefix' => 'users', 'middleware' => 'bot-auth'], function ($rou
 
 });
 
+$router->group(['prefix' => 'events', 'middleware' => 'bot-auth'], function ($router) {
+    $router->group(['prefix' => 'badges'], function ($router) {
+        $router->post('/', ['uses' => 'Events\BadgesController@postBadge', 'as' => 'events.badges.store']);
+    });
+});
+
+
 $router->group(['prefix' => 'bot', 'middleware' => 'bot-auth'], function ($router) {
     $router->group(['prefix' => 'gambling'], function ($router) {
         $router->put('money', 'Gamification\GamblingController@putMoney');

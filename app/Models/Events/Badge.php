@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Gamefication;
+namespace App\Models\Events;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,6 +12,7 @@ class Badge extends Model
         'name',
         'description',
         'image_url',
+        'redeem_code',
         'active'
     ];
 
