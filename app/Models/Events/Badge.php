@@ -22,4 +22,9 @@ class Badge extends Model
     protected $casts = [
         'active' => 'boolean'
     ];
+
+    public function canClaim(): bool
+    {
+        return $this->attributes['active'];
+    }
 }

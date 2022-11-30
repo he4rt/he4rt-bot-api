@@ -123,4 +123,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'badge_id'
         );
     }
+
+    public function hasBadge(int $badgeId): bool
+    {
+        return (bool) $this->badges()->find($badgeId);
+    }
 }

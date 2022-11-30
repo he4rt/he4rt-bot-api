@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Events;
 
 use App\Actions\Event\Badge\ClaimBadge;
 use App\Actions\Event\Badge\CreateBadge;
+use App\Exceptions\BadgeException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -35,11 +36,12 @@ class BadgesController extends Controller
             'discord_id' => ['required','exists:users'],
             'redeem_code' => ['string', 'required', 'exists:badges'],
         ]);
-
-
-        return response()->json(
-            ['message' => $action->handle($discordId, $payload['redeem_code'])],
-            Response::HTTP_CREATED
-        );
+        try {
+            return response()->json(['message' => $action->handle($discordId, $payload['redeem_code'])],
+                Response::HTTP_CREATED
+            );
+        } catch (BadgeException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
     }
 }
