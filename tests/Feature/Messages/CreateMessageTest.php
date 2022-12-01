@@ -1,8 +1,7 @@
 <?php
 
-namespace Feature\Messages;
+namespace Tests\Feature\Messages;
 
-use App\Models\Gamefication\Season;
 use App\Models\User\User;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;

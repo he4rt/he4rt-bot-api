@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Events\Badges;
+namespace Tests\Feature\Events\Badges;
 
 use App\Models\Events\Badge;
 use App\Models\User\User;

@@ -14,9 +14,11 @@ class SeasonFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'start' => Carbon::now(),
-            'end' => Carbon::now()->addMonth(),
-            'status' => true
+            'description' => $this->faker->text(),
+            'start_at' => Carbon::now(),
+            'ends_at' => Carbon::now()->addYear(),
+            'messages_count' => 0,
+            'participants_count' => 0
         ];
     }
 }

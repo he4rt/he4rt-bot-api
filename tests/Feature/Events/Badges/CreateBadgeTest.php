@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Events\Badges;
+namespace Tests\Feature\Events\Badges;
 
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;

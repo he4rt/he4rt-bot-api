@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Gamefication\Season;
 use App\Models\User\User;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -23,24 +24,16 @@ class SeasonWipe extends Command
      */
     protected $description = 'Wipe database and start the next season';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function handle(): int
     {
-        parent::__construct();
-    }
+        $season = Season::query()->currentSeason()
+            ->first();
+        dd($season);
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
-        $this->info('Iniciando finalização da ' . env('APP_SEASON') . ' temporada');
+
+        $this->info(
+            sprintf('Iniciando finalização da %s temporada -> %s <- ', )
+        );
         $this->info('Você tem certeza que deseja iniciar a nova temporada?');
 
 
