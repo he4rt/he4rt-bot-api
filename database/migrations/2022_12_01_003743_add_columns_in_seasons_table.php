@@ -44,8 +44,8 @@ class AddColumnsInSeasonsTable extends Migration
             ]);
 
             $table->boolean('active')->after('name')->default(false);
-            $table->date('start')->after('name')->useCurrent();
-            $table->date('end')->after('name')->useCurrent();
+            $table->date('end')->after('name')->nullable();
+            $table->date('start')->after('name')->nullable();
         });
     }
 }

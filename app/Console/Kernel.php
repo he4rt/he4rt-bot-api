@@ -4,7 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\MigrateUsers;
 use App\Console\Commands\SeasonStart;
-use App\Console\Commands\SeasonWipe;
+use App\Console\Commands\FinishSeasonCommand;
 use App\Console\Commands\SendLevelupMessage;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        SeasonWipe::class,
+        FinishSeasonCommand::class,
         SeasonStart::class,
         MigrateUsers::class,
         SendLevelupMessage::class

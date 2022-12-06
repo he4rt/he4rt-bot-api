@@ -1,5 +1,6 @@
 <?php
 
+use Drfraker\SnipeMigrations\SnipeMigrations;
 use Laravel\Lumen\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase

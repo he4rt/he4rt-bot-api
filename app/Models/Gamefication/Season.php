@@ -32,9 +32,8 @@ class Season extends Model
 
     public function scopeCurrentSeason(Builder $query): Builder
     {
-        dd(1);
         return $query
-            ->where('start_at', '>=', Carbon::now())
-            ->where('ends_at', '<=', Carbon::now());
+            ->whereDate('start_at', '<=', Carbon::now()->format('Y-m-d'))
+            ->whereDate('ends_at', '>=', Carbon::now()->format('Y-m-d'));
     }
 }

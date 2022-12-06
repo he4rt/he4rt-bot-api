@@ -13,6 +13,8 @@ class Season extends Model
         'user_id',
         'season_id',
         'level',
+        'messages_count',
+        'badges_count',
         'messages_count'
     ];
 
