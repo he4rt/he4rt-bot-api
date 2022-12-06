@@ -71,9 +71,10 @@ $router->group(['prefix' => 'ranking'], function ($router) {
     $router->get('messages', 'Gamification\RankingController@getGeneralMessageRanking');
 });
 
-$router->group(['prefix' => 'badges'], function ($router) {
-    $router->get('/', 'Gamification\BadgeController@getBadges');
-    $router->post('/', 'Gamification\BadgeController@postBadge');
-    $router->get('/{badgeId}', 'Gamification\BadgeController@getBadge');
-    $router->delete('/{badgeId}', 'Gamification\BadgeController@deleteBadge');
-});
+// Não utilizado
+//$router->group(['prefix' => 'badges'], function ($router) {
+//    $router->get('/', 'Gamification\BadgeController@getBadges');
+//    $router->post('/', 'Gamification\BadgeController@postBadge');
+//    $router->get('/{badgeId}', 'Gamification\BadgeController@getBadge');
+//    $router->delete('/{badgeId}', 'Gamification\BadgeController@deleteBadge');
+//});

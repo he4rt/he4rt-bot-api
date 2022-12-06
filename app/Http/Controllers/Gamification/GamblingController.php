@@ -73,6 +73,13 @@ class GamblingController extends Controller
      *     )
      * )
      */
+    /**
+     * Criar estorno transação manual
+     *
+     * Cria o estorno para uma transação
+     * @group TPag
+     * @response 422 {"message": "Não é possível estornar essa transação. Já se passou uma hora e/ou o dia atual não corresponde ao dia da transação"}
+     */
     public function putMoney(Request $request)
     {
         $this->validate($request, [
