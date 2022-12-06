@@ -11,74 +11,21 @@ class GamblingController extends Controller
 {
     use ApiResponse;
 
-    /**
-     * @var GamblingRepository
-     */
-    private $repository;
+    private GamblingRepository $repository;
 
     public function __construct(GamblingRepository $repository)
     {
         $this->repository = $repository;
     }
 
-
     /**
-     * @OA\Put(
-     *     path="/bot/gambling/money",
-     *     summary="Atualiza a economia do usuário",
-     *     operationId="PutGamblingMoney",
-     *     tags={"gamification-bot"},
-     *     @OA\Parameter(
-     *         name="Authorization",
-     *         in="header",
-     *         description="Authorization: he4rt-{key}",
-     *         required=false,
-     *         @OA\Schema(
-     *           type="string"
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="discord_id",
-     *         in="query",
-     *         description="ID do usuário do Discord",
-     *         required=true,
-     *         @OA\Schema(
-     *           type="string",
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="operation",
-     *         in="query",
-     *         description="Add || Reduce",
-     *         required=true,
-     *         @OA\Schema(
-     *           type="string",
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="value",
-     *         in="query",
-     *         description="Valor a ser mutado",
-     *         required=true,
-     *         @OA\Schema(
-     *           type="string",
-     *         )
-     *     ),
-     *     security={{
-     *          "api_key":{}
-     *     }},
-     *     @OA\Response(
-     *         response=200,
-     *         description="...",
-     *     )
-     * )
-     */
-    /**
-     * Criar estorno transação manual
+     * Atualiza a economia do usuário
      *
-     * Cria o estorno para uma transação
-     * @group TPag
-     * @response 422 {"message": "Não é possível estornar essa transação. Já se passou uma hora e/ou o dia atual não corresponde ao dia da transação"}
+     * Atualiza a economia do usuário
+     * @group Gamification
+     * @bodyParam discord_id int required ID do usuário do Discord. Example: 9
+     * @bodyParam operation string required Add || Reduce. Example: operação teste
+     * @bodyParam value float required Valor a ser mutado. Example: 10.50
      */
     public function putMoney(Request $request)
     {

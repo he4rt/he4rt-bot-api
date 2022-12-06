@@ -1,4 +1,4 @@
-name: TPag
+name: Gamification
 description: ''
 endpoints:
   -
@@ -6,8 +6,8 @@ endpoints:
       - PUT
     uri: bot/gambling/money
     metadata:
-      title: 'Criar estorno transação manual'
-      description: 'Cria o estorno para uma transação'
+      title: 'Atualiza a economia do usuário'
+      description: 'Atualiza a economia do usuário'
       authenticated: false
       custom: []
     headers:
@@ -18,29 +18,24 @@ endpoints:
     bodyParameters:
       discord_id:
         name: discord_id
-        description: ''
+        description: 'ID do usuário do Discord.'
         required: true
-        example: facilis
-        type: string
+        example: 9
+        type: integer
         custom: []
       operation:
         name: operation
-        description: ''
+        description: 'Add || Reduce.'
         required: true
-        example: facere
+        example: 'operação teste'
         type: string
         custom: []
       value:
         name: value
-        description: ''
+        description: 'Valor a ser mutado.'
         required: true
-        example: 292.03289501
+        example: 10.5
         type: number
         custom: []
-    responses:
-      -
-        status: 422
-        content: '{"message": "Não é possível estornar essa transação. Já se passou uma hora e/ou o dia atual não corresponde ao dia da transação"}'
-        headers: []
-        description: '422'
+    responses: []
     responseFields: []

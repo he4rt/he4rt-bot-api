@@ -40,6 +40,18 @@ php -S 0.0.0.0:8000
 vendor/bin/phpunit 
 ```
 
+### Gerar Documentação
+
+A documentação dos endpoints é gerada via [scribe](https://scribe.knuckles.wtf/laravel/getting-started).
+
+Para gerar a Doc localmente, basta rodar o comando abaixo.
+
+```bash
+php artisan scribe:generate
+```
+
+A doc ficará disponível no endpoint `/docs`.
+
 ## Differences to [v1](https://github.com/he4rt/He4rt-Bot)
 
 - PHP 5.6 > PHP 7.4;

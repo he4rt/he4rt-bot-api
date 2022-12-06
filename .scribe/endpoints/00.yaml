@@ -27,10 +27,44 @@ endpoints:
     responseFields: []
   -
     httpMethods:
-      - GET
-    uri: swagger
+      - POST
+    uri: oauth/token
     metadata:
-      title: ''
+      title: 'Authorize a client to access the user''s account.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    queryParameters: []
+    bodyParameters: []
+    responses: []
+    responseFields: []
+  -
+    httpMethods:
+      - POST
+    uri: oauth/personal-access-tokens
+    metadata:
+      title: 'Create a new personal access token for the user.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    queryParameters: []
+    bodyParameters: []
+    responses: []
+    responseFields: []
+  -
+    httpMethods:
+      - GET
+    uri: oauth/personal-access-tokens
+    metadata:
+      title: 'Get all of the personal access tokens for the authenticated user.'
       description: ''
       authenticated: false
       custom: []
@@ -42,180 +76,145 @@ endpoints:
     bodyParameters: []
     responses:
       -
-        status: 200
-        content: |
-          <!-- HTML for static distribution bundle build -->
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-              <meta charset="UTF-8">
-              <title>Swagger UI</title>
-              <link rel="stylesheet" type="text/css" href="/css/swagger-ui.css" >
-              <style>
-                  html
-                  {
-                      box-sizing: border-box;
-                      overflow: -moz-scrollbars-vertical;
-                      overflow-y: scroll;
-                  }
-                  *,
-                  *:before,
-                  *:after
-                  {
-                      box-sizing: inherit;
-                  }
-                  body
-                  {
-                      margin:0;
-                      background: #fafafa;
-                  }
-              </style>
-          </head>
-
-          <body>
-          <div id="swagger-ui"></div>
-
-          <script src="/js/swagger-ui-bundle.js"> </script>
-          <script src="/js/swagger-ui-standalone-preset.js"> </script>
-          <script>
-              window.onload = function() {
-                  // Build a system
-                  const ui = SwaggerUIBundle({
-                      url: "/data/swagger.yaml",
-                      dom_id: '#swagger-ui',
-                      deepLinking: true,
-                      presets: [
-                          SwaggerUIBundle.presets.apis,
-                          SwaggerUIStandalonePreset
-                      ],
-                      plugins: [
-                          SwaggerUIBundle.plugins.DownloadUrl
-                      ],
-                      layout: "StandaloneLayout"
-                  })
-                  window.ui = ui
-              }
-          </script>
-          </body>
-          </html>
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-        description: null
-    responseFields: []
-  -
-    httpMethods:
-      - GET
-    uri: 'auth/oauth/{provider}'
-    metadata:
-      title: ''
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      provider:
-        name: provider
-        description: ''
-        required: true
-        example: molestiae
-        type: string
-        custom: []
-    queryParameters: []
-    bodyParameters: []
-    responses:
-      -
         status: 500
         content: |-
           {
-              "message": "Argument 2 passed to App\\Repositories\\AuthRepository::authenticateUser() must be of the type string, null given, called in /home/pedrosilva/Dev/he4rt-bot-api/app/Http/Controllers/AuthController.php on line 49",
-              "exception": "TypeError",
-              "file": "/home/pedrosilva/Dev/he4rt-bot-api/app/Repositories/AuthRepository.php",
-              "line": 11,
+              "message": "No application encryption key has been specified.",
+              "exception": "Illuminate\\Encryption\\MissingAppKeyException",
+              "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
+              "line": 101,
               "trace": [
                   {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/app/Http/Controllers/AuthController.php",
-                      "line": 49,
-                      "function": "authenticateUser",
-                      "class": "App\\Repositories\\AuthRepository",
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/support/helpers.php",
+                      "line": 263,
+                      "function": "Illuminate\\Encryption\\{closure}",
+                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
                       "type": "->"
                   },
                   {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
-                      "line": 36,
-                      "function": "authenticate",
-                      "class": "App\\Http\\Controllers\\AuthController",
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
+                      "line": 103,
+                      "function": "tap"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
+                      "line": 82,
+                      "function": "key",
+                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
                       "type": "->"
                   },
                   {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Util.php",
-                      "line": 40,
-                      "function": "Illuminate\\Container\\{closure}",
-                      "class": "Illuminate\\Container\\BoundMethod",
-                      "type": "::"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
-                      "line": 93,
-                      "function": "unwrapIfClosure",
-                      "class": "Illuminate\\Container\\Util",
-                      "type": "::"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
-                      "line": 37,
-                      "function": "callBoundMethod",
-                      "class": "Illuminate\\Container\\BoundMethod",
-                      "type": "::"
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
+                      "line": 34,
+                      "function": "parseKey",
+                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
+                      "type": "->"
                   },
                   {
                       "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
-                      "line": 653,
-                      "function": "call",
-                      "class": "Illuminate\\Container\\BoundMethod",
-                      "type": "::"
+                      "line": 873,
+                      "function": "Illuminate\\Encryption\\{closure}",
+                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
+                      "type": "->"
                   },
                   {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 389,
-                      "function": "call",
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
+                      "line": 758,
+                      "function": "build",
                       "class": "Illuminate\\Container\\Container",
                       "type": "->"
                   },
                   {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
+                      "line": 694,
+                      "function": "resolve",
+                      "class": "Illuminate\\Container\\Container",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Application.php",
+                      "line": 300,
+                      "function": "make",
+                      "class": "Illuminate\\Container\\Container",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/passport/src/PassportServiceProvider.php",
+                      "line": 308,
+                      "function": "make",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "function": "Laravel\\Passport\\{closure}",
+                      "class": "Laravel\\Passport\\PassportServiceProvider",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/RequestGuard.php",
+                      "line": 58,
+                      "function": "call_user_func"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/GuardHelpers.php",
+                      "line": 60,
+                      "function": "user",
+                      "class": "Illuminate\\Auth\\RequestGuard",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/GuardHelpers.php",
+                      "line": 70,
+                      "function": "check",
+                      "class": "Illuminate\\Auth\\RequestGuard",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/app/Http/Middleware/Authenticate.php",
+                      "line": 38,
+                      "function": "guest",
+                      "class": "Illuminate\\Auth\\RequestGuard",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/pipeline/Pipeline.php",
+                      "line": 167,
+                      "function": "handle",
+                      "class": "App\\Http\\Middleware\\Authenticate",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Routing/Pipeline.php",
+                      "line": 30,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/pipeline/Pipeline.php",
+                      "line": 103,
+                      "function": "Laravel\\Lumen\\Routing\\{closure}",
+                      "class": "Laravel\\Lumen\\Routing\\Pipeline",
+                      "type": "->"
+                  },
+                  {
                       "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 332,
-                      "function": "callControllerCallable",
+                      "line": 426,
+                      "function": "then",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 263,
+                      "function": "sendThroughPipeline",
                       "class": "Laravel\\Lumen\\Application",
                       "type": "->"
                   },
                   {
                       "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 282,
-                      "function": "callControllerAction",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 267,
-                      "function": "callActionOnArrayBasedRoute",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 237,
+                      "line": 169,
                       "function": "handleFoundRoute",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 173,
-                      "function": "handleDispatcherResponse",
                       "class": "Laravel\\Lumen\\Application",
                       "type": "->"
                   },
@@ -432,358 +431,9 @@ endpoints:
   -
     httpMethods:
       - GET
-    uri: users
+    uri: oauth/scopes
     metadata:
-      title: ''
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    queryParameters: []
-    bodyParameters: []
-    responses:
-      -
-        status: 401
-        content: '{"error":"Chave n\u00e3o encontrada"}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-        description: null
-    responseFields: []
-  -
-    httpMethods:
-      - POST
-    uri: users
-    metadata:
-      title: ''
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    queryParameters: []
-    bodyParameters:
-      discord_id:
-        name: discord_id
-        description: ''
-        required: true
-        example: 29126359.50333
-        type: number
-        custom: []
-    responses: []
-    responseFields: []
-  -
-    httpMethods:
-      - GET
-    uri: 'users/{discordId}'
-    metadata:
-      title: ''
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      discordId:
-        name: discordId
-        description: ''
-        required: true
-        example: sed
-        type: string
-        custom: []
-    queryParameters: []
-    bodyParameters:
-      discord_id:
-        name: discord_id
-        description: ''
-        required: true
-        example: eos
-        type: string
-        custom: []
-    responses:
-      -
-        status: 401
-        content: '{"error":"Chave n\u00e3o encontrada"}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-        description: null
-    responseFields: []
-  -
-    httpMethods:
-      - PUT
-    uri: 'users/{discordId}'
-    metadata:
-      title: ''
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      discordId:
-        name: discordId
-        description: ''
-        required: true
-        example: non
-        type: string
-        custom: []
-    queryParameters: []
-    bodyParameters:
-      discord_id:
-        name: discord_id
-        description: ''
-        required: true
-        example: est
-        type: string
-        custom: []
-      email:
-        name: email
-        description: validation.email.
-        required: false
-        example: herzog.jaylon@example.com
-        type: string
-        custom: []
-      name:
-        name: name
-        description: ''
-        required: false
-        example: veritatis
-        type: string
-        custom: []
-      nickname:
-        name: nickname
-        description: ''
-        required: false
-        example: quaerat
-        type: string
-        custom: []
-      git:
-        name: git
-        description: ''
-        required: false
-        example: omnis
-        type: string
-        custom: []
-      about:
-        name: about
-        description: ''
-        required: false
-        example: et
-        type: string
-        custom: []
-      linkedin:
-        name: linkedin
-        description: ''
-        required: false
-        example: nesciunt
-        type: string
-        custom: []
-      is_donator:
-        name: is_donator
-        description: ''
-        required: false
-        example: false
-        type: boolean
-        custom: []
-    responses: []
-    responseFields: []
-  -
-    httpMethods:
-      - DELETE
-    uri: 'users/{discordId}'
-    metadata:
-      title: ''
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      discordId:
-        name: discordId
-        description: ''
-        required: true
-        example: voluptatem
-        type: string
-        custom: []
-    queryParameters: []
-    bodyParameters: []
-    responses: []
-    responseFields: []
-  -
-    httpMethods:
-      - POST
-    uri: 'users/{discordId}/daily'
-    metadata:
-      title: ''
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      discordId:
-        name: discordId
-        description: ''
-        required: true
-        example: sed
-        type: string
-        custom: []
-    queryParameters: []
-    bodyParameters:
-      discord_id:
-        name: discord_id
-        description: ''
-        required: true
-        example: recusandae
-        type: string
-        custom: []
-    responses: []
-    responseFields: []
-  -
-    httpMethods:
-      - POST
-    uri: 'users/{discordId}/message'
-    metadata:
-      title: ''
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      discordId:
-        name: discordId
-        description: ''
-        required: true
-        example: ut
-        type: string
-        custom: []
-    queryParameters: []
-    bodyParameters:
-      discord_id:
-        name: discord_id
-        description: ''
-        required: true
-        example: quae
-        type: string
-        custom: []
-      message:
-        name: message
-        description: ''
-        required: true
-        example: ipsam
-        type: string
-        custom: []
-    responses: []
-    responseFields: []
-  -
-    httpMethods:
-      - POST
-    uri: 'users/{discordId}/claim-badge'
-    metadata:
-      title: ''
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      discordId:
-        name: discordId
-        description: ''
-        required: true
-        example: rerum
-        type: string
-        custom: []
-    queryParameters: []
-    bodyParameters:
-      discord_id:
-        name: discord_id
-        description: ''
-        required: true
-        example: saepe
-        type: string
-        custom: []
-      redeem_code:
-        name: redeem_code
-        description: ''
-        required: true
-        example: consequatur
-        type: string
-        custom: []
-    responses: []
-    responseFields: []
-  -
-    httpMethods:
-      - POST
-    uri: events/badges
-    metadata:
-      title: ''
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    queryParameters: []
-    bodyParameters:
-      name:
-        name: name
-        description: ''
-        required: true
-        example: a
-        type: string
-        custom: []
-      description:
-        name: description
-        description: ''
-        required: true
-        example: vel
-        type: string
-        custom: []
-      image_url:
-        name: image_url
-        description: 'Must be a valid URL.'
-        required: true
-        example: 'http://muller.biz/tempora-molestiae-illo-qui-dolor'
-        type: string
-        custom: []
-      redeem_code:
-        name: redeem_code
-        description: ''
-        required: true
-        example: quia
-        type: string
-        custom: []
-      active:
-        name: active
-        description: ''
-        required: true
-        example: false
-        type: boolean
-        custom: []
-    responses: []
-    responseFields: []
-  -
-    httpMethods:
-      - GET
-    uri: ranking/general
-    metadata:
-      title: 'Retrieve Ranking by Level/Exp'
+      title: 'Get all of the available scopes for the application.'
       description: ''
       authenticated: false
       custom: []
@@ -798,93 +448,255 @@ endpoints:
         status: 500
         content: |-
           {
-              "message": "SQLSTATE[42S02]: Base table or view not found: 1146 Table 'dev_he4rtbot_api.users' doesn't exist (SQL: select count(*) as aggregate from `users`)",
-              "exception": "Illuminate\\Database\\QueryException",
-              "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Connection.php",
-              "line": 712,
+              "message": "No application encryption key has been specified.",
+              "exception": "Illuminate\\Encryption\\MissingAppKeyException",
+              "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
+              "line": 101,
               "trace": [
                   {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Connection.php",
-                      "line": 672,
-                      "function": "runQueryCallback",
-                      "class": "Illuminate\\Database\\Connection",
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/support/helpers.php",
+                      "line": 263,
+                      "function": "Illuminate\\Encryption\\{closure}",
+                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
                       "type": "->"
                   },
                   {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Connection.php",
-                      "line": 376,
-                      "function": "run",
-                      "class": "Illuminate\\Database\\Connection",
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
+                      "line": 103,
+                      "function": "tap"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
+                      "line": 82,
+                      "function": "key",
+                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
                       "type": "->"
                   },
                   {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Query/Builder.php",
-                      "line": 2414,
-                      "function": "select",
-                      "class": "Illuminate\\Database\\Connection",
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
+                      "line": 34,
+                      "function": "parseKey",
+                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
                       "type": "->"
                   },
                   {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Query/Builder.php",
-                      "line": 2402,
-                      "function": "runSelect",
-                      "class": "Illuminate\\Database\\Query\\Builder",
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
+                      "line": 873,
+                      "function": "Illuminate\\Encryption\\{closure}",
+                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
                       "type": "->"
                   },
                   {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Query/Builder.php",
-                      "line": 2936,
-                      "function": "Illuminate\\Database\\Query\\{closure}",
-                      "class": "Illuminate\\Database\\Query\\Builder",
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
+                      "line": 758,
+                      "function": "build",
+                      "class": "Illuminate\\Container\\Container",
                       "type": "->"
                   },
                   {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Query/Builder.php",
-                      "line": 2403,
-                      "function": "onceWithColumns",
-                      "class": "Illuminate\\Database\\Query\\Builder",
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
+                      "line": 694,
+                      "function": "resolve",
+                      "class": "Illuminate\\Container\\Container",
                       "type": "->"
                   },
                   {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Query/Builder.php",
-                      "line": 2550,
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Application.php",
+                      "line": 300,
+                      "function": "make",
+                      "class": "Illuminate\\Container\\Container",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/passport/src/PassportServiceProvider.php",
+                      "line": 308,
+                      "function": "make",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "function": "Laravel\\Passport\\{closure}",
+                      "class": "Laravel\\Passport\\PassportServiceProvider",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/RequestGuard.php",
+                      "line": 58,
+                      "function": "call_user_func"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/GuardHelpers.php",
+                      "line": 60,
+                      "function": "user",
+                      "class": "Illuminate\\Auth\\RequestGuard",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/GuardHelpers.php",
+                      "line": 70,
+                      "function": "check",
+                      "class": "Illuminate\\Auth\\RequestGuard",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/app/Http/Middleware/Authenticate.php",
+                      "line": 38,
+                      "function": "guest",
+                      "class": "Illuminate\\Auth\\RequestGuard",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/pipeline/Pipeline.php",
+                      "line": 167,
+                      "function": "handle",
+                      "class": "App\\Http\\Middleware\\Authenticate",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Routing/Pipeline.php",
+                      "line": 30,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/pipeline/Pipeline.php",
+                      "line": 103,
+                      "function": "Laravel\\Lumen\\Routing\\{closure}",
+                      "class": "Laravel\\Lumen\\Routing\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 426,
+                      "function": "then",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 263,
+                      "function": "sendThroughPipeline",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 169,
+                      "function": "handleFoundRoute",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 429,
+                      "function": "Laravel\\Lumen\\Concerns\\{closure}",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 175,
+                      "function": "sendThroughPipeline",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 95,
+                      "function": "dispatch",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
+                      "line": 308,
+                      "function": "handle",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
+                      "line": 287,
+                      "function": "callLaravelOrLumenRoute",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
+                      "line": 89,
+                      "function": "makeApiCall",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
+                      "line": 45,
+                      "function": "makeResponseCall",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
+                      "line": 35,
+                      "function": "makeResponseCallIfConditionsPass",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php",
+                      "line": 222,
+                      "function": "__invoke",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php",
+                      "line": 179,
+                      "function": "iterateThroughStrategies",
+                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php",
+                      "line": 116,
+                      "function": "fetchResponses",
+                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php",
+                      "line": 123,
+                      "function": "processRoute",
+                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php",
+                      "line": 80,
+                      "function": "extractEndpointsInfoFromLaravelApp",
+                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php",
+                      "line": 56,
+                      "function": "extractEndpointsInfoAndWriteToDisk",
+                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Commands/GenerateDocumentation.php",
+                      "line": 55,
                       "function": "get",
-                      "class": "Illuminate\\Database\\Query\\Builder",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Query/Builder.php",
-                      "line": 2509,
-                      "function": "runPaginationCountQuery",
-                      "class": "Illuminate\\Database\\Query\\Builder",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Eloquent/Builder.php",
-                      "line": 808,
-                      "function": "getCountForPagination",
-                      "class": "Illuminate\\Database\\Query\\Builder",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/app/Repositories/Gamification/RankingRepository.php",
-                      "line": 36,
-                      "function": "paginate",
-                      "class": "Illuminate\\Database\\Eloquent\\Builder",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/app/Http/Controllers/Gamification/RankingController.php",
-                      "line": 53,
-                      "function": "rankingByLevel",
-                      "class": "App\\Repositories\\Gamification\\RankingRepository",
+                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
                       "type": "->"
                   },
                   {
                       "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
                       "line": 36,
-                      "function": "getGeneralLevelRanking",
-                      "class": "App\\Http\\Controllers\\Gamification\\RankingController",
+                      "function": "handle",
+                      "class": "Knuckles\\Scribe\\Commands\\GenerateDocumentation",
                       "type": "->"
                   },
                   {
@@ -916,37 +728,741 @@ endpoints:
                       "type": "::"
                   },
                   {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 389,
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/console/Command.php",
+                      "line": 136,
                       "function": "call",
                       "class": "Illuminate\\Container\\Container",
                       "type": "->"
                   },
                   {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Command/Command.php",
+                      "line": 298,
+                      "function": "execute",
+                      "class": "Illuminate\\Console\\Command",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/console/Command.php",
+                      "line": 121,
+                      "function": "run",
+                      "class": "Symfony\\Component\\Console\\Command\\Command",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Application.php",
+                      "line": 1040,
+                      "function": "run",
+                      "class": "Illuminate\\Console\\Command",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Application.php",
+                      "line": 301,
+                      "function": "doRunCommand",
+                      "class": "Symfony\\Component\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Application.php",
+                      "line": 171,
+                      "function": "doRun",
+                      "class": "Symfony\\Component\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/console/Application.php",
+                      "line": 94,
+                      "function": "run",
+                      "class": "Symfony\\Component\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Console/Kernel.php",
+                      "line": 116,
+                      "function": "run",
+                      "class": "Illuminate\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/artisan",
+                      "line": 35,
+                      "function": "handle",
+                      "class": "Laravel\\Lumen\\Console\\Kernel",
+                      "type": "->"
+                  }
+              ]
+          }
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+        description: null
+    responseFields: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'oauth/clients/{clientId}'
+    metadata:
+      title: 'Delete the given client.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      clientId:
+        name: clientId
+        description: ''
+        required: true
+        example: et
+        type: string
+        custom: []
+    queryParameters: []
+    bodyParameters: []
+    responses: []
+    responseFields: []
+  -
+    httpMethods:
+      - PUT
+    uri: 'oauth/clients/{clientId}'
+    metadata:
+      title: 'Update the given client.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      clientId:
+        name: clientId
+        description: ''
+        required: true
+        example: ullam
+        type: string
+        custom: []
+    queryParameters: []
+    bodyParameters: []
+    responses: []
+    responseFields: []
+  -
+    httpMethods:
+      - POST
+    uri: oauth/clients
+    metadata:
+      title: 'Store a new client.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    queryParameters: []
+    bodyParameters: []
+    responses: []
+    responseFields: []
+  -
+    httpMethods:
+      - GET
+    uri: oauth/clients
+    metadata:
+      title: 'Get all of the clients for the authenticated user.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    queryParameters: []
+    bodyParameters: []
+    responses:
+      -
+        status: 500
+        content: |-
+          {
+              "message": "No application encryption key has been specified.",
+              "exception": "Illuminate\\Encryption\\MissingAppKeyException",
+              "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
+              "line": 101,
+              "trace": [
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/support/helpers.php",
+                      "line": 263,
+                      "function": "Illuminate\\Encryption\\{closure}",
+                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
+                      "line": 103,
+                      "function": "tap"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
+                      "line": 82,
+                      "function": "key",
+                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
+                      "line": 34,
+                      "function": "parseKey",
+                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
+                      "line": 873,
+                      "function": "Illuminate\\Encryption\\{closure}",
+                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
+                      "line": 758,
+                      "function": "build",
+                      "class": "Illuminate\\Container\\Container",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
+                      "line": 694,
+                      "function": "resolve",
+                      "class": "Illuminate\\Container\\Container",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Application.php",
+                      "line": 300,
+                      "function": "make",
+                      "class": "Illuminate\\Container\\Container",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/passport/src/PassportServiceProvider.php",
+                      "line": 308,
+                      "function": "make",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "function": "Laravel\\Passport\\{closure}",
+                      "class": "Laravel\\Passport\\PassportServiceProvider",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/RequestGuard.php",
+                      "line": 58,
+                      "function": "call_user_func"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/GuardHelpers.php",
+                      "line": 60,
+                      "function": "user",
+                      "class": "Illuminate\\Auth\\RequestGuard",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/GuardHelpers.php",
+                      "line": 70,
+                      "function": "check",
+                      "class": "Illuminate\\Auth\\RequestGuard",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/app/Http/Middleware/Authenticate.php",
+                      "line": 38,
+                      "function": "guest",
+                      "class": "Illuminate\\Auth\\RequestGuard",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/pipeline/Pipeline.php",
+                      "line": 167,
+                      "function": "handle",
+                      "class": "App\\Http\\Middleware\\Authenticate",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Routing/Pipeline.php",
+                      "line": 30,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/pipeline/Pipeline.php",
+                      "line": 103,
+                      "function": "Laravel\\Lumen\\Routing\\{closure}",
+                      "class": "Laravel\\Lumen\\Routing\\Pipeline",
+                      "type": "->"
+                  },
+                  {
                       "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 355,
-                      "function": "callControllerCallable",
+                      "line": 426,
+                      "function": "then",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 263,
+                      "function": "sendThroughPipeline",
                       "class": "Laravel\\Lumen\\Application",
                       "type": "->"
                   },
                   {
                       "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 329,
-                      "function": "callLumenController",
+                      "line": 169,
+                      "function": "handleFoundRoute",
                       "class": "Laravel\\Lumen\\Application",
                       "type": "->"
                   },
                   {
                       "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 282,
-                      "function": "callControllerAction",
+                      "line": 429,
+                      "function": "Laravel\\Lumen\\Concerns\\{closure}",
                       "class": "Laravel\\Lumen\\Application",
                       "type": "->"
                   },
                   {
                       "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 267,
-                      "function": "callActionOnArrayBasedRoute",
+                      "line": 175,
+                      "function": "sendThroughPipeline",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 95,
+                      "function": "dispatch",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
+                      "line": 308,
+                      "function": "handle",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
+                      "line": 287,
+                      "function": "callLaravelOrLumenRoute",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
+                      "line": 89,
+                      "function": "makeApiCall",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
+                      "line": 45,
+                      "function": "makeResponseCall",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
+                      "line": 35,
+                      "function": "makeResponseCallIfConditionsPass",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php",
+                      "line": 222,
+                      "function": "__invoke",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php",
+                      "line": 179,
+                      "function": "iterateThroughStrategies",
+                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php",
+                      "line": 116,
+                      "function": "fetchResponses",
+                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php",
+                      "line": 123,
+                      "function": "processRoute",
+                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php",
+                      "line": 80,
+                      "function": "extractEndpointsInfoFromLaravelApp",
+                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php",
+                      "line": 56,
+                      "function": "extractEndpointsInfoAndWriteToDisk",
+                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Commands/GenerateDocumentation.php",
+                      "line": 55,
+                      "function": "get",
+                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
+                      "line": 36,
+                      "function": "handle",
+                      "class": "Knuckles\\Scribe\\Commands\\GenerateDocumentation",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Util.php",
+                      "line": 40,
+                      "function": "Illuminate\\Container\\{closure}",
+                      "class": "Illuminate\\Container\\BoundMethod",
+                      "type": "::"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
+                      "line": 93,
+                      "function": "unwrapIfClosure",
+                      "class": "Illuminate\\Container\\Util",
+                      "type": "::"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
+                      "line": 37,
+                      "function": "callBoundMethod",
+                      "class": "Illuminate\\Container\\BoundMethod",
+                      "type": "::"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
+                      "line": 653,
+                      "function": "call",
+                      "class": "Illuminate\\Container\\BoundMethod",
+                      "type": "::"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/console/Command.php",
+                      "line": 136,
+                      "function": "call",
+                      "class": "Illuminate\\Container\\Container",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Command/Command.php",
+                      "line": 298,
+                      "function": "execute",
+                      "class": "Illuminate\\Console\\Command",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/console/Command.php",
+                      "line": 121,
+                      "function": "run",
+                      "class": "Symfony\\Component\\Console\\Command\\Command",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Application.php",
+                      "line": 1040,
+                      "function": "run",
+                      "class": "Illuminate\\Console\\Command",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Application.php",
+                      "line": 301,
+                      "function": "doRunCommand",
+                      "class": "Symfony\\Component\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Application.php",
+                      "line": 171,
+                      "function": "doRun",
+                      "class": "Symfony\\Component\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/console/Application.php",
+                      "line": 94,
+                      "function": "run",
+                      "class": "Symfony\\Component\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Console/Kernel.php",
+                      "line": 116,
+                      "function": "run",
+                      "class": "Illuminate\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/artisan",
+                      "line": 35,
+                      "function": "handle",
+                      "class": "Laravel\\Lumen\\Console\\Kernel",
+                      "type": "->"
+                  }
+              ]
+          }
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+        description: null
+    responseFields: []
+  -
+    httpMethods:
+      - POST
+    uri: oauth/token/refresh
+    metadata:
+      title: 'Get a fresh transient token cookie for the authenticated user.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    queryParameters: []
+    bodyParameters: []
+    responses: []
+    responseFields: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'oauth/tokens/{tokenId}'
+    metadata:
+      title: 'Delete the given token.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      tokenId:
+        name: tokenId
+        description: ''
+        required: true
+        example: tempora
+        type: string
+        custom: []
+    queryParameters: []
+    bodyParameters: []
+    responses: []
+    responseFields: []
+  -
+    httpMethods:
+      - GET
+    uri: oauth/tokens
+    metadata:
+      title: 'Get all of the authorized tokens for the authenticated user.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    queryParameters: []
+    bodyParameters: []
+    responses:
+      -
+        status: 500
+        content: |-
+          {
+              "message": "No application encryption key has been specified.",
+              "exception": "Illuminate\\Encryption\\MissingAppKeyException",
+              "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
+              "line": 101,
+              "trace": [
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/support/helpers.php",
+                      "line": 263,
+                      "function": "Illuminate\\Encryption\\{closure}",
+                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
+                      "line": 103,
+                      "function": "tap"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
+                      "line": 82,
+                      "function": "key",
+                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
+                      "line": 34,
+                      "function": "parseKey",
+                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
+                      "line": 873,
+                      "function": "Illuminate\\Encryption\\{closure}",
+                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
+                      "line": 758,
+                      "function": "build",
+                      "class": "Illuminate\\Container\\Container",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
+                      "line": 694,
+                      "function": "resolve",
+                      "class": "Illuminate\\Container\\Container",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Application.php",
+                      "line": 300,
+                      "function": "make",
+                      "class": "Illuminate\\Container\\Container",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Application.php",
+                      "line": 668,
+                      "function": "make",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Application.php",
+                      "line": 423,
+                      "function": "loadComponent",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
+                      "line": 873,
+                      "function": "Laravel\\Lumen\\{closure}",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
+                      "line": 758,
+                      "function": "build",
+                      "class": "Illuminate\\Container\\Container",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
+                      "line": 694,
+                      "function": "resolve",
+                      "class": "Illuminate\\Container\\Container",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Application.php",
+                      "line": 300,
+                      "function": "make",
+                      "class": "Illuminate\\Container\\Container",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/passport/src/PassportServiceProvider.php",
+                      "line": 308,
+                      "function": "make",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "function": "Laravel\\Passport\\{closure}",
+                      "class": "Laravel\\Passport\\PassportServiceProvider",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/RequestGuard.php",
+                      "line": 58,
+                      "function": "call_user_func"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/GuardHelpers.php",
+                      "line": 60,
+                      "function": "user",
+                      "class": "Illuminate\\Auth\\RequestGuard",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/GuardHelpers.php",
+                      "line": 70,
+                      "function": "check",
+                      "class": "Illuminate\\Auth\\RequestGuard",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/app/Http/Middleware/Authenticate.php",
+                      "line": 38,
+                      "function": "guest",
+                      "class": "Illuminate\\Auth\\RequestGuard",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/pipeline/Pipeline.php",
+                      "line": 167,
+                      "function": "handle",
+                      "class": "App\\Http\\Middleware\\Authenticate",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Routing/Pipeline.php",
+                      "line": 30,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/pipeline/Pipeline.php",
+                      "line": 103,
+                      "function": "Laravel\\Lumen\\Routing\\{closure}",
+                      "class": "Laravel\\Lumen\\Routing\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 426,
+                      "function": "then",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 263,
+                      "function": "sendThroughPipeline",
                       "class": "Laravel\\Lumen\\Application",
                       "type": "->"
                   },
@@ -1558,10 +2074,10 @@ endpoints:
     responseFields: []
   -
     httpMethods:
-      - POST
-    uri: oauth/token
+      - GET
+    uri: swagger
     metadata:
-      title: 'Authorize a client to access the user''s account.'
+      title: ''
       description: ''
       authenticated: false
       custom: []
@@ -1571,14 +2087,75 @@ endpoints:
     urlParameters: []
     queryParameters: []
     bodyParameters: []
-    responses: []
+    responses:
+      -
+        status: 200
+        content: |
+          <!-- HTML for static distribution bundle build -->
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <title>Swagger UI</title>
+              <link rel="stylesheet" type="text/css" href="/css/swagger-ui.css" >
+              <style>
+                  html
+                  {
+                      box-sizing: border-box;
+                      overflow: -moz-scrollbars-vertical;
+                      overflow-y: scroll;
+                  }
+                  *,
+                  *:before,
+                  *:after
+                  {
+                      box-sizing: inherit;
+                  }
+                  body
+                  {
+                      margin:0;
+                      background: #fafafa;
+                  }
+              </style>
+          </head>
+
+          <body>
+          <div id="swagger-ui"></div>
+
+          <script src="/js/swagger-ui-bundle.js"> </script>
+          <script src="/js/swagger-ui-standalone-preset.js"> </script>
+          <script>
+              window.onload = function() {
+                  // Build a system
+                  const ui = SwaggerUIBundle({
+                      url: "/data/swagger.yaml",
+                      dom_id: '#swagger-ui',
+                      deepLinking: true,
+                      presets: [
+                          SwaggerUIBundle.presets.apis,
+                          SwaggerUIStandalonePreset
+                      ],
+                      plugins: [
+                          SwaggerUIBundle.plugins.DownloadUrl
+                      ],
+                      layout: "StandaloneLayout"
+                  })
+                  window.ui = ui
+              }
+          </script>
+          </body>
+          </html>
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+        description: null
     responseFields: []
   -
     httpMethods:
       - GET
-    uri: oauth/tokens
+    uri: ranking/general
     metadata:
-      title: 'Get all of the authorized tokens for the authenticated user.'
+      title: 'Retrieve Ranking by Level/Exp'
       description: ''
       authenticated: false
       custom: []
@@ -1593,177 +2170,155 @@ endpoints:
         status: 500
         content: |-
           {
-              "message": "No application encryption key has been specified.",
-              "exception": "Illuminate\\Encryption\\MissingAppKeyException",
-              "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
-              "line": 101,
+              "message": "SQLSTATE[42S02]: Base table or view not found: 1146 Table 'dev_he4rtbot_api.users' doesn't exist (SQL: select count(*) as aggregate from `users`)",
+              "exception": "Illuminate\\Database\\QueryException",
+              "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Connection.php",
+              "line": 712,
               "trace": [
                   {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/support/helpers.php",
-                      "line": 263,
-                      "function": "Illuminate\\Encryption\\{closure}",
-                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Connection.php",
+                      "line": 672,
+                      "function": "runQueryCallback",
+                      "class": "Illuminate\\Database\\Connection",
                       "type": "->"
                   },
                   {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
-                      "line": 103,
-                      "function": "tap"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
-                      "line": 82,
-                      "function": "key",
-                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Connection.php",
+                      "line": 376,
+                      "function": "run",
+                      "class": "Illuminate\\Database\\Connection",
                       "type": "->"
                   },
                   {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
-                      "line": 34,
-                      "function": "parseKey",
-                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Query/Builder.php",
+                      "line": 2414,
+                      "function": "select",
+                      "class": "Illuminate\\Database\\Connection",
                       "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Query/Builder.php",
+                      "line": 2402,
+                      "function": "runSelect",
+                      "class": "Illuminate\\Database\\Query\\Builder",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Query/Builder.php",
+                      "line": 2936,
+                      "function": "Illuminate\\Database\\Query\\{closure}",
+                      "class": "Illuminate\\Database\\Query\\Builder",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Query/Builder.php",
+                      "line": 2403,
+                      "function": "onceWithColumns",
+                      "class": "Illuminate\\Database\\Query\\Builder",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Query/Builder.php",
+                      "line": 2550,
+                      "function": "get",
+                      "class": "Illuminate\\Database\\Query\\Builder",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Query/Builder.php",
+                      "line": 2509,
+                      "function": "runPaginationCountQuery",
+                      "class": "Illuminate\\Database\\Query\\Builder",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/database/Eloquent/Builder.php",
+                      "line": 808,
+                      "function": "getCountForPagination",
+                      "class": "Illuminate\\Database\\Query\\Builder",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/app/Repositories/Gamification/RankingRepository.php",
+                      "line": 36,
+                      "function": "paginate",
+                      "class": "Illuminate\\Database\\Eloquent\\Builder",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/app/Http/Controllers/Gamification/RankingController.php",
+                      "line": 53,
+                      "function": "rankingByLevel",
+                      "class": "App\\Repositories\\Gamification\\RankingRepository",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
+                      "line": 36,
+                      "function": "getGeneralLevelRanking",
+                      "class": "App\\Http\\Controllers\\Gamification\\RankingController",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Util.php",
+                      "line": 40,
+                      "function": "Illuminate\\Container\\{closure}",
+                      "class": "Illuminate\\Container\\BoundMethod",
+                      "type": "::"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
+                      "line": 93,
+                      "function": "unwrapIfClosure",
+                      "class": "Illuminate\\Container\\Util",
+                      "type": "::"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
+                      "line": 37,
+                      "function": "callBoundMethod",
+                      "class": "Illuminate\\Container\\BoundMethod",
+                      "type": "::"
                   },
                   {
                       "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
-                      "line": 873,
-                      "function": "Illuminate\\Encryption\\{closure}",
-                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
-                      "type": "->"
+                      "line": 653,
+                      "function": "call",
+                      "class": "Illuminate\\Container\\BoundMethod",
+                      "type": "::"
                   },
                   {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
-                      "line": 758,
-                      "function": "build",
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 389,
+                      "function": "call",
                       "class": "Illuminate\\Container\\Container",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
-                      "line": 694,
-                      "function": "resolve",
-                      "class": "Illuminate\\Container\\Container",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Application.php",
-                      "line": 300,
-                      "function": "make",
-                      "class": "Illuminate\\Container\\Container",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Application.php",
-                      "line": 668,
-                      "function": "make",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Application.php",
-                      "line": 423,
-                      "function": "loadComponent",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
-                      "line": 873,
-                      "function": "Laravel\\Lumen\\{closure}",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
-                      "line": 758,
-                      "function": "build",
-                      "class": "Illuminate\\Container\\Container",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
-                      "line": 694,
-                      "function": "resolve",
-                      "class": "Illuminate\\Container\\Container",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Application.php",
-                      "line": 300,
-                      "function": "make",
-                      "class": "Illuminate\\Container\\Container",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/passport/src/PassportServiceProvider.php",
-                      "line": 308,
-                      "function": "make",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "function": "Laravel\\Passport\\{closure}",
-                      "class": "Laravel\\Passport\\PassportServiceProvider",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/RequestGuard.php",
-                      "line": 58,
-                      "function": "call_user_func"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/GuardHelpers.php",
-                      "line": 60,
-                      "function": "user",
-                      "class": "Illuminate\\Auth\\RequestGuard",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/GuardHelpers.php",
-                      "line": 70,
-                      "function": "check",
-                      "class": "Illuminate\\Auth\\RequestGuard",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/app/Http/Middleware/Authenticate.php",
-                      "line": 38,
-                      "function": "guest",
-                      "class": "Illuminate\\Auth\\RequestGuard",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/pipeline/Pipeline.php",
-                      "line": 167,
-                      "function": "handle",
-                      "class": "App\\Http\\Middleware\\Authenticate",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Routing/Pipeline.php",
-                      "line": 30,
-                      "function": "Illuminate\\Pipeline\\{closure}",
-                      "class": "Illuminate\\Pipeline\\Pipeline",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/pipeline/Pipeline.php",
-                      "line": 103,
-                      "function": "Laravel\\Lumen\\Routing\\{closure}",
-                      "class": "Laravel\\Lumen\\Routing\\Pipeline",
                       "type": "->"
                   },
                   {
                       "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 426,
-                      "function": "then",
-                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "line": 355,
+                      "function": "callControllerCallable",
+                      "class": "Laravel\\Lumen\\Application",
                       "type": "->"
                   },
                   {
                       "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 263,
-                      "function": "sendThroughPipeline",
+                      "line": 329,
+                      "function": "callLumenController",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 282,
+                      "function": "callControllerAction",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 267,
+                      "function": "callActionOnArrayBasedRoute",
                       "class": "Laravel\\Lumen\\Application",
                       "type": "->"
                   },
@@ -1986,10 +2541,62 @@ endpoints:
     responseFields: []
   -
     httpMethods:
-      - DELETE
-    uri: 'oauth/tokens/{tokenId}'
+      - POST
+    uri: events/badges
     metadata:
-      title: 'Delete the given token.'
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    queryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: ''
+        required: true
+        example: hic
+        type: string
+        custom: []
+      description:
+        name: description
+        description: ''
+        required: true
+        example: debitis
+        type: string
+        custom: []
+      image_url:
+        name: image_url
+        description: 'Must be a valid URL.'
+        required: true
+        example: 'http://botsford.com/'
+        type: string
+        custom: []
+      redeem_code:
+        name: redeem_code
+        description: ''
+        required: true
+        example: et
+        type: string
+        custom: []
+      active:
+        name: active
+        description: ''
+        required: true
+        example: true
+        type: boolean
+        custom: []
+    responses: []
+    responseFields: []
+  -
+    httpMethods:
+      - POST
+    uri: 'users/{discordId}/claim-badge'
+    metadata:
+      title: ''
       description: ''
       authenticated: false
       custom: []
@@ -1997,416 +2604,120 @@ endpoints:
       Content-Type: application/json
       Accept: application/json
     urlParameters:
-      tokenId:
-        name: tokenId
+      discordId:
+        name: discordId
         description: ''
         required: true
-        example: quia
+        example: autem
         type: string
         custom: []
     queryParameters: []
-    bodyParameters: []
+    bodyParameters:
+      discord_id:
+        name: discord_id
+        description: ''
+        required: true
+        example: ipsa
+        type: string
+        custom: []
+      redeem_code:
+        name: redeem_code
+        description: ''
+        required: true
+        example: et
+        type: string
+        custom: []
     responses: []
     responseFields: []
   -
     httpMethods:
       - POST
-    uri: oauth/token/refresh
+    uri: 'users/{discordId}/message'
     metadata:
-      title: 'Get a fresh transient token cookie for the authenticated user.'
+      title: ''
       description: ''
       authenticated: false
       custom: []
     headers:
       Content-Type: application/json
       Accept: application/json
-    urlParameters: []
+    urlParameters:
+      discordId:
+        name: discordId
+        description: ''
+        required: true
+        example: repellendus
+        type: string
+        custom: []
     queryParameters: []
-    bodyParameters: []
+    bodyParameters:
+      discord_id:
+        name: discord_id
+        description: ''
+        required: true
+        example: delectus
+        type: string
+        custom: []
+      message:
+        name: message
+        description: ''
+        required: true
+        example: repudiandae
+        type: string
+        custom: []
     responses: []
     responseFields: []
   -
     httpMethods:
-      - GET
-    uri: oauth/clients
+      - POST
+    uri: 'users/{discordId}/daily'
     metadata:
-      title: 'Get all of the clients for the authenticated user.'
+      title: ''
       description: ''
       authenticated: false
       custom: []
     headers:
       Content-Type: application/json
       Accept: application/json
-    urlParameters: []
+    urlParameters:
+      discordId:
+        name: discordId
+        description: ''
+        required: true
+        example: consectetur
+        type: string
+        custom: []
     queryParameters: []
-    bodyParameters: []
-    responses:
-      -
-        status: 500
-        content: |-
-          {
-              "message": "No application encryption key has been specified.",
-              "exception": "Illuminate\\Encryption\\MissingAppKeyException",
-              "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
-              "line": 101,
-              "trace": [
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/support/helpers.php",
-                      "line": 263,
-                      "function": "Illuminate\\Encryption\\{closure}",
-                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
-                      "line": 103,
-                      "function": "tap"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
-                      "line": 82,
-                      "function": "key",
-                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
-                      "line": 34,
-                      "function": "parseKey",
-                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
-                      "line": 873,
-                      "function": "Illuminate\\Encryption\\{closure}",
-                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
-                      "line": 758,
-                      "function": "build",
-                      "class": "Illuminate\\Container\\Container",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
-                      "line": 694,
-                      "function": "resolve",
-                      "class": "Illuminate\\Container\\Container",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Application.php",
-                      "line": 300,
-                      "function": "make",
-                      "class": "Illuminate\\Container\\Container",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/passport/src/PassportServiceProvider.php",
-                      "line": 308,
-                      "function": "make",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "function": "Laravel\\Passport\\{closure}",
-                      "class": "Laravel\\Passport\\PassportServiceProvider",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/RequestGuard.php",
-                      "line": 58,
-                      "function": "call_user_func"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/GuardHelpers.php",
-                      "line": 60,
-                      "function": "user",
-                      "class": "Illuminate\\Auth\\RequestGuard",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/GuardHelpers.php",
-                      "line": 70,
-                      "function": "check",
-                      "class": "Illuminate\\Auth\\RequestGuard",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/app/Http/Middleware/Authenticate.php",
-                      "line": 38,
-                      "function": "guest",
-                      "class": "Illuminate\\Auth\\RequestGuard",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/pipeline/Pipeline.php",
-                      "line": 167,
-                      "function": "handle",
-                      "class": "App\\Http\\Middleware\\Authenticate",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Routing/Pipeline.php",
-                      "line": 30,
-                      "function": "Illuminate\\Pipeline\\{closure}",
-                      "class": "Illuminate\\Pipeline\\Pipeline",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/pipeline/Pipeline.php",
-                      "line": 103,
-                      "function": "Laravel\\Lumen\\Routing\\{closure}",
-                      "class": "Laravel\\Lumen\\Routing\\Pipeline",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 426,
-                      "function": "then",
-                      "class": "Illuminate\\Pipeline\\Pipeline",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 263,
-                      "function": "sendThroughPipeline",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 169,
-                      "function": "handleFoundRoute",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 429,
-                      "function": "Laravel\\Lumen\\Concerns\\{closure}",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 175,
-                      "function": "sendThroughPipeline",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 95,
-                      "function": "dispatch",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
-                      "line": 308,
-                      "function": "handle",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
-                      "line": 287,
-                      "function": "callLaravelOrLumenRoute",
-                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
-                      "line": 89,
-                      "function": "makeApiCall",
-                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
-                      "line": 45,
-                      "function": "makeResponseCall",
-                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
-                      "line": 35,
-                      "function": "makeResponseCallIfConditionsPass",
-                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php",
-                      "line": 222,
-                      "function": "__invoke",
-                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php",
-                      "line": 179,
-                      "function": "iterateThroughStrategies",
-                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php",
-                      "line": 116,
-                      "function": "fetchResponses",
-                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php",
-                      "line": 123,
-                      "function": "processRoute",
-                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php",
-                      "line": 80,
-                      "function": "extractEndpointsInfoFromLaravelApp",
-                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php",
-                      "line": 56,
-                      "function": "extractEndpointsInfoAndWriteToDisk",
-                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Commands/GenerateDocumentation.php",
-                      "line": 55,
-                      "function": "get",
-                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
-                      "line": 36,
-                      "function": "handle",
-                      "class": "Knuckles\\Scribe\\Commands\\GenerateDocumentation",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Util.php",
-                      "line": 40,
-                      "function": "Illuminate\\Container\\{closure}",
-                      "class": "Illuminate\\Container\\BoundMethod",
-                      "type": "::"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
-                      "line": 93,
-                      "function": "unwrapIfClosure",
-                      "class": "Illuminate\\Container\\Util",
-                      "type": "::"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
-                      "line": 37,
-                      "function": "callBoundMethod",
-                      "class": "Illuminate\\Container\\BoundMethod",
-                      "type": "::"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
-                      "line": 653,
-                      "function": "call",
-                      "class": "Illuminate\\Container\\BoundMethod",
-                      "type": "::"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/console/Command.php",
-                      "line": 136,
-                      "function": "call",
-                      "class": "Illuminate\\Container\\Container",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Command/Command.php",
-                      "line": 298,
-                      "function": "execute",
-                      "class": "Illuminate\\Console\\Command",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/console/Command.php",
-                      "line": 121,
-                      "function": "run",
-                      "class": "Symfony\\Component\\Console\\Command\\Command",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Application.php",
-                      "line": 1040,
-                      "function": "run",
-                      "class": "Illuminate\\Console\\Command",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Application.php",
-                      "line": 301,
-                      "function": "doRunCommand",
-                      "class": "Symfony\\Component\\Console\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Application.php",
-                      "line": 171,
-                      "function": "doRun",
-                      "class": "Symfony\\Component\\Console\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/console/Application.php",
-                      "line": 94,
-                      "function": "run",
-                      "class": "Symfony\\Component\\Console\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Console/Kernel.php",
-                      "line": 116,
-                      "function": "run",
-                      "class": "Illuminate\\Console\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/artisan",
-                      "line": 35,
-                      "function": "handle",
-                      "class": "Laravel\\Lumen\\Console\\Kernel",
-                      "type": "->"
-                  }
-              ]
-          }
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-        description: null
+    bodyParameters:
+      discord_id:
+        name: discord_id
+        description: ''
+        required: true
+        example: maxime
+        type: string
+        custom: []
+    responses: []
     responseFields: []
   -
     httpMethods:
-      - POST
-    uri: oauth/clients
+      - DELETE
+    uri: 'users/{discordId}'
     metadata:
-      title: 'Store a new client.'
+      title: ''
       description: ''
       authenticated: false
       custom: []
     headers:
       Content-Type: application/json
       Accept: application/json
-    urlParameters: []
+    urlParameters:
+      discordId:
+        name: discordId
+        description: ''
+        required: true
+        example: quidem
+        type: string
+        custom: []
     queryParameters: []
     bodyParameters: []
     responses: []
@@ -2414,9 +2725,9 @@ endpoints:
   -
     httpMethods:
       - PUT
-    uri: 'oauth/clients/{clientId}'
+    uri: 'users/{discordId}'
     metadata:
-      title: 'Update the given client.'
+      title: ''
       description: ''
       authenticated: false
       custom: []
@@ -2424,23 +2735,79 @@ endpoints:
       Content-Type: application/json
       Accept: application/json
     urlParameters:
-      clientId:
-        name: clientId
+      discordId:
+        name: discordId
         description: ''
         required: true
-        example: laborum
+        example: voluptatibus
         type: string
         custom: []
     queryParameters: []
-    bodyParameters: []
+    bodyParameters:
+      discord_id:
+        name: discord_id
+        description: ''
+        required: true
+        example: doloremque
+        type: string
+        custom: []
+      email:
+        name: email
+        description: validation.email.
+        required: false
+        example: monroe.mccullough@example.com
+        type: string
+        custom: []
+      name:
+        name: name
+        description: ''
+        required: false
+        example: et
+        type: string
+        custom: []
+      nickname:
+        name: nickname
+        description: ''
+        required: false
+        example: voluptatum
+        type: string
+        custom: []
+      git:
+        name: git
+        description: ''
+        required: false
+        example: et
+        type: string
+        custom: []
+      about:
+        name: about
+        description: ''
+        required: false
+        example: ratione
+        type: string
+        custom: []
+      linkedin:
+        name: linkedin
+        description: ''
+        required: false
+        example: qui
+        type: string
+        custom: []
+      is_donator:
+        name: is_donator
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        custom: []
     responses: []
     responseFields: []
   -
     httpMethods:
-      - DELETE
-    uri: 'oauth/clients/{clientId}'
+      - GET
+    uri: 'users/{discordId}'
     metadata:
-      title: 'Delete the given client.'
+      title: ''
       description: ''
       authenticated: false
       custom: []
@@ -2448,750 +2815,26 @@ endpoints:
       Content-Type: application/json
       Accept: application/json
     urlParameters:
-      clientId:
-        name: clientId
+      discordId:
+        name: discordId
         description: ''
         required: true
-        example: doloribus
+        example: in
         type: string
         custom: []
     queryParameters: []
-    bodyParameters: []
-    responses: []
-    responseFields: []
-  -
-    httpMethods:
-      - GET
-    uri: oauth/scopes
-    metadata:
-      title: 'Get all of the available scopes for the application.'
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    queryParameters: []
-    bodyParameters: []
+    bodyParameters:
+      discord_id:
+        name: discord_id
+        description: ''
+        required: true
+        example: porro
+        type: string
+        custom: []
     responses:
       -
-        status: 500
-        content: |-
-          {
-              "message": "No application encryption key has been specified.",
-              "exception": "Illuminate\\Encryption\\MissingAppKeyException",
-              "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
-              "line": 101,
-              "trace": [
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/support/helpers.php",
-                      "line": 263,
-                      "function": "Illuminate\\Encryption\\{closure}",
-                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
-                      "line": 103,
-                      "function": "tap"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
-                      "line": 82,
-                      "function": "key",
-                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
-                      "line": 34,
-                      "function": "parseKey",
-                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
-                      "line": 873,
-                      "function": "Illuminate\\Encryption\\{closure}",
-                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
-                      "line": 758,
-                      "function": "build",
-                      "class": "Illuminate\\Container\\Container",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
-                      "line": 694,
-                      "function": "resolve",
-                      "class": "Illuminate\\Container\\Container",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Application.php",
-                      "line": 300,
-                      "function": "make",
-                      "class": "Illuminate\\Container\\Container",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/passport/src/PassportServiceProvider.php",
-                      "line": 308,
-                      "function": "make",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "function": "Laravel\\Passport\\{closure}",
-                      "class": "Laravel\\Passport\\PassportServiceProvider",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/RequestGuard.php",
-                      "line": 58,
-                      "function": "call_user_func"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/GuardHelpers.php",
-                      "line": 60,
-                      "function": "user",
-                      "class": "Illuminate\\Auth\\RequestGuard",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/GuardHelpers.php",
-                      "line": 70,
-                      "function": "check",
-                      "class": "Illuminate\\Auth\\RequestGuard",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/app/Http/Middleware/Authenticate.php",
-                      "line": 38,
-                      "function": "guest",
-                      "class": "Illuminate\\Auth\\RequestGuard",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/pipeline/Pipeline.php",
-                      "line": 167,
-                      "function": "handle",
-                      "class": "App\\Http\\Middleware\\Authenticate",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Routing/Pipeline.php",
-                      "line": 30,
-                      "function": "Illuminate\\Pipeline\\{closure}",
-                      "class": "Illuminate\\Pipeline\\Pipeline",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/pipeline/Pipeline.php",
-                      "line": 103,
-                      "function": "Laravel\\Lumen\\Routing\\{closure}",
-                      "class": "Laravel\\Lumen\\Routing\\Pipeline",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 426,
-                      "function": "then",
-                      "class": "Illuminate\\Pipeline\\Pipeline",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 263,
-                      "function": "sendThroughPipeline",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 169,
-                      "function": "handleFoundRoute",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 429,
-                      "function": "Laravel\\Lumen\\Concerns\\{closure}",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 175,
-                      "function": "sendThroughPipeline",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 95,
-                      "function": "dispatch",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
-                      "line": 308,
-                      "function": "handle",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
-                      "line": 287,
-                      "function": "callLaravelOrLumenRoute",
-                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
-                      "line": 89,
-                      "function": "makeApiCall",
-                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
-                      "line": 45,
-                      "function": "makeResponseCall",
-                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
-                      "line": 35,
-                      "function": "makeResponseCallIfConditionsPass",
-                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php",
-                      "line": 222,
-                      "function": "__invoke",
-                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php",
-                      "line": 179,
-                      "function": "iterateThroughStrategies",
-                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php",
-                      "line": 116,
-                      "function": "fetchResponses",
-                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php",
-                      "line": 123,
-                      "function": "processRoute",
-                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php",
-                      "line": 80,
-                      "function": "extractEndpointsInfoFromLaravelApp",
-                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php",
-                      "line": 56,
-                      "function": "extractEndpointsInfoAndWriteToDisk",
-                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Commands/GenerateDocumentation.php",
-                      "line": 55,
-                      "function": "get",
-                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
-                      "line": 36,
-                      "function": "handle",
-                      "class": "Knuckles\\Scribe\\Commands\\GenerateDocumentation",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Util.php",
-                      "line": 40,
-                      "function": "Illuminate\\Container\\{closure}",
-                      "class": "Illuminate\\Container\\BoundMethod",
-                      "type": "::"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
-                      "line": 93,
-                      "function": "unwrapIfClosure",
-                      "class": "Illuminate\\Container\\Util",
-                      "type": "::"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
-                      "line": 37,
-                      "function": "callBoundMethod",
-                      "class": "Illuminate\\Container\\BoundMethod",
-                      "type": "::"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
-                      "line": 653,
-                      "function": "call",
-                      "class": "Illuminate\\Container\\BoundMethod",
-                      "type": "::"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/console/Command.php",
-                      "line": 136,
-                      "function": "call",
-                      "class": "Illuminate\\Container\\Container",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Command/Command.php",
-                      "line": 298,
-                      "function": "execute",
-                      "class": "Illuminate\\Console\\Command",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/console/Command.php",
-                      "line": 121,
-                      "function": "run",
-                      "class": "Symfony\\Component\\Console\\Command\\Command",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Application.php",
-                      "line": 1040,
-                      "function": "run",
-                      "class": "Illuminate\\Console\\Command",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Application.php",
-                      "line": 301,
-                      "function": "doRunCommand",
-                      "class": "Symfony\\Component\\Console\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Application.php",
-                      "line": 171,
-                      "function": "doRun",
-                      "class": "Symfony\\Component\\Console\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/console/Application.php",
-                      "line": 94,
-                      "function": "run",
-                      "class": "Symfony\\Component\\Console\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Console/Kernel.php",
-                      "line": 116,
-                      "function": "run",
-                      "class": "Illuminate\\Console\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/artisan",
-                      "line": 35,
-                      "function": "handle",
-                      "class": "Laravel\\Lumen\\Console\\Kernel",
-                      "type": "->"
-                  }
-              ]
-          }
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-        description: null
-    responseFields: []
-  -
-    httpMethods:
-      - GET
-    uri: oauth/personal-access-tokens
-    metadata:
-      title: 'Get all of the personal access tokens for the authenticated user.'
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    queryParameters: []
-    bodyParameters: []
-    responses:
-      -
-        status: 500
-        content: |-
-          {
-              "message": "No application encryption key has been specified.",
-              "exception": "Illuminate\\Encryption\\MissingAppKeyException",
-              "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
-              "line": 101,
-              "trace": [
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/support/helpers.php",
-                      "line": 263,
-                      "function": "Illuminate\\Encryption\\{closure}",
-                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
-                      "line": 103,
-                      "function": "tap"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
-                      "line": 82,
-                      "function": "key",
-                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/encryption/EncryptionServiceProvider.php",
-                      "line": 34,
-                      "function": "parseKey",
-                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
-                      "line": 873,
-                      "function": "Illuminate\\Encryption\\{closure}",
-                      "class": "Illuminate\\Encryption\\EncryptionServiceProvider",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
-                      "line": 758,
-                      "function": "build",
-                      "class": "Illuminate\\Container\\Container",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
-                      "line": 694,
-                      "function": "resolve",
-                      "class": "Illuminate\\Container\\Container",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Application.php",
-                      "line": 300,
-                      "function": "make",
-                      "class": "Illuminate\\Container\\Container",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/passport/src/PassportServiceProvider.php",
-                      "line": 308,
-                      "function": "make",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "function": "Laravel\\Passport\\{closure}",
-                      "class": "Laravel\\Passport\\PassportServiceProvider",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/RequestGuard.php",
-                      "line": 58,
-                      "function": "call_user_func"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/GuardHelpers.php",
-                      "line": 60,
-                      "function": "user",
-                      "class": "Illuminate\\Auth\\RequestGuard",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/auth/GuardHelpers.php",
-                      "line": 70,
-                      "function": "check",
-                      "class": "Illuminate\\Auth\\RequestGuard",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/app/Http/Middleware/Authenticate.php",
-                      "line": 38,
-                      "function": "guest",
-                      "class": "Illuminate\\Auth\\RequestGuard",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/pipeline/Pipeline.php",
-                      "line": 167,
-                      "function": "handle",
-                      "class": "App\\Http\\Middleware\\Authenticate",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Routing/Pipeline.php",
-                      "line": 30,
-                      "function": "Illuminate\\Pipeline\\{closure}",
-                      "class": "Illuminate\\Pipeline\\Pipeline",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/pipeline/Pipeline.php",
-                      "line": 103,
-                      "function": "Laravel\\Lumen\\Routing\\{closure}",
-                      "class": "Laravel\\Lumen\\Routing\\Pipeline",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 426,
-                      "function": "then",
-                      "class": "Illuminate\\Pipeline\\Pipeline",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 263,
-                      "function": "sendThroughPipeline",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 169,
-                      "function": "handleFoundRoute",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 429,
-                      "function": "Laravel\\Lumen\\Concerns\\{closure}",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 175,
-                      "function": "sendThroughPipeline",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
-                      "line": 95,
-                      "function": "dispatch",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
-                      "line": 308,
-                      "function": "handle",
-                      "class": "Laravel\\Lumen\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
-                      "line": 287,
-                      "function": "callLaravelOrLumenRoute",
-                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
-                      "line": 89,
-                      "function": "makeApiCall",
-                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
-                      "line": 45,
-                      "function": "makeResponseCall",
-                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
-                      "line": 35,
-                      "function": "makeResponseCallIfConditionsPass",
-                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php",
-                      "line": 222,
-                      "function": "__invoke",
-                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php",
-                      "line": 179,
-                      "function": "iterateThroughStrategies",
-                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php",
-                      "line": 116,
-                      "function": "fetchResponses",
-                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php",
-                      "line": 123,
-                      "function": "processRoute",
-                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php",
-                      "line": 80,
-                      "function": "extractEndpointsInfoFromLaravelApp",
-                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php",
-                      "line": 56,
-                      "function": "extractEndpointsInfoAndWriteToDisk",
-                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Commands/GenerateDocumentation.php",
-                      "line": 55,
-                      "function": "get",
-                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
-                      "line": 36,
-                      "function": "handle",
-                      "class": "Knuckles\\Scribe\\Commands\\GenerateDocumentation",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Util.php",
-                      "line": 40,
-                      "function": "Illuminate\\Container\\{closure}",
-                      "class": "Illuminate\\Container\\BoundMethod",
-                      "type": "::"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
-                      "line": 93,
-                      "function": "unwrapIfClosure",
-                      "class": "Illuminate\\Container\\Util",
-                      "type": "::"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
-                      "line": 37,
-                      "function": "callBoundMethod",
-                      "class": "Illuminate\\Container\\BoundMethod",
-                      "type": "::"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
-                      "line": 653,
-                      "function": "call",
-                      "class": "Illuminate\\Container\\BoundMethod",
-                      "type": "::"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/console/Command.php",
-                      "line": 136,
-                      "function": "call",
-                      "class": "Illuminate\\Container\\Container",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Command/Command.php",
-                      "line": 298,
-                      "function": "execute",
-                      "class": "Illuminate\\Console\\Command",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/console/Command.php",
-                      "line": 121,
-                      "function": "run",
-                      "class": "Symfony\\Component\\Console\\Command\\Command",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Application.php",
-                      "line": 1040,
-                      "function": "run",
-                      "class": "Illuminate\\Console\\Command",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Application.php",
-                      "line": 301,
-                      "function": "doRunCommand",
-                      "class": "Symfony\\Component\\Console\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Application.php",
-                      "line": 171,
-                      "function": "doRun",
-                      "class": "Symfony\\Component\\Console\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/console/Application.php",
-                      "line": 94,
-                      "function": "run",
-                      "class": "Symfony\\Component\\Console\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Console/Kernel.php",
-                      "line": 116,
-                      "function": "run",
-                      "class": "Illuminate\\Console\\Application",
-                      "type": "->"
-                  },
-                  {
-                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/artisan",
-                      "line": 35,
-                      "function": "handle",
-                      "class": "Laravel\\Lumen\\Console\\Kernel",
-                      "type": "->"
-                  }
-              ]
-          }
+        status: 401
+        content: '{"error":"Chave n\u00e3o encontrada"}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
@@ -3200,9 +2843,33 @@ endpoints:
   -
     httpMethods:
       - POST
-    uri: oauth/personal-access-tokens
+    uri: users
     metadata:
-      title: 'Create a new personal access token for the user.'
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    queryParameters: []
+    bodyParameters:
+      discord_id:
+        name: discord_id
+        description: ''
+        required: true
+        example: 337375531.9674
+        type: number
+        custom: []
+    responses: []
+    responseFields: []
+  -
+    httpMethods:
+      - GET
+    uri: users
+    metadata:
+      title: ''
       description: ''
       authenticated: false
       custom: []
@@ -3212,7 +2879,340 @@ endpoints:
     urlParameters: []
     queryParameters: []
     bodyParameters: []
-    responses: []
+    responses:
+      -
+        status: 401
+        content: '{"error":"Chave n\u00e3o encontrada"}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+        description: null
+    responseFields: []
+  -
+    httpMethods:
+      - GET
+    uri: 'auth/oauth/{provider}'
+    metadata:
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      provider:
+        name: provider
+        description: ''
+        required: true
+        example: amet
+        type: string
+        custom: []
+    queryParameters: []
+    bodyParameters: []
+    responses:
+      -
+        status: 500
+        content: |-
+          {
+              "message": "Argument 2 passed to App\\Repositories\\AuthRepository::authenticateUser() must be of the type string, null given, called in /home/pedrosilva/Dev/he4rt-bot-api/app/Http/Controllers/AuthController.php on line 49",
+              "exception": "TypeError",
+              "file": "/home/pedrosilva/Dev/he4rt-bot-api/app/Repositories/AuthRepository.php",
+              "line": 11,
+              "trace": [
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/app/Http/Controllers/AuthController.php",
+                      "line": 49,
+                      "function": "authenticateUser",
+                      "class": "App\\Repositories\\AuthRepository",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
+                      "line": 36,
+                      "function": "authenticate",
+                      "class": "App\\Http\\Controllers\\AuthController",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Util.php",
+                      "line": 40,
+                      "function": "Illuminate\\Container\\{closure}",
+                      "class": "Illuminate\\Container\\BoundMethod",
+                      "type": "::"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
+                      "line": 93,
+                      "function": "unwrapIfClosure",
+                      "class": "Illuminate\\Container\\Util",
+                      "type": "::"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
+                      "line": 37,
+                      "function": "callBoundMethod",
+                      "class": "Illuminate\\Container\\BoundMethod",
+                      "type": "::"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
+                      "line": 653,
+                      "function": "call",
+                      "class": "Illuminate\\Container\\BoundMethod",
+                      "type": "::"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 389,
+                      "function": "call",
+                      "class": "Illuminate\\Container\\Container",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 332,
+                      "function": "callControllerCallable",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 282,
+                      "function": "callControllerAction",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 267,
+                      "function": "callActionOnArrayBasedRoute",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 237,
+                      "function": "handleFoundRoute",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 173,
+                      "function": "handleDispatcherResponse",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 429,
+                      "function": "Laravel\\Lumen\\Concerns\\{closure}",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 175,
+                      "function": "sendThroughPipeline",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php",
+                      "line": 95,
+                      "function": "dispatch",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
+                      "line": 308,
+                      "function": "handle",
+                      "class": "Laravel\\Lumen\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
+                      "line": 287,
+                      "function": "callLaravelOrLumenRoute",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
+                      "line": 89,
+                      "function": "makeApiCall",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
+                      "line": 45,
+                      "function": "makeResponseCall",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php",
+                      "line": 35,
+                      "function": "makeResponseCallIfConditionsPass",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php",
+                      "line": 222,
+                      "function": "__invoke",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php",
+                      "line": 179,
+                      "function": "iterateThroughStrategies",
+                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php",
+                      "line": 116,
+                      "function": "fetchResponses",
+                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php",
+                      "line": 123,
+                      "function": "processRoute",
+                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php",
+                      "line": 80,
+                      "function": "extractEndpointsInfoFromLaravelApp",
+                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php",
+                      "line": 56,
+                      "function": "extractEndpointsInfoAndWriteToDisk",
+                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/knuckleswtf/scribe/src/Commands/GenerateDocumentation.php",
+                      "line": 55,
+                      "function": "get",
+                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
+                      "line": 36,
+                      "function": "handle",
+                      "class": "Knuckles\\Scribe\\Commands\\GenerateDocumentation",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Util.php",
+                      "line": 40,
+                      "function": "Illuminate\\Container\\{closure}",
+                      "class": "Illuminate\\Container\\BoundMethod",
+                      "type": "::"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
+                      "line": 93,
+                      "function": "unwrapIfClosure",
+                      "class": "Illuminate\\Container\\Util",
+                      "type": "::"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/BoundMethod.php",
+                      "line": 37,
+                      "function": "callBoundMethod",
+                      "class": "Illuminate\\Container\\BoundMethod",
+                      "type": "::"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/container/Container.php",
+                      "line": 653,
+                      "function": "call",
+                      "class": "Illuminate\\Container\\BoundMethod",
+                      "type": "::"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/console/Command.php",
+                      "line": 136,
+                      "function": "call",
+                      "class": "Illuminate\\Container\\Container",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Command/Command.php",
+                      "line": 298,
+                      "function": "execute",
+                      "class": "Illuminate\\Console\\Command",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/console/Command.php",
+                      "line": 121,
+                      "function": "run",
+                      "class": "Symfony\\Component\\Console\\Command\\Command",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Application.php",
+                      "line": 1040,
+                      "function": "run",
+                      "class": "Illuminate\\Console\\Command",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Application.php",
+                      "line": 301,
+                      "function": "doRunCommand",
+                      "class": "Symfony\\Component\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/symfony/console/Application.php",
+                      "line": 171,
+                      "function": "doRun",
+                      "class": "Symfony\\Component\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/illuminate/console/Application.php",
+                      "line": 94,
+                      "function": "run",
+                      "class": "Symfony\\Component\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/vendor/laravel/lumen-framework/src/Console/Kernel.php",
+                      "line": 116,
+                      "function": "run",
+                      "class": "Illuminate\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "/home/pedrosilva/Dev/he4rt-bot-api/artisan",
+                      "line": 35,
+                      "function": "handle",
+                      "class": "Laravel\\Lumen\\Console\\Kernel",
+                      "type": "->"
+                  }
+              ]
+          }
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+        description: null
     responseFields: []
   -
     httpMethods:
@@ -3231,7 +3231,7 @@ endpoints:
         name: tokenId
         description: ''
         required: true
-        example: mollitia
+        example: eveniet
         type: string
         custom: []
     queryParameters: []
