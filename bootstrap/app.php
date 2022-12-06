@@ -102,6 +102,11 @@ $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 
 $app->configure('auth');
 
+if (class_exists(\Knuckles\Scribe\ScribeServiceProvider::class)) {
+    $app->register(\Knuckles\Scribe\ScribeServiceProvider::class);
+    $app->configure('scribe');
+}
+
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes

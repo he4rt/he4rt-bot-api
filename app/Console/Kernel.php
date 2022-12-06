@@ -7,6 +7,7 @@ use App\Console\Commands\SeasonStart;
 use App\Console\Commands\FinishSeasonCommand;
 use App\Console\Commands\SendLevelupMessage;
 use Illuminate\Console\Scheduling\Schedule;
+use Laravel\Lumen\Application;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
@@ -22,6 +23,20 @@ class Kernel extends ConsoleKernel
         MigrateUsers::class,
         SendLevelupMessage::class
     ];
+
+    public function __construct(Application $app)
+    {
+        parent::__construct($app);
+        if (class_exists(\Knuckles\Scribe\Commands\GenerateDocumentation::class)) {
+            $this->commands[] = \Knuckles\Scribe\Commands\GenerateDocumentation::class;
+        }
+        if (class_exists(\Knuckles\Scribe\Commands\MakeStrategy::class)) {
+            $this->commands[] = \Knuckles\Scribe\Commands\MakeStrategy::class;
+        }
+        if (class_exists(\Knuckles\Scribe\Commands\Upgrade::class)) {
+            $this->commands[] = \Knuckles\Scribe\Commands\Upgrade::class;
+        }
+    }
 
     /**
      * Define the application's command schedule.
