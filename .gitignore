@@ -6,3 +6,4 @@ Homestead.yaml
 .env.testing
 .phpunit.result.cache
 /.scribe
+/public/docs
