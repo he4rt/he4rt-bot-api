@@ -5,3 +5,4 @@ Homestead.yaml
 .env
 .env.testing
 .phpunit.result.cache
+/.scribe
