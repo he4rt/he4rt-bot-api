@@ -16,7 +16,7 @@ class Season extends Model
     protected $fillable = [
         'name',
         'description',
-        'start_at',
+        'starts_at',
         'ends_at',
         'participants_count',
         'messages_count'
@@ -24,7 +24,7 @@ class Season extends Model
 
     protected $casts = [
         'status' => 'bool',
-        'start_at' => 'timestamp',
+        'starts_at' => 'timestamp',
         'ends_at' => 'timestamp',
         'participants_count' => 'int',
         'messages_count' => 'int'
@@ -33,7 +33,7 @@ class Season extends Model
     public function scopeCurrentSeason(Builder $query): Builder
     {
         return $query
-            ->whereDate('start_at', '<=', Carbon::now()->format('Y-m-d'))
+            ->whereDate('starts_at', '<=', Carbon::now()->format('Y-m-d'))
             ->whereDate('ends_at', '>=', Carbon::now()->format('Y-m-d'));
     }
 }

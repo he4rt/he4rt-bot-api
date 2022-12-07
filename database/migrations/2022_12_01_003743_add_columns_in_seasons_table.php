@@ -14,11 +14,11 @@ class AddColumnsInSeasonsTable extends Migration
             $table->text('description')
                 ->nullable()
                 ->after('name');
-            $table->timestamp('start_at')
+            $table->timestamp('starts_at')
                 ->after('description')
                 ->useCurrent();
             $table->timestamp('ends_at')
-                ->after('start_at')
+                ->after('starts_at')
                 ->useCurrent();
 
             $table->bigInteger('participants_count')
@@ -37,7 +37,7 @@ class AddColumnsInSeasonsTable extends Migration
         Schema::table('seasons', function (Blueprint $table) {
             $table->dropColumn([
                 'description',
-                'start_at',
+                'starts_at',
                 'ends_at',
                 'participants_count',
                 'messages_count',

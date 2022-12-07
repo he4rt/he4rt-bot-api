@@ -15,7 +15,7 @@ return [
         [
             'name' => 'Legado 4Y',
             'description' => 'A primeira temporada que dura desde o inicio da He4rt Developers.',
-            'start_at' => Carbon::parse('2018-08-01'),
+            'starts_at' => Carbon::parse('2018-08-01'),
             'ends_at' => Carbon::parse('2022-12-31'),
             'messages_count' => 0,
             'participants_count' => 0
@@ -23,7 +23,7 @@ return [
         [
             'name' => 'Um não tão novo RECOMEÇO',
             'description' => 'Segunda temporada chegando foda memo dps nois acha um nome melhor pra isso aqui.',
-            'start_at' => Carbon::parse('2023-01-01'),
+            'starts_at' => Carbon::parse('2023-01-01'),
             'ends_at' => Carbon::parse('2023-12-31'),
             'messages_count' => 0,
             'participants_count' => 0

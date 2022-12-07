@@ -4,6 +4,7 @@ namespace App\Models\User;
 
 use App\Models\Gamefication\Season as SeasonModel;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Season extends Model
 {
@@ -18,12 +19,12 @@ class Season extends Model
         'messages_count'
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function season()
+    public function season(): BelongsTo
     {
         return $this->belongsTo(SeasonModel::class);
     }

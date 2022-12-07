@@ -52,7 +52,7 @@ class FinishSeasonCommand extends Command
         /** @var User $user */
         foreach ($users as $user) {
             $messagesCount = $user->messages()
-                ->whereBetween('created_at', [$currentSeason->start_at, $currentSeason->ends_at])->count();
+                ->whereBetween('created_at', [$currentSeason->starts_at, $currentSeason->ends_at])->count();
 
             $user->seasonInfo()->create([
                 'season_id' => $currentSeason->getKey(),
