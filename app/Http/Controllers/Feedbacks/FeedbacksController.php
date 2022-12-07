@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Feedbacks;
 
+use App\Actions\Feedback\CreateFeedback;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class FeedbacksController extends Controller
 {
-    public function create(Request $request)
+    public function create(Request $request, CreateFeedback $create)
     {
-        $this->validate($request, [
+        $payload = $request->validate([
             'sender_id' => [
                 'required',
                 'unique:users,discord_id',
@@ -29,6 +30,6 @@ class FeedbacksController extends Controller
             'type' => 'string',
         ]);
 
-
+        return $create->handle($payload);
     }
 }

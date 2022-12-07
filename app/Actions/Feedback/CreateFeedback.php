@@ -9,13 +9,13 @@ class CreateFeedback
 {
     private FeedbackRepository $repository;
 
-    public function __construct(private FeedbackRepository $repository)
+    public function __construct(FeedbackRepository $repository)
     {
         $this->repository = $repository;
     }
 
     public function handle(array $payload): Feedback
     {
-
+        return $this->repository->create($payload);
     }
 }

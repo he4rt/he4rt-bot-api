@@ -12,6 +12,11 @@ abstract class BaseRepository
 {
     protected Model $model;
 
+    public function __construct(Model $model)
+    {
+        $this->model = $model;
+    }
+
     public function all(): Collection
     {
         return $this->model->all();
