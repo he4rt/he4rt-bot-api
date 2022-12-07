@@ -12,17 +12,19 @@ class Meeting extends Model
     protected $table = 'meetings';
 
     protected $fillable = [
-        'meeting_id',
-        'user_id',
-        'attend_at',
+        'meeting_type_id',
+        'user_created_id',
+        'starts_at',
+        'ends_at',
     ];
 
     protected $dates = [
-        'attend_at'
+        'starts_at',
+        'ends_at',
     ];
 
     protected $casts = [
-        'meeting_id' => 'integer',
-        'user_id' => 'integer',
+        'meeting_type_id' => 'integer',
+        'user_created_id' => 'integer',
     ];
 }

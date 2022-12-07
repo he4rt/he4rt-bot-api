@@ -2,30 +2,29 @@
 
 namespace App\Actions\Event\Meeting;
 
-use App\Models\Events\Badge;
-use App\Repositories\Events\BadgeRepository;
+use App\Models\Events\Meeting;
+use App\Repositories\Events\MeetingRepository;
 use App\Repositories\Users\UsersRepository;
 use Illuminate\Support\Carbon;
 
 class StartMeeting
 {
-    private BadgeRepository $repository;
+    private MeetingRepository $meetingRepository;
     private UsersRepository $usersRepository;
 
-    public function __construct(BadgeRepository $repository, UsersRepository $usersRepository)
+    public function __construct(MeetingRepository $meetingRepository, UsersRepository $usersRepository)
     {
-        $this->repository = $repository;
+        $this->meetingRepository = $meetingRepository;
         $this->usersRepository = $usersRepository;
     }
 
-    public function handle(array $payload): Badge
+    public function handle(array $payload): Meeting
     {
         $userCreator = $this->usersRepository->findById($payload['discord_id']);
 
         $payload['starts_at'] = Carbon::now();
         $payload['user_created_id'] = $userCreator->getKey();
 
-        // todo criar repository
-        return $this->repository->create($payload);
+        return $this->meetingRepository->create($payload);
     }
 }

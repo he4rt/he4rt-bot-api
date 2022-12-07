@@ -14,8 +14,7 @@ class ClaimBadge
     public function __construct(
         UsersRepository $usersRepository,
         BadgeRepository $badgeRepository
-    )
-    {
+    ) {
         $this->usersRepository = $usersRepository;
         $this->badgeRepository = $badgeRepository;
     }

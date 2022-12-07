@@ -2,7 +2,6 @@
 
 namespace Feature\Gamefication;
 
-use App\Models\Gamefication\Season;
 use App\Models\User\User;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Lumen\Testing\DatabaseMigrations;

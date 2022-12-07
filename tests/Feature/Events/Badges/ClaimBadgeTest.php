@@ -19,7 +19,8 @@ class ClaimBadgeTest extends TestCase
 
         $response = $this->post(
             route('users.badges.claim', ['discordId' => $user->discord_id]),
-            ['redeem_code' => $badge->redeem_code], $this->getHeaders()
+            ['redeem_code' => $badge->redeem_code],
+            $this->getHeaders()
         );
 
         $response->seeStatusCode(Response::HTTP_CREATED)

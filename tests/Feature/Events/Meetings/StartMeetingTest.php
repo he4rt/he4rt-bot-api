@@ -14,18 +14,23 @@ class StartMeetingTest extends TestCase
 
     public function testBotCanStartNewMeeting(): void
     {
+        // Arrange
         $user = User::factory()->create();
         $meetingType = MeetingType::factory()->create();
         $payload = [
             'meeting_type_id' => $meetingType->id,
             'discord_id' => $user->discord_id
         ];
+        $expectedResponse = [
+            'user_created_id' => $user->getKey(),
+            'meeting_type_id' => $meetingType->id
+        ];
 
+        // Act
         $response = $this->post(route('events.meeting.startMeeting'), $payload, $this->getHeaders());
 
-        $response->seeStatusCode(Response::HTTP_CREATED)
-            ->seeJson($payload);
-
-        $this->seeInDatabase('badges', $payload);
+        // Assert
+        $response->seeStatusCode(Response::HTTP_CREATED)->seeJson($expectedResponse);
+        $this->seeInDatabase('meetings', $expectedResponse);
     }
 }

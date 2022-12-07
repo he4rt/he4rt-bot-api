@@ -31,5 +31,4 @@ class CreateUserTest extends TestCase
         $response = $this->post(route('users.store'), $payload);
         $response->seeStatusCode(Response::HTTP_UNAUTHORIZED);
     }
-
 }
