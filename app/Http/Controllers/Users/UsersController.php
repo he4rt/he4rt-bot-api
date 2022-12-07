@@ -15,6 +15,7 @@ use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Knuckles\Scribe\Extracting\Strategies\Responses\UseResponseFileTag;
 
 class UsersController extends Controller
 {
@@ -32,11 +33,20 @@ class UsersController extends Controller
 
     public function getUsers(Request $request)
     {
-        $query = $this->model->paginate(15);
+        $query = User::paginate(15);
         // Filters
         return $this->success($query);
     }
 
+    /**
+     * Cria um novo usuário
+     *
+     * Cria um novo usuário após ser acionado o comando /apresentar
+     * @group Users
+     * @bodyParam discord_id int required ID do usuário do Discord. Example: 204122995579551744
+     * @responseFile 422 responses/Users/ValidationUserCreated.json
+     * @responseFile 201 responses/Users/UserCreated.json
+     */
     public function postUser(Request $request, CreateUser $action): JsonResponse
     {
         $payload = $this->validate($request, ['discord_id' => 'required|unique:users|numeric']);

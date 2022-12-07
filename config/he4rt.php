@@ -4,7 +4,10 @@
 use Carbon\Carbon;
 
 return [
-    'season' => env('APP_SEASON', 1),
+    'season' => [
+        'id'=> env('SEASON_ID', 1),
+        'minimum_level_for_retro' => env('SEASON_MIN_LEVEL', 3)
+    ],
     'server_key' => env('BOT_SECRET', 'he4rt'),
     'discord' => [
         'token' => env('HE4RT_DISCORD_BOT_KEY'),

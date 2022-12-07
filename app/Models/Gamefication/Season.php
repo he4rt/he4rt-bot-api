@@ -24,8 +24,8 @@ class Season extends Model
 
     protected $casts = [
         'status' => 'bool',
-        'starts_at' => 'timestamp',
-        'ends_at' => 'timestamp',
+        'starts_at' => 'datetime',
+        'ends_at' => 'datetime',
         'participants_count' => 'int',
         'messages_count' => 'int'
     ];

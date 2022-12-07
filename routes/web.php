@@ -47,10 +47,15 @@ $router->group(['prefix' => 'users', 'middleware' => 'bot-auth'], function ($rou
     | For gamefication and other stuff
     */
 
-    $router->post('/{discordId}/daily', ['uses' => 'Users\UsersController@postDaily', 'as' => 'users.dailyPoints']);
-    $router->post('/{discordId}/message', ['uses' => 'Users\MessagesController@postMessage', 'as' => 'users.messages.store']);
-    $router->post('/{discordId}/claim-badge', ['uses' => 'Events\BadgesController@postClaimBadge', 'as' => 'users.badges.claim']);
-
+    $router->post('/{discordId}/daily', [
+        'uses' => 'Users\UsersController@postDaily', 'as' => 'users.dailyPoints'
+    ]);
+    $router->post('/{discordId}/message', [
+        'uses' => 'Users\MessagesController@postMessage', 'as' => 'users.messages.store'
+    ]);
+    $router->post('/{discordId}/claim-badge', [
+        ['uses' => 'Events\BadgesController@postClaimBadge', 'as' => 'users.badges.claim']
+    ]);
 });
 
 $router->group(['prefix' => 'events', 'middleware' => 'bot-auth'], function ($router) {
@@ -71,10 +76,7 @@ $router->group(['prefix' => 'ranking'], function ($router) {
     $router->get('messages', 'Gamification\RankingController@getGeneralMessageRanking');
 });
 
-// Não utilizado
-//$router->group(['prefix' => 'badges'], function ($router) {
-//    $router->get('/', 'Gamification\BadgeController@getBadges');
-//    $router->post('/', 'Gamification\BadgeController@postBadge');
-//    $router->get('/{badgeId}', 'Gamification\BadgeController@getBadge');
-//    $router->delete('/{badgeId}', 'Gamification\BadgeController@deleteBadge');
-//});
+$router->group(['prefix' => 'seasons'], function ($router) {
+    $router->get('/', 'Gamification\SeasonsController@getSeasons');
+    $router->get('/current', 'Gamification\SeasonsController@getCurrentSeason');
+});

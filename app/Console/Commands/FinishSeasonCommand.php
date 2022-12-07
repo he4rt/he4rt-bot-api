@@ -38,7 +38,12 @@ class FinishSeasonCommand extends Command
 
         $this->info('Finalização de temporada iniciada!');
         DB::transaction(function () use ($currentSeason) {
-            User::orderBy('id')->chunk(500, fn(Collection $users) => $this->handleUsers($users, $currentSeason));
+            User::query()
+                ->where('level', '>', 3)
+                ->orderBy('id')->chunk(
+                    500,
+                    fn(Collection $users) => $this->handleUsers($users, $currentSeason)
+                );
         });
         $this->info('Finalização de temporada finalizada!');
         $this->info('Lembre-se de trocar o APP_SEASON no env para o valor da nova temporada.');

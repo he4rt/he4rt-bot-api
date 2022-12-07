@@ -2,8 +2,6 @@
 
 namespace Tests\Feature\Commands;
 
-use App\Models\Gamefication\Season;
-use Carbon\Carbon;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use TestCase;
 
