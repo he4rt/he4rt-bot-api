@@ -18,7 +18,7 @@ class CreateFeedbacksTable extends Migration
 
             $table->foreignId('sender_id')->references('id')->on('users');
             $table->foreignId('target_id')->references('id')->on('users');
-            $table->string('tipo');
+            $table->string('type');
             $table->string('messages');
 
             $table->timestamps();
