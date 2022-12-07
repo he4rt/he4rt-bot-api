@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Events;
 
 use App\Actions\Event\Meeting\AttendMeeting;
 use App\Actions\Event\Meeting\CreateMeeting;
+use App\Actions\Event\Meeting\IndexMeeting;
 use App\Actions\Event\Meeting\UpdateMeeting;
 use App\Exceptions\MeetingsException;
 use App\Http\Controllers\Controller;
@@ -13,6 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MeettingsController extends Controller
 {
+    public function index(IndexMeeting $action): JsonResponse
+    {
+        return response()->json($action->handle());
+    }
+
     public function store(Request $request, CreateMeeting $action): JsonResponse
     {
         $payload = $this->validate($request, [

@@ -3,9 +3,15 @@
 namespace App\Repositories\Events;
 
 use App\Models\Events\Meeting;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class MeetingRepository
 {
+    public function getAll(): LengthAwarePaginator
+    {
+        return Meeting::with('meetingType')->paginate();
+    }
+
     public function create(array $payload): Meeting
     {
         return Meeting::create($payload);

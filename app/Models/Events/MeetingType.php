@@ -16,4 +16,15 @@ class MeetingType extends Model
         'week_day',
         'start_at',
     ];
+
+    public function getStartAtAttribute($value): string
+    {
+        $hours = (string) intdiv($value, 60);
+        $minutes = (string) $value % 60;
+
+        $hours = str_pad($hours, 2, '0', STR_PAD_LEFT);
+        $minutes = str_pad($minutes, 2, '0', STR_PAD_LEFT);
+
+        return $hours . ':' . $minutes;
+    }
 }
