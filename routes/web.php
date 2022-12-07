@@ -59,7 +59,7 @@ $router->group(['prefix' => 'events', 'middleware' => 'bot-auth'], function ($ro
     });
 
     $router->group(['prefix' => 'meeting'], function ($router) {
-        $router->post('/', ['uses' => 'Events\MeettingsController@startMeeting', 'as' => 'events.meeting.startMeeting']);
+        $router->post('/', ['uses' => 'Events\MeettingsController@store', 'as' => 'events.meeting.store']);
     });
 });
 

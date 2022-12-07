@@ -7,7 +7,7 @@ use App\Repositories\Events\MeetingRepository;
 use App\Repositories\Users\UsersRepository;
 use Illuminate\Support\Carbon;
 
-class StartMeeting
+class CreateMeeting
 {
     private MeetingRepository $meetingRepository;
     private UsersRepository $usersRepository;

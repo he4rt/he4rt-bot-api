@@ -8,7 +8,7 @@ use Laravel\Lumen\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
 use TestCase;
 
-class StartMeetingTest extends TestCase
+class CreateMeetingTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -27,7 +27,7 @@ class StartMeetingTest extends TestCase
         ];
 
         // Act
-        $response = $this->post(route('events.meeting.startMeeting'), $payload, $this->getHeaders());
+        $response = $this->post(route('events.meeting.store'), $payload, $this->getHeaders());
 
         // Assert
         $response->seeStatusCode(Response::HTTP_CREATED)->seeJson($expectedResponse);
