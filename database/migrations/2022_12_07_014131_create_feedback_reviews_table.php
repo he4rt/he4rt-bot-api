@@ -18,7 +18,7 @@ class CreateFeedbackReviewsTable extends Migration
 
             $table->foreignId('feedback_id')->references('id')->on('feedback');
             $table->foreignId('staff_id')->references('id')->on('users');
-            $table->string('decline_message');
+            $table->string('decline_message')->nullable();
             $table->timestamp('approved_at')->nullable();
             $table->timestamp('declined_at')->nullable();
 

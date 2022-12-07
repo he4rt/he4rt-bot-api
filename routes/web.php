@@ -1,6 +1,11 @@
 <?php
 
-/** @var \Laravel\Lumen\Routing\Router $router */
+declare(strict_types=1);
+
+use App\Http\Controllers\Feedbacks\FeedbacksController;
+use Laravel\Lumen\Routing\Router;
+
+/** @var Router $router */
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +22,7 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-if (env('APP_ENV') !== "production") {
+if (config('app.env') !== "production") {
     $router->get('swagger', function () {
         return view('swagger');
     });
@@ -26,7 +31,7 @@ if (env('APP_ENV') !== "production") {
 $router->get('/auth/oauth/{provider}', 'AuthController@authenticate');
 $router->get('/auth/logout', 'AuthController@logout');
 
-$router->group(['prefix' => 'users', 'middleware' => 'bot-auth'], function ($router) {
+$router->group(['prefix' => 'users', 'middleware' => 'bot-auth'], function (Router $router) {
     /*
     |--------------------------------------------------------------------------
     | Basic User Routes
@@ -53,28 +58,33 @@ $router->group(['prefix' => 'users', 'middleware' => 'bot-auth'], function ($rou
 
 });
 
-$router->group(['prefix' => 'events', 'middleware' => 'bot-auth'], function ($router) {
-    $router->group(['prefix' => 'badges'], function ($router) {
+$router->group(['prefix' => 'events', 'middleware' => 'bot-auth'], function (Router $router) {
+    $router->group(['prefix' => 'badges'], function (Router $router) {
         $router->post('/', ['uses' => 'Events\BadgesController@postBadge', 'as' => 'events.badges.store']);
     });
 });
 
 
-$router->group(['prefix' => 'bot', 'middleware' => 'bot-auth'], function ($router) {
-    $router->group(['prefix' => 'gambling'], function ($router) {
+$router->group(['prefix' => 'bot', 'middleware' => 'bot-auth'], function (Router $router) {
+    $router->group(['prefix' => 'gambling'], function (Router $router) {
         $router->put('money', 'Gamification\GamblingController@putMoney');
     });
 });
 
-$router->group(['prefix' => 'ranking'], function ($router) {
+$router->group(['prefix' => 'ranking'], function (Router $router) {
     $router->get('general', 'Gamification\RankingController@getGeneralLevelRanking');
     $router->get('messages', 'Gamification\RankingController@getGeneralMessageRanking');
 });
 
-// Não utilizado
-//$router->group(['prefix' => 'badges'], function ($router) {
-//    $router->get('/', 'Gamification\BadgeController@getBadges');
-//    $router->post('/', 'Gamification\BadgeController@postBadge');
-//    $router->get('/{badgeId}', 'Gamification\BadgeController@getBadge');
-//    $router->delete('/{badgeId}', 'Gamification\BadgeController@deleteBadge');
-//});
+$router->group(['prefix' => 'feedback'], function (Router $router) {
+    $router->post('/', FeedbacksController::class.'@create');
+});
+
+if (config('features.gamification.badges')) {
+    $router->group(['prefix' => 'badges'], function (Router $router) {
+        $router->get('/', 'Gamification\BadgeController@getBadges');
+        $router->post('/', 'Gamification\BadgeController@postBadge');
+        $router->get('/{badgeId}', 'Gamification\BadgeController@getBadge');
+        $router->delete('/{badgeId}', 'Gamification\BadgeController@deleteBadge');
+    });
+}
