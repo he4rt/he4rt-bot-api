@@ -10,4 +10,17 @@ class MeetingRepository
     {
         return Meeting::create($payload);
     }
+
+    public function find(int $meetingId): Meeting
+    {
+        return Meeting::find($meetingId);
+    }
+
+    public function update(int $meetingId, array $payload): Meeting
+    {
+        $model = $this->find($meetingId);
+        $model->update($payload);
+
+        return $model->refresh();
+    }
 }

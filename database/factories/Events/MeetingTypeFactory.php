@@ -2,7 +2,6 @@
 
 namespace Database\Factories\Events;
 
-use App\Models\Events\Badge;
 use App\Models\Events\MeetingType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
