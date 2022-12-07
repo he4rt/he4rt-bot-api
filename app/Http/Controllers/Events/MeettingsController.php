@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Events;
 
+use App\Actions\Event\Meeting\AttendMeeting;
 use App\Actions\Event\Meeting\CreateMeeting;
 use App\Actions\Event\Meeting\UpdateMeeting;
+use App\Exceptions\MeetingsException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Symfony\Component\HttpFoundation\Response;
 
 class MeettingsController extends Controller
@@ -29,9 +30,26 @@ class MeettingsController extends Controller
     {
         $request->merge(['meeting_id' => $meetingId]);
         $payload = $this->validate($request, [
-            'meeting_id' => ['required', 'exists:meetings,id'],
+            'meeting_id' => ['required', 'integer', 'exists:meetings,id']
         ]);
 
         return response()->json($action->handle($meetingId, $payload));
+    }
+
+    public function attendMeeting(Request $request, AttendMeeting $action): JsonResponse
+    {
+        $payload = $this->validate($request, [
+            'meeting_id' => ['required', 'integer', 'exists:meetings,id'],
+            'discord_id' => ['required', 'integer', 'exists:users']
+        ]);
+
+        try {
+            return response()->json(
+                $action->handle($payload),
+                Response::HTTP_CREATED
+            );
+        } catch (MeetingsException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
     }
 }

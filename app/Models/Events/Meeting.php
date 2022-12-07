@@ -27,4 +27,9 @@ class Meeting extends Model
         'meeting_type_id' => 'integer',
         'user_created_id' => 'integer',
     ];
+
+    public function isEnded(): bool
+    {
+        return (bool) $this->attributes['ends_at'];
+    }
 }

@@ -18,12 +18,12 @@ class CreateMeetingTest extends TestCase
         $user = User::factory()->create();
         $meetingType = MeetingType::factory()->create();
         $payload = [
-            'meeting_type_id' => $meetingType->id,
+            'meeting_type_id' => $meetingType->getKey(),
             'discord_id' => $user->discord_id
         ];
         $expectedResponse = [
             'user_created_id' => $user->getKey(),
-            'meeting_type_id' => $meetingType->id
+            'meeting_type_id' => $meetingType->getKey()
         ];
 
         // Act
