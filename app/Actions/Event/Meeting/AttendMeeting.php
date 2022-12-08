@@ -31,7 +31,7 @@ class AttendMeeting
      */
     public function handle(array $payload): MeetingParticipants
     {
-        $meeting = $this->meetingRepository->getFirstActiveMeeting();
+        $meeting = $this->meetingRepository->getActiveMeeting();
         $userParticipant = $this->usersRepository->findById($payload['discord_id']);
 
         if (!$meeting) {
