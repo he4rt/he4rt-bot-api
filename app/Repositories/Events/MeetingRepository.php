@@ -22,7 +22,7 @@ class MeetingRepository
         return Meeting::findOrFail($meetingId);
     }
 
-    public function getFirstActiveMeeting(): ?Meeting
+    public function getActiveMeeting(): ?Meeting
     {
         return Meeting::whereNull('ends_at')->first();
     }

@@ -30,7 +30,9 @@ class AttendMeetingTest extends TestCase
         $response = $this->post(route('events.meeting.postAttendMeeting'), $payload, $this->getHeaders());
 
         // Assert
-        $response->seeStatusCode(Response::HTTP_CREATED)->seeJson($expectedResponse);
+        $response
+            ->seeStatusCode(Response::HTTP_CREATED)
+            ->seeJson(['message' => __('meetings.success.attendMeeting')]);
         $this->seeInDatabase('meeting_participants', $expectedResponse);
     }
 

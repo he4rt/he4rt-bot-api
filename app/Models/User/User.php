@@ -3,6 +3,7 @@
 namespace App\Models\User;
 
 use App\Models\Events\Badge;
+use App\Models\Events\Meeting;
 use App\Models\Gamefication\ExperienceTable;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
@@ -122,6 +123,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'user_id',
             'badge_id'
         );
+    }
+
+    public function meetings(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Meeting::class,
+            'meeting_participants',
+            'user_id',
+            'meeting_id'
+        )->withPivot(['attend_at']);
     }
 
     public function hasBadge(int $badgeId): bool

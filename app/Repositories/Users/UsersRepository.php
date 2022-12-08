@@ -55,4 +55,11 @@ class UsersRepository
             ->badges()
             ->attach($badgeId);
     }
+
+    public function attachMeeting(int $discordId, int $meetingId, array $pivotValues): void
+    {
+        $this->findById($discordId)
+            ->meetings()
+            ->attach($meetingId, $pivotValues);
+    }
 }
