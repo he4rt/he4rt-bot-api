@@ -84,8 +84,8 @@ $router->group(['prefix' => 'ranking'], function (Router $router) {
 
 $router->group(['prefix' => 'feedback', 'as' => 'feedback'], function (Router $router) {
     $router->post('/', ['uses' => FeedbackController::class.'@create', 'as' => 'create']);
-    $router->post('/review/{feedback}/approve', ['uses' => FeedbackReviewController::class.'@approve', 'as' => 'review.approve']);
-    $router->post('/review/{feedback}/decline', ['uses' => FeedbackReviewController::class.'@decline', 'as' => 'review.decline']);
+    $router->post('/review/{feedbackId}/approve', ['uses' => FeedbackReviewController::class.'@approve', 'as' => 'review.approve']);
+    $router->post('/review/{feedbackId}/decline', ['uses' => FeedbackReviewController::class.'@decline', 'as' => 'review.decline']);
 });
 
 if (config('features.gamification.badges')) {
