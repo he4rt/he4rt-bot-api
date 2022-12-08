@@ -16,14 +16,14 @@ class IndexMeetingTest extends TestCase
         $meeting = Meeting::factory()->unfinished()->create();
 
         // Act
-        $response = $this->get(route('events.meeting.index'), $this->getHeaders());
+        $response = $this->get(route('events.meeting.getMeetings'), $this->getHeaders());
 
         // Assert
         $response->assertResponseOk();
         $response->seeJsonStructure(
             [
                 'data' => [
-                    '*' => [
+                    0 => [
                         'id',
                         'content',
                         'meeting_type_id',

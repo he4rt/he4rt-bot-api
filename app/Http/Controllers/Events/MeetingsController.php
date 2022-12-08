@@ -12,14 +12,14 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class MeettingsController extends Controller
+class MeetingsController extends Controller
 {
-    public function index(IndexMeeting $action): JsonResponse
+    public function getMeetings(IndexMeeting $action): JsonResponse
     {
         return response()->json($action->handle());
     }
 
-    public function store(Request $request, CreateMeeting $action): JsonResponse
+    public function postMeeting(Request $request, CreateMeeting $action): JsonResponse
     {
         $payload = $this->validate($request, [
             'meeting_type_id' => ['required', 'integer', 'exists:meeting_types,id'],
@@ -32,17 +32,12 @@ class MeettingsController extends Controller
         );
     }
 
-    public function endMeeting(Request $request, int $meetingId, UpdateMeeting $action): JsonResponse
+    public function putEndMeeting(UpdateMeeting $action): JsonResponse
     {
-        $request->merge(['meeting_id' => $meetingId]);
-        $payload = $this->validate($request, [
-            'meeting_id' => ['required', 'integer', 'exists:meetings,id']
-        ]);
-
-        return response()->json($action->handle($meetingId, $payload));
+        return response()->json(['message' => $action->handle()]);
     }
 
-    public function attendMeeting(Request $request, AttendMeeting $action): JsonResponse
+    public function postAttendMeeting(Request $request, AttendMeeting $action): JsonResponse
     {
         $payload = $this->validate($request, [
             'meeting_id' => ['required', 'integer', 'exists:meetings,id'],

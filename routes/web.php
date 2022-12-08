@@ -59,10 +59,10 @@ $router->group(['prefix' => 'events', 'middleware' => 'bot-auth'], function ($ro
     });
 
     $router->group(['prefix' => 'meeting'], function ($router) {
-        $router->get('/', ['uses' => 'Events\MeettingsController@index', 'as' => 'events.meeting.index']);
-        $router->post('/', ['uses' => 'Events\MeettingsController@store', 'as' => 'events.meeting.store']);
-        $router->put('/{meetingId}', ['uses' => 'Events\MeettingsController@endMeeting', 'as' => 'events.meeting.endMeeting']);
-        $router->post('/attend', ['uses' => 'Events\MeettingsController@attendMeeting', 'as' => 'events.meeting.attendMeeting']);
+        $router->get('/', ['uses' => 'Events\MeetingsController@getMeetings', 'as' => 'events.meeting.getMeetings']);
+        $router->post('/', ['uses' => 'Events\MeetingsController@postMeeting', 'as' => 'events.meeting.postMeeting']);
+        $router->put('/end', ['uses' => 'Events\MeetingsController@putEndMeeting', 'as' => 'events.meeting.putEndMeeting']);
+        $router->post('/attend', ['uses' => 'Events\MeetingsController@postAttendMeeting', 'as' => 'events.meeting.postAttendMeeting']);
     });
 });
 

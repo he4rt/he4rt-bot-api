@@ -16,9 +16,9 @@ class AttendMeeting
     private MeetingRepository $meetingRepository;
 
     public function __construct(
-    MeetingParticipantsRepository $repository, 
-    UsersRepository $usersRepository, 
-    MeetingRepository $meetingRepository
+        MeetingParticipantsRepository $repository,
+        UsersRepository               $usersRepository,
+        MeetingRepository             $meetingRepository
     )
     {
         $this->repository = $repository;

@@ -13,6 +13,7 @@ class Meeting extends Model
     protected $table = 'meetings';
 
     protected $fillable = [
+        'content',
         'meeting_type_id',
         'user_created_id',
         'starts_at',

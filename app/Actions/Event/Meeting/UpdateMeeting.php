@@ -15,10 +15,12 @@ class UpdateMeeting
         $this->meetingRepository = $meetingRepository;
     }
 
-    public function handle(int $meetingId, array $payload): Meeting
+    public function handle(): string
     {
         $payload['ends_at'] = Carbon::now();
 
-        return $this->meetingRepository->update($meetingId, $payload);
+        $this->meetingRepository->updateActiveMeetings($payload);
+
+        return __('meetings.success');
     }
 }

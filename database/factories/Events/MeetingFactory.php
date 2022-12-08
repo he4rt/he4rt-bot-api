@@ -16,6 +16,7 @@ class MeetingFactory extends Factory
         return [
             'meeting_type_id' => MeetingType::factory(),
             'user_created_id' => User::factory(),
+            'content' => 'Fake content',
             'starts_at' => $this->faker->dateTimeBetween('-1 hour'),
             'ends_at' => $this->faker->dateTimeBetween('+1 hour', '+2 hour'),
         ];
@@ -23,6 +24,6 @@ class MeetingFactory extends Factory
 
     public function unfinished(): self
     {
-        return $this->state(fn() => ['ends_at' => null]);
+        return $this->state(fn() => ['ends_at' => null, 'content' => null]);
     }
 }

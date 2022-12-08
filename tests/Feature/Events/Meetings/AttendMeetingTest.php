@@ -27,7 +27,7 @@ class AttendMeetingTest extends TestCase
         ];
 
         // Act
-        $response = $this->post(route('events.meeting.attendMeeting'), $payload, $this->getHeaders());
+        $response = $this->post(route('events.meeting.postAttendMeeting'), $payload, $this->getHeaders());
 
         // Assert
         $response->seeStatusCode(Response::HTTP_CREATED)->seeJson($expectedResponse);
@@ -49,7 +49,7 @@ class AttendMeetingTest extends TestCase
         ];
 
         // Act
-        $response = $this->post(route('events.meeting.attendMeeting'), $payload, $this->getHeaders());
+        $response = $this->post(route('events.meeting.postAttendMeeting'), $payload, $this->getHeaders());
 
         // Assert
         $response

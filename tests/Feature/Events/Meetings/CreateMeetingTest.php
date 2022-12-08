@@ -27,7 +27,7 @@ class CreateMeetingTest extends TestCase
         ];
 
         // Act
-        $response = $this->post(route('events.meeting.store'), $payload, $this->getHeaders());
+        $response = $this->post(route('events.meeting.postMeeting'), $payload, $this->getHeaders());
 
         // Assert
         $response->seeStatusCode(Response::HTTP_CREATED)->seeJson($expectedResponse);

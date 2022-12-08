@@ -29,4 +29,9 @@ class MeetingRepository
 
         return $model->refresh();
     }
+
+    public function updateActiveMeetings(array $payload): void
+    {
+        Meeting::whereNull('ends_at')->update($payload);
+    }
 }
