@@ -54,7 +54,7 @@ class AttendMeetingTest extends TestCase
         // Assert
         $response
             ->seeStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->seeJson(['message' => __('meetings.errors.meetingEnded')]);
+            ->seeJson(['message' => __('meetings.errors.noAtiveMeetings')]);
         $this->notSeeInDatabase('meeting_participants', $expectedResponse);
     }
 }

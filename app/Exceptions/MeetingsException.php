@@ -7,10 +7,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MeetingsException extends Exception
 {
-    public static function meetingEnded(): self
+    public static function noAtiveMeetings(): self
     {
         return new self(
-            __('meetings.errors.meetingEnded'),
+            __('meetings.errors.noAtiveMeetings'),
             Response::HTTP_UNPROCESSABLE_ENTITY
         );
     }

@@ -17,8 +17,8 @@ class EndMeetingTest extends TestCase
         $meeting = Meeting::factory()->unfinished()->create();
 
         // Act
-        $response = $this->put(
-            route('events.meeting.putEndMeeting', ['meetingId' => $meeting->getKey()]),
+        $response = $this->post(
+            route('events.meeting.postEndMeeting', ['meetingId' => $meeting->getKey()]),
             [],
             $this->getHeaders()
         );
@@ -27,7 +27,7 @@ class EndMeetingTest extends TestCase
         $meeting->refresh();
         $response
             ->seeStatusCode(Response::HTTP_OK)
-            ->seeJson(['message' => __('meetings.success')]);
+            ->seeJson(['message' => __('meetings.success.endMeeting')]);
         $this->assertNotNull($meeting->ends_at);
     }
 }

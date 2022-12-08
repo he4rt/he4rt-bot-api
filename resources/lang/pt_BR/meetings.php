@@ -1,7 +1,9 @@
 <?php
 return [
-    'success' => 'Reuniões ativas finalizadas com sucesso.',
+    'success' => [
+        'endMeeting' => 'Reuniões ativas finalizadas com sucesso.'
+    ],
     'errors' => [
-        'meetingEnded' => 'Você não pode participar de uma reunião finalizada.',
+        'noAtiveMeetings' => 'Não existe nenhuma reunião ativa no momento.',
     ]
 ];

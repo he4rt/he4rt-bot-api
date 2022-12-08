@@ -19,7 +19,12 @@ class MeetingRepository
 
     public function find(int $meetingId): Meeting
     {
-        return Meeting::find($meetingId);
+        return Meeting::findOrFail($meetingId);
+    }
+
+    public function getFirstActiveMeeting(): ?Meeting
+    {
+        return Meeting::whereNull('ends_at')->first();
     }
 
     public function update(int $meetingId, array $payload): Meeting

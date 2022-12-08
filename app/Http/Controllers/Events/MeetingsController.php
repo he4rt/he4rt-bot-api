@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Events;
 
+use App\Actions\Event\Meeting\AddMeetingSubject;
 use App\Actions\Event\Meeting\AttendMeeting;
 use App\Actions\Event\Meeting\CreateMeeting;
 use App\Actions\Event\Meeting\IndexMeeting;
-use App\Actions\Event\Meeting\UpdateMeeting;
+use App\Actions\Event\Meeting\EndMeeting;
 use App\Exceptions\MeetingsException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
@@ -32,7 +33,7 @@ class MeetingsController extends Controller
         );
     }
 
-    public function putEndMeeting(UpdateMeeting $action): JsonResponse
+    public function postEndMeeting(EndMeeting $action): JsonResponse
     {
         return response()->json(['message' => $action->handle()]);
     }
@@ -40,7 +41,6 @@ class MeetingsController extends Controller
     public function postAttendMeeting(Request $request, AttendMeeting $action): JsonResponse
     {
         $payload = $this->validate($request, [
-            'meeting_id' => ['required', 'integer', 'exists:meetings,id'],
             'discord_id' => ['required', 'integer', 'exists:users']
         ]);
 
@@ -52,5 +52,14 @@ class MeetingsController extends Controller
         } catch (MeetingsException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
+    }
+
+    public function postMeetingSubject(Request $request, int $meetingId, AddMeetingSubject $action): JsonResponse
+    {
+        $payload = $this->validate($request, [
+            'content' => ['required', 'string']
+        ]);
+
+        return response()->json($action->handle($meetingId, $payload));
     }
 }

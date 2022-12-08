@@ -26,17 +26,21 @@ class AttendMeeting
         $this->meetingRepository = $meetingRepository;
     }
 
+    /**
+     * @throws MeetingsException
+     */
     public function handle(array $payload): MeetingParticipants
     {
-        $meeting = $this->meetingRepository->find($payload['meeting_id']);
+        $meeting = $this->meetingRepository->getFirstActiveMeeting();
         $userParticipant = $this->usersRepository->findById($payload['discord_id']);
 
-        if ($meeting->isEnded()) {
-            throw MeetingsException::meetingEnded();
+        if (!$meeting) {
+            throw MeetingsException::noAtiveMeetings();
         }
 
         $payload['attend_at'] = Carbon::now();
         $payload['user_id'] = $userParticipant->getKey();
+        $payload['meeting_id'] = $meeting->getKey();
 
         return $this->repository->create($payload);
     }

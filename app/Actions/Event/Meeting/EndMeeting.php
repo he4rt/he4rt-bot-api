@@ -6,7 +6,7 @@ use App\Models\Events\Meeting;
 use App\Repositories\Events\MeetingRepository;
 use Illuminate\Support\Carbon;
 
-class UpdateMeeting
+class EndMeeting
 {
     private MeetingRepository $meetingRepository;
 
@@ -21,6 +21,6 @@ class UpdateMeeting
 
         $this->meetingRepository->updateActiveMeetings($payload);
 
-        return __('meetings.success');
+        return __('meetings.success.endMeeting');
     }
 }
