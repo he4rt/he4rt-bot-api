@@ -2,21 +2,32 @@
 
 namespace App\Actions\Feedback;
 
+use App\Actions\User\GetUser;
+use App\Exceptions\UserException;
 use App\Models\Feedback\Feedback;
 use App\Repositories\Feedback\FeedbackRepository;
-use App\Repositories\Feedback\FeedbackReviewRepository;
 
 class CreateFeedback
 {
     private FeedbackRepository $feedbackRepository;
+    private GetUser $getUser;
 
-    public function __construct(FeedbackRepository $feedbackRepository)
-    {
+    public function __construct(
+        FeedbackRepository $feedbackRepository,
+        GetUser $getUser
+    ) {
         $this->feedbackRepository = $feedbackRepository;
+        $this->getUser = $getUser;
     }
 
+    /** @throws UserException */
     public function handle(array $payload): Feedback
     {
-        return $this->feedbackRepository->create($payload);
+        return $this->feedbackRepository->create([
+            'sender_id' => $this->getUser->handle($payload['sender_id'])->getKey(),
+            'target_id' => $this->getUser->handle($payload['target_id'])->getKey(),
+            'message' => $payload['message'],
+            'type' => $payload['type']
+        ]);
     }
 }

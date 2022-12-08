@@ -17,7 +17,7 @@ class Feedback extends Model
         'sender_id',
         'target_id',
         'type',
-        'messages'
+        'message'
     ];
 
     public function sender(): BelongsTo

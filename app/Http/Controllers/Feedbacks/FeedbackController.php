@@ -3,23 +3,25 @@
 namespace App\Http\Controllers\Feedbacks;
 
 use App\Actions\Feedback\CreateFeedback;
+use App\Exceptions\UserException;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class FeedbackController extends Controller
 {
-    public function create(Request $request, CreateFeedback $create)
+    /** @throws UserException */
+    public function create(Request $request, CreateFeedback $create): JsonResponse
     {
-        $payload = $request->validate([
+        $payload = $this->validate($request, [
             'sender_id' => [
                 'required',
-                'unique:users,discord_id',
                 'numeric',
                 'different:target_id',
             ],
             'target_id' => [
                 'required',
-                'unique:users,discord_id',
                 'numeric',
                 'different:sender_id',
             ],
@@ -27,9 +29,12 @@ class FeedbackController extends Controller
                 'string',
                 'max:4000'
             ],
-            'type' => 'string',
+            'type' => [
+                'required',
+                'string'
+            ],
         ]);
 
-        return $create->handle($payload);
+        return response()->json($create->handle($payload)->toArray(), Response::HTTP_CREATED);
     }
 }

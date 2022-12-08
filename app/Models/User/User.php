@@ -19,6 +19,11 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\HasApiTokens;
 
+/**
+ * @property string $discord_id
+ * @property string $twitch_id
+ * @property string $email
+ */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable;

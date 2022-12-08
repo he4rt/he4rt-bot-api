@@ -16,7 +16,7 @@ class CreateFeedbackReviewsTable extends Migration
         Schema::create('feedback_reviews', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('feedback_id')->references('id')->on('feedback');
+            $table->foreignId('feedback_id')->references('id')->on('feedbacks');
             $table->foreignId('staff_id')->references('id')->on('users');
             $table->string('decline_message')->nullable();
             $table->timestamp('approved_at')->nullable();
