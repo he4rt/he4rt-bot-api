@@ -10,4 +10,9 @@ class UserException extends Exception
     {
         return new self(sprintf('User with Discord id %s was not found', $id));
     }
+
+    public function render($request)
+    {
+        return response($this->getMessage(), $this->code);
+    }
 }

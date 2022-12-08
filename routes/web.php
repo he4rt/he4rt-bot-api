@@ -79,7 +79,8 @@ $router->group(['prefix' => 'ranking'], function (Router $router) {
 
 $router->group(['prefix' => 'feedback'], function (Router $router) {
     $router->post('/', FeedbackController::class.'@create');
-    $router->get('/review/{feedback}/approve', FeedbackReviewController::class.'@approve');
+    $router->post('/review/{feedback}/approve', FeedbackReviewController::class.'@approve');
+    $router->post('/review/{feedback}/decline', FeedbackReviewController::class.'@decline');
 });
 
 if (config('features.gamification.badges')) {

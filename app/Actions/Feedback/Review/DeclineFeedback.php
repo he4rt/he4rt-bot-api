@@ -30,10 +30,10 @@ class DeclineFeedback
      * @throws UserException
      * @throws FeedbackException
      */
-    public function handle(array $payload): FeedbackRepository
+    public function handle(int $feedbackId, array $payload): FeedbackRepository
     {
         return $this->feedbackReviewRepository->create([
-            'feedback_id'     => $this->getFeedback->handle($payload['feedback_id'])->getKey(),
+            'feedback_id'     => $this->getFeedback->handle($feedbackId)->getKey(),
             'staff_id'        => $this->getUser->handle($payload['staff_id'])->getKey(),
             'decline_message' => $payload['decline_message'],
             'declined_at'     => Carbon::now(),

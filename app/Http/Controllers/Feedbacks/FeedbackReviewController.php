@@ -4,13 +4,19 @@ namespace App\Http\Controllers\Feedbacks;
 
 use App\Actions\Feedback\Review\ApproveFeedback;
 use App\Actions\Feedback\Review\DeclineFeedback;
+use App\Exceptions\FeedbackException;
+use App\Exceptions\UserException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class FeedbackReviewController extends Controller
 {
-    public function approve(Request $request, ApproveFeedback $approve): JsonResponse
+    /**
+     * @throws UserException
+     * @throws FeedbackException
+     */
+    public function approve(Request $request, int $feedbackId, ApproveFeedback $approve): JsonResponse
     {
         $payload = $request->validate([
             'staff_id' => [
@@ -23,12 +29,16 @@ class FeedbackReviewController extends Controller
             ],
         ]);
 
-        $approve->handle($payload);
+        $approve->handle($feedbackId, $payload);
 
-        return response()->json(['message' => 'Feedback was successfully approved.']);
+        return response()->json(['message' => 'Feedback approved.']);
     }
 
-    public function decline(Request $request, DeclineFeedback $decline)
+    /**
+     * @throws UserException
+     * @throws FeedbackException
+     */
+    public function decline(Request $request, int $feedbackId, DeclineFeedback $decline)
     {
         $payload = $request->validate([
              'staff_id' => [
@@ -46,6 +56,8 @@ class FeedbackReviewController extends Controller
             ],
         ]);
 
-        $decline->handle($payload);
+        $decline->handle($feedbackId, $payload);
+
+        return response()->json(['message' => 'Feedback declined.']);
     }
 }
