@@ -35,6 +35,10 @@ class FeedbackController extends Controller
             ],
         ]);
 
-        return response()->json($create->handle($payload)->toArray(), Response::HTTP_CREATED);
+        try {
+            return response()->json($create->handle($payload)->toArray(), Response::HTTP_CREATED);
+        } catch (UserException $e) {
+            return response()->json(['error' => $e->getMessage()], $e->getCode());
+        }
     }
 }

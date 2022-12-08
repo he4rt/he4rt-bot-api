@@ -26,8 +26,8 @@ class CreateFeedback
         return $this->feedbackRepository->create([
             'sender_id' => $this->getUser->handle($payload['sender_id'])->getKey(),
             'target_id' => $this->getUser->handle($payload['target_id'])->getKey(),
-            'message' => $payload['message'],
-            'type' => $payload['type']
+            'message'   => $payload['message'],
+            'type'      => $payload['type']
         ]);
     }
 }
