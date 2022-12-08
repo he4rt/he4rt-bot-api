@@ -2,7 +2,6 @@
 
 namespace Tests\Providers;
 
-use App\Models\User\User;
 use Str;
 
 class FeedbackProvider

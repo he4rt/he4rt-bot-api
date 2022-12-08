@@ -7,7 +7,6 @@ use App\Actions\User\GetUser;
 use App\Exceptions\FeedbackException;
 use App\Exceptions\UserException;
 use App\Models\Feedback\FeedbackReview;
-use App\Repositories\Feedback\FeedbackRepository;
 use App\Repositories\Feedback\FeedbackReviewRepository;
 use Carbon\Carbon;
 
@@ -19,8 +18,8 @@ class DeclineFeedback
 
     public function __construct(
         FeedbackReviewRepository $feedbackReviewRepository,
-        GetFeedback              $getFeedback,
-        GetUser                  $getUser
+        GetFeedback $getFeedback,
+        GetUser $getUser
     ) {
         $this->feedbackReviewRepository = $feedbackReviewRepository;
         $this->getFeedback = $getFeedback;
@@ -34,10 +33,10 @@ class DeclineFeedback
     public function handle(int $feedbackId, array $payload): FeedbackReview
     {
         return $this->feedbackReviewRepository->create([
-            'feedback_id'     => $this->getFeedback->handle($feedbackId)->getKey(),
-            'staff_id'        => $this->getUser->handle($payload['staff_id'])->getKey(),
+            'feedback_id' => $this->getFeedback->handle($feedbackId)->getKey(),
+            'staff_id' => $this->getUser->handle($payload['staff_id'])->getKey(),
             'decline_message' => $payload['decline_message'] ?? null,
-            'declined_at'     => Carbon::now(),
+            'declined_at' => Carbon::now(),
         ]);
     }
 }

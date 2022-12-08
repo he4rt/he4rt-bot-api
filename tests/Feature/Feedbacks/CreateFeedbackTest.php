@@ -3,8 +3,8 @@
 namespace Tests\Feature\Feedbacks;
 
 use App\Models\User\User;
-use Tests\Providers\FeedbackProvider;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\Providers\FeedbackProvider;
 use TestCase;
 
 /** @group feedback.create */

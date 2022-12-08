@@ -23,7 +23,7 @@ class FeedbackReviewController extends Controller
 
         try {
             $approve->handle($feedbackId, $payload);
-        } catch (UserException|FeedbackException $e) {
+        } catch (UserException | FeedbackException $e) {
             return response()->json(['error' => $e->getMessage()], $e->getCode());
         }
 
@@ -33,7 +33,7 @@ class FeedbackReviewController extends Controller
     public function decline(Request $request, int $feedbackId, DeclineFeedback $decline)
     {
         $payload = $this->validate($request, [
-             'staff_id' => [
+            'staff_id' => [
                 'required',
                 'numeric',
             ],
@@ -46,7 +46,7 @@ class FeedbackReviewController extends Controller
 
         try {
             $decline->handle($feedbackId, $payload);
-        } catch (UserException|FeedbackException $e) {
+        } catch (UserException | FeedbackException $e) {
             return response()->json(['error' => $e->getMessage()], $e->getCode());
         }
 

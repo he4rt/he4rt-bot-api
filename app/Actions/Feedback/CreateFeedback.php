@@ -3,7 +3,6 @@
 namespace App\Actions\Feedback;
 
 use App\Actions\User\GetUser;
-use App\Exceptions\UserException;
 use App\Models\Feedback\Feedback;
 use App\Repositories\Feedback\FeedbackRepository;
 
@@ -20,7 +19,7 @@ class CreateFeedback
         $this->getUser = $getUser;
     }
 
-    /** @throws UserException */
+    /** @throws \App\Exceptions\UserException */
     public function handle(array $payload): Feedback
     {
         return $this->feedbackRepository->create([

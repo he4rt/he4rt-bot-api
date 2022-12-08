@@ -7,9 +7,7 @@ use App\Actions\User\GetUser;
 use App\Exceptions\FeedbackException;
 use App\Exceptions\UserException;
 use App\Models\Feedback\FeedbackReview;
-use App\Repositories\Feedback\FeedbackRepository;
 use App\Repositories\Feedback\FeedbackReviewRepository;
-use App\Repositories\Users\UsersRepository;
 use Carbon\Carbon;
 
 class ApproveFeedback

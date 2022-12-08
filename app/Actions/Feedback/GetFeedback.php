@@ -3,7 +3,6 @@
 namespace App\Actions\Feedback;
 
 use App\Exceptions\FeedbackException;
-use App\Models\Feedback\Feedback;
 use App\Repositories\Feedback\FeedbackRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +21,7 @@ class GetFeedback
      * @return Model
      * @throws FeedbackException
      */
-    public function handle(int $id)
+    public function handle(int $id): Model
     {
         try {
             return $this->repository->getById($id);
