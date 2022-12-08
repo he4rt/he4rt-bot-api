@@ -2,7 +2,6 @@
 
 namespace App\Actions\Event\Meeting;
 
-use App\Models\Events\Meeting;
 use App\Repositories\Events\MeetingRepository;
 use Illuminate\Support\Carbon;
 
