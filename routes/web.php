@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Feedbacks\FeedbacksController;
+use App\Http\Controllers\Feedbacks\FeedbackController;
+use App\Http\Controllers\Feedbacks\FeedbackReviewController;
 use Laravel\Lumen\Routing\Router;
 
 /** @var Router $router */
@@ -77,7 +78,8 @@ $router->group(['prefix' => 'ranking'], function (Router $router) {
 });
 
 $router->group(['prefix' => 'feedback'], function (Router $router) {
-    $router->post('/', FeedbacksController::class.'@create');
+    $router->post('/', FeedbackController::class.'@create');
+    $router->get('/review/{feedback}/approve', FeedbackReviewController::class.'@approve');
 });
 
 if (config('features.gamification.badges')) {

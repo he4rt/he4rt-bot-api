@@ -6,7 +6,7 @@ use App\Actions\Feedback\CreateFeedback;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class FeedbacksController extends Controller
+class FeedbackController extends Controller
 {
     public function create(Request $request, CreateFeedback $create)
     {

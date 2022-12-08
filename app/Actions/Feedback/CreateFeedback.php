@@ -4,18 +4,19 @@ namespace App\Actions\Feedback;
 
 use App\Models\Feedback\Feedback;
 use App\Repositories\Feedback\FeedbackRepository;
+use App\Repositories\Feedback\FeedbackReviewRepository;
 
 class CreateFeedback
 {
-    private FeedbackRepository $repository;
+    private FeedbackRepository $feedbackRepository;
 
-    public function __construct(FeedbackRepository $repository)
+    public function __construct(FeedbackRepository $feedbackRepository)
     {
-        $this->repository = $repository;
+        $this->feedbackRepository = $feedbackRepository;
     }
 
     public function handle(array $payload): Feedback
     {
-        return $this->repository->create($payload);
+        return $this->feedbackRepository->create($payload);
     }
 }
