@@ -28,7 +28,7 @@ class AttendMeeting
             throw MeetingsException::noAtiveMeetings();
         }
 
-        $this->usersRepository->attachMeeting($payload['discord_id'], $meeting->getKey(), ['attend_at' => Carbon::now()]);
+        $this->usersRepository->attendMeeting($payload['discord_id'], $meeting->getKey());
         return __('meetings.success.attendMeeting');
     }
 }

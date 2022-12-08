@@ -3,6 +3,7 @@
 namespace App\Repositories\Users;
 
 use App\Models\User\User;
+use Illuminate\Support\Carbon;
 
 class UsersRepository
 {
@@ -56,10 +57,10 @@ class UsersRepository
             ->attach($badgeId);
     }
 
-    public function attachMeeting(int $discordId, int $meetingId, array $pivotValues): void
+    public function attendMeeting(int $discordId, int $meetingId): void
     {
         $this->findById($discordId)
             ->meetings()
-            ->attach($meetingId, $pivotValues);
+            ->attach($meetingId, ['attend_at' => Carbon::now()]);
     }
 }
