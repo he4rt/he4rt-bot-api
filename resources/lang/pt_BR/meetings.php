@@ -5,6 +5,7 @@ return [
         'attendMeeting' => 'Participação registrada com sucesso.',
     ],
     'errors' => [
-        'noAtiveMeetings' => 'Não existe nenhuma reunião ativa no momento.',
+        'noActiveMeetings' => 'Não existe nenhuma reunião ativa no momento.',
+        'alreadyAttended' => 'Você já está participando da reunião ativa.',
     ]
 ];

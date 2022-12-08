@@ -45,8 +45,9 @@ class MeetingsController extends Controller
         ]);
 
         try {
+            $action->handle($payload);
             return response()->json(
-                ['message' => $action->handle($payload)],
+                ['message' => __('meetings.success.attendMeeting')],
                 Response::HTTP_CREATED
             );
         } catch (MeetingsException $e) {

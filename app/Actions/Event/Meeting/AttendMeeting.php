@@ -5,7 +5,6 @@ namespace App\Actions\Event\Meeting;
 use App\Exceptions\MeetingsException;
 use App\Repositories\Events\MeetingRepository;
 use App\Repositories\Users\UsersRepository;
-use Illuminate\Support\Carbon;
 
 class AttendMeeting
 {
@@ -21,14 +20,20 @@ class AttendMeeting
     /**
      * @throws MeetingsException
      */
-    public function handle(array $payload): string
+    public function handle(array $payload): void
     {
+        $user =  $this->usersRepository->findById($payload['discord_id']);
         $meeting = $this->meetingRepository->getActiveMeeting();
+
         if (!$meeting) {
-            throw MeetingsException::noAtiveMeetings();
+            throw MeetingsException::noActiveMeetings();
+        }
+
+        $alreadyAttended = $meeting->users()->find($user->getKey());
+        if ($alreadyAttended) {
+            throw MeetingsException::alreadyAttended();
         }
 
         $this->usersRepository->attendMeeting($payload['discord_id'], $meeting->getKey());
-        return __('meetings.success.attendMeeting');
     }
 }
