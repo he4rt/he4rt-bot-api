@@ -3,6 +3,7 @@
 namespace App\Repositories\Users;
 
 use App\Models\User\User;
+use Illuminate\Support\Carbon;
 
 class UsersRepository
 {
@@ -19,7 +20,7 @@ class UsersRepository
         return User::find($userId);
     }
 
-    public function findById(string $discordId): User
+    public function findById(string $discordId): ?User
     {
         return User::where('discord_id', $discordId)->first();
     }
@@ -54,5 +55,12 @@ class UsersRepository
         $this->findById($discordId)
             ->badges()
             ->attach($badgeId);
+    }
+
+    public function attendMeeting(int $discordId, int $meetingId): void
+    {
+        $this->findById($discordId)
+            ->meetings()
+            ->attach($meetingId, ['attend_at' => Carbon::now()]);
     }
 }

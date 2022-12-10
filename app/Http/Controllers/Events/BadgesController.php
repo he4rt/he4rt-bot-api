@@ -33,11 +33,12 @@ class BadgesController extends Controller
         $request->merge(['discord_id' => $discordId]);
 
         $payload = $this->validate($request, [
-            'discord_id' => ['required','exists:users'],
+            'discord_id' => ['required', 'exists:users'],
             'redeem_code' => ['string', 'required', 'exists:badges'],
         ]);
         try {
-            return response()->json(['message' => $action->handle($discordId, $payload['redeem_code'])],
+            return response()->json(
+                ['message' => $action->handle($discordId, $payload['redeem_code'])],
                 Response::HTTP_CREATED
             );
         } catch (BadgeException $e) {

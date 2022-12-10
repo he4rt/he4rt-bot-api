@@ -21,6 +21,4 @@ abstract class TestCase extends BaseTestCase
             'Authorization' => config('he4rt.server_key')
         ];
     }
-
-
 }
