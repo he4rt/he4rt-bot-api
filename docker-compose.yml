@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./migrations:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_DATABASE: he4rt
+      MYSQL_ROOT_PASSWORD: root
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  mysql-data:

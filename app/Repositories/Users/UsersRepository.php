@@ -20,7 +20,7 @@ class UsersRepository
         return User::find($userId);
     }
 
-    public function findById(string $discordId): User
+    public function findById(string $discordId): ?User
     {
         return User::where('discord_id', $discordId)->first();
     }
