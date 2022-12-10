@@ -62,7 +62,7 @@ $router->group(['prefix' => 'users', 'middleware' => 'bot-auth'], function (Rout
     $router->post('/{discordId}/daily', ['uses' => UsersController::class.'@postDaily', 'as' => 'users.dailyPoints']);
     $router->post('/{discordId}/message', ['uses' => UsersController::class.'@postMessage', 'as' => 'users.messages.store']);
     $router->post('/{discordId}/claim-badge', ['uses' => BadgesController::class.'@postClaimBadge', 'as' => 'users.badges.claim']);
-    $router->post('/{discordId}/voice', ['uses' => RewardController::class.'@claimVoiceXp', 'as' => 'users.voice.claim']);
+    $router->get('/{discordId}/voice', ['uses' => RewardController::class.'@claimVoiceXp', 'as' => 'users.voice.claim']);
 });
 
 $router->group(['prefix' => 'events', 'middleware' => 'bot-auth'], function (Router $router) {
