@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Users;
 use App\Actions\User\CreateUser;
 use App\Actions\User\DailyUserPoints;
 use App\Actions\User\DeleteUser;
-use App\Actions\User\FindUser;
+use App\Actions\User\GetUser;
 use App\Actions\User\UpdateUser;
 use App\Exceptions\DailyRewardException;
 use App\Http\Controllers\Controller;
@@ -43,7 +43,7 @@ class UsersController extends Controller
         return response()->json($action->handle($payload['discord_id']), Response::HTTP_CREATED);
     }
 
-    public function getUser(Request $request, string $discordId, FindUser $action): JsonResponse
+    public function getUser(Request $request, string $discordId, GetUser $action): JsonResponse
     {
         $request->merge(['discord_id' => $discordId]);
         $this->validate($request, ['discord_id' => 'required|exists:users']);

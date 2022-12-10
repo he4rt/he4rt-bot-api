@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\User;
 
 use App\Models\Events\Badge;
+use App\Models\Feedback\Feedback;
 use App\Models\Gamefication\ExperienceTable;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
@@ -11,10 +14,16 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\HasApiTokens;
 
+/**
+ * @property string $discord_id
+ * @property string $twitch_id
+ * @property string $email
+ */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable;
@@ -44,57 +53,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'is_donator' => 'boolean'
     ];
 
-
     protected $dates = ['daily'];
-
-    public function validateForPassportPasswordGrant($password)
-    {
-        return (int)$password == (int)$this->discord_id;
-    }
 
     public function nextLevel(): HasOne
     {
         return $this->hasOne(ExperienceTable::class, 'id', 'level');
     }
 
-    public function levelUp(int $currentExp): void
-    {
-        $currentLevel = $this->attributes['level'] + 1;
-
-        $this->update(['level' => $currentLevel, 'current_exp' => $currentExp]);
-        $this->levelupLog()->create(['season_id' => config('he4rt.season'), 'level' => $currentLevel]);
-    }
-
-    public function wipe()
-    {
-        $this->update([
-            'level' => 1,
-            'current_exp' => 0
-        ]);
-    }
-
-    public function dailyPoints(int $value)
-    {
-        $this->update([
-            'money' => $this->attributes['money'] + $value,
-            'daily' => Carbon::now()->addDay()
-        ]);
-
-        return $this;
-    }
-
-    public function updateMoney(string $operation, $value)
-    {
-        $balance = $operation == "add" ?
-            $this->attributes['money'] + $value :
-            $this->attributes['money'] - $value;
-
-        $this->update([
-            'money' => $balance
-        ]);
-    }
-
-    public function messages()
+    public function messages(): HasMany
     {
         return $this->hasMany(Message::class);
     }
@@ -104,12 +70,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->messages()->where('season_id', config('he4rt.season'))->count();
     }
 
-    public function seasonInfo()
+    public function seasonInfo(): HasMany
     {
         return $this->hasMany(Season::class);
     }
 
-    public function levelupLog()
+    public function levelupLog(): HasMany
     {
         return $this->hasMany(Level::class);
     }
@@ -122,6 +88,58 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'user_id',
             'badge_id'
         );
+    }
+
+    public function sentFeedbacks(): HasMany
+    {
+        return $this->hasMany(Feedback::class, 'sender_id');
+    }
+
+    public function receivedFeedbacks(): HasMany
+    {
+        return $this->hasMany(Feedback::class, 'target_id');
+    }
+
+    public function validateForPassportPasswordGrant($password): bool
+    {
+        return (int)$password == (int)$this->discord_id;
+    }
+
+    public function levelUp(int $currentExp): void
+    {
+        $currentLevel = $this->attributes['level'] + 1;
+
+        $this->update(['level' => $currentLevel, 'current_exp' => $currentExp]);
+        $this->levelupLog()->create(['season_id' => config('he4rt.season'), 'level' => $currentLevel]);
+    }
+
+    public function wipe(): void
+    {
+        $this->update([
+            'level' => 1,
+            'current_exp' => 0
+        ]);
+    }
+
+    public function dailyPoints(int $value): self
+    {
+        $this->update([
+            'money' => $this->attributes['money'] + $value,
+            'daily' => Carbon::now()->addDay()
+        ]);
+
+        return $this;
+    }
+
+    public function updateMoney(string $operation, $value): void
+    {
+        $balance = $operation == "add" ?
+            $this->attributes['money'] + $value :
+            $this->attributes['money'] - $value;
+
+        $this->update([
+            'money' => $balance
+        ]);
     }
 
     public function hasBadge(int $badgeId): bool
