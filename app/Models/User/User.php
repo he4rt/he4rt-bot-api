@@ -23,6 +23,7 @@ use Laravel\Passport\HasApiTokens;
  * @property string $discord_id
  * @property string $twitch_id
  * @property string $email
+ * @property int $money
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
