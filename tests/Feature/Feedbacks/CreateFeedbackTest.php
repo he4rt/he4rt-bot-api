@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Feedbacks;
 
 use App\Models\User\User;
@@ -7,7 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Tests\Providers\FeedbackProvider;
 use TestCase;
 
-/** @group feedback.create */
 class CreateFeedbackTest extends TestCase
 {
     public string $route;

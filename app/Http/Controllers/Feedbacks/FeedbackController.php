@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Feedbacks;
 
 use App\Actions\Feedback\CreateFeedback;
@@ -26,6 +28,7 @@ class FeedbackController extends Controller
                 'different:sender_id',
             ],
             'message' => [
+                'required',
                 'string',
                 'max:4000'
             ],

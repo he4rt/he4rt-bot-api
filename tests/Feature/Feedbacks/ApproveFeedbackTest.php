@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Feedbacks;
 
 use App\Models\Feedback\Feedback;
@@ -8,7 +10,6 @@ use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\Response;
 use TestCase;
 
-/** @group feedback.review.approve */
 class ApproveFeedbackTest extends TestCase
 {
     private Feedback $feedback;
