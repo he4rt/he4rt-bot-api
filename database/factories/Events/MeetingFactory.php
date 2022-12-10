@@ -15,7 +15,7 @@ class MeetingFactory extends Factory
     {
         return [
             'meeting_type_id' => MeetingType::factory(),
-            'user_created_id' => User::factory(),
+            'admin_id' => User::factory(),
             'content' => 'Fake content',
             'starts_at' => $this->faker->dateTimeBetween('-1 hour'),
             'ends_at' => $this->faker->dateTimeBetween('+1 hour', '+2 hour'),

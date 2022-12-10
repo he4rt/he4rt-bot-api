@@ -27,7 +27,7 @@ class IndexMeetingTest extends TestCase
                         'id',
                         'content',
                         'meeting_type_id',
-                        'user_created_id',
+                        'admin_id',
                         'starts_at',
                         'ends_at',
                         'created_at',

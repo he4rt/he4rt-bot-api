@@ -22,7 +22,7 @@ class CreateMeetingTest extends TestCase
             'discord_id' => $user->discord_id
         ];
         $expectedResponse = [
-            'user_created_id' => $user->getKey(),
+            'admin_id' => $user->getKey(),
             'meeting_type_id' => $meetingType->getKey()
         ];
 

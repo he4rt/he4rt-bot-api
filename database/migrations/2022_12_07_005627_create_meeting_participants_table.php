@@ -14,10 +14,8 @@ class CreateMeetingParticipantsTable extends Migration
     public function up()
     {
         Schema::create('meeting_participants', function (Blueprint $table) {
-            $table->unsignedBigInteger('meeting_id');
-            $table->foreign('meeting_id')->references('id')->on('meetings');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('meeting_id')->constrained('meetings');
+            $table->foreignId('user_id')->constrained('users');
             $table->dateTime('attend_at');
             $table->timestamps();
         });

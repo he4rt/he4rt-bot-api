@@ -16,10 +16,8 @@ class CreateMeetingsTable extends Migration
         Schema::create('meetings', function (Blueprint $table) {
             $table->id();
             $table->text('content')->nullable();
-            $table->unsignedBigInteger('meeting_type_id');
-            $table->foreign('meeting_type_id')->references('id')->on('meeting_types');
-            $table->unsignedBigInteger('user_created_id');
-            $table->foreign('user_created_id')->references('id')->on('users');
+            $table->foreignId('meeting_type_id')->constrained('meeting_types');
+            $table->foreignId('admin_id')->constrained('users');
             $table->dateTime('starts_at');
             $table->dateTime('ends_at')->nullable();
             $table->timestamps();

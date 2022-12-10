@@ -23,7 +23,7 @@ class CreateMeeting
         $userCreator = $this->usersRepository->findById($payload['discord_id']);
 
         $payload['starts_at'] = Carbon::now();
-        $payload['user_created_id'] = $userCreator->getKey();
+        $payload['admin_id'] = $userCreator->getKey();
 
         return $this->meetingRepository->create($payload);
     }
