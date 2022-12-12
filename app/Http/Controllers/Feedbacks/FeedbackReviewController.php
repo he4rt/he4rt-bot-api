@@ -6,8 +6,6 @@ namespace App\Http\Controllers\Feedbacks;
 
 use App\Actions\Feedback\Review\ApproveFeedback;
 use App\Actions\Feedback\Review\DeclineFeedback;
-use App\Exceptions\FeedbackException;
-use App\Exceptions\UserException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,8 +13,8 @@ use Illuminate\Http\Request;
 class FeedbackReviewController extends Controller
 {
     /**
-     * @throws UserException
-     * @throws FeedbackException
+     * @throws \App\Exceptions\FeedbackException
+     * @throws \App\Exceptions\UserException
      */
     public function approve(Request $request, int $feedbackId, ApproveFeedback $approve): JsonResponse
     {
@@ -33,8 +31,8 @@ class FeedbackReviewController extends Controller
     }
 
     /**
-     * @throws UserException
-     * @throws FeedbackException
+     * @throws \App\Exceptions\FeedbackException
+     * @throws \App\Exceptions\UserException
      */
     public function decline(Request $request, int $feedbackId, DeclineFeedback $decline): JsonResponse
     {

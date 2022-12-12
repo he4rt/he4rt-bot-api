@@ -4,7 +4,7 @@ namespace Feature\Events\Badges;
 
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
-use TestCase;
+use Tests\TestCase;
 
 class CreateBadgeTest extends TestCase
 {
