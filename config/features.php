@@ -2,6 +2,6 @@
 
 return [
     'gamification' => [
-        'badges' => true
+        'badges' => true,
     ]
 ];
