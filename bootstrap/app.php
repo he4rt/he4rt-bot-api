@@ -61,6 +61,7 @@ $app->singleton(
 
 $app->configure('app');
 $app->configure('he4rt');
+$app->configure('gambling');
 
 /*
 |--------------------------------------------------------------------------
