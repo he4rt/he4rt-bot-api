@@ -5,12 +5,21 @@ declare(strict_types=1);
 namespace Tests\Feature\Gamefication;
 
 use App\Exceptions\UserException;
+use App\Models\Gamefication\ExperienceTable;
+use App\Models\User\User;
+use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\Response;
 use TestCase;
-use App\Models\User\User;
 
 class VoicePointsTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Config::set('gambling.xp.voice_points', 90);
+    }
+
     /** @test */
     public function invalidUserId(): void
     {
@@ -25,7 +34,14 @@ class VoicePointsTest extends TestCase
     /** @test */
     public function updatesUserPoints(): void
     {
-        $user = User::factory()->create();
+        $level = ExperienceTable::factory([
+            'required' => 300
+        ])->create();
+
+        $user = User::factory([
+            'current_exp' => 0,
+            'level' => $level->getKey()
+        ])->create();
 
         $response = $this->get(
             route('users.voice.claim', ['discordId' => $user->discord_id]),
@@ -33,6 +49,6 @@ class VoicePointsTest extends TestCase
         );
 
         $response->assertResponseStatus(Response::HTTP_NO_CONTENT);
-        $this->assertEquals($user->money + config('gambling.voice_points'), $user->refresh()->money);
+        $this->assertEquals($user->current_exp + config('gambling.xp.voice_points'), $user->refresh()->current_exp);
     }
 }

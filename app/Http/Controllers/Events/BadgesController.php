@@ -37,7 +37,8 @@ class BadgesController extends Controller
             'redeem_code' => ['string', 'required', 'exists:badges'],
         ]);
         try {
-            return response()->json(['message' => $action->handle($discordId, $payload['redeem_code'])],
+            return response()->json(
+                ['message' => $action->handle($discordId, $payload['redeem_code'])],
                 Response::HTTP_CREATED
             );
         } catch (BadgeException $e) {

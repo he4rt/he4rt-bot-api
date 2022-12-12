@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests;
+
 use Laravel\Lumen\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -20,6 +22,4 @@ abstract class TestCase extends BaseTestCase
             'Authorization' => config('he4rt.server_key')
         ];
     }
-
-
 }

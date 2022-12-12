@@ -3,18 +3,19 @@
 namespace App\Actions\Gamefication;
 
 use App\Exceptions\UserException;
-use App\Models\User\User;
-use App\Repositories\Gamification\GamblingRepository;
 use App\Repositories\Users\UsersRepository;
 
 class ClaimVoiceXP
 {
     private UsersRepository $userRepository;
+    private GiveXP $giveXp;
 
     public function __construct(
-        UsersRepository $userRepository
+        UsersRepository $userRepository,
+        GiveXP $giveXP
     ) {
         $this->userRepository = $userRepository;
+        $this->giveXp = $giveXP;
     }
 
     /** @throws UserException */
@@ -24,11 +25,8 @@ class ClaimVoiceXP
             throw UserException::discordIdNotFound($discordId);
         }
 
-        $user->update(['money', $this->getPoints($user)]);
-    }
+        $points = config('gambling.xp.voice_points');
 
-    private function getPoints(User $user): int
-    {
-        return $user->money + config('gambling.voice_points');
+        $this->giveXp->handle($user->getKey(), $points);
     }
 }

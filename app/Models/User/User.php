@@ -24,6 +24,10 @@ use Laravel\Passport\HasApiTokens;
  * @property string $twitch_id
  * @property string $email
  * @property int $money
+ * @property bool $is_donator
+ * @property ExperienceTable $nextLevel
+ * @property int $current_exp
+ * @property int $level
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Gamification;
 use App\Actions\Gamefication\ClaimVoiceXP;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class RewardController extends Controller
