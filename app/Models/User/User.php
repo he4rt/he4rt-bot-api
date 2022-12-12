@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\User;
 
 use App\Models\Events\Badge;
+use App\Models\Events\Meeting;
 use App\Models\Feedback\Feedback;
 use App\Models\Gamefication\ExperienceTable;
 use Carbon\Carbon;
@@ -145,6 +146,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $this->update([
             'money' => $balance
         ]);
+    }
+
+    public function meetings(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Meeting::class,
+            'meeting_participants',
+            'user_id',
+            'meeting_id'
+        )->withPivot(['attend_at']);
     }
 
     public function hasBadge(int $badgeId): bool

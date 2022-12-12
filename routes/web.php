@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Events\BadgesController;
+use App\Http\Controllers\Events\MeetingsController;
 use App\Http\Controllers\Feedbacks\FeedbackController;
 use App\Http\Controllers\Feedbacks\FeedbackReviewController;
 use App\Http\Controllers\Gamification\GamblingController;
@@ -68,6 +69,17 @@ $router->group(['prefix' => 'users', 'middleware' => 'bot-auth'], function (Rout
 $router->group(['prefix' => 'events', 'middleware' => 'bot-auth'], function (Router $router) {
     $router->group(['prefix' => 'badges'], function (Router $router) {
         $router->post('/', ['uses' => BadgesController::class.'@postBadge', 'as' => 'events.badges.store']);
+    });
+
+    $router->group(['prefix' => 'meeting'], function ($router) {
+        $router->get('/', ['uses' => MeetingsController::class . '@getMeetings', 'as' => 'events.meeting.getMeetings']);
+        $router->post('/', ['uses' => MeetingsController::class . '@postMeeting', 'as' => 'events.meeting.postMeeting']);
+        $router->post('/end', ['uses' => MeetingsController::class . '@postEndMeeting', 'as' => 'events.meeting.postEndMeeting']);
+        $router->post('/attend', ['uses' => MeetingsController::class . '@postAttendMeeting', 'as' => 'events.meeting.postAttendMeeting']);
+        $router->patch(
+            '/{meetingId}/subject',
+            ['uses' => MeetingsController::class . '@postMeetingSubject', 'as' => 'events.meeting.postMeetingSubject']
+        );
     });
 });
 
