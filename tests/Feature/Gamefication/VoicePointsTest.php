@@ -9,7 +9,7 @@ use App\Models\Gamefication\ExperienceTable;
 use App\Models\User\User;
 use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\Response;
-use TestCase;
+use Tests\TestCase;
 
 class VoicePointsTest extends TestCase
 {

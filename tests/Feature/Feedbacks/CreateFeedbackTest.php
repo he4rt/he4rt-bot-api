@@ -6,7 +6,7 @@ namespace Tests\Feature\Feedbacks;
 
 use App\Models\User\User;
 use Symfony\Component\HttpFoundation\Response;
-use TestCase;
+use Tests\TestCase;
 use Tests\Providers\FeedbackProvider;
 
 class CreateFeedbackTest extends TestCase

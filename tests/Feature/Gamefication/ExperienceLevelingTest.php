@@ -6,7 +6,7 @@ use App\Models\User\User;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Mockery as m;
-use TestCase;
+use Tests\TestCase;
 
 class ExperienceLevelingTest extends TestCase
 {

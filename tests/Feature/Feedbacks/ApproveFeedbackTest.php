@@ -8,7 +8,7 @@ use App\Models\Feedback\Feedback;
 use App\Models\User\User;
 use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\Response;
-use TestCase;
+use Tests\TestCase;
 
 class ApproveFeedbackTest extends TestCase
 {

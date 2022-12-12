@@ -8,6 +8,7 @@ use App\Exceptions\UserException;
 use App\Models\User\User;
 use App\Repositories\Users\UsersRepository;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 
 class GiveXP
 {

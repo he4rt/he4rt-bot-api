@@ -5,7 +5,7 @@ namespace Feature\Users;
 use App\Models\User\User;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
-use TestCase;
+use Tests\TestCase;
 
 class UpdateUserTest extends TestCase
 {
