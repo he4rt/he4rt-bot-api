@@ -2,11 +2,12 @@
 
 namespace App\Console;
 
-use App\Console\Commands\MigrateUsers;
-use App\Console\Commands\SeasonStart;
 use App\Console\Commands\FinishSeasonCommand;
 use App\Console\Commands\SendLevelupMessage;
 use Illuminate\Console\Scheduling\Schedule;
+use Knuckles\Scribe\Commands\GenerateDocumentation;
+use Knuckles\Scribe\Commands\MakeStrategy;
+use Knuckles\Scribe\Commands\Upgrade;
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -19,22 +20,20 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         FinishSeasonCommand::class,
-        SeasonStart::class,
-        MigrateUsers::class,
         SendLevelupMessage::class
     ];
 
     public function __construct(Application $app)
     {
         parent::__construct($app);
-        if (class_exists(\Knuckles\Scribe\Commands\GenerateDocumentation::class)) {
-            $this->commands[] = \Knuckles\Scribe\Commands\GenerateDocumentation::class;
+        if (class_exists(GenerateDocumentation::class)) {
+            $this->commands[] = GenerateDocumentation::class;
         }
-        if (class_exists(\Knuckles\Scribe\Commands\MakeStrategy::class)) {
-            $this->commands[] = \Knuckles\Scribe\Commands\MakeStrategy::class;
+        if (class_exists(MakeStrategy::class)) {
+            $this->commands[] = MakeStrategy::class;
         }
-        if (class_exists(\Knuckles\Scribe\Commands\Upgrade::class)) {
-            $this->commands[] = \Knuckles\Scribe\Commands\Upgrade::class;
+        if (class_exists(Upgrade::class)) {
+            $this->commands[] = Upgrade::class;
         }
     }
 

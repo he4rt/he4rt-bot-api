@@ -9,7 +9,9 @@ class SeasonRepository
 {
     public function paginate(int $itemsPerPage = 10): LengthAwarePaginator
     {
-        return Season::query()->paginate($itemsPerPage);
+        return Season::query()
+            ->orderByDesc('starts_at')
+            ->paginate($itemsPerPage);
     }
 
     public function getCurrentSeason(): Season

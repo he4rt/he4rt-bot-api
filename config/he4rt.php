@@ -1,11 +1,10 @@
 <?php
 
-
 use Carbon\Carbon;
 
 return [
     'season' => [
-        'id'=> env('SEASON_ID', 1),
+        'id' => env('SEASON_ID', 1),
         'minimum_level_for_retro' => env('SEASON_MIN_LEVEL', 3)
     ],
     'server_key' => env('BOT_SECRET', 'he4rt'),
@@ -21,15 +20,19 @@ return [
             'starts_at' => Carbon::parse('2018-08-01'),
             'ends_at' => Carbon::parse('2022-12-31'),
             'messages_count' => 0,
-            'participants_count' => 0
+            'participants_count' => 0,
+            'meetings_count' => 0,
+            'badges_count' => 0
         ],
         [
-            'name' => 'Um não tão novo RECOMEÇO',
+            'name' => 'He4rt Shippuden',
             'description' => 'Segunda temporada chegando foda memo dps nois acha um nome melhor pra isso aqui.',
             'starts_at' => Carbon::parse('2023-01-01'),
             'ends_at' => Carbon::parse('2023-12-31'),
             'messages_count' => 0,
-            'participants_count' => 0
+            'participants_count' => 0,
+            'meetings_count' => 0,
+            'badges_count' => 0
         ]
     ]
 ];

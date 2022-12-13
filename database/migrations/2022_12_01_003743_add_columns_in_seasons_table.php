@@ -1,13 +1,17 @@
 <?php
 
+use App\Models\Gamefication\Season;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class AddColumnsInSeasonsTable extends Migration
 {
     public function up(): void
     {
+        Schema::disableForeignKeyConstraints();
+        DB::table('seasons')->truncate();
         Schema::table('seasons', function (Blueprint $table) {
             $table->dropColumn(['status', 'start', 'end']);
 
@@ -27,9 +31,19 @@ class AddColumnsInSeasonsTable extends Migration
             $table->bigInteger('messages_count')
                 ->nullable('participants_count')
                 ->default(0);
+            $table->bigInteger('badges_count')
+                ->nullable('messages_count')
+                ->default(0);
+            $table->bigInteger('meetings_count')
+                ->nullable('badges_count')
+                ->default(0);
         });
-        // TODO: create a daily job to update information about the current season.
-        // TODO: logging amount of participants during the season
+
+        foreach (config('he4rt.seasons') as $season) {
+            Season::query()->create($season);
+        }
+
+        Schema::enableForeignKeyConstraints();
     }
 
     public function down(): void

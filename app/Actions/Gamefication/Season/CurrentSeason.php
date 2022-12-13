@@ -4,7 +4,6 @@ namespace App\Actions\Gamefication\Season;
 
 use App\Models\Gamefication\Season;
 use App\Repositories\Gamification\SeasonRepository;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class CurrentSeason
 {
@@ -15,6 +14,11 @@ class CurrentSeason
         $this->seasonRepository = $repository;
     }
 
+    /**
+     * Retorna a temporada ativa dentro do sistema de gameficação
+     *
+     * @return Season
+     */
     public function handle(): Season
     {
         return $this->seasonRepository->getCurrentSeason();

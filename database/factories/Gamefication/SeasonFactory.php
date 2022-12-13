@@ -21,4 +21,12 @@ class SeasonFactory extends Factory
             'participants_count' => 0
         ];
     }
+
+    public function activeSeason()
+    {
+        return $this->state([
+            'starts_at' => Carbon::parse('2019-01-01'),
+            'ends_at' => Carbon::now()->addYear()
+        ]);
+    }
 }

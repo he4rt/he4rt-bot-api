@@ -18,8 +18,10 @@ class Season extends Model
         'description',
         'starts_at',
         'ends_at',
+        'messages_count',
         'participants_count',
-        'messages_count'
+        'meetings_count',
+        'badges_count'
     ];
 
     protected $casts = [
@@ -27,7 +29,9 @@ class Season extends Model
         'starts_at' => 'datetime',
         'ends_at' => 'datetime',
         'participants_count' => 'int',
-        'messages_count' => 'int'
+        'messages_count' => 'int',
+        'meetings_count' => 'int',
+        'badges_count' => 'int',
     ];
 
     public function scopeCurrentSeason(Builder $query): Builder
