@@ -16,6 +16,7 @@ class BotAuthentication
     public function handle($request, Closure $next)
     {
         $apiKey = $request->header('Authorization');
+
         if (!$apiKey) {
             return response()->json(['error' => 'Chave não encontrada'], 401);
         }

@@ -4,8 +4,6 @@ namespace App\Actions\Feedback\Review;
 
 use App\Actions\Feedback\GetFeedback;
 use App\Actions\User\GetUser;
-use App\Exceptions\FeedbackException;
-use App\Exceptions\UserException;
 use App\Models\Feedback\FeedbackReview;
 use App\Repositories\Feedback\FeedbackReviewRepository;
 use Carbon\Carbon;
@@ -26,8 +24,9 @@ class ApproveFeedback
         $this->getUser = $getUser;
     }
 
-    /** @throws FeedbackException
-     * @throws UserException
+    /**
+     * @throws \App\Exceptions\FeedbackException
+     * @throws \App\Exceptions\UserException
      */
     public function handle(int $feedbackId, array $payload): FeedbackReview
     {

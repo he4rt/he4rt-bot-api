@@ -6,7 +6,7 @@ use App\Models\User\User;
 use Carbon\Carbon;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
-use TestCase;
+use Tests\TestCase;
 
 class DailyUserPointsTest extends TestCase
 {

@@ -4,7 +4,7 @@ namespace Tests\Feature\Users;
 
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
-use TestCase;
+use Tests\TestCase;
 
 class CreateUserTest extends TestCase
 {
