@@ -48,9 +48,9 @@ $router->group(['prefix' => 'users', 'middleware' => 'bot-auth'], function (Rout
     */
 
     $router->get('/', UsersController::class.'@getUsers');
-    $router->post('/', ['uses' => UsersController::class.'@postUser', 'as' => 'users.store']);
+    $router->post('/', ['uses' => UsersController::class.'@create', 'as' => 'users.store']);
     $router->get('/{discordId}', ['uses' => UsersController::class.'@getUser', 'as' => 'users.show']);
-    $router->put('/{discordId}', ['uses' => UsersController::class.'@putUser', 'as' => 'users.update']);
+    $router->put('/{discordId}', ['uses' => UsersController::class.'@update', 'as' => 'users.update']);
     $router->delete('/{discordId}', ['uses' => UsersController::class.'@deleteUser', 'as' => 'users.destroy']);
 
     /*

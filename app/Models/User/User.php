@@ -29,6 +29,7 @@ use Laravel\Passport\HasApiTokens;
  * @property ExperienceTable $nextLevel
  * @property int $current_exp
  * @property int $level
+ * @property string $uf
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
@@ -51,7 +52,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'about',
         'daily',
         'reputation',
-        'is_donator'
+        'is_donator',
+        'uf',
     ];
 
     protected $casts = [

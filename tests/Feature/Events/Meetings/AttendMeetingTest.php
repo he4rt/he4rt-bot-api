@@ -1,13 +1,13 @@
 <?php
 
-namespace Feature\Events\Meetings;
+namespace Tests\Feature\Events\Meetings;
 
 use App\Models\Events\Meeting;
 use App\Models\User\User;
 use Illuminate\Support\Carbon;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
-use TestCase;
+use Tests\TestCase;
 
 class AttendMeetingTest extends TestCase
 {

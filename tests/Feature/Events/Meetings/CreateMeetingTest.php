@@ -6,7 +6,7 @@ use App\Models\Events\MeetingType;
 use App\Models\User\User;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
-use TestCase;
+use Tests\TestCase;
 
 class CreateMeetingTest extends TestCase
 {
