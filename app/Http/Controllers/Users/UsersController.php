@@ -38,7 +38,7 @@ class UsersController extends Controller
         return $this->success($query);
     }
 
-    public function create(Request $request, CreateUser $action): JsonResponse
+    public function postUser(Request $request, CreateUser $action): JsonResponse
     {
         $payload = $this->validate($request, ['discord_id' => 'required|unique:users|numeric']);
         return response()->json($action->handle($payload['discord_id']), Response::HTTP_CREATED);
@@ -54,7 +54,7 @@ class UsersController extends Controller
 
 
     /** @throws UserException */
-    public function update(Request $request, string $discordId, UpdateUser $action): JsonResponse
+    public function putUser(Request $request, string $discordId, UpdateUser $action): JsonResponse
     {
         $request->merge(['discord_id' => $discordId]);
 
