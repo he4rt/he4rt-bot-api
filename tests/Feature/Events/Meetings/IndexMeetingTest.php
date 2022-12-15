@@ -4,7 +4,7 @@ namespace Feature\Events\Meetings;
 
 use App\Models\Events\Meeting;
 use Laravel\Lumen\Testing\DatabaseMigrations;
-use TestCase;
+use Tests\TestCase;
 
 class IndexMeetingTest extends TestCase
 {

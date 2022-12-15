@@ -8,6 +8,7 @@ use App\Actions\User\DeleteUser;
 use App\Actions\User\GetUser;
 use App\Actions\User\UpdateUser;
 use App\Exceptions\DailyRewardException;
+use App\Exceptions\UserException;
 use App\Http\Controllers\Controller;
 use App\Models\User\User;
 use App\Repositories\Users\UsersRepository;
@@ -52,9 +53,11 @@ class UsersController extends Controller
     }
 
 
+    /** @throws UserException */
     public function putUser(Request $request, string $discordId, UpdateUser $action): JsonResponse
     {
         $request->merge(['discord_id' => $discordId]);
+
         $validated = $this->validate($request, [
             'discord_id' => 'required|exists:users',
             'email' => 'email',
@@ -63,7 +66,8 @@ class UsersController extends Controller
             'git' => 'string',
             'about' => 'string',
             'linkedin' => 'string',
-            'is_donator' => 'bool'
+            'is_donator' => 'bool',
+            'uf' => 'size:2'
         ]);
 
         return response()->json($action->handle($discordId, $validated));

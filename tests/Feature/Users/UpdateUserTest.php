@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Users;
+namespace Tests\Feature\Users;
 
 use App\Models\User\User;
 use Laravel\Lumen\Testing\DatabaseMigrations;
@@ -17,7 +17,8 @@ class UpdateUserTest extends TestCase
         $this->artisan('db:seed');
     }
 
-    public function test_bot_can_update_an_user()
+    /** @test */
+    public function canUpdateUser()
     {
         $user = User::factory()->create();
         $payload = [
@@ -27,7 +28,8 @@ class UpdateUserTest extends TestCase
             'about' => 'eu faço lives codando php',
             'email' => 'daniel@he4rtdevs.com',
             'linkedin' => 'https://linkedin.com/in/danielheart',
-            'is_donator' => true
+            'is_donator' => true,
+            'uf' => 'RS',
         ];
 
         $response = $this->put(
