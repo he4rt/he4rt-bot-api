@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Actions\Gamefication;
 
 use App\Exceptions\UserException;
@@ -22,15 +20,15 @@ class GiveXP
     /** @throws UserException */
     public function handle(int $userId, int $points): int
     {
+
         $user = $this->getUser($userId);
 
         $points = $this->getXP($user, $points);
 
         if (!$this->canLevelUp($user, $points)) {
             $this->repository->incrementExperience($user->getKey(), $points);
-
             return $points;
-        };
+        }
 
         $this->levelUp($user);
 
@@ -54,24 +52,15 @@ class GiveXP
 
     private function canLevelUp(User $user, int $points): bool
     {
-        return $user->nextLevel->required < ($user->current_exp + $points);
+        return ($user->current_exp + $points) >= $user->nextLevel->required;
     }
 
     private function levelUp(User $user): void
     {
         $currentXp = $user->current_exp - $user->nextLevel->required;
-
         $this->repository->levelUp(
             $user->getKey(),
             $currentXp,
         );
-
-        $user = $user->refresh();
-
-        Artisan::call('discord:level-up', [
-            'discordId' => $user->discord_id,
-            'level' => $user->level,
-            'messagesCount' => $user->seasonMessagesCount()
-        ]);
     }
 }

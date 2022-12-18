@@ -118,7 +118,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $currentLevel = $this->attributes['level'] + 1;
 
         $this->update(['level' => $currentLevel, 'current_exp' => $currentExp]);
-        $this->levelupLog()->create(['season_id' => config('he4rt.season'), 'level' => $currentLevel]);
+        $this->levelupLog()
+            ->create([
+                'season_id' => config('he4rt.season.id'),
+                'level' => $currentLevel
+            ]);
     }
 
     public function wipe(): void

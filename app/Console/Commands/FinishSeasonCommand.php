@@ -29,12 +29,12 @@ class FinishSeasonCommand extends Command
     {
         $currentSeason = Season::query()->currentSeason()->first();
 
-        $this->info(sprintf('Iniciando finalização da %sa temporada -> %s <- ',
+        $this->info(sprintf(
+            'Iniciando finalização da %sa temporada -> %s <- ',
             $currentSeason->id,
             $currentSeason->name
         ));
         $this->info('Você tem certeza que deseja finalizar essa temporada?');
-        $this->confirm('Essa ação não pode ser desfeita');
 
         $this->info('Finalização de temporada iniciada!');
         DB::transaction(function () use ($currentSeason) {

@@ -20,4 +20,14 @@ class MessageFactory extends Factory
             'obtained_experience' => 1
         ];
     }
+
+    public function willLevelUp()
+    {
+        return $this->state([
+            'user_id' => User::factory(),
+            'season_id' => config('he4rt.season.id'),
+            'message' => $this->faker->text(),
+            'obtained_experience' => 999999
+        ]);
+    }
 }
