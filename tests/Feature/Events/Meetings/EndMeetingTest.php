@@ -5,7 +5,7 @@ namespace Feature\Events\Meetings;
 use App\Models\Events\Meeting;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
-use TestCase;
+use Tests\TestCase;
 
 class EndMeetingTest extends TestCase
 {

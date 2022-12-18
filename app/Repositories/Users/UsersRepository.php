@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Users;
 
+use App\Exceptions\UserException;
 use App\Models\User\User;
 use Illuminate\Support\Carbon;
 
@@ -25,9 +26,15 @@ class UsersRepository
         return User::where('discord_id', $discordId)->first();
     }
 
+    /**
+     * @throws UserException
+     */
     public function update(string $discordId, array $payload): User
     {
-        $model = $this->findById($discordId);
+        if (!$model = $this->findById($discordId)) {
+            throw UserException::discordIdNotFound($discordId);
+        };
+
         $model->update($payload);
 
         return $model->refresh();
