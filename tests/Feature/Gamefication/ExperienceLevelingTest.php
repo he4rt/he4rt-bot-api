@@ -48,10 +48,9 @@ class ExperienceLevelingTest extends TestCase
     public function test_user_can_gain_experience()
     {
         $user = User::factory()->create(['current_exp' => 0]);
-        $user->messages()->create([
-            'message' => 'fodase'
-        ]);
-
+        $this->post(route('users.messages.store', ['discordId' => $user->discord_id]), [
+            'message' => 'fodase essa porra'
+        ], $this->getHeaders())->seeStatusCode(Response::HTTP_NO_CONTENT);
         $this->notSeeInDatabase('users', [
             'id' => $user->getKey(),
             'current_exp' => 0

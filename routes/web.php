@@ -10,6 +10,7 @@ use App\Http\Controllers\Feedbacks\FeedbackReviewController;
 use App\Http\Controllers\Gamification\GamblingController;
 use App\Http\Controllers\Gamification\RankingController;
 use App\Http\Controllers\Gamification\RewardController;
+use App\Http\Controllers\Gamification\SeasonsController;
 use App\Http\Controllers\Users\MessagesController;
 use App\Http\Controllers\Users\UsersController;
 use Laravel\Lumen\Routing\Router;
@@ -112,5 +113,8 @@ if (config('features.gamification.badges')) {
 }
 $router->group(['prefix' => 'seasons'], function ($router) {
     $router->get('/', 'Gamification\SeasonsController@getSeasons');
-    $router->get('/current', 'Gamification\SeasonsController@getCurrentSeason');
+    $router->get('/current', [
+        'uses' => SeasonsController::class . '@getCurrentSeason',
+        'as' => 'seasons.current'
+    ]);
 });

@@ -7,11 +7,14 @@ namespace Tests\Feature\Feedbacks;
 use App\Models\Feedback\Feedback;
 use App\Models\User\User;
 use Carbon\Carbon;
+use Laravel\Lumen\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class ApproveFeedbackTest extends TestCase
 {
+    use DatabaseMigrations;
+
     private Feedback $feedback;
 
     protected function setUp(): void
@@ -24,7 +27,7 @@ class ApproveFeedbackTest extends TestCase
     /** @test */
     public function returnsErrorUsingInvalidUser()
     {
-        $response = $this->post($this->route(), ['staff_id' => 0]);
+        $response = $this->post($this->route(), ['staff_id' => 0], $this->getHeaders());
 
         $response->assertResponseStatus(Response::HTTP_NOT_FOUND);
     }

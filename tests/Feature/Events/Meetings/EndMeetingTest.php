@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Events\Meetings;
+namespace Tests\Feature\Events\Meetings;
 
 use App\Models\Events\Meeting;
 use Laravel\Lumen\Testing\DatabaseMigrations;

@@ -7,11 +7,14 @@ namespace Tests\Feature\Feedbacks;
 use App\Models\Feedback\Feedback;
 use App\Models\User\User;
 use Carbon\Carbon;
+use Laravel\Lumen\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class DeclineFeedbackTest extends TestCase
 {
+    use DatabaseMigrations;
+
     private Feedback $feedback;
 
     protected function setUp(): void

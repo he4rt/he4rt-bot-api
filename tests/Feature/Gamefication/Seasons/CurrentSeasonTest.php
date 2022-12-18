@@ -3,11 +3,14 @@
 namespace Tests\Feature\Gamefication\Seasons;
 
 use App\Models\Gamefication\Season;
+use Laravel\Lumen\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
-use TestCase;
+use Tests\TestCase;
 
 class CurrentSeasonTest extends TestCase
 {
+    use DatabaseMigrations;
+
     public function testBotCanGetCurrentSeason(): void
     {
         // Prepare
