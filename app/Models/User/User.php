@@ -29,7 +29,8 @@ use Laravel\Passport\HasApiTokens;
  * @property ExperienceTable $nextLevel
  * @property int $current_exp
  * @property int $level
- * @property string $uf
+ * @property ?string $uf
+ * @property ?string $birthday
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
@@ -54,11 +55,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'reputation',
         'is_donator',
         'uf',
+        'birthday',
     ];
 
     protected $casts = [
         'discord_id' => 'int',
-        'is_donator' => 'boolean'
+        'is_donator' => 'boolean',
+        'birthday'   => 'datetime:Y-m-d',
     ];
 
     protected $dates = ['daily'];

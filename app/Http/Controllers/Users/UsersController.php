@@ -58,7 +58,7 @@ class UsersController extends Controller
     {
         $request->merge(['discord_id' => $discordId]);
 
-        $validated = $this->validate($request, [
+        $payload = $this->validate($request, [
             'discord_id' => 'required|exists:users',
             'email' => 'email',
             'name' => 'string',
@@ -67,10 +67,11 @@ class UsersController extends Controller
             'about' => 'string',
             'linkedin' => 'string',
             'is_donator' => 'bool',
-            'uf' => 'size:2'
+            'uf' => 'size:2',
+            'birthday' => 'date_format:Y-m-d',
         ]);
 
-        return response()->json($action->handle($discordId, $validated));
+        return response()->json($action->handle($discordId, $payload));
     }
 
 
