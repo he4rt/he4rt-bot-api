@@ -3,69 +3,19 @@
 namespace App\Repositories\Gamification;
 
 use App\Models\Gamefication\Season;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class SeasonRepository
 {
-    /**
-     * @var Season
-     */
-    private $model;
-
-    private $paginate = 10;
-
-    public function __construct()
+    public function paginate(int $itemsPerPage = 10): LengthAwarePaginator
     {
-        $this->model = new Season();
+        return Season::query()
+            ->orderByDesc('starts_at')
+            ->paginate($itemsPerPage);
     }
 
-    public function paginateSeasons()
+    public function getCurrentSeason(): Season
     {
-        return $this->model->paginate($this->paginate);
-    }
-
-    public function fetchActiveSeason()
-    {
-        return $this->model->where('status', 1)->first();
-    }
-
-    public function createNewSeason($name, $duration)
-    {
-        return $this->model->create([
-            'name' => $name,
-            'duration' => $duration
-        ]);
-    }
-
-    public function fetchSeason(int $seasonId)
-    {
-        return $this->model->find($seasonId);
-    }
-
-    public function updateSeason(int $seasonId, $name, $duration)
-    {
-        return $this->model
-            ->find($seasonId)
-            ->update([
-                'name' => $name,
-                'duration' => $duration
-            ]);
-    }
-
-    public function deleteSeason(int $seasonId)
-    {
-        return $this->model
-            ->find($seasonId)
-            ->delete();
-    }
-
-    public function wipeSeason($wipeKey): bool
-    {
-        if (env('WIPE_KEY') != $wipeKey) {
-            return false;
-        }
-
-
-
-        return true;
+        return Season::currentSeason()->first();
     }
 }

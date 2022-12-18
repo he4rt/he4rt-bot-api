@@ -2,6 +2,7 @@
 
 namespace App\Models\User;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -14,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Message extends Model
 {
+    use HasFactory;
+
     protected $table = "user_messages";
 
     protected $fillable = [
@@ -21,6 +24,13 @@ class Message extends Model
         'season_id',
         'message',
         'obtained_experience'
+    ];
+
+    protected $casts = [
+        'user_id' => 'int',
+        'season_id' => 'int',
+        'message' => 'string',
+        'obtained_experience' => 'int'
     ];
 
     public function user(): BelongsTo

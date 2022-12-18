@@ -23,6 +23,7 @@ class SendLevelupMessage extends Command
 
     public function handle(DiscordClient $discordClient): int
     {
+        return self::SUCCESS;
         $discord = new Discord([
             'token' => config('he4rt.discord.token'),
             'intents' => Intents::getDefaultIntents()

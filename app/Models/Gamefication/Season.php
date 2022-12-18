@@ -2,6 +2,8 @@
 
 namespace App\Models\Gamefication;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,22 +15,29 @@ class Season extends Model
 
     protected $fillable = [
         'name',
-        'start',
-        'end',
-        'status'
+        'description',
+        'starts_at',
+        'ends_at',
+        'messages_count',
+        'participants_count',
+        'meetings_count',
+        'badges_count'
     ];
 
     protected $casts = [
-        'status' => 'bool'
+        'status' => 'bool',
+        'starts_at' => 'datetime',
+        'ends_at' => 'datetime',
+        'participants_count' => 'int',
+        'messages_count' => 'int',
+        'meetings_count' => 'int',
+        'badges_count' => 'int',
     ];
-    // TODO: mudar campo status para is_over
-    // TODO: mudar start status para started_at
-    // TODO: mudar end status para ended_at
 
-    public function seasonStatus($status)
+    public function scopeCurrentSeason(Builder $query): Builder
     {
-        $this->update([
-            'status' => $status
-        ]);
+        return $query
+            ->whereDate('starts_at', '<=', Carbon::now()->format('Y-m-d'))
+            ->whereDate('ends_at', '>=', Carbon::now()->format('Y-m-d'));
     }
 }

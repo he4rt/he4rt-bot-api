@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Gamefication\Season;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,19 +15,8 @@ class SeasonSeeder extends Seeder
      */
     public function run()
     {
-
-        DB::table('seasons')->insert([
-            'name' => 'fodase',
-            'start' => '2019-01-01',
-            'end' => '2020-12-30',
-            'status' => true
-        ]);
-
-        DB::table('seasons')->insert([
-            'name' => 'season 2 do granchase',
-            'start' => '2021-01-01',
-            'end' => '2021-12-30',
-            'status' => false
-        ]);
+        foreach (config('he4rt.seasons') as $season) {
+            Season::query()->create($season);
+        }
     }
 }
