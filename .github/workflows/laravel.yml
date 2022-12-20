@@ -16,9 +16,10 @@ jobs:
         image: mysql:latest
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: false
-          MYSQL_ROOT_PASSWORD: secret
           MYSQL_USER: homestead
           MYSQL_DATABASE: homestead
+          MYSQL_PASSWORD: secret
+          MYSQL_ROOT_PASSWORD: secret
         ports:
           - 3306/tcp
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
