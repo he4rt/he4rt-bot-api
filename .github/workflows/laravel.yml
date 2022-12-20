@@ -23,7 +23,7 @@ jobs:
     - name: Clear cache
       run: php artisan cache:clear
     - name: Directory Permissions
-      run: chmod -R 777 storage bootstrap/cache
+      run: chmod -R 777 storage bootstrap
     - name: Create Database
       run: |
         mkdir -p database
