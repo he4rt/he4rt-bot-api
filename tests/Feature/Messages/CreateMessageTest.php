@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Messages;
 
+use App\Models\Gamefication\Season;
 use App\Models\User\User;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +22,9 @@ class CreateMessageTest extends TestCase
 
     public function test_bot_can_create_a_user_message()
     {
+        $season = Season::factory()->activeSeason()->create();
+        config(['he4rt.season.id' => $season->getKey()]);
+
         $user = User::factory()->create([
             'level' => 3,
             'current_exp' => 1
