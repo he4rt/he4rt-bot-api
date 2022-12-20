@@ -33,7 +33,6 @@ class ExperienceLevelingTest extends TestCase
         ], $this->getHeaders())->seeStatusCode(Response::HTTP_NO_CONTENT);
 
 
-
         $this->seeInDatabase('users', [
             'id' => $user->getKey(),
             'level' => 2
@@ -47,10 +46,15 @@ class ExperienceLevelingTest extends TestCase
 
     public function test_user_can_gain_experience()
     {
-        $user = User::factory()->create(['current_exp' => 0]);
-        $this->post(route('users.messages.store', ['discordId' => $user->discord_id]), [
-            'message' => 'fodase essa porra'
-        ], $this->getHeaders())->seeStatusCode(Response::HTTP_NO_CONTENT);
+        $user = User::factory()->create(['current_exp' => 0, 'level' => 1]);
+        $response = $this->post(route('users.messages.store', ['discordId' => $user->discord_id]),
+            [
+                'message' => 'fodase essa porra'
+            ],
+            $this->getHeaders()
+        );
+
+        $response->seeStatusCode(Response::HTTP_NO_CONTENT);
         $this->notSeeInDatabase('users', [
             'id' => $user->getKey(),
             'current_exp' => 0
