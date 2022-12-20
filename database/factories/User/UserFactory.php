@@ -20,7 +20,7 @@ class UserFactory extends Factory
             'discord_id' => $this->faker->unique()->randomNumber(8),
             'twitch_id' => $this->faker->unique()->randomNumber(8),
             'email' => $this->faker->unique()->safeEmail,
-            'level' => $this->faker->randomNumber(2),
+            'level' => $this->faker->numberBetween(1, 30),
             'current_exp' => $this->faker->numberBetween(100, 5000),
             'money' => $this->faker->numberBetween(1, 10000),
             'nickname' => $this->faker->userName,
