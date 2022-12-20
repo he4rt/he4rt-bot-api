@@ -13,15 +13,14 @@ jobs:
 
     services:
       mysql:
-        image: mysql:8.0
-        ports:
-          - 3306:3306
+        image: mysql:latest
         env:
-          MYSQL_ROOT_PASSWORD:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_USER: homestead
-          MYSQL_PASSWORD: secret
-          MYSQL_DATABASE: homestead
+          MYSQL_ALLOW_EMPTY_PASSWORD: false
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: laravel
+        ports:
+          - 3306/tcp
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
     - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
@@ -36,12 +35,5 @@ jobs:
       run: php artisan cache:clear
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap
-    - name: Create Database
-      run: |
-        mkdir -p database
-        touch database/database.sqlite
     - name: Execute tests (Unit and Feature tests) via PHPUnit
-      env:
-        DB_CONNECTION: sqlite
-        DB_DATABASE: database/database.sqlite
       run: vendor/bin/phpunit
