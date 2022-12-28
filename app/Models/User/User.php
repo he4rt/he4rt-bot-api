@@ -75,7 +75,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function seasonMessagesCount(): int
     {
-        return $this->messages()->where('season_id', config('he4rt.season'))->count();
+        return $this->messages()->where('season_id', config('he4rt.season.id'))->count();
     }
 
     public function seasonInfo(): HasMany

@@ -43,7 +43,6 @@ class FinishSeason
                 'meetings_count' => $meetingsCount,
                 'badges_count' => $badgesCount
             ];
-            dump($attributes);
             $user->seasonInfo()->create($attributes);
             $user->wipe();
         }

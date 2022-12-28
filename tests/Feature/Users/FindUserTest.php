@@ -19,10 +19,11 @@ class FindUserTest extends TestCase
 
     public function test_bot_can_find_a_user_by_id(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()
+            ->create();
 
         $response = $this->get(route('users.show', ['discordId' => $user->discord_id]), $this->getHeaders());
-
+        dd($response->response->json());
         $response->seeStatusCode(Response::HTTP_OK)
             ->seeJsonStructure(array_keys($user->toArray()));
     }

@@ -18,7 +18,7 @@ class GetUser
     /** @throws UserException */
     public function handle(string $discordId): User
     {
-        if (!$user = $this->repository->findById($discordId)) {
+        if (!$user = $this->repository->findByIdWithLoad($discordId)) {
             throw UserException::discordIdNotFound($discordId);
         }
 
