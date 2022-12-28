@@ -100,6 +100,8 @@ $app->register(App\Providers\EventServiceProvider::class);
 
 $app->register(Laravel\Passport\PassportServiceProvider::class);
 $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
+$app->register(\Illuminate\Redis\RedisServiceProvider::class);
+
 
 $app->configure('auth');
 

@@ -39,10 +39,6 @@ class AddColumnsInSeasonsTable extends Migration
                 ->default(0);
         });
 
-        foreach (config('he4rt.seasons') as $season) {
-            Season::query()->create($season);
-        }
-
         Schema::enableForeignKeyConstraints();
     }
 

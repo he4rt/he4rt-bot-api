@@ -16,7 +16,9 @@ class Season extends Model
         'level',
         'messages_count',
         'badges_count',
-        'messages_count'
+        'meetings_count',
+        'experience',
+        'ranking_position',
     ];
 
     public function user(): BelongsTo
