@@ -39,8 +39,7 @@ class UsersRepository
     /**
      * @throws UserException
      */
-    public
-    function update(string $discordId, array $payload): User
+    public function update(string $discordId, array $payload): User
     {
         if (!$model = $this->findById($discordId)) {
             throw UserException::discordIdNotFound($discordId);
@@ -51,21 +50,18 @@ class UsersRepository
         return $model->refresh();
     }
 
-    public
-    function delete(string $discordId): ?bool
+    public function delete(string $discordId): ?bool
     {
         return $this->findById($discordId)->delete();
     }
 
-    public
-    function levelUp(int $userId, int $currentExp): void
+    public function levelUp(int $userId, int $currentExp): void
     {
         $model = $this->find($userId);
         $model->levelUp($currentExp);
     }
 
-    public
-    function incrementExperience(int $userId, int $givenExperience): void
+    public function incrementExperience(int $userId, int $givenExperience): void
     {
         User::query()
             ->lockForUpdate()
@@ -73,16 +69,14 @@ class UsersRepository
             ->increment('current_exp', $givenExperience);
     }
 
-    public
-    function attachBadge(string $discordId, int $badgeId): void
+    public function attachBadge(string $discordId, int $badgeId): void
     {
         $this->findById($discordId)
             ->badges()
             ->attach($badgeId);
     }
 
-    public
-    function attendMeeting(int $discordId, int $meetingId): void
+    public function attendMeeting(int $discordId, int $meetingId): void
     {
         $this->findById($discordId)
             ->meetings()

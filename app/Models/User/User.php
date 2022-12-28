@@ -166,6 +166,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function hasBadge(int $badgeId): bool
     {
-        return (bool) $this->badges()->find($badgeId);
+        return (bool)$this->badges()->find($badgeId);
     }
 }
