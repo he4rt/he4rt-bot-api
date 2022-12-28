@@ -5,6 +5,7 @@ namespace App\Repositories\Users;
 use App\Exceptions\UserException;
 use App\Models\User\User;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class UsersRepository
 {
@@ -23,7 +24,8 @@ class UsersRepository
 
     public function findById(string $discordId): ?User
     {
-        return User::where('discord_id', $discordId)->first();
+        return User::select(DB::raw("*, RANK() OVER (ORDER BY level DESC, current_exp desc) as ranking_position"))
+            ->where('discord_id', $discordId)->first();
     }
 
     /**
