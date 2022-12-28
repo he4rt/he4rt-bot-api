@@ -5,6 +5,7 @@ namespace Tests\Feature\Users;
 use App\Models\User\User;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\Providers\User\UpdateProvider;
 use Tests\TestCase;
 
 class UpdateUserTest extends TestCase
@@ -21,16 +22,8 @@ class UpdateUserTest extends TestCase
     public function canUpdateUser()
     {
         $user = User::factory()->create();
-        $payload = [
-            'name' => 'daniel coração',
-            'nickname' => 'danielhe4rt',
-            'git' => 'https://github.com/danielhe4rt',
-            'about' => 'eu faço lives codando php',
-            'email' => 'daniel@he4rtdevs.com',
-            'linkedin' => 'https://linkedin.com/in/danielheart',
-            'is_donator' => true,
-            'uf' => 'RS',
-        ];
+
+        $payload = UpdateProvider::validPayload();
 
         $response = $this->put(
             route('users.update', ['discordId' => $user->discord_id]),
