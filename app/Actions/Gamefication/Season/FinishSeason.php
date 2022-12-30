@@ -20,7 +20,6 @@ class FinishSeason
             User::query()
                 ->lockForUpdate()
                 ->select(DB::raw("*, RANK() OVER (ORDER BY level DESC) as ranking_position"))
-                ->where('level', '>=', 3)
                 ->orderBy('id')->chunk(
                     500,
                     fn(Collection $users) => $this->handleUsers($users)

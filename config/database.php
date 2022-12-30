@@ -51,8 +51,15 @@ return [
             'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
             'prefix' => env('DB_PREFIX', ''),
             'strict' => env('DB_STRICT_MODE', true),
-            'engine' => env('DB_ENGINE', null),
+            'engine' => env('DB_ENGINE', true),
             'timezone' => env('DB_TIMEZONE', '+00:00'),
+            'sslmode' => 'require',
+            'options'   => array(
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+                PDO::MYSQL_ATTR_SSL_KEY => '/certs/client-key.pem',
+                PDO::MYSQL_ATTR_SSL_CERT => '/certs/client-cert.pem',
+                PDO::MYSQL_ATTR_SSL_CA => '/certs/ca.pem',
+            ),
         ],
 
         'legacy' => [
