@@ -32,7 +32,7 @@ class UsersRepository
     {
         return User::select(DB::raw("*, RANK() OVER (ORDER BY level DESC, current_exp desc) as ranking_position"))
             ->withCount(['badges', 'messages'])
-            ->with('seasonInfo')
+            ->with('seasonInfo.season')
             ->where('discord_id', $discordId)->first();
     }
 
