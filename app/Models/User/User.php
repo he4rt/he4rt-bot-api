@@ -61,10 +61,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'birthday',
     ];
 
+    protected $appends = [
+        'ranking_position'
+    ];
+
     protected $casts = [
         'discord_id' => 'int',
         'is_donator' => 'boolean',
-        'birthday'   => 'datetime:Y-m-d',
+        'birthday' => 'datetime:Y-m-d',
     ];
 
     protected $dates = ['daily'];
@@ -174,4 +178,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return (bool)$this->badges()->find($badgeId);
     }
+
+    public function getRankingPositionAttribute()
+    {
+
+        return $this->newQuery()
+                ->orderByDesc('level')
+                ->orderByDesc('current_exp')
+                ->pluck('id')
+                ->filter(fn($id) => $id == $this->attributes['id'])
+                ->keys()
+                ->first() + 1;
+    }
+
 }
