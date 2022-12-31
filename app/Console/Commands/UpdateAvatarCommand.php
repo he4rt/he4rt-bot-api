@@ -19,6 +19,7 @@ class UpdateAvatarCommand extends Command
         /** @var Collection<User> $users */
         User::query()
             ->whereNull('discord_avatar_url')
+            ->orderByDesc('level')
             ->chunk(200, fn(Collection $users) => $this->updateUsers($client, $users));
     }
 
