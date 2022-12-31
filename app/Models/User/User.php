@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\HasApiTokens;
 
@@ -181,14 +182,25 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function getRankingPositionAttribute()
     {
+        if (Cache::has(sprintf('ranking-user-%s', $this->attributes['id']))) {
+            return Cache::get(sprintf('ranking-user-%s', $this->attributes['id']));
+        }
 
-        return $this->newQuery()
+        $rankingPos = $this->newQuery()
                 ->orderByDesc('level')
                 ->orderByDesc('current_exp')
+                ->orderBy('id')
                 ->pluck('id')
                 ->filter(fn($id) => $id == $this->attributes['id'])
                 ->keys()
                 ->first() + 1;
+        Cache::put(
+            sprintf('ranking-user-%s', $this->attributes['id']),
+            $rankingPos,
+            600 * 100
+        );
+
+        return $rankingPos;
     }
 
 }

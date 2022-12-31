@@ -16,22 +16,20 @@ class FinishSeason
 
     public function handle()
     {
-        DB::transaction(function () {
-            User::query()
-                ->lockForUpdate()
-                ->whereDoesntHave('seasonInfo')
-                ->orderByDesc('level')->chunk(
-                    500,
-                    fn(Collection $users) => $this->handleUsers($users)
-                );
-        });
+        User::query()
+            ->lockForUpdate()
+            ->whereDoesntHave('seasonInfo')
+            ->orderByDesc('level')
+            ->orderByDesc('current_exp')
+            ->orderBy('id')
+            ->chunk(500, fn(Collection $users) => $this->handleUsers($users));
     }
 
     private function handleUsers(Collection $users)
     {
         /** @var User $user */
         foreach ($users as $user) {
-            dump($user->name);
+            dump(sprintf('ranking: %s name: %s', $user->vai_caralho, $user->nickname));
             $messagesCount = $this->getMessagesCount($user);
             $badgesCount = $this->getBadgesCount($user);
             $meetingsCount = $this->getMeetingsCount($user);

@@ -104,6 +104,7 @@ $app->register(\Illuminate\Redis\RedisServiceProvider::class);
 
 
 $app->configure('auth');
+$app->configure('cache');
 
 if (class_exists(\Knuckles\Scribe\ScribeServiceProvider::class)) {
     $app->register(\Knuckles\Scribe\ScribeServiceProvider::class);
