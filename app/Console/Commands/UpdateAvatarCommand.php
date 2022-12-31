@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Clients\DiscordClient;
 use App\Models\User\User;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -28,7 +29,13 @@ class UpdateAvatarCommand extends Command
 
     private function updateUser(DiscordClient $client, User $user)
     {
-        $discordUser = $client->getUser($user->discord_id);
+        try {
+            $discordUser = $client->getUser($user->discord_id);
+        } catch (RequestException $exception) {
+            $this->info('cooldown 5 sec');
+            sleep(5);
+            $discordUser = $client->getUser($user->discord_id);
+        }
         $fields = ['discord_avatar_url' => $this->buildAvatarUrl($discordUser)];
 
         if (is_null($user->name)){
