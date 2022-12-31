@@ -24,6 +24,8 @@ use Laravel\Passport\HasApiTokens;
  * @property string $discord_id
  * @property string $twitch_id
  * @property string $email
+ * @property string $name
+ * @property string $nickname
  * @property int $money
  * @property bool $is_donator
  * @property ExperienceTable $nextLevel
@@ -41,6 +43,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     protected $fillable = [
         'discord_id',
+        'discord_avatar_url',
         'twitch_id',
         'email',
         'level',

@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\FinishSeasonCommand;
 use App\Console\Commands\SendLevelupMessage;
+use App\Console\Commands\UpdateAvatarCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Knuckles\Scribe\Commands\GenerateDocumentation;
 use Knuckles\Scribe\Commands\MakeStrategy;
@@ -20,7 +21,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         FinishSeasonCommand::class,
-        SendLevelupMessage::class
+        SendLevelupMessage::class,
+        UpdateAvatarCommand::class,
     ];
 
     public function __construct(Application $app)
