@@ -16,7 +16,15 @@ class UpdateAvatarCommand extends Command
 
     public function handle(DiscordClient $client)
     {
-        /** @var Collection<User> $users */
+
+        $this->recursaoFoda($client);
+
+        $users = collect($client->getPaginatedGuildUsers());
+        $users->each(fn($user) => $this->info($user['user']['username']));
+        $lastUserId = $users->last()['user']['id'];
+        $users = collect($client->getPaginatedGuildUsers($lastUserId));
+        $users->each(fn($user) => $this->info($user['user']['username']));
+
         User::query()
             ->whereNull('discord_avatar_url')
             ->orderByDesc('level')
@@ -37,21 +45,7 @@ class UpdateAvatarCommand extends Command
             sleep(5);
             $discordUser = $client->getUser($user->discord_id);
         }
-        $fields = ['discord_avatar_url' => $this->buildAvatarUrl($discordUser)];
-
-        if (is_null($user->name)){
-            $fields['name'] = $discordUser['username'];
-        }
-        if (is_null($user->nickname)){
-            $fields['nickname'] = $this->buildUsername($discordUser);
-        }
-        $this->info(sprintf(
-            'ID: %s | DiscordId: %s - %s',
-            $user->id,
-            $user->discord_id,
-            $discordUser['username']
-        ));
-        $user->update($fields);
+        $this->updateFoda($discordUser, $user);
     }
 
     /**
@@ -70,5 +64,53 @@ class UpdateAvatarCommand extends Command
             $discordUser['id'],
             $discordUser['avatar']
         );
+    }
+
+    private function recursaoFoda(DiscordClient $client, $lastUserId = '')
+    {
+
+        $users = collect($client->getPaginatedGuildUsers($lastUserId))
+            ->each(fn($user) => $this->atualizacaoFoda($user));
+
+        $lastUserId = $users->last()['user']['id'];
+        if ($users->count() != DiscordClient::BATCH_MAX) {
+            $this->info('finalizou');
+            return false;
+        }
+        return $this->recursaoFoda($client, $lastUserId);
+    }
+
+    private function atualizacaoFoda(array $discordUser)
+    {
+        $user = User::query()
+            ->whereNull('discord_avatar_url')
+            ->where('discord_id', $discordUser['user']['id'])
+            ->first();
+
+        if (!$user) {
+            $this->info('skip');
+            return;
+        }
+        $this->updateFoda($discordUser['user'], $user);
+
+    }
+
+    public function updateFoda(array $discordUser, $user): void
+    {
+        $fields = ['discord_avatar_url' => $this->buildAvatarUrl($discordUser)];
+
+        if (is_null($user->name)) {
+            $fields['name'] = $discordUser['username'];
+        }
+        if (is_null($user->nickname)) {
+            $fields['nickname'] = $this->buildUsername($discordUser);
+        }
+        $this->info(sprintf(
+            'ID: %s | DiscordId: %s - %s',
+            $user->id,
+            $user->discord_id,
+            $discordUser['username']
+        ));
+        $user->update($fields);
     }
 }
