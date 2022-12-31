@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\FinishSeasonCommand;
+use App\Console\Commands\RecordRankingCommand;
 use App\Console\Commands\SendLevelupMessage;
 use App\Console\Commands\UpdateAvatarCommand;
 use Illuminate\Console\Scheduling\Schedule;
@@ -23,6 +24,7 @@ class Kernel extends ConsoleKernel
         FinishSeasonCommand::class,
         SendLevelupMessage::class,
         UpdateAvatarCommand::class,
+        RecordRankingCommand::class
     ];
 
     public function __construct(Application $app)
