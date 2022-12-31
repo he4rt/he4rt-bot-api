@@ -19,8 +19,8 @@ class FinishSeason
         DB::transaction(function () {
             User::query()
                 ->lockForUpdate()
-                ->select(DB::raw("*, RANK() OVER (ORDER BY level DESC) as ranking_position"))
-                ->orderBy('id')->chunk(
+                ->whereDoesntHave('seasonInfo')
+                ->orderByDesc('level')->chunk(
                     500,
                     fn(Collection $users) => $this->handleUsers($users)
                 );
@@ -31,6 +31,7 @@ class FinishSeason
     {
         /** @var User $user */
         foreach ($users as $user) {
+            dump($user->name);
             $messagesCount = $this->getMessagesCount($user);
             $badgesCount = $this->getBadgesCount($user);
             $meetingsCount = $this->getMeetingsCount($user);
