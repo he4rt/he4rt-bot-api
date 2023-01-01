@@ -182,11 +182,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function getRankingPositionAttribute()
     {
-        if (Cache::has(sprintf('ranking-user-%s', $this->attributes['id']))) {
-            return Cache::get(sprintf('ranking-user-%s', $this->attributes['id']));
-        }
 
-        $rankingPos = $this->newQuery()
+        return $this->newQuery()
                 ->orderByDesc('level')
                 ->orderByDesc('current_exp')
                 ->orderBy('id')
@@ -194,13 +191,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
                 ->filter(fn($id) => $id == $this->attributes['id'])
                 ->keys()
                 ->first() + 1;
-        Cache::put(
-            sprintf('ranking-user-%s', $this->attributes['id']),
-            $rankingPos,
-            600 * 100
-        );
-
-        return $rankingPos;
     }
 
 }
