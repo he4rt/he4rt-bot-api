@@ -182,13 +182,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function getRankingPositionAttribute()
     {
-
         return $this->newQuery()
                 ->orderByDesc('level')
                 ->orderByDesc('current_exp')
                 ->orderBy('id')
                 ->pluck('id')
-                ->filter(fn($id) => $id == $this->attributes['id'])
+                ->filter(fn($id) => $id == $this->getKey())
                 ->keys()
                 ->first() + 1;
     }
