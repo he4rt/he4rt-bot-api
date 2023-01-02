@@ -22,6 +22,6 @@ class RecordRankingCommand extends Command
             ->orderByDesc('level')
             ->orderByDesc('current_exp')
             ->orderBy('id')
-            ->chunk(500, fn (Collection $users) => $users->each(fn ($user) => dump($user->ranking_position)));
+            ->chunk(500, fn (Collection $users) => $users->each(fn ($user) => $user->ranking_position));
     }
 }

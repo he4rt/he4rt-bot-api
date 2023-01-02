@@ -29,7 +29,6 @@ class FinishSeason
     {
         /** @var User $user */
         foreach ($users as $user) {
-            dump(sprintf('ranking: %s name: %s', $user->vai_caralho, $user->nickname));
             $messagesCount = $this->getMessagesCount($user);
             $badgesCount = $this->getBadgesCount($user);
             $meetingsCount = $this->getMeetingsCount($user);
