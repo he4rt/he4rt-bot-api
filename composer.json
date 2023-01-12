@@ -1,7 +1,11 @@
 {
     "name": "laravel/lumen",
     "description": "The Laravel Lumen Framework.",
-    "keywords": ["framework", "laravel", "lumen"],
+    "keywords": [
+        "framework",
+        "laravel",
+        "lumen"
+    ],
     "license": "MIT",
     "type": "project",
     "require": {
@@ -17,7 +21,8 @@
         "league/flysystem": "^1.1",
         "predis/predis": "^2.0",
         "team-reflex/discord-php": "^7.3",
-        "zircote/swagger-php": "^3.1"
+        "zircote/swagger-php": "^3.1",
+        "ext-pdo": "*"
     },
     "require-dev": {
         "drfraker/snipe-migrations": "^1.4",
