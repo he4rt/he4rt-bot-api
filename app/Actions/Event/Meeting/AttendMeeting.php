@@ -10,11 +10,17 @@ class AttendMeeting
 {
     private UsersRepository $usersRepository;
     private MeetingRepository $meetingRepository;
+    private GetActiveMeeting $activeMeetingAction;
 
-    public function __construct(UsersRepository $usersRepository, MeetingRepository $meetingRepository)
+    public function __construct(
+        UsersRepository   $usersRepository,
+        MeetingRepository $meetingRepository,
+        GetActiveMeeting  $activeMeetingAction
+    )
     {
         $this->usersRepository = $usersRepository;
         $this->meetingRepository = $meetingRepository;
+        $this->activeMeetingAction = $activeMeetingAction;
     }
 
     /**
@@ -22,12 +28,8 @@ class AttendMeeting
      */
     public function handle(array $payload): void
     {
-        $user =  $this->usersRepository->findById($payload['discord_id']);
-        $meeting = $this->meetingRepository->getActiveMeeting();
-
-        if (!$meeting) {
-            throw MeetingsException::noActiveMeetings();
-        }
+        $meeting = $this->activeMeetingAction->handle();
+        $user = $this->usersRepository->findById($payload['discord_id']);
 
         $alreadyAttended = $meeting->users()->find($user->getKey());
         if ($alreadyAttended) {

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Messages;
 
+use App\Models\Events\Meeting;
 use App\Models\Gamefication\Season;
 use App\Models\User\User;
 use Laravel\Lumen\Testing\DatabaseMigrations;
@@ -42,6 +43,36 @@ class CreateMessageTest extends TestCase
         $this->seeInDatabase('user_messages', [
             'user_id' => $user->getKey(),
             'message' => $payload['message']
+        ]);
+    }
+
+    public function testUserCanEarnMeetingPointWhileAMessageIsSentDuringAMeeting()
+    {
+        /** @var User $user */
+        $user = User::factory()->create([
+            'level' => 1,
+            'current_exp' => 1
+        ]);
+        $meeting = Meeting::factory()
+            ->unfinished()
+            ->create();
+
+        $payload = ['message' => 'me dá sub ai namoral'];
+
+        $response = $this->post(route('users.messages.store', ['discordId' => $user->discord_id]),
+            $payload,
+            $this->getHeaders()
+        );
+
+        $response->seeStatusCode(Response::HTTP_NO_CONTENT);
+
+        $this->seeInDatabase('user_messages', [
+            'user_id' => $user->getKey(),
+            'message' => $payload['message']
+        ]);
+        $this->seeInDatabase('meeting_participants', [
+            'user_id' => $user->getKey(),
+            'meeting_id' => $meeting->getKey()
         ]);
     }
 

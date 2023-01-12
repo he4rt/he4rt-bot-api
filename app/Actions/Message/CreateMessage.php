@@ -2,19 +2,31 @@
 
 namespace App\Actions\Message;
 
+use App\Actions\Event\Meeting\AttendMeeting;
+use App\Exceptions\MeetingsException;
 use App\Repositories\Messages\MessageRepository;
 
 class CreateMessage
 {
-    private MessageRepository $repository;
+    private MessageRepository $messageRepository;
 
-    public function __construct(MessageRepository $repository)
+    private AttendMeeting $attendMeetingAction;
+
+    public function __construct(
+        MessageRepository $messageRepository,
+        AttendMeeting     $attendMeetingAction
+    )
     {
-        $this->repository = $repository;
+        $this->messageRepository = $messageRepository;
+        $this->attendMeetingAction = $attendMeetingAction;
     }
 
     public function handle(string $discordId, string $message): void
     {
-        $this->repository->create($discordId, $message);
+        try {
+            $this->attendMeetingAction->handle(['discord_id' => $discordId]);
+        } catch (MeetingsException $e) {}
+
+        $this->messageRepository->create($discordId, $message);
     }
 }
