@@ -57,10 +57,16 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
-            'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
+            'engine' => env('DB_ENGINE', null),
+            'timezone' => env('DB_TIMEZONE', '+00:00'),
+            'sslmode' => env('DB_SSLMODE', null),
+            'options' => env('DB_SSLMODE', null) == 'required'
+                ? [
+                    PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+                    PDO::MYSQL_ATTR_SSL_KEY => '/certs/client-key.pem',
+                    PDO::MYSQL_ATTR_SSL_CERT => '/certs/client-cert.pem',
+                    PDO::MYSQL_ATTR_SSL_CA => '/certs/ca.pem',
+                ] : []
         ],
 
         'pgsql' => [
