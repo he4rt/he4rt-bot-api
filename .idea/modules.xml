@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/he4rt-bot-api.iml" filepath="$PROJECT_DIR$/.idea/he4rt-bot-api.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../daniel/subscribers-kingdom/.idea/subscribers-kingdom.iml" filepath="$PROJECT_DIR$/../../daniel/subscribers-kingdom/.idea/subscribers-kingdom.iml" />
     </modules>
   </component>
 </project>
