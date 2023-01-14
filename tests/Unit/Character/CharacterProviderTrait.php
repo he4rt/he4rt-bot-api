@@ -12,15 +12,14 @@ trait CharacterProviderTrait
             'id' => 1,
             'user_id' => 1,
             'experience' => 500,
-            'daily_bonus_claimed_at' => now()->toString(),
+            'daily_bonus_claimed_at' => now()->format('Y-m-d H:i:s'),
             ...$fields
         ];
     }
 
     public function validCharacterEntity(array $fields = [])
     {
-        return CharacterEntity::make([
-            $this->validCharacterPayload($fields),
-        ]);
+        return CharacterEntity::make($this->validCharacterPayload());
     }
+
 }

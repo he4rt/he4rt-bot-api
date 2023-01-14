@@ -12,15 +12,20 @@ class DailyReward
 
     public function __construct(string $claimedAt)
     {
-        $dateTime = new DateTime($claimedAt);
+        $dateTime = DateTime::createFromFormat("Y-m-d H:i:s", $claimedAt);
         $this->claimedAt = $dateTime;
     }
 
     public function canClaim(): bool
     {
-        $dateTimeInterval = DateInterval::createFromDateString("+1 day");
-        $oneDayLater = $this->claimedAt->add($dateTimeInterval);
-        return $this->claimedAt >= $oneDayLater;
+
+        $dateTimeInterval = DateInterval::createFromDateString('1 day');
+        dump($this->claimedAt->format('Y-m-d H:i:s'));
+
+        $oneDayLater = (clone $this->claimedAt)->add($dateTimeInterval);
+        $now = new DateTime(date('Y-m-d H:i:s'));
+        dump($oneDayLater->format('Y-m-d H:i:s'), $now);
+        return $oneDayLater > $now;
     }
 
     public function minutesUntilClaim(): int

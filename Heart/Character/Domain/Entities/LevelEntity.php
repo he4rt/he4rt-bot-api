@@ -33,8 +33,6 @@ class LevelEntity
                 return;
             }
         }
-
-        throw LevelException::notExists($currentExperience);
     }
 
     public function getLevel(): int

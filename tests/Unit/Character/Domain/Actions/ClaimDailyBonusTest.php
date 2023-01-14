@@ -2,8 +2,10 @@
 
 namespace Tests\Unit\Character\Domain\Actions;
 
+use Carbon\Carbon;
 use Heart\Character\Domain\Actions\ClaimDailyBonus;
 use Heart\Character\Domain\Entities\CharacterEntity;
+use Heart\Character\Domain\Exceptions\CharacterException;
 use Heart\Character\Domain\Repositories\CharacterRepository;
 use Mockery as m;
 use Mockery\MockInterface;
@@ -34,9 +36,9 @@ class ClaimDailyBonusTest extends TestCase
     public function testCanClaim(): void
     {
         $characterId = '123';
-        $characterEntity = $this->validCharacterEntity([
-            'daily_bonus_claimed_at' => now()->addDay()->toString()
-        ]);
+
+        $characterEntity = $this->validCharacterEntity();
+
 
         $this->characterRepository
             ->shouldReceive('findById')
@@ -54,6 +56,18 @@ class ClaimDailyBonusTest extends TestCase
 
     public function testShouldNotClaim(): void
     {
-        $this->assertTrue(true);
+        $this->expectException(CharacterException::class);
+
+        $characterId = '123';
+        $characterEntity = $this->validCharacterEntity();
+
+
+        $this->characterRepository
+            ->shouldReceive('findById')
+            ->with($characterId)
+            ->once()
+            ->andReturn($characterEntity);
+
+        $this->action->handle($characterId);
     }
 }
