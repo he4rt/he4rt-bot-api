@@ -5,17 +5,14 @@ namespace Heart\User\Infrastructure\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Information extends Model
+class UserAddress extends Model
 {
     protected $fillable = [
         'id',
         'user_id',
-        'name',
-        'nickname',
-        'linkedid_url',
-        'github_url',
-        'birthdate',
-        'about'
+        'country',
+        'state',
+        'city',
     ];
 
     public function user(): BelongsTo
