@@ -10,6 +10,10 @@ class CharacterRouteProvider extends RouteServiceProvider
 {
     public function map()
     {
-        Route::get('/characters', [CharactersController::class, 'getCharacters']);
+        Route::prefix('/characters')->group(function() {
+            Route::get('/', [CharactersController::class, 'getCharacters'])->name('characters.getCharacters');
+            Route::get('/{provider}', [CharactersController::class, 'getCharacter'])->name('characters.getCharacter');
+            Route::post('/{characterId}/daily', [CharactersController::class, 'postDailyBonus'])->name('characters.dailyReward');
+        });
     }
 }

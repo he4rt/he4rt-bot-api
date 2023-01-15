@@ -13,4 +13,5 @@ interface CharacterRepository
 
     public function claimDailyBonus(CharacterEntity $character);
 
+    public function updateReputation(CharacterEntity $character);
 }

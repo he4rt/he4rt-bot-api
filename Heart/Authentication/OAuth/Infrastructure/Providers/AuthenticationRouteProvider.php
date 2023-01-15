@@ -2,9 +2,9 @@
 
 namespace Heart\Authentication\OAuth\Infrastructure\Providers;
 
+use Heart\Authentication\OAuth\Presentation\Controllers\OAuthController;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
-use Heart\Authentication\OAuth\Presentation\Controllers\OAuthController;
 
 class AuthenticationRouteProvider extends RouteServiceProvider
 {

@@ -3,7 +3,10 @@
 namespace Heart\Character\Presentation\Controllers;
 
 use App\Http\Controllers\Controller;
+use Heart\Character\Domain\Actions\ClaimDailyBonus;
+use Heart\Character\Domain\Actions\FindCharacter;
 use Heart\Character\Domain\Actions\PaginateCharacters;
+use Heart\Character\Domain\Exceptions\CharacterException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -14,18 +17,18 @@ class CharactersController extends Controller
         return response()->json($action->handle());
     }
 
-    public function getCharacter(): JsonResponse
+    public function getCharacter(string $providerId, FindCharacter $action): JsonResponse
     {
-        return response()->json();
+        return response()->json($action->handle($providerId));
     }
 
-    public function putCharacter(): JsonResponse
+    public function postDailyBonus(string $characterId, ClaimDailyBonus $action): Response|JsonResponse
     {
-        return response()->json();
-    }
-
-    public function postDailyBonus(): Response
-    {
-        return response()->noContent();
+        try {
+            $action->handle($characterId);
+            return response()->noContent();
+        } catch (CharacterException $e) {
+            return response()->json($e->getMessage(), $e->getCode());
+        }
     }
 }

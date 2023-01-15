@@ -3,7 +3,6 @@
 namespace Heart\Integrations\Twitch\Subscriber\Infrastructure;
 
 use GuzzleHttp\Client;
-
 use Heart\Authentication\OAuth\Domain\DTO\OAuthAccessDTO;
 use Heart\Integrations\Twitch\Subscriber\Domain\DTO\TwitchSubscriberDTO;
 use Heart\Integrations\Twitch\Subscriber\Domain\TwitchSubscribersService;

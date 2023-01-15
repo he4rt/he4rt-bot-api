@@ -25,4 +25,10 @@ class CharacterEloquentRepository implements CharacterRepository
         return Character::find($character->id)
             ->update(['daily_bonus_claimed_at' => now()]);
     }
+
+    public function updateReputation(CharacterEntity $character)
+    {
+        return Character::find($character->id)
+            ->update(['reputation' => $character->reputation->getPoints()]);
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace Heart\Character\Infrastructure\Models;
 
-use Heart\Character\Infrastructure\Factories\WalletFactory;
+use Heart\Character\Infrastructure\Factories\CharacterFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -30,8 +30,8 @@ class Character extends Model
         return $this->hasOne(Wallet::class);
     }
 
-    protected static function newFactory(): WalletFactory
+    protected static function newFactory(): CharacterFactory
     {
-        return WalletFactory::new();
+        return CharacterFactory::new();
     }
 }

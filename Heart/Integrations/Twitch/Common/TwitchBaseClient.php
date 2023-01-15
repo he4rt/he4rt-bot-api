@@ -3,10 +3,10 @@
 namespace Heart\Integrations\Twitch\Common;
 
 use GuzzleHttp\Client;
-use Heart\Integrations\Twitch\Subscriber\Infrastructure\TwitchSubscribersClient;
 use Heart\Integrations\Twitch\OAuth\Domain\TwitchOAuthService;
-use Heart\Integrations\Twitch\Subscriber\Domain\TwitchSubscribersService;
 use Heart\Integrations\Twitch\OAuth\Infrastructure\TwitchOAuthClient;
+use Heart\Integrations\Twitch\Subscriber\Domain\TwitchSubscribersService;
+use Heart\Integrations\Twitch\Subscriber\Infrastructure\TwitchSubscribersClient;
 
 final class TwitchBaseClient implements TwitchService
 {

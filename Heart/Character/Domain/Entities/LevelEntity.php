@@ -2,8 +2,6 @@
 
 namespace Heart\Character\Domain\Entities;
 
-use Heart\Character\Domain\Exceptions\LevelException;
-
 class LevelEntity
 {
     private array $experienceTable = [
@@ -11,10 +9,12 @@ class LevelEntity
         726, 729, 858, 924, 990, 1056, 1122, 1188, 1254, 1320,
     ];
 
-    private int $level;
+    public int $level;
+    public int $experience;
 
     public function __construct(int $experience)
     {
+        $this->experience = $experience;
         $this->setCurrentLevel($experience);
     }
 
@@ -33,10 +33,5 @@ class LevelEntity
                 return;
             }
         }
-    }
-
-    public function getLevel(): int
-    {
-        return $this->level;
     }
 }

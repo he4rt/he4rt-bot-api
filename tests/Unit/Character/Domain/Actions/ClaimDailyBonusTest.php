@@ -4,7 +4,6 @@ namespace Tests\Unit\Character\Domain\Actions;
 
 use Carbon\Carbon;
 use Heart\Character\Domain\Actions\ClaimDailyBonus;
-use Heart\Character\Domain\Entities\CharacterEntity;
 use Heart\Character\Domain\Exceptions\CharacterException;
 use Heart\Character\Domain\Repositories\CharacterRepository;
 use Mockery as m;
@@ -36,9 +35,9 @@ class ClaimDailyBonusTest extends TestCase
     public function testCanClaim(): void
     {
         $characterId = '123';
-
+        Carbon::setTestNow(now()->subMinute());
         $characterEntity = $this->validCharacterEntity();
-
+        Carbon::setTestNow(now()->addDay()->addMinute());
 
         $this->characterRepository
             ->shouldReceive('findById')
@@ -60,7 +59,6 @@ class ClaimDailyBonusTest extends TestCase
 
         $characterId = '123';
         $characterEntity = $this->validCharacterEntity();
-
 
         $this->characterRepository
             ->shouldReceive('findById')

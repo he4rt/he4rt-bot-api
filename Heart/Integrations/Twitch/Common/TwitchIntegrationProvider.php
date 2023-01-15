@@ -2,9 +2,9 @@
 
 namespace Heart\Integrations\Twitch\Common;
 
-use Illuminate\Support\ServiceProvider;
 use Heart\Integrations\Twitch\OAuth\Domain\TwitchOAuthService;
 use Heart\Integrations\Twitch\OAuth\Infrastructure\TwitchOAuthClient;
+use Illuminate\Support\ServiceProvider;
 
 class TwitchIntegrationProvider extends ServiceProvider
 {

@@ -3,9 +3,9 @@
 namespace Heart\Authentication\OAuth\Presentation\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use Heart\Authentication\OAuth\Application\OAuthService;
 use Heart\Authentication\OAuth\Domain\Actions\RedirectOAuthUrl;
+use Illuminate\Http\RedirectResponse;
 
 class OAuthController extends Controller
 {

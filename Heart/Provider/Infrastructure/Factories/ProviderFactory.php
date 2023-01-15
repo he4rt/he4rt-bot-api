@@ -4,7 +4,6 @@ namespace Heart\Provider\Infrastructure\Factories;
 
 use Heart\Provider\Infrastructure\Models\Provider;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Heart\User\Infrastructure\Models\User;
 
 class ProviderFactory extends Factory
 {
