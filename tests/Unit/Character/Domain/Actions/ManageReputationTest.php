@@ -23,7 +23,6 @@ class ManageReputationTest extends TestCase
     {
         parent::setUp();
         $this->characterRepository = m::mock(CharacterRepository::class);
-        $this->claimDailyBonus = m::mock(ClaimDailyBonus::class);
         $this->manageReputation = new ManageReputation($this->characterRepository);
     }
 
@@ -47,10 +46,6 @@ class ManageReputationTest extends TestCase
             ->shouldReceive('updateReputation')
             ->once()
             ->with($character);
-        $this->claimDailyBonus
-            ->shouldReceive('handle')
-            ->once()
-            ->with($characterId);
 
         $this->manageReputation->handle($characterId, 'increment');
     }
