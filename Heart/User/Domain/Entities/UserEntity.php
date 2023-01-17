@@ -1,6 +1,6 @@
 <?php
 
-namespace Heart\User\Domain\Entity;
+namespace Heart\User\Domain\Entities;
 
 use Exception;
 use Heart\User\Domain\Exceptions\UserEntityException;

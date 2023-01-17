@@ -12,7 +12,7 @@ class Information extends Model
         'user_id',
         'name',
         'nickname',
-        'linkedid_url',
+        'linkedin_url',
         'github_url',
         'birthdate',
         'about'

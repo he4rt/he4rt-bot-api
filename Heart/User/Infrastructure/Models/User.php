@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Model
 {
+    protected $table = 'users';
+
     protected $fillable = [
         'id',
         'username',
@@ -15,7 +17,7 @@ class User extends Model
 
     public function address(): HasOne
     {
-        return $this->hasOne(UserAddress::class);
+        return $this->hasOne(Address::class);
     }
 
     public function information(): HasOne

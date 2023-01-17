@@ -2,7 +2,7 @@
 
 namespace Heart\User\Application;
 
-use Heart\User\Domain\Entity\UserEntity;
+use Heart\User\Domain\Entities\UserEntity;
 use Heart\User\Domain\Exceptions\UserEntityException;
 use Heart\User\Domain\Repositories\UserRepository;
 use Heart\User\Domain\ValueObjects\UserId;

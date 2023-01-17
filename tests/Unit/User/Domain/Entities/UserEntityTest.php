@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\User\Domain\Entity;
+namespace Tests\Unit\User\Domain\Entities;
 
-use Heart\User\Domain\Entity\UserEntity;
+use Heart\User\Domain\Entities\UserEntity;
 use Heart\User\Domain\Exceptions\UserEntityException;
 use Illuminate\Support\Str;
 use Tests\TestCase;
