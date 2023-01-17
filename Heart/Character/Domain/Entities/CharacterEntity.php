@@ -38,7 +38,7 @@ class CharacterEntity
 
     public function getLevel(): int
     {
-        return $this->level->level;
+        return $this->level->getLevel();
     }
 
     public function toDatabase(): array
@@ -46,7 +46,7 @@ class CharacterEntity
         return [
             'user_id' => $this->userId,
             'reputation' => $this->reputation,
-            'experience' => $this->level->experience,
+            'experience' => $this->level->getExperience(),
             'daily_bonus_claimed_at' => $this->dailyReward->claimedAt,
         ];
     }
