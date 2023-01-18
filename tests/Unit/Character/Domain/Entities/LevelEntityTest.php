@@ -23,10 +23,10 @@ class LevelEntityTest extends TestCase
             foreach (range(1, 30) as $day) {
                 dump('day ' . $day);
                 foreach (range(0, 20) as $message) {
-                    $messageSent = Str::random(25);
+                    $messageSent = Str::random(50);
                     dump('actual level: ' . $level->getLevel());
                     dump('actual experience: ' . $level->getExperience());
-                    $experienceGenerated = $level->generateExperience($messageSent);
+                    $experienceGenerated = $level->generateExperience($messageSent, true);
                     dump('experience earned: ' . $experienceGenerated);
                 }
             }
