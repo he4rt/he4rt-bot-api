@@ -6,30 +6,29 @@ use DateTime;
 
 class MessageEntity
 {
-    public string $providerId;
-    public string $providerMessageId;
-    public int $seasonId;
-    public string $channelId;
-    public string $content;
-    public DateTime $sentAt;
-    public int $obtainedExperience;
-
     public function __construct(
-        string $providerId,
-        string $providerMessageId,
-        int    $seasonId,
-        string $channelId,
-        string $content,
-        string $sentAt,
-        int    $obtainedExperience,
-    )
+        public string $id,
+        public string $providerId,
+        public string $providerMessageId,
+        public int $seasonId,
+        public string $channelId,
+        public string $content,
+        public DateTime $sentAt,
+        public int $obtainedExperience,
+    ) {
+    }
+
+    public static function make(array $payload): self
     {
-        $this->providerId = $providerId;
-        $this->providerMessageId = $providerMessageId;
-        $this->seasonId = $seasonId;
-        $this->channelId = $channelId;
-        $this->content = $content;
-        $this->sentAt = new DateTime($sentAt);
-        $this->obtainedExperience = $obtainedExperience;
+        return new self(
+            id: $payload['id'],
+            providerId: $payload['provider_id'],
+            providerMessageId: $payload['provider_message_id'],
+            seasonId: $payload['season_id'],
+            channelId: $payload['channel_id'],
+            content: $payload['content'],
+            sentAt: new DateTime($payload['sent_at']),
+            obtainedExperience: $payload['obtained_experience']
+        );
     }
 }

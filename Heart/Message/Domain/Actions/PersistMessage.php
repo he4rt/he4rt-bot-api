@@ -2,6 +2,8 @@
 
 namespace Heart\Message\Domain\Actions;
 
+use Heart\Message\Domain\DTO\NewMessageDTO;
+use Heart\Message\Domain\Entities\MessageEntity;
 use Heart\Message\Domain\Repositories\MessageRepository;
 
 class PersistMessage
@@ -12,8 +14,8 @@ class PersistMessage
     {
     }
 
-    public function handle()
+    public function handle(NewMessageDTO $messageDTO, int $obtainedExperience): MessageEntity
     {
-        $this->messageRepository->create();
+        return $this->messageRepository->create($messageDTO, $obtainedExperience);
     }
 }

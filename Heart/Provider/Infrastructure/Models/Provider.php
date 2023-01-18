@@ -24,7 +24,7 @@ class Provider extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $table = 'subscriber_providers';
+    protected $table = 'providers';
 
     protected $fillable = [
         'id',

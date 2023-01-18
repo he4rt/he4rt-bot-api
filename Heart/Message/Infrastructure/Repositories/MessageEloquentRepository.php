@@ -2,6 +2,8 @@
 
 namespace Heart\Message\Infrastructure\Repositories;
 
+use Heart\Message\Domain\DTO\NewMessageDTO;
+use Heart\Message\Domain\Entities\MessageEntity;
 use Heart\Message\Domain\Repositories\MessageRepository;
 use Heart\Message\Infrastructure\Models\Message;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,8 +17,17 @@ class MessageEloquentRepository implements MessageRepository
         $this->query = $this->model->newQuery();
     }
 
-    public function create(array $payload): Message
+    public function create(NewMessageDTO $messageDTO, int $obtainedExperience): MessageEntity
     {
-        return $this->query->create($payload);
+        $model = $this->query->create([
+            'provider_id' => $messageDTO->providerId,
+            'provider_message_id' => $messageDTO->providerMessageId,
+            'season_id' => config('he4rt.season.id'),
+            'channel_id' => $messageDTO->channelId,
+            'content' => $messageDTO->content,
+            'sent_at' => $messageDTO->sentAt,
+            'obtained_experience' => $obtainedExperience,
+        ]);
+        return MessageEntity::make($model->toArray());
     }
 }

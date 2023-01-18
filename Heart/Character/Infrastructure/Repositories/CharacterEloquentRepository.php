@@ -14,10 +14,11 @@ class CharacterEloquentRepository implements CharacterRepository
         return Character::paginate($perPage);
     }
 
-    public function findById(string $providerId): CharacterEntity
+    public function findById(string $characterId): CharacterEntity
     {
-        $model = Character::find($providerId);
-        return CharacterEntity::make($model->toArray());
+        return CharacterEntity::make(
+            Character::find($characterId)->toArray()
+        );
     }
 
     public function claimDailyBonus(CharacterEntity $character)
@@ -30,5 +31,19 @@ class CharacterEloquentRepository implements CharacterRepository
     {
         return Character::find($character->id)
             ->update(['reputation' => $character->reputation->getPoints()]);
+    }
+
+    public function findByUserId(string $userId): CharacterEntity
+    {
+        return CharacterEntity::make(
+            Character::where('user_id', $userId)->first()->toArray()
+        );
+    }
+
+    public function updateExperience(CharacterEntity $character)
+    {
+        return Character::query()
+            ->find($character->id)
+            ->update(['experience' => $character->level->getExperience()]);
     }
 }
