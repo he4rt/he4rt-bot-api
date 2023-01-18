@@ -6,6 +6,7 @@ use App\Models\Gamefication\Season;
 use App\Models\User\User;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\Providers\User\MessageProvider;
 use Tests\TestCase;
 
 class ExperienceLevelingTest extends TestCase
@@ -28,9 +29,10 @@ class ExperienceLevelingTest extends TestCase
             'current_exp' => 9
         ]);
 
-        $this->post(route('users.messages.store', ['discordId' => $user->discord_id]), [
-            'message' => 'fodase essa porra'
-        ], $this->getHeaders())->seeStatusCode(Response::HTTP_NO_CONTENT);
+        $this->post(route('users.messages.store', ['discordId' => $user->discord_id]),
+            MessageProvider::validMessage(),
+            $this->getHeaders()
+        )->seeStatusCode(Response::HTTP_NO_CONTENT);
 
 
         $this->seeInDatabase('users', [
@@ -48,9 +50,7 @@ class ExperienceLevelingTest extends TestCase
     {
         $user = User::factory()->create(['current_exp' => 0, 'level' => 1]);
         $response = $this->post(route('users.messages.store', ['discordId' => $user->discord_id]),
-            [
-                'message' => 'fodase essa porra'
-            ],
+            MessageProvider::validMessage(),
             $this->getHeaders()
         );
 

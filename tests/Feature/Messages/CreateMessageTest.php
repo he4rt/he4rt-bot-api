@@ -7,6 +7,7 @@ use App\Models\User\User;
 use Carbon\Carbon;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\Providers\User\MessageProvider;
 use Tests\TestCase;
 
 class CreateMessageTest extends TestCase
@@ -29,12 +30,7 @@ class CreateMessageTest extends TestCase
             'current_exp' => 1
         ]);
 
-        $payload = [
-            'channel_id' => 'canal_foda_123',
-            'message_id' => 'id_foda_123',
-            'message_content' => 'deixa o sub namoral',
-            'message_at' => Carbon::now(),
-        ];
+        $payload = MessageProvider::validMessage();
 
         $response = $this->post(
             route('users.messages.store', ['discordId' => $user->discord_id]),
