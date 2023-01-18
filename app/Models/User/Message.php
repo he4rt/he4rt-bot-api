@@ -22,7 +22,10 @@ class Message extends Model
     protected $fillable = [
         'user_id',
         'season_id',
-        'message',
+        'channel_id',
+        'message_id',
+        'message_content',
+        'sent_at',
         'obtained_experience'
     ];
 

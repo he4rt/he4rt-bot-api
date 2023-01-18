@@ -13,6 +13,9 @@ return [
         'levelup_channel_id' => env('HE4RT_DISCORD_LEVELUP_CHANNEL', '552332704381927424'),
         'guild_id' => env('HE4RT_DISCORD_GUILD', '452926217558163456')
     ],
+    'channels' => [
+        'commands' => '542840741588762637'
+    ],
     'seasons' => [
         [
             'name' => 'Legado 4Y',
