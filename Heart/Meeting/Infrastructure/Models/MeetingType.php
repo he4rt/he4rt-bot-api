@@ -2,6 +2,7 @@
 
 namespace Heart\Meeting\Infrastructure\Models;
 
+use Heart\Meeting\Infrastructure\Factories\MeetingTypeFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -34,5 +35,10 @@ class MeetingType extends Model
         $minutes = str_pad($minutes, 2, '0', STR_PAD_LEFT);
 
         return $hours . ':' . $minutes;
+    }
+
+    protected static function newFactory(): MeetingTypeFactory
+    {
+        return MeetingTypeFactory::new();
     }
 }

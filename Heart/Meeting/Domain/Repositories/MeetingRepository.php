@@ -6,5 +6,5 @@ use Heart\Shared\Domain\Paginator;
 
 interface MeetingRepository
 {
-    public function paginate(array $relations = [], int $perPage = 10);
+    public function paginate(array $relations = [], int $perPage = 10): Paginator;
 }

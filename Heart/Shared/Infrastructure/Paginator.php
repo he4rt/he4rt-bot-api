@@ -4,11 +4,18 @@ namespace Heart\Shared\Infrastructure;
 
 use Heart\Shared\Domain\Paginator as PaginatorInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator as LengthAwarePaginatorContract;
 
 class Paginator extends LengthAwarePaginator implements PaginatorInterface
 {
-    public function __construct($items, $total, $perPage, $currentPage = null, array $options = [])
+
+    public static function paginate(LengthAwarePaginatorContract $lengthAwarePaginator): self
     {
-        parent::__construct($items, $total, $perPage, $currentPage, $options);
+       return new self(
+           $lengthAwarePaginator->items(),
+           $lengthAwarePaginator->total(),
+           $lengthAwarePaginator->perPage(),
+           $lengthAwarePaginator->currentPage()
+       );
     }
 }

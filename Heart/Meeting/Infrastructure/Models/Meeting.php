@@ -2,6 +2,7 @@
 
 namespace Heart\Meeting\Infrastructure\Models;
 
+use Heart\Meeting\Infrastructure\Factories\MeetingFactory;
 use Heart\User\Infrastructure\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -50,5 +51,10 @@ class Meeting extends Model
             'meeting_id',
             'user_id'
         )->withPivot(['attend_at']);
+    }
+
+    protected static function newFactory(): MeetingFactory
+    {
+        return MeetingFactory::new();
     }
 }

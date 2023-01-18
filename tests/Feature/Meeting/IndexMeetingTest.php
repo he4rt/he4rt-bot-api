@@ -14,15 +14,14 @@ class IndexMeetingTest extends TestCase
     public function testBotCanListAllMeetings(): void
     {
         // Arrange
-        $meeting = Meeting::factory()->unfinished()->create();
-        dd($meeting);
+        Meeting::factory()->unfinished()->create();
 
         // Act
-        $response = $this->get(route('events.meeting.getMeetings'), $this->getHeaders());
+        $response = $this->get(route('events.meeting.getMeetings'));
 
         // Assert
-        $response->assertResponseOk();
-        $response->seeJsonStructure(
+        $response->assertOk();
+        $response->assertJsonStructure(
             [
                 'data' => [
                     0 => [
