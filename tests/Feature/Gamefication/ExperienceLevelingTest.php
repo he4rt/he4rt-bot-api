@@ -60,4 +60,19 @@ class ExperienceLevelingTest extends TestCase
             'current_exp' => 0
         ]);
     }
+
+    public function test_user_should_not_gain_experience()
+    {
+        $user = User::factory()->create(['current_exp' => 0, 'level' => 1]);
+        $response = $this->post(route('users.messages.store', ['discordId' => $user->discord_id]),
+            MessageProvider::validMessageWithInvalidChannel(),
+            $this->getHeaders()
+        );
+
+        $response->seeStatusCode(Response::HTTP_NO_CONTENT);
+        $this->seeInDatabase('users', [
+            'id' => $user->getKey(),
+            'current_exp' => 0
+        ]);
+    }
 }
