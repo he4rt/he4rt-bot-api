@@ -15,10 +15,13 @@ class MessagesController extends Controller
 
         $payload = $this->validate($request, [
             'discord_id' => ['required','exists:users'],
-            'message' => ['string', 'required']
+            'channel_id' => ['required','string'],
+            'message_id' => ['required', 'string'],
+            'message_content' => ['required', 'string'],
+            'message_at' => ['required', 'date'],
         ]);
 
-        $action->handle($discordId, $payload['message']);
+        $action->handle($discordId, $payload);
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 }

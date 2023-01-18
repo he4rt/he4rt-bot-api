@@ -13,8 +13,8 @@ class CreateMessage
         $this->repository = $repository;
     }
 
-    public function handle(string $discordId, string $message): void
+    public function handle(string $discordId, array $messagePayload): void
     {
-        $this->repository->create($discordId, $message);
+        $this->repository->create($discordId, $messagePayload);
     }
 }

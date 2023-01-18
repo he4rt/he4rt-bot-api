@@ -19,18 +19,20 @@ class MessageRepository
 
     public function create(
         string $discordId,
-        string $message
-    ): Message {
+        array  $messagePayload
+    ): Message
+    {
         $user = $this->userRepository->findById($discordId);
         $obtainedExperience = $this->giveXP->handle(
             $user->getKey(),
             config('gambling.xp.message')
         );
-        return Message::create([
+
+        $persist = [
             'season_id' => config('he4rt.season.id'),
             'user_id' => $user->getKey(),
-            'message' => $message,
-            'obtained_experience' => $obtainedExperience
-        ]);
+            'obtained_experience' => $obtainedExperience,
+        ] + $messagePayload;
+        return Message::create($persist);
     }
 }
