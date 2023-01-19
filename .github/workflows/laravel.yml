@@ -3,7 +3,7 @@ name: Testing Lumen with MySQL
 on: [ push ]
 jobs:
   lumen:
-    name: Lumen (PHP ${{ matrix.php-versions }})
+    name: Laravel (PHP ${{ matrix.php-versions }})
     runs-on: ubuntu-latest
     env:
       DB_DATABASE: lumen
@@ -34,7 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: [ '7.4' ]
+        php-versions: [ '8.1' ]
     steps:
       - name: Checkout
         uses: actions/checkout@v3

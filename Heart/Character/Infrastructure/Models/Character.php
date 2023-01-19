@@ -3,6 +3,7 @@
 namespace Heart\Character\Infrastructure\Models;
 
 use Heart\Character\Infrastructure\Factories\CharacterFactory;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -16,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Character extends Model
 {
     use HasFactory;
+    use HasUuids;
+
     protected $table = 'characters';
 
     protected $fillable = [
