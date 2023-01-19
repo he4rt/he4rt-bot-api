@@ -17,7 +17,7 @@ class IndexMeetingTest extends TestCase
         Meeting::factory()->unfinished()->create();
 
         // Act
-        $response = $this->actingAsAdmin()->get(route('events.meeting.getMeetings'));
+        $response = $this->actingAsAdmin()->get(route('events.meeting.getMeetings', ['provider' => 'discord']));
 
         // Assert
         $response->assertOk();

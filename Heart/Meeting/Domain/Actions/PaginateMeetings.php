@@ -3,6 +3,7 @@
 namespace Heart\Meeting\Domain\Actions;
 
 use Heart\Meeting\Domain\Repositories\MeetingRepository;
+use Heart\Provider\Domain\Enums\ProviderEnum;
 use Heart\Shared\Domain\Paginator;
 
 class PaginateMeetings
@@ -11,7 +12,7 @@ class PaginateMeetings
     {
     }
 
-    public function handle(): Paginator
+    public function handle(ProviderEnum $provider): Paginator
     {
         return $this->repository->paginate(['meetingType']);
     }

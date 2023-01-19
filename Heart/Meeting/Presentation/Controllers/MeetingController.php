@@ -12,10 +12,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MeetingController extends Controller
 {
-    public function getMeetings(PaginateMeetings $action): JsonResponse
+    public function getMeetings(string $provider, PaginateMeetings $action): JsonResponse
     {
-        return response()->json($action->handle());
+        return response()->json($action->handle($provider));
     }
+
 
     public function postMeeting(CreateMeetingRequest $request, CreateMeeting $action): JsonResponse
     {
@@ -24,35 +25,37 @@ class MeetingController extends Controller
             Response::HTTP_CREATED
         );
     }
-//
-//    public function postEndMeeting(EndMeeting $action): JsonResponse
-//    {
-//        return response()->json(['message' => $action->handle()]);
-//    }
-//
-//    public function postAttendMeeting(Request $request, AttendMeeting $action): JsonResponse
-//    {
-//        $payload = $this->validate($request, [
-//            'discord_id' => ['required', 'integer', 'exists:users']
-//        ]);
-//
-//        try {
-//            $action->handle($payload);
-//            return response()->json(
-//                ['message' => __('meetings.success.attendMeeting')],
-//                Response::HTTP_CREATED
-//            );
-//        } catch (MeetingsException $e) {
-//            return response()->json(['message' => $e->getMessage()], $e->getCode());
-//        }
-//    }
-//
-//    public function postMeetingSubject(Request $request, int $meetingId, AddMeetingSubject $action): JsonResponse
-//    {
-//        $payload = $this->validate($request, [
-//            'content' => ['required', 'string']
-//        ]);
-//
-//        return response()->json($action->handle($meetingId, $payload));
-//    }
-}
+
+
+    //
+    // public function postEndMeeting(EndMeeting $action): JsonResponse
+    // {
+    // return response()->json(['message' => $action->handle()]);
+    // }
+    //
+    // public function postAttendMeeting(Request $request, AttendMeeting $action): JsonResponse
+    // {
+    // $payload = $this->validate($request, [
+    // 'discord_id' => ['required', 'integer', 'exists:users']
+    // ]);
+    //
+    // try {
+    // $action->handle($payload);
+    // return response()->json(
+    // ['message' => __('meetings.success.attendMeeting')],
+    // Response::HTTP_CREATED
+    // );
+    // } catch (MeetingsException $e) {
+    // return response()->json(['message' => $e->getMessage()], $e->getCode());
+    // }
+    // }
+    //
+    // public function postMeetingSubject(Request $request, int $meetingId, AddMeetingSubject $action): JsonResponse
+    // {
+    // $payload = $this->validate($request, [
+    // 'content' => ['required', 'string']
+    // ]);
+    //
+    // return response()->json($action->handle($meetingId, $payload));
+    // }
+}//end class
