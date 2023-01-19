@@ -6,9 +6,12 @@ jobs:
     name: Laravel (PHP ${{ matrix.php-versions }})
     runs-on: ubuntu-latest
     env:
-      DB_TEST_DATABASE: dev_he4rtbot
+      DB_DATABASE: laravel
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      DB_TEST_DATABASE: laravel
       DB_TEST_USERNAME: root
-      DB_TEST_PASSWORD: developers
+      DB_TEST_PASSWORD: root
       BROADCAST_DRIVER: log
       CACHE_DRIVER: redis
       QUEUE_CONNECTION: redis
@@ -20,8 +23,8 @@ jobs:
         image: mysql:latest
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: false
-          MYSQL_ROOT_PASSWORD: developers
-          MYSQL_DATABASE: dev_he4rtbot
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: laravel
         ports:
           - 3306/tcp
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3

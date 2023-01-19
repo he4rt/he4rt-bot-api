@@ -74,9 +74,9 @@ return [
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_TEST_DATABASE', 'forge'),
-            'username' => env('DB_TEST_USERNAME', 'forge'),
-            'password' => env('DB_TEST_PASSWORD', ''),
+            'database' => env('DB_TEST_DATABASE', env('DB_DATABASE')),
+            'username' => env('DB_TEST_USERNAME', env('DB_USERNAME')),
+            'password' => env('DB_TEST_PASSWORD', env('DB_PASSWORD')),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
@@ -86,13 +86,6 @@ return [
             'engine' => env('DB_ENGINE', null),
             'timezone' => env('DB_TIMEZONE', '+00:00'),
             'sslmode' => env('DB_SSLMODE', null),
-            'options' => env('DB_SSLMODE', null) == 'required'
-                ? [
-                    PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
-                    PDO::MYSQL_ATTR_SSL_KEY => '/certs/client-key.pem',
-                    PDO::MYSQL_ATTR_SSL_CERT => '/certs/client-cert.pem',
-                    PDO::MYSQL_ATTR_SSL_CA => '/certs/ca.pem',
-                ] : []
         ],
 
         'pgsql' => [
