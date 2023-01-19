@@ -32,7 +32,11 @@ class NewMessage
             $messageDTO->content
         );
 
-        $this->persistMessage->handle($messageDTO, $obtainedExperience);
+        $this->persistMessage->handle(
+            $messageDTO,
+            $obtainedExperience,
+            $providerEntity->id,
+        );
     }
 
     private function persistCharacterExperience(string $userId, string $content): int

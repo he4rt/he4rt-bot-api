@@ -14,7 +14,7 @@ class PaginateCharactersTest extends TestCase
     public function testSuccess()
     {
         $character = Character::factory()->create([
-            'daily_bonus_claimed_at' => now()
+            'daily_bonus_claimed_at' => now()->toDateTimeString()
         ]);
 
         $this->getJson(route('characters.getCharacters', ['characterId' => $character->getKey()]))

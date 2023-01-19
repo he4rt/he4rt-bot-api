@@ -7,5 +7,5 @@ use Heart\Message\Domain\Entities\MessageEntity;
 
 interface MessageRepository
 {
-    public function create(NewMessageDTO $payload, int $obtainedExperience): MessageEntity;
+    public function create(NewMessageDTO $payload, string $providerId, int $obtainedExperience): MessageEntity;
 }

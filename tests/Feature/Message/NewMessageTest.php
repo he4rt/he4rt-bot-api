@@ -28,12 +28,9 @@ class NewMessageTest extends TestCase
             'sent_at' => now()->toDateTimeString()
         ];
 
-        $response = $this->postJson(
-            route('messages.create', ['provider' => $provider->provider]),
-            $payload
-        );
-
-        $response->assertNoContent();
+        $this
+            ->postJson(route('messages.create', ['provider' => $provider->provider]), $payload)
+            ->assertNoContent();
 
         $this->assertDatabaseMissing('characters', [
             'user_id' => $user->getKey(),

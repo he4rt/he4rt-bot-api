@@ -10,12 +10,14 @@ class PersistMessage
 {
     public function __construct(
         private readonly MessageRepository $messageRepository
-    )
-    {
+    ) {
     }
 
-    public function handle(NewMessageDTO $messageDTO, int $obtainedExperience): MessageEntity
-    {
-        return $this->messageRepository->create($messageDTO, $obtainedExperience);
+    public function handle(
+        NewMessageDTO $messageDTO,
+        int $obtainedExperience,
+        string $providerEntity
+    ): MessageEntity {
+        return $this->messageRepository->create($messageDTO, $providerEntity, $obtainedExperience);
     }
 }

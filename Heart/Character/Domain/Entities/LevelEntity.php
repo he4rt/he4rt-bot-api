@@ -48,10 +48,10 @@ class LevelEntity
         $messageLength = strlen($message);
         $averageMessageLength = 25;
         $memberStatusMultiplier = $isSupporter ? 0.25 : 0.4;
-
-        $messagePound = (int)($messageLength / $averageMessageLength);
-        $experienceObtained = (($messagePound / ($this->level * $memberStatusMultiplier) * 20));
+        $messagePound = ($messageLength / $averageMessageLength);
+        $experienceObtained = ($messagePound / ($this->level * $memberStatusMultiplier) * 20);
         $this->addExperience($experienceObtained);
+
         return (int)$experienceObtained;
     }
 

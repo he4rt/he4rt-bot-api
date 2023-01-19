@@ -9,7 +9,6 @@ use Heart\Message\Domain\Actions\PersistMessage;
 use Heart\Message\Domain\DTO\NewMessageDTO;
 use Heart\Provider\Application\FindProvider;
 use Heart\Provider\Domain\Entities\ProviderEntity;
-use Illuminate\Support\Facades\Cache;
 use Mockery as m;
 use Tests\TestCase;
 
@@ -52,7 +51,7 @@ class NewMessageTest extends TestCase
         $persistMessageStub
             ->shouldReceive('handle')
             ->once()
-            ->with(m::type(NewMessageDTO::class), $obtainedExperience);
+            ->with(m::type(NewMessageDTO::class), $obtainedExperience, $providerEntityMock->id);
 
 
         $action = new NewMessage(
