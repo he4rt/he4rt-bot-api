@@ -3,6 +3,7 @@
 namespace Heart\Character\Infrastructure\Factories;
 
 use Heart\Character\Infrastructure\Models\Character;
+use Heart\User\Infrastructure\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +21,7 @@ class CharacterFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => '1',
+            'user_id' => User::factory(),
             'reputation' => $this->faker->numberBetween(1, 10),
             'experience' => $this->faker->numberBetween(1, 5000),
             'daily_bonus_claimed_at' => $this->faker->dateTime(),

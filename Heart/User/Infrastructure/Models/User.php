@@ -2,14 +2,21 @@
 
 namespace Heart\User\Infrastructure\Models;
 
+
+use Heart\Character\Infrastructure\Models\Character;
+use Heart\Provider\Infrastructure\Models\Provider;
 use Heart\User\Infrastructure\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Model
 {
     use HasFactory;
+    use HasUuids;
+
 
     protected $table = 'users';
 
@@ -28,6 +35,17 @@ class User extends Model
     {
         return $this->hasOne(Information::class);
     }
+
+    public function providers(): HasMany
+    {
+        return $this->hasMany(Provider::class);
+    }
+
+    public function character(): HasOne
+    {
+        return $this->hasOne(Character::class);
+    }
+
 
     protected static function newFactory(): UserFactory
     {
