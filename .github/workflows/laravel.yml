@@ -6,9 +6,9 @@ jobs:
     name: Laravel (PHP ${{ matrix.php-versions }})
     runs-on: ubuntu-latest
     env:
-      DB_DATABASE: lumen
+      DB_DATABASE: he4rt
       DB_USERNAME: root
-      DB_PASSWORD: password
+      DB_PASSWORD: root
       BROADCAST_DRIVER: log
       CACHE_DRIVER: redis
       QUEUE_CONNECTION: redis
