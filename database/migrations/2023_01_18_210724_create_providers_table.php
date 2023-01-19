@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('characters', function (Blueprint $table) {
+        Schema::create('providers', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained('users');
-            $table->integer('experience')->default(0);
-            $table->integer('reputation')->default(0);
-            $table->timestamp('daily_bonus_claimed_at')->nullable();
+            $table->string('provider');
+            $table->string('provider_id');
+            $table->string('email')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('characters');
+        Schema::dropIfExists('providers');
     }
 };

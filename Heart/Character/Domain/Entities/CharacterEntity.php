@@ -4,7 +4,7 @@ namespace Heart\Character\Domain\Entities;
 
 class CharacterEntity
 {
-    public int $id;
+    public string $id;
     public string $userId;
     public LevelEntity $level;
     public DailyRewardEntity $dailyReward;
@@ -13,11 +13,10 @@ class CharacterEntity
     public function __construct(
         string $id,
         string $userId,
-        int    $reputation,
-        int    $experience,
+        int $reputation,
+        int $experience,
         ?string $claimedAt = null
-    )
-    {
+    ) {
         $this->id = $id;
         $this->userId = $userId;
         $this->reputation = new ReputationEntity($reputation);

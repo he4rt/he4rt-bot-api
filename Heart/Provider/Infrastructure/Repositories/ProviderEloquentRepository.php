@@ -12,6 +12,7 @@ class ProviderEloquentRepository implements ProviderRepository
 
     public function findByProvider(string $provider, string $providerId): ProviderEntity
     {
+        dump($provider, $providerId);
         $model = Provider::query()
             ->where('provider', $provider)
             ->where('provider_id', $providerId)

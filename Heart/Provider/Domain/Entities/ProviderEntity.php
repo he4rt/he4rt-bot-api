@@ -29,7 +29,7 @@ class ProviderEntity
     {
         return new self(
             $payload['id'],
-            $payload['subscriber_id'],
+            $payload['user_id'],
             $payload['provider'],
             $payload['provider_id'],
             $payload['email'],
