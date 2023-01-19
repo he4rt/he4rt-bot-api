@@ -31,7 +31,6 @@ class NewMessage
             $providerEntity->userId,
             $messageDTO->content
         );
-        dump($messageDTO->sentAt);
 
         $this->persistMessage->handle($messageDTO, $obtainedExperience);
     }
