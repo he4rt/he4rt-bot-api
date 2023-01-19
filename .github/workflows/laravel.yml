@@ -6,8 +6,8 @@ jobs:
     name: Laravel (PHP ${{ matrix.php-versions }})
     runs-on: ubuntu-latest
     env:
-      DB_DATABASE: laravel
-      DB_USERNAME: dev_he4rtbot
+      DB_DATABASE: dev_he4rtbot
+      DB_USERNAME: root
       DB_PASSWORD: root
       DB_TEST_DATABASE: dev_he4rtbot
       DB_TEST_USERNAME: root
