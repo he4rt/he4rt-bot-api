@@ -17,7 +17,7 @@ class IndexMeetingTest extends TestCase
         Meeting::factory()->unfinished()->create();
 
         // Act
-        $response = $this->get(route('events.meeting.getMeetings'));
+        $response = $this->actingAsAdmin()->get(route('events.meeting.getMeetings'));
 
         // Assert
         $response->assertOk();

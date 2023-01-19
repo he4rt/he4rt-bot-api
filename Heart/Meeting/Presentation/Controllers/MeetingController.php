@@ -3,7 +3,9 @@
 namespace Heart\Meeting\Presentation\Controllers;
 
 use App\Http\Controllers\Controller;
+use Heart\Meeting\Application\CreateMeeting;
 use Heart\Meeting\Application\PaginateMeetings;
+use Heart\Meeting\Presentation\Requests\CreateMeetingRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,18 +17,13 @@ class MeetingController extends Controller
         return response()->json($action->handle());
     }
 
-//    public function postMeeting(Request $request, CreateMeeting $action): JsonResponse
-//    {
-//        $payload = $this->validate($request, [
-//            'meeting_type_id' => ['required', 'integer', 'exists:meeting_types,id'],
-//            'discord_id' => ['required', 'integer', 'exists:users']
-//        ]);
-//
-//        return response()->json(
-//            $action->handle($payload),
-//            Response::HTTP_CREATED
-//        );
-//    }
+    public function postMeeting(CreateMeetingRequest $request, CreateMeeting $action): JsonResponse
+    {
+        return response()->json(
+            $action->handle($request->input('meeting_type_id'), $request->input('discord_id')),
+            Response::HTTP_CREATED
+        );
+    }
 //
 //    public function postEndMeeting(EndMeeting $action): JsonResponse
 //    {
