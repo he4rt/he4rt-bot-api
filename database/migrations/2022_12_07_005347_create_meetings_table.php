@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('meetings', function (Blueprint $table) {
             $table->id();
+            $table->foreignUuid('admin_id')->constrained('users');
             $table->text('content')->nullable();
             $table->foreignId('meeting_type_id')->constrained('meeting_types');
-            $table->foreignId('admin_id')->constrained('users');
             $table->dateTime('starts_at');
             $table->dateTime('ends_at')->nullable();
             $table->timestamps();
