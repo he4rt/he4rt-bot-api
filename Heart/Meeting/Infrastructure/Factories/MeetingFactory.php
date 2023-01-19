@@ -14,6 +14,7 @@ class MeetingFactory extends Factory
     public function definition(): array
     {
         return [
+            'id' => $this->faker->uuid(),
             'meeting_type_id' => MeetingType::factory(),
             'admin_id' => User::factory(),
             'content' => 'Fake content',

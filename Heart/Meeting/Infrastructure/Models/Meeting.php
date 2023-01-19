@@ -4,6 +4,7 @@ namespace Heart\Meeting\Infrastructure\Models;
 
 use Heart\Meeting\Infrastructure\Factories\MeetingFactory;
 use Heart\User\Infrastructure\Models\User;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -12,10 +13,12 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Meeting extends Model
 {
     use HasFactory;
+    use HasUuids;
 
     protected $table = 'meetings';
 
     protected $fillable = [
+        'id',
         'content',
         'meeting_type_id',
         'admin_id',
