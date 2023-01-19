@@ -68,7 +68,24 @@ return [
                     PDO::MYSQL_ATTR_SSL_CA => '/certs/ca.pem',
                 ] : []
         ],
-
+        'testing' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_TEST_DATABASE', env('DB_DATABASE')),
+            'username' => env('DB_TEST_USERNAME', env('DB_USERNAME')),
+            'password' => env('DB_TEST_PASSWORD', env('DB_PASSWORD')),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => env('DB_ENGINE', null),
+            'timezone' => env('DB_TIMEZONE', '+00:00'),
+            'sslmode' => env('DB_SSLMODE', null),
+        ],
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
