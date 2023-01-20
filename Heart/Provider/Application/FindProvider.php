@@ -17,10 +17,10 @@ class FindProvider
     public function handle(string $provider, string $providerId): ProviderEntity
     {
         $providerCacheKey = sprintf('provider-%s-%s', $provider, $providerId);
-        $ttl = 60 * 60 * 24;
+
         return Cache::remember(
             $providerCacheKey,
-            $ttl,
+            self::TTL,
             fn() => $this->findProvider($provider, $providerId)
         );
     }

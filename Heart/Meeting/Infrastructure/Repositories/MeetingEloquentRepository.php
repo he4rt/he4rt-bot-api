@@ -46,4 +46,12 @@ class MeetingEloquentRepository implements MeetingRepository
 
         return MeetingEntity::make($meeting->toArray());
     }
+
+    public function attendMeeting(string $meetingId, string $userId): void
+    {
+        $this->model->newQuery()
+            ->find($meetingId)
+            ->users()
+            ->attach($userId, ['attend_at' => now()]);
+    }
 }

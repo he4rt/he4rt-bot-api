@@ -13,4 +13,6 @@ interface MeetingRepository
     public function create(NewMeetingDTO $dto, string $adminId): MeetingEntity;
 
     public function endMeeting(string $meetingId): MeetingEntity;
+
+    public function attendMeeting(string $meetingId, string $userId): void;
 }
