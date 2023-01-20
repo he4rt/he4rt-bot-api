@@ -8,11 +8,19 @@ use Heart\Provider\Infrastructure\Models\Provider;
 use Heart\User\Infrastructure\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Cache;
+use Mockery as m;
 use Tests\TestCase;
 
 class NewMessageTest extends TestCase
 {
     use DatabaseMigrations;
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        m::close();
+        Cache::clear();
+    }
 
     public function testCanCreateAMessage(): void
     {
