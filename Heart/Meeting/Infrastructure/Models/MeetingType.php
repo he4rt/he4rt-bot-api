@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property string $name
+ * @property int $week_day
+ * @property \Carbon\Carbon $start_at
+ */
 class MeetingType extends Model
 {
     use HasFactory;

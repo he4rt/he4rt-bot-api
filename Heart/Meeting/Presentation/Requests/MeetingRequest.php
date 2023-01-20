@@ -19,8 +19,8 @@ class MeetingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'meeting_type_id' => ['required', 'integer', 'exists:meeting_types,id'],
-            'provider_id' => ['required', 'exists:providers'],
+            'meeting_type_id' => ['required', 'integer'],
+            'provider_id' => ['required'],
             'provider' => ['required']
         ];
     }

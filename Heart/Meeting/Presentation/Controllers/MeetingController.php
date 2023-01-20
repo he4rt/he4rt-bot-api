@@ -13,19 +13,19 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MeetingController extends Controller
 {
-    public function getMeetings(string $provider, PaginateMeetings $action): JsonResponse
+    public function getMeetings(string $provider, PaginateMeetings $paginateMeetings): JsonResponse
     {
-        return response()->json($action->handle($provider));
+        return response()->json($paginateMeetings->handle($provider));
     }
 
 
     public function postMeeting(
         string $provider,
         MeetingRequest $request,
-        StartMeeting $action
+        StartMeeting $startMeeting
     ): JsonResponse {
         return response()->json(
-            $action->handle($provider, $request->input('provider_id'), $request->input('meeting_type_id')),
+            $startMeeting->handle($provider, $request->input('provider_id'), $request->input('meeting_type_id')),
             Response::HTTP_CREATED
         );
     }
@@ -33,9 +33,9 @@ class MeetingController extends Controller
 
     public function postEndMeeting(
         string $provider,
-        EndMeeting $action,
+        EndMeeting $endMeeting,
     ): Response {
-        $action->handle();
+        $endMeeting->handle();
         return response()->noContent();
     }
 }

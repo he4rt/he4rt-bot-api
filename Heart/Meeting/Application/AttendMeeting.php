@@ -11,8 +11,7 @@ class AttendMeeting
 {
     public function __construct(
         private readonly PersistAttendMeeting $persistAttendMeeting
-    )
-    {
+    ) {
     }
 
     public function handle(string $userId): void
@@ -25,10 +24,7 @@ class AttendMeeting
         Cache::tags(['meetings'])->put($userAttendedCacheKey, true, TTL::fromHours(2));
     }
 
-    /**
-     * @return mixed
-     */
-    public function getMeetingId(): mixed
+    public function getMeetingId(): string
     {
         if (!Cache::tags(['meetings'])->has('current-meeting')) {
             throw MeetingException::nonexistentMeeting();

@@ -11,4 +11,9 @@ class MeetingException extends Exception
     {
         return new self('Nenhuma reunião acontecendo no momento', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
+
+    public static function meetingTypeNotFound(): self
+    {
+        return new self('Tipo de reunião inexistente :/', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
 }

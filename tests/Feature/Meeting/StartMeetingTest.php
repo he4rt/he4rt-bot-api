@@ -18,13 +18,16 @@ class StartMeetingTest extends TestCase
     {
         // Arrange
         $providerName = 'discord';
+        /** @var Provider $provider */
         $provider = Provider::factory()->create(['provider' => $providerName]);
+
 
         $meetingType = MeetingType::factory()->create();
         $payload = [
             'meeting_type_id' => $meetingType->getKey(),
             'provider_id' => $provider->provider_id
         ];
+
         $expectedResponse = [
             'meeting_type_id' => $meetingType->getKey(),
             'admin_id' => $provider->user_id,
