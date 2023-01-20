@@ -38,6 +38,7 @@ class CreateMessageTest extends TestCase
             $this->getHeaders()
         );
 
+
         $response->seeStatusCode(Response::HTTP_NO_CONTENT);
         $this->seeInDatabase('user_messages', [
             'user_id' => $user->getKey(),

@@ -26,7 +26,7 @@ class MessageRepository
         $user = $this->userRepository->findById($discordId);
 
         $obtainedExperience = $this->obtainExperience($user->getKey(), $messagePayload['channel_id']);
-        $messagePayload['sent_at'] = Carbon::createFromTimestamp($messagePayload['sent_at']);
+        $messagePayload['sent_at'] = Carbon::createFromTimestamp($messagePayload['message_at']);
         $persist = [
                 'season_id' => config('he4rt.season.id'),
                 'user_id' => $user->getKey(),
