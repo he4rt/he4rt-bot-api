@@ -15,7 +15,7 @@ class ProviderFactory extends Factory
             'id' => $this->faker->uuid(),
             'user_id' => User::factory(),
             'provider' => $this->faker->randomElement(['twitch', 'discord']),
-            'provider_id' => $this->faker->uuid,
+            'provider_id' => $this->faker->randomNumber(6),
             'email' => $this->faker->unique()->email,
         ];
     }

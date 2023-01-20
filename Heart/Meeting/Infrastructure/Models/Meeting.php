@@ -19,8 +19,8 @@ class Meeting extends Model
 
     protected $fillable = [
         'id',
-        'content',
         'meeting_type_id',
+        'content',
         'admin_id',
         'starts_at',
         'ends_at',
@@ -33,7 +33,6 @@ class Meeting extends Model
 
     protected $casts = [
         'meeting_type_id' => 'integer',
-        'admin_id' => 'integer',
     ];
 
     public function isEnded(): bool

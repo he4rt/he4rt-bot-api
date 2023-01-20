@@ -17,17 +17,19 @@ class MeetingEloquentRepository implements MeetingRepository
 
     public function paginate(array $relations = [], int $perPage = 10): Paginator
     {
-        $meetings =  $this->model->newQuery()->with($relations)->paginate($perPage);
+        $meetings = $this->model->newQuery()->with($relations)->paginate($perPage);
 
         return PaginatorConcrete::paginate($meetings);
     }
 
-    public function create(NewMeetingDTO $dto): MeetingEntity
+    public function create(NewMeetingDTO $dto, string $adminId): MeetingEntity
     {
-        $model =  $this->model->newQuery()->create([
-            $dto
+        $meeting = $this->model->newQuery()->create([
+            'meeting_type_id' => $dto->meetingTypeId,
+            'admin_id' => $adminId,
+            'starts_at' => now()
         ]);
 
-        return PaginatorConcrete::paginate($meetings);
+        return MeetingEntity::make($meeting->toArray());
     }
 }

@@ -11,11 +11,17 @@ class CreateMeetingRequest extends FormRequest
         return true;
     }
 
+    public function prepareForValidation()
+    {
+        $this->merge(['provider' => $this->route('provider')]);
+    }
+
     public function rules(): array
     {
         return [
             'meeting_type_id' => ['required', 'integer', 'exists:meeting_types,id'],
-            'discord_id' => ['required', 'integer', 'exists:users']
+            'provider_id' => ['required', 'exists:providers'],
+            'provider' => ['required']
         ];
     }
 }

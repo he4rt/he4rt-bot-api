@@ -18,10 +18,13 @@ class MeetingController extends Controller
     }
 
 
-    public function postMeeting(CreateMeetingRequest $request, CreateMeeting $action): JsonResponse
-    {
+    public function postMeeting(
+        string $provider,
+        CreateMeetingRequest $request,
+        CreateMeeting $action
+    ): JsonResponse {
         return response()->json(
-            $action->handle($request->input('meeting_type_id'), $request->input('discord_id')),
+            $action->handle($provider, $request->input('provider_id'), $request->input('meeting_type_id')),
             Response::HTTP_CREATED
         );
     }

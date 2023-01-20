@@ -13,8 +13,8 @@ class CreateMeeting
     {
     }
 
-    public function handle(NewMeetingDTO $dto): MeetingEntity
+    public function handle(NewMeetingDTO $dto, string $adminId): MeetingEntity
     {
-        return $this->repository->create($dto);
+        return $this->repository->create($dto, $adminId);
     }
 }
