@@ -9,7 +9,6 @@ class ClaimDailyBonus
 {
     public function __construct(private readonly CharacterRepository $characterRepository)
     {
-
     }
 
     public function handle(string $providerId): void
