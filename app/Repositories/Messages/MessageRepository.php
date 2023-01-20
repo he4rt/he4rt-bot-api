@@ -5,6 +5,7 @@ namespace App\Repositories\Messages;
 use App\Actions\Gamefication\GiveXP;
 use App\Models\User\Message;
 use App\Repositories\Users\UsersRepository;
+use Carbon\Carbon;
 
 class MessageRepository
 {
@@ -25,7 +26,7 @@ class MessageRepository
         $user = $this->userRepository->findById($discordId);
 
         $obtainedExperience = $this->obtainExperience($user->getKey(), $messagePayload['channel_id']);
-
+        $messagePayload['sent_at'] = Carbon::createFromTimestamp($messagePayload['sent_at']);
         $persist = [
                 'season_id' => config('he4rt.season.id'),
                 'user_id' => $user->getKey(),

@@ -18,7 +18,7 @@ class MessagesController extends Controller
             'channel_id' => ['required','string'],
             'message_id' => ['required', 'string'],
             'message_content' => ['required', 'string'],
-            'message_at' => ['required', 'date'],
+            'message_at' => ['required'],
         ]);
 
         $action->handle($discordId, $payload);
