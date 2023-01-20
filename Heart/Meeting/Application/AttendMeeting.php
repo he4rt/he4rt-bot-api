@@ -14,11 +14,11 @@ class AttendMeeting
 
     public function handle(string $userId): void
     {
-        $meetingId = Cache::get('current-meeting');
+        $ttl = 60 * 60 * 2;
+        $meetingId = Cache::tags(['meetings'])->get('current-meeting');
 
         $this->persistAttendMeeting->handle($meetingId, $userId);
-        $ttl = 60 * 60 * 2;
         $userAttendedCacheKey = sprintf('meeting-%s-attended', $userId);
-        Cache::set($userAttendedCacheKey, true, $ttl);
+        Cache::tags(['meetings'])->put($userAttendedCacheKey, true, $ttl);
     }
 }

@@ -16,11 +16,6 @@ class StartMeetingTest extends TestCase
 
     public function testBotCanStartNewMeeting(): void
     {
-        // TODO: migrar tudo que for DiscordId para ProviderID
-        // TODO: arrumar possivel bagunça do banco
-        // TODO: repassar todo o fluxo novo
-
-
         // Arrange
         $providerName = 'discord';
         $provider = Provider::factory()->create(['provider' => $providerName]);
@@ -46,6 +41,6 @@ class StartMeetingTest extends TestCase
             ->assertSee($expectedResponse);
 
         $this->assertDatabaseHas('meetings', $expectedResponse);
-        $this->assertTrue(Cache::has('current-meeting'));
+        $this->assertTrue(Cache::tags(['meetings'])->has('current-meeting'));
     }
 }

@@ -28,6 +28,6 @@ class EndMeeting
 
     public function clearMeetingCache(): void
     {
-        Cache::delete('current-meeting');
+        Cache::tags(['meetings'])->flush();
     }
 }

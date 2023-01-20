@@ -51,7 +51,7 @@ class NewMessageTest extends TestCase
             ->unfinished()
             ->create();
 
-        Cache::set('current-meeting', $meeting->id);
+        Cache::tags(['meetings'])->put('current-meeting', $meeting->id);
 
         $provider = $user->providers[0];
         $payload = [
@@ -77,6 +77,9 @@ class NewMessageTest extends TestCase
             'user_id' => $user->id
         ]);
         $userAttendedCacheKey = sprintf('meeting-%s-attended', $user->id);
-        $this->assertTrue(Cache::has($userAttendedCacheKey));
+        $this->assertTrue(Cache::tags(['meetings'])->has($userAttendedCacheKey));
+        Cache::tags(['meetings'])->flush();
+
+        $this->assertFalse(Cache::tags(['meetings'])->has($userAttendedCacheKey));
     }
 }

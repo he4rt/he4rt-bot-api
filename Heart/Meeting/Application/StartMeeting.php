@@ -30,6 +30,6 @@ class StartMeeting
     public function setMeetingCache(MeetingEntity $currentMeeting): void
     {
         $ttl = 60 * 60 * 2;
-        Cache::set('current-meeting', $currentMeeting->id, $ttl);
+        Cache::tags(['meetings'])->put('current-meeting', $currentMeeting->id, $ttl);
     }
 }

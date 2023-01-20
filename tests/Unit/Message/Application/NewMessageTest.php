@@ -19,7 +19,7 @@ class NewMessageTest extends TestCase
     /** @dataProvider dataProvider */
     public function testNewMessage(string $provider, array $payload)
     {
-        Cache::set('current-meeting', 'é o canhas');
+        Cache::tags(['meetings'])->put('current-meeting', 'é o canhas');
         $findProviderStub = m::mock(FindProvider::class);
         $findCharacterStub = m::mock(FindCharacterIdByUserId::class);
         $characterExperienceStub = m::mock(IncrementExperience::class);
@@ -71,6 +71,7 @@ class NewMessageTest extends TestCase
         );
 
         $action->handle($payload);
+        Cache::flush();
     }
 
     public static function dataProvider(): array

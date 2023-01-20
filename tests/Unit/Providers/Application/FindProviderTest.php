@@ -19,12 +19,12 @@ class FindProviderTest extends TestCase
         Cache::shouldReceive('remember')
             ->once()
             ->with($cacheKey, FindProvider::TTL, m::type('closure'))
-            ->andReturn(new ProviderEntity(1,1,1,1,'1'));
+            ->andReturn(new ProviderEntity(1, 1, 1, 1, '1'));
 
 
         $action = new FindProvider($getProviderStub);
 
-        $result = $action->handle('twitch','123');
+        $result = $action->handle('twitch', '123');
 
         $this->assertInstanceOf(ProviderEntity::class, $result);
     }
