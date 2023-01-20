@@ -5,6 +5,7 @@ namespace Tests\Unit\Providers\Application;
 use Heart\Provider\Application\FindProvider;
 use Heart\Provider\Domain\Actions\GetProviderById;
 use Heart\Provider\Domain\Entities\ProviderEntity;
+use Heart\Shared\Application\TTL;
 use Illuminate\Support\Facades\Cache;
 use Mockery as m;
 use Tests\TestCase;
@@ -18,7 +19,7 @@ class FindProviderTest extends TestCase
 
         Cache::shouldReceive('remember')
             ->once()
-            ->with($cacheKey, FindProvider::TTL, m::type('closure'))
+            ->with($cacheKey, TTL::fromDays(2), m::type('closure'))
             ->andReturn(new ProviderEntity(1, 1, 1, 1, '1'));
 
 
