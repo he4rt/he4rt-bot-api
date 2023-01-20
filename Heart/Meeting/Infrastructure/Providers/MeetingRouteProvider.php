@@ -13,7 +13,6 @@ class MeetingRouteProvider extends RouteServiceProvider
         Route::prefix('events/{provider}')->name('events.')
             ->middleware('bot-auth')
             ->group(function () {
-
                 Route::prefix('meeting')->name('meeting.')->group(function () {
                     Route::get('/', [MeetingController::class, 'getMeetings'])->name('getMeetings');
                     Route::post('/start', [MeetingController::class, 'postMeeting'])->name('postMeeting');
