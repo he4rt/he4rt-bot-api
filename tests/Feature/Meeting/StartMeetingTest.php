@@ -6,10 +6,11 @@ use Heart\Meeting\Infrastructure\Models\MeetingType;
 use Heart\Provider\Infrastructure\Models\Provider;
 use Heart\User\Infrastructure\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class CreateMeetingTest extends TestCase
+class StartMeetingTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -45,5 +46,6 @@ class CreateMeetingTest extends TestCase
             ->assertSee($expectedResponse);
 
         $this->assertDatabaseHas('meetings', $expectedResponse);
+        $this->assertTrue(Cache::has('current-meeting'));
     }
 }

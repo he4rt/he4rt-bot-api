@@ -32,4 +32,18 @@ class MeetingEloquentRepository implements MeetingRepository
 
         return MeetingEntity::make($meeting->toArray());
     }
+
+    public function endMeeting(string $meetingId): MeetingEntity
+    {
+        $this->model
+            ->newQuery()
+            ->find($meetingId)
+            ->update(['ends_at' => now()]);
+
+        $meeting = $this->model
+            ->newQuery()
+            ->find($meetingId);
+
+        return MeetingEntity::make($meeting->toArray());
+    }
 }

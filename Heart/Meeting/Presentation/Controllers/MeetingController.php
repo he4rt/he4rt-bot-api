@@ -3,9 +3,10 @@
 namespace Heart\Meeting\Presentation\Controllers;
 
 use App\Http\Controllers\Controller;
-use Heart\Meeting\Application\CreateMeeting;
+use Heart\Meeting\Application\EndMeeting;
+use Heart\Meeting\Application\StartMeeting;
 use Heart\Meeting\Application\PaginateMeetings;
-use Heart\Meeting\Presentation\Requests\CreateMeetingRequest;
+use Heart\Meeting\Presentation\Requests\MeetingRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,8 +21,8 @@ class MeetingController extends Controller
 
     public function postMeeting(
         string $provider,
-        CreateMeetingRequest $request,
-        CreateMeeting $action
+        MeetingRequest $request,
+        StartMeeting $action
     ): JsonResponse {
         return response()->json(
             $action->handle($provider, $request->input('provider_id'), $request->input('meeting_type_id')),
@@ -30,35 +31,11 @@ class MeetingController extends Controller
     }
 
 
-    //
-    // public function postEndMeeting(EndMeeting $action): JsonResponse
-    // {
-    // return response()->json(['message' => $action->handle()]);
-    // }
-    //
-    // public function postAttendMeeting(Request $request, AttendMeeting $action): JsonResponse
-    // {
-    // $payload = $this->validate($request, [
-    // 'discord_id' => ['required', 'integer', 'exists:users']
-    // ]);
-    //
-    // try {
-    // $action->handle($payload);
-    // return response()->json(
-    // ['message' => __('meetings.success.attendMeeting')],
-    // Response::HTTP_CREATED
-    // );
-    // } catch (MeetingsException $e) {
-    // return response()->json(['message' => $e->getMessage()], $e->getCode());
-    // }
-    // }
-    //
-    // public function postMeetingSubject(Request $request, int $meetingId, AddMeetingSubject $action): JsonResponse
-    // {
-    // $payload = $this->validate($request, [
-    // 'content' => ['required', 'string']
-    // ]);
-    //
-    // return response()->json($action->handle($meetingId, $payload));
-    // }
-}//end class
+    public function postEndMeeting(
+        string $provider,
+        EndMeeting $action,
+    ): Response {
+        $action->handle();
+        return response()->noContent();
+    }
+}

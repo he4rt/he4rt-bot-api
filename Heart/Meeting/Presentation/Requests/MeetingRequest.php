@@ -4,7 +4,7 @@ namespace Heart\Meeting\Presentation\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateMeetingRequest extends FormRequest
+class MeetingRequest extends FormRequest
 {
     public function authorize(): bool
     {

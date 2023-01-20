@@ -16,8 +16,8 @@ class MeetingRouteProvider extends RouteServiceProvider
 
                 Route::prefix('meeting')->name('meeting.')->group(function () {
                     Route::get('/', [MeetingController::class, 'getMeetings'])->name('getMeetings');
-                    Route::post('/', [MeetingController::class, 'postMeeting'])->name('postMeeting');
-//                Route::post('/end', ['uses' => MeetingController::class . '@postEndMeeting', 'as' => 'events.meeting.postEndMeeting']);
+                    Route::post('/start', [MeetingController::class, 'postMeeting'])->name('postMeeting');
+                    Route::post('/end', [MeetingController::class, 'postEndMeeting'])->name('postEndMeeting');
                 });
             });
     }
