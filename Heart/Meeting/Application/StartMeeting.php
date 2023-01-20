@@ -6,6 +6,7 @@ use Heart\Meeting\Domain\Actions\CreateMeeting as CreateMeetingAction;
 use Heart\Meeting\Domain\DTO\NewMeetingDTO;
 use Heart\Meeting\Domain\Entities\MeetingEntity;
 use Heart\Provider\Application\FindProvider;
+use Heart\Shared\Application\TTL;
 use Heart\Shared\Domain\Paginator;
 use Illuminate\Support\Facades\Cache;
 
@@ -29,7 +30,6 @@ class StartMeeting
 
     public function setMeetingCache(MeetingEntity $currentMeeting): void
     {
-        $ttl = 60 * 60 * 2;
-        Cache::tags(['meetings'])->put('current-meeting', $currentMeeting->id, $ttl);
+        Cache::tags(['meetings'])->put('current-meeting', $currentMeeting->id, TTL::fromHours(2));
     }
 }

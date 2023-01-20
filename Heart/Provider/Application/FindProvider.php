@@ -4,12 +4,11 @@ namespace Heart\Provider\Application;
 
 use Heart\Provider\Domain\Actions\GetProviderById;
 use Heart\Provider\Domain\Entities\ProviderEntity;
+use Heart\Shared\Application\TTL;
 use Illuminate\Support\Facades\Cache;
 
 class FindProvider
 {
-    public final const TTL = 60 * 60 * 24;
-
     public function __construct(private readonly GetProviderById $action)
     {
     }
@@ -20,7 +19,7 @@ class FindProvider
 
         return Cache::remember(
             $providerCacheKey,
-            self::TTL,
+            TTL::fromDays(2),
             fn() => $this->findProvider($provider, $providerId)
         );
     }
