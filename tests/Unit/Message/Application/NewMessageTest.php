@@ -4,11 +4,13 @@ namespace Tests\Unit\Message\Application;
 
 use Heart\Character\Application\FindCharacterIdByUserId;
 use Heart\Character\Domain\Actions\IncrementExperience;
+use Heart\Meeting\Application\AttendMeeting;
 use Heart\Message\Application\NewMessage;
 use Heart\Message\Domain\Actions\PersistMessage;
 use Heart\Message\Domain\DTO\NewMessageDTO;
 use Heart\Provider\Application\FindProvider;
 use Heart\Provider\Domain\Entities\ProviderEntity;
+use Illuminate\Support\Facades\Cache;
 use Mockery as m;
 use Tests\TestCase;
 
@@ -17,10 +19,12 @@ class NewMessageTest extends TestCase
     /** @dataProvider dataProvider */
     public function testNewMessage(string $provider, array $payload)
     {
+        Cache::tags(['meetings'])->put('current-meeting', 'é o canhas');
         $findProviderStub = m::mock(FindProvider::class);
         $findCharacterStub = m::mock(FindCharacterIdByUserId::class);
         $characterExperienceStub = m::mock(IncrementExperience::class);
         $persistMessageStub = m::mock(PersistMessage::class);
+        $attendMeetingStub = m::mock(AttendMeeting::class);
 
         $obtainedExperience = 1;
         $providerEntityMock = new ProviderEntity(
@@ -53,15 +57,21 @@ class NewMessageTest extends TestCase
             ->once()
             ->with(m::type(NewMessageDTO::class), $obtainedExperience, $providerEntityMock->id);
 
+        $attendMeetingStub
+            ->shouldReceive('handle')
+            ->once()
+            ->with($providerEntityMock->userId);
 
         $action = new NewMessage(
             $persistMessageStub,
             $findProviderStub,
             $findCharacterStub,
             $characterExperienceStub,
+            $attendMeetingStub
         );
 
         $action->handle($payload);
+        Cache::flush();
     }
 
     public static function dataProvider(): array

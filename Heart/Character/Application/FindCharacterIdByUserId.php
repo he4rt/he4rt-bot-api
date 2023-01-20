@@ -3,12 +3,11 @@
 namespace Heart\Character\Application;
 
 use Heart\Character\Domain\Actions\GetCharacterByUserId;
+use Heart\Shared\Application\TTL;
 use Illuminate\Support\Facades\Cache;
 
 class FindCharacterIdByUserId
 {
-    public final const TTL = 60 * 60 * 24;
-
     public function __construct(
         protected readonly GetCharacterByUserId $finder
     ) {
@@ -20,7 +19,7 @@ class FindCharacterIdByUserId
 
         return Cache::remember(
             $cacheCharacterKey,
-            self::TTL,
+            TTL::fromDays(2),
             fn () => $this->findCharacterByUserId($userId)
         );
     }

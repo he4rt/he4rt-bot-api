@@ -2,6 +2,7 @@
 
 namespace Heart\User\Infrastructure\Models;
 
+
 use Heart\Character\Infrastructure\Models\Character;
 use Heart\Provider\Infrastructure\Models\Provider;
 use Heart\User\Infrastructure\Factories\UserFactory;
@@ -15,6 +16,7 @@ class User extends Model
 {
     use HasFactory;
     use HasUuids;
+
 
     protected $table = 'users';
 
@@ -43,6 +45,7 @@ class User extends Model
     {
         return $this->hasOne(Character::class);
     }
+
 
     protected static function newFactory(): UserFactory
     {

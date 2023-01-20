@@ -74,8 +74,6 @@ $router->group(['prefix' => 'events', 'middleware' => 'bot-auth'], function (Rou
     });
 
     $router->group(['prefix' => 'meeting'], function ($router) {
-        $router->get('/', ['uses' => MeetingsController::class . '@getMeetings', 'as' => 'events.meeting.getMeetings']);
-        $router->post('/', ['uses' => MeetingsController::class . '@postMeeting', 'as' => 'events.meeting.postMeeting']);
         $router->post('/end', ['uses' => MeetingsController::class . '@postEndMeeting', 'as' => 'events.meeting.postEndMeeting']);
         $router->post('/attend', ['uses' => MeetingsController::class . '@postAttendMeeting', 'as' => 'events.meeting.postAttendMeeting']);
         $router->patch(

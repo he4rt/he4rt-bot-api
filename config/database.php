@@ -68,7 +68,6 @@ return [
                     PDO::MYSQL_ATTR_SSL_CA => '/certs/ca.pem',
                 ] : []
         ],
-
         'testing' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
@@ -87,7 +86,6 @@ return [
             'timezone' => env('DB_TIMEZONE', '+00:00'),
             'sslmode' => env('DB_SSLMODE', null),
         ],
-
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
