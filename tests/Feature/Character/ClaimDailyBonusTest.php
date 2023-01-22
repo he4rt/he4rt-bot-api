@@ -3,14 +3,11 @@
 namespace Tests\Feature\Character;
 
 use Heart\Character\Infrastructure\Models\Character;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class ClaimDailyBonusTest extends TestCase
 {
-    use DatabaseMigrations;
-
     public function testSuccess()
     {
         $character = Character::factory()->create([

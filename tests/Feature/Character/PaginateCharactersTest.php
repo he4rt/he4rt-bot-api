@@ -9,8 +9,6 @@ use Tests\TestCase;
 
 class PaginateCharactersTest extends TestCase
 {
-    use DatabaseMigrations;
-
     public function testSuccess()
     {
         $character = Character::factory()->create([
