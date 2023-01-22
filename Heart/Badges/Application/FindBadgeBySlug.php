@@ -1,19 +1,18 @@
 <?php
 
-namespace Heart\Badges\Domain\Actions;
+namespace Heart\Badges\Application;
 
-use Heart\Badges\Domain\DTOs\NewBadgeDTO;
 use Heart\Badges\Domain\Entities\BadgeEntity;
 use Heart\Badges\Domain\Repositories\BadgeRepository;
 
-class PersistBadge
+class FindBadgeBySlug
 {
     public function __construct(private readonly BadgeRepository $badgeRepository)
     {
     }
 
-    public function handle(NewBadgeDTO $badgeDTO): BadgeEntity
+    public function handle(string $badgeSlug): BadgeEntity
     {
-        return $this->badgeRepository->create($badgeDTO);
+        return $this->badgeRepository->findBySlug($badgeSlug);
     }
 }

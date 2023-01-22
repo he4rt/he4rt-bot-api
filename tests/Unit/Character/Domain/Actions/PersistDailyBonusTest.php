@@ -3,7 +3,7 @@
 namespace Tests\Unit\Character\Domain\Actions;
 
 use Carbon\Carbon;
-use Heart\Character\Domain\Actions\ClaimDailyBonus;
+use Heart\Character\Domain\Actions\PersistDailyBonus;
 use Heart\Character\Domain\Exceptions\CharacterException;
 use Heart\Character\Domain\Repositories\CharacterRepository;
 use Mockery as m;
@@ -11,19 +11,19 @@ use Mockery\MockInterface;
 use Tests\TestCase;
 use Tests\Unit\Character\CharacterProviderTrait;
 
-class ClaimDailyBonusTest extends TestCase
+class PersistDailyBonusTest extends TestCase
 {
     use CharacterProviderTrait;
 
     private MockInterface $characterRepository;
 
-    private ClaimDailyBonus $action;
+    private PersistDailyBonus $action;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->characterRepository = m::mock(CharacterRepository::class);
-        $this->action = new ClaimDailyBonus($this->characterRepository);
+        $this->action = new PersistDailyBonus($this->characterRepository);
     }
 
     public function tearDown(): void

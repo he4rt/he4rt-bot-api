@@ -2,6 +2,7 @@
 
 namespace Heart\Badges\Infrastructure\Model;
 
+use Heart\Badges\Infrastructure\Factories\BadgeFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,4 +24,9 @@ class Badge extends Model
     protected $casts = [
         'active' => 'boolean'
     ];
+
+    protected static function newFactory(): BadgeFactory
+    {
+        return BadgeFactory::new();
+    }
 }

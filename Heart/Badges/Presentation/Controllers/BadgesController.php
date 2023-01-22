@@ -3,7 +3,7 @@
 namespace Heart\Badges\Presentation\Controllers;
 
 use App\Http\Controllers\Controller;
-use Heart\Badges\Domain\Actions\PersistBadge;
+use Heart\Badges\Application\CreateBadge;
 use Heart\Badges\Presentation\Requests\CreateBadgeRequest;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +16,7 @@ class BadgesController extends Controller
 
     public function postBadge(
         CreateBadgeRequest $request,
-        PersistBadge $persistBadge
+        CreateBadge $persistBadge
     ): JsonResponse {
         return response()->json(
             $persistBadge->handle($request->validated()),

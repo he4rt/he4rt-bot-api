@@ -18,4 +18,14 @@ class BadgeEloquentRepository implements BadgeRepository
         $model = $this->model->newQuery()->create($badgeDTO->jsonSerialize());
         return BadgeEntity::make($model->toArray());
     }
+
+    public function findBySlug(string $badgeSlug): BadgeEntity
+    {
+        $model = $this->model
+            ->newQuery()
+            ->where('redeem_code', $badgeSlug)
+            ->firstOrFail();
+
+        return BadgeEntity::make($model->toArray());
+    }
 }

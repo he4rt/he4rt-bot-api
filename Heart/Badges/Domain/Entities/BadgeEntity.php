@@ -5,11 +5,11 @@ namespace Heart\Badges\Domain\Entities;
 class BadgeEntity
 {
     public function __construct(
-        private readonly int $id,
-        private readonly string $name,
-        private readonly string $description,
-        private readonly string $redeemCode,
-        private readonly bool $active
+        public readonly int $id,
+        public readonly string $name,
+        public readonly string $description,
+        public readonly string $redeemCode,
+        public readonly bool $active
     ) {
     }
 

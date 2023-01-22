@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class PersistBadgeTest extends TestCase
+class CreateBadgeTest extends TestCase
 {
     use DatabaseMigrations;
     public function testCanCreateBadge()
