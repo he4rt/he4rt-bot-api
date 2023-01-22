@@ -79,7 +79,7 @@ jobs:
         run: sed -i '$i\$app->register(Illuminate\\Redis\\RedisServiceProvider::class);' bootstrap/app.php
 
       - name: Run Migration
-        run: php artisan migrate -v
+        run: php artisan migrate --database=testing -v
         env:
           DB_HOST: ${{ job.services.mysql.host['127.0.0.1'] }}
           DB_TEST_DATABASE: "dev_he4rtbot"
