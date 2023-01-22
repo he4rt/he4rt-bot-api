@@ -82,6 +82,7 @@ jobs:
         run: php artisan migrate -v
         env:
           DB_HOST: ${{ job.services.mysql.host['127.0.0.1'] }}
+          DB_TEST_DATABASE: "dev_he4rtbot"
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
 
