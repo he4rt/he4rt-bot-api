@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Character\Domain\Actions;
 
-use Heart\Character\Domain\Actions\ClaimDailyBonus;
+use Heart\Character\Domain\Actions\PersistDailyBonus;
 use Heart\Character\Domain\Actions\ManageReputation;
 use Heart\Character\Domain\Entities\CharacterEntity;
 use Heart\Character\Domain\Repositories\CharacterRepository;
@@ -17,7 +17,7 @@ class ManageReputationTest extends TestCase
 
     private ManageReputation $manageReputation;
     private MockInterface $characterRepository;
-    private ClaimDailyBonus $claimDailyBonus;
+    private PersistDailyBonus $claimDailyBonus;
 
     public function setUp(): void
     {
