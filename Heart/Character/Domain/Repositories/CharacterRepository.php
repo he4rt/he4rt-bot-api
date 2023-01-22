@@ -18,4 +18,6 @@ interface CharacterRepository
     public function updateReputation(CharacterEntity $character);
 
     public function updateExperience(CharacterEntity $character);
+
+    public function claimBadge(string $characterId, int $badgeId): void;
 }

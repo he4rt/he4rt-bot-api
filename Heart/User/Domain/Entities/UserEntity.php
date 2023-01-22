@@ -15,6 +15,20 @@ class UserEntity
         private readonly bool $isDonator,
     ) {
     }
+    /** @throws UserEntityException */
+    public static function make(array $payload): self
+    {
+        try {
+            return new self(
+                id: $payload['id'],
+                name: $payload['username'],
+                isDonator: $payload['isDonator']
+            );
+        } catch (Exception $e) {
+            throw UserEntityException::failedToCreateEntity();
+        }
+
+    }
 
     /** @throws UserEntityException */
     public static function fromArray(array $user): self

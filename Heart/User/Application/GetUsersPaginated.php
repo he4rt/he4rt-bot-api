@@ -2,6 +2,7 @@
 
 namespace Heart\User\Application;
 
+use Heart\Shared\Domain\Paginator;
 use Heart\User\Domain\Repositories\UserRepository;
 
 class GetUsersPaginated
@@ -10,10 +11,9 @@ class GetUsersPaginated
     {
     }
 
-    public function handle(): array
+    public function handle(): Paginator
     {
         return $this->repository
-            ->paginated()
-            ->get();
+            ->paginated();
     }
 }
