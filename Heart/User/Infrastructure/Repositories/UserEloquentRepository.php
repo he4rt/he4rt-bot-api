@@ -37,4 +37,12 @@ class UserEloquentRepository implements UserRepository
 
         return UserEntity::fromArray($user);
     }
+
+    public function findByUsername(string $username): UserEntity
+    {
+        $user = $this->query->where('username', $username)
+            ->first();
+
+        return UserEntity::fromArray($user->toArray());
+    }
 }

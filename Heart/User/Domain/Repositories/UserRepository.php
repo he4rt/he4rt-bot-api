@@ -5,7 +5,6 @@ namespace Heart\User\Domain\Repositories;
 use Heart\User\Domain\Entities\UserEntity;
 use Heart\User\Domain\Exceptions\UserEntityException;
 use Heart\User\Domain\ValueObjects\UserId;
-use Illuminate\Http\JsonResponse;
 
 interface UserRepository
 {
@@ -15,4 +14,6 @@ interface UserRepository
 
     /** @throws UserEntityException */
     public function find(UserId $id): UserEntity;
+
+    public function findByUsername(string $username): UserEntity;
 }
