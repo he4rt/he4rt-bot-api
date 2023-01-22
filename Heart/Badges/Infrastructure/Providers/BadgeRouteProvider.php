@@ -13,7 +13,7 @@ class BadgeRouteProvider extends RouteServiceProvider
         Route::middleware('bot-auth')->prefix('v2/badges')->group(function () {
             Route::get('/', [BadgesController::class, 'getBadges'])->name('badges.index');
             Route::post('/', [BadgesController::class, 'postBadge'])->name('badges.store');
-            Route::post('/{badgeId}', [BadgesController::class, 'deleteBadge'])->name('badges.destroy');
+            Route::delete('/{badgeId}', [BadgesController::class, 'deleteBadge'])->name('badges.destroy');
         });
     }
 }

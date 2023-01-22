@@ -28,4 +28,11 @@ class BadgeEloquentRepository implements BadgeRepository
 
         return BadgeEntity::make($model->toArray());
     }
+
+    public function delete(string $badgeId): void
+    {
+        $this->model->newQuery()
+            ->find($badgeId)
+            ->delete();
+    }
 }

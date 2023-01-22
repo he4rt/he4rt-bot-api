@@ -11,4 +11,6 @@ interface BadgeRepository
     public function create(NewBadgeDTO $badgeDTO): BadgeEntity;
 
     public function findBySlug(string $badgeSlug): BadgeEntity;
+
+    public function delete(string $badgeId): void;
 }
