@@ -2,6 +2,7 @@
 
 namespace Heart\User\Domain\Repositories;
 
+use Heart\Shared\Domain\Paginator;
 use Heart\User\Domain\Entities\UserEntity;
 use Heart\User\Domain\Exceptions\UserEntityException;
 use Heart\User\Domain\ValueObjects\UserId;
@@ -9,7 +10,7 @@ use Illuminate\Http\JsonResponse;
 
 interface UserRepository
 {
-    public function paginated(bool $shouldPaginate = true, ?int $perPage = null): self;
+    public function paginated(int $perPage = 15): Paginator;
 
     public function get(): array;
 

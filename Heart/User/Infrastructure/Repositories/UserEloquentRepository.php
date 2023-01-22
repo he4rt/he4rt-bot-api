@@ -2,6 +2,8 @@
 
 namespace Heart\User\Infrastructure\Repositories;
 
+use Heart\Shared\Domain\Paginator;
+use Heart\Shared\Infrastructure\Paginator as PaginatorConcrete;
 use Heart\User\Domain\Entities\UserEntity;
 use Heart\User\Domain\Exceptions\UserEntityException;
 use Heart\User\Domain\Repositories\UserRepository;
@@ -23,11 +25,11 @@ class UserEloquentRepository implements UserRepository
         return $this->query->get()->jsonSerialize();
     }
 
-    public function paginated(bool $shouldPaginate = true, ?int $perPage = null): self
+    public function paginated(int $perPage = 15): Paginator
     {
-        $this->query->paginate($perPage ?? 15);
+        $paginator = $this->query->paginate($perPage);
 
-        return $this;
+        return PaginatorConcrete::paginate($paginator);
     }
 
     /** @throws UserEntityException */
