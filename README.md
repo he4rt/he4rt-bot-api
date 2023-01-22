@@ -26,14 +26,17 @@ TODO: documentar
 ### Configuring
 
 ```bash
-docker-compose up -d
-php artisan key:generate
-docker exec discord-bot-api php artisan migrate --seed
+make build
+make migrate
 ```
 
 ### Running tests
 
 ```bash
-docker exec app php artisan migrate --seed --database=testing
-docker exec app vendor/bin/phpunit
+make test
+```
+
+With filter: 
+```bash
+make test filter=ClassName
 ```
