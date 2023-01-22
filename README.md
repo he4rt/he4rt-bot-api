@@ -40,3 +40,10 @@ With filter:
 ```bash
 make test filter=ClassName
 ```
+
+#### Enviroment Commands:
+
+```bash
+make help
+```
+

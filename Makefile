@@ -3,16 +3,20 @@ alpver=3.12
 kctlver=1.18.0
 
 #vars
-IMAGENAME=my_kubectl
-REPO=my.registry
+IMAGENAME=discord-bot-api
+REPO=he4rt
 IMAGEFULLNAME=${REPO}/${IMAGENAME}:${KUBECTL_VERSION}
 
-.PHONY: help build push all
-
 help:
-	    @echo "Makefile arguments:"
-	    @echo ""
+	    @echo "Makefile Commands:"
+	    @echo "---"
 	    @echo "build - Build Enviroment"
+	    @echo "---"
+	    @echo "up - Up enviroment"
+	    @echo "---"
+	    @echo "test - Run tests (--filter=ClassName)"
+	    @echo "---"
+	    @echo "migrate - Run Migrations"
 
 .DEFAULT_GOAL := all
 
@@ -30,7 +34,6 @@ test:
 migrate:
 	    @docker exec -it discord-bot-api php artisan migrate --database=testing --seed
 	    @docker exec -it discord-bot-api php artisan migrate --seed
-
 push:
 	    @docker push ${IMAGEFULLNAME}
 
