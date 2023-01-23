@@ -13,12 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('meeting_participants', function (Blueprint $table) {
-            $table->foreignUuid('meeting_id')->constrained('meetings');
-            $table->foreignUuid('user_id')->constrained('users');
-            $table->dateTime('attend_at');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('meeting_participants')) {
+            Schema::create('meeting_participants', function (Blueprint $table) {
+                $table->foreignUuid('meeting_id')->constrained('meetings');
+                $table->foreignUuid('user_id')->constrained('users');
+                $table->dateTime('attend_at');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

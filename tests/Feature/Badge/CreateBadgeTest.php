@@ -2,13 +2,14 @@
 
 namespace Tests\Feature\Badge;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class CreateBadgeTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
+
     public function testCanCreateBadge()
     {
         $payload = [

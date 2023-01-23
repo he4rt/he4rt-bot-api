@@ -12,12 +12,14 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('username');
-            $table->boolean('is_donator')->default(false);
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('users')) {
+            Schema::create('users', function (Blueprint $table) {
+                $table->uuid('id')->primary();
+                $table->string('username');
+                $table->boolean('is_donator')->default(false);
+                $table->timestamps();
+            });
+        }
     }
 
     /**

@@ -13,16 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('badges', function (Blueprint $table) {
-            $table->id();
-            $table->string('provider');
-            $table->string('name');
-            $table->text('description');
-            $table->string('image_url');
-            $table->string('redeem_code');
-            $table->boolean('active');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('badges')) {
+            Schema::create('badges', function (Blueprint $table) {
+                $table->id();
+                $table->string('provider');
+                $table->string('name');
+                $table->text('description');
+                $table->string('image_url');
+                $table->string('redeem_code');
+                $table->boolean('active');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
