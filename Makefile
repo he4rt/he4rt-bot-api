@@ -23,6 +23,8 @@ up:
 	    @docker-compose up -d
 down:
 	    @docker-compose down
+bash:
+	    @docker exec -it discord-bot-api sh
 test:
 	    @$(eval testsuite ?= 'all')
 	    @$(eval filter ?= '.')
