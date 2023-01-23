@@ -12,6 +12,8 @@ use Tests\TestCase;
 
 class StartMeetingTest extends TestCase
 {
+    use DatabaseMigrations;
+
     public function testBotCanStartNewMeeting(): void
     {
         // Arrange
