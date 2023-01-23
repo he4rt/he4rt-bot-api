@@ -7,7 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class CreateBadgeTest extends TestCase
-{    public function testCanCreateBadge()
+{
+    public function testCanCreateBadge()
     {
         $payload = [
             'provider' => 'twitch',
