@@ -46,4 +46,9 @@ class CharacterEloquentRepository implements CharacterRepository
             ->find($character->id)
             ->update(['experience' => $character->level->getExperience()]);
     }
+
+    public function claimBadge(string $characterId, int $badgeId): void
+    {
+        Character::query()->find($characterId)->badges()->attach($badgeId, ['claimed_at' => now()]);
+    }
 }

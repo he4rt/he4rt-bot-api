@@ -3,10 +3,13 @@
 namespace Heart\Character\Presentation\Controllers;
 
 use App\Http\Controllers\Controller;
-use Heart\Character\Domain\Actions\ClaimDailyBonus;
+use Heart\Character\Application\ClaimCharacterBadge;
+use Heart\Character\Application\ClaimDailyBonus;
+use Heart\Character\Domain\Actions\PersistDailyBonus;
 use Heart\Character\Domain\Actions\FindCharacter;
 use Heart\Character\Domain\Actions\PaginateCharacters;
 use Heart\Character\Domain\Exceptions\CharacterException;
+use Heart\Character\Presentation\Requests\ClaimBadgeRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -22,13 +25,26 @@ class CharactersController extends Controller
         return response()->json($action->handle($providerId));
     }
 
-    public function postDailyBonus(string $characterId, ClaimDailyBonus $action): Response|JsonResponse
-    {
+    public function postDailyBonus(
+        string $provider,
+        string $providerId,
+        ClaimDailyBonus $action
+    ): Response|JsonResponse {
         try {
-            $action->handle($characterId);
+            $action->handle($provider, $providerId);
             return response()->noContent();
         } catch (CharacterException $e) {
             return response()->json($e->getMessage(), $e->getCode());
         }
+    }
+
+    public function postClaimBadge(
+        ClaimBadgeRequest $request,
+        string $provider,
+        string $providerId,
+        ClaimCharacterBadge $claimBadge
+    ): Response {
+        $claimBadge->handle($provider, $providerId, $request->input('redeem_code'));
+        return response()->noContent();
     }
 }

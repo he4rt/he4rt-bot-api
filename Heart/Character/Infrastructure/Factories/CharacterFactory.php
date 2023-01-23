@@ -24,7 +24,7 @@ class CharacterFactory extends Factory
             'user_id' => User::factory(),
             'reputation' => $this->faker->numberBetween(1, 10),
             'experience' => $this->faker->numberBetween(1, 5000),
-            'daily_bonus_claimed_at' => $this->faker->dateTime(),
+            'daily_bonus_claimed_at' => now(),
         ];
     }
 }
