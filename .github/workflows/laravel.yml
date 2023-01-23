@@ -86,7 +86,9 @@ jobs:
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
 
       - name: Test with phpunit
-        run: vendor/bin/phpunit --coverage-text
+        run: |
+          php -r "file_exists('.env') || copy('.env.pipeline', '.env');"
+          vendor/bin/phpunit --coverage-text
         env:
           DB_TEST_DATABASE: "dev_he4rtbot"
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
