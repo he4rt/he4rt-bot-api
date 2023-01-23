@@ -9,6 +9,7 @@ use Tests\TestCase;
 
 class IndexMeetingTest extends TestCase
 {
+    use DatabaseMigrations;
 
     public function testBotCanListAllMeetings(): void
     {

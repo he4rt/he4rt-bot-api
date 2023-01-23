@@ -8,6 +8,7 @@ use Tests\TestCase;
 
 class CreateBadgeTest extends TestCase
 {
+    use DatabaseMigrations;
     public function testCanCreateBadge()
     {
         $payload = [

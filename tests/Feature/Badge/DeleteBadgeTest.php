@@ -10,7 +10,7 @@ use Tests\TestCase;
 class DeleteBadgeTest extends TestCase
 {
     use DatabaseMigrations;
-
+    
     public function testCanDeleteBadge()
     {
         $badge = Badge::factory()->create();
