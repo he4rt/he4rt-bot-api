@@ -12,8 +12,6 @@ use Tests\TestCase;
 
 class ClaimCharacterBadgeTest extends TestCase
 {
-    use DatabaseMigrations;
-
     public function testCanClaimBadge()
     {
         $badge = Badge::factory()
