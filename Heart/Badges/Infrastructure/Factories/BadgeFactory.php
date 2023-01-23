@@ -4,7 +4,7 @@ namespace Heart\Badges\Infrastructure\Factories;
 
 use Heart\Badges\Infrastructure\Model\Badge;
 use Heart\Provider\Infrastructure\Models\Provider;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use Heart\Shared\Infrastructure\Factory;
 
 class BadgeFactory extends Factory
 {

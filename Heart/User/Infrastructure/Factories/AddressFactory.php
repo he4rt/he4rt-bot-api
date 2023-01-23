@@ -2,12 +2,11 @@
 
 namespace Heart\User\Infrastructure\Factories;
 
+use Heart\Shared\Infrastructure\Factory;
 use Heart\User\Infrastructure\Models\User;
-use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AddressFactory extends Factory
 {
-
     public function definition(): array
     {
         return [
