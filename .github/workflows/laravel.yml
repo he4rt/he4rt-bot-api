@@ -93,7 +93,6 @@ jobs:
           vendor/bin/phpunit --coverage-text
         env:
           DB_HOST: "127.0.0.1"
-          DB_CONNECTION: "testing"
           DB_TEST_DATABASE: "dev_he4rtbot"
           DB_DATABASE: "dev_he4rtbot"
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
