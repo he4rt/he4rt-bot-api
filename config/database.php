@@ -71,7 +71,7 @@ return [
         'testing' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', 'mysql'),
+            'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_TEST_DATABASE', 'dev_he4rtbot'),
             'username' => env('DB_USERNAME', 'root'),
