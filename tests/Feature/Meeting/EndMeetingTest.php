@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class EndMeetingTest extends TestCase
 {
-    use DatabaseMigrations;
+
 
     public function testEndMeeting(): void
     {

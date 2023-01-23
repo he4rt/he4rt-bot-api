@@ -5,14 +5,11 @@ namespace Tests\Feature\Character;
 use Heart\Character\Infrastructure\Models\Character;
 use Heart\Provider\Infrastructure\Models\Provider;
 use Heart\User\Infrastructure\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class ClaimDailyBonusTest extends TestCase
 {
-    use DatabaseMigrations;
-
     public function testSuccess()
     {
         $user = User::factory()
