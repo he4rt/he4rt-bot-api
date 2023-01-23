@@ -4,7 +4,6 @@ namespace Tests\Feature\Meeting;
 
 use Heart\Meeting\Infrastructure\Models\MeetingType;
 use Heart\Provider\Infrastructure\Models\Provider;
-use Heart\User\Infrastructure\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
@@ -69,9 +68,7 @@ class StartMeetingTest extends TestCase
             ->actingAsAdmin()
             ->postJson(route('events.meeting.postMeeting', ['provider' => $providerName]), $payload);
 
-
         // Assert
-        //$exception
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 }
