@@ -88,5 +88,6 @@ jobs:
       - name: Test with phpunit
         run: vendor/bin/phpunit --coverage-text
         env:
+          DB_TEST_DATABASE: "dev_he4rtbot"
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
