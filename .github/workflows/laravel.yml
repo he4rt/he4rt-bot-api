@@ -83,6 +83,7 @@ jobs:
         env:
           DB_HOST: "127.0.0.1"
           DB_TEST_DATABASE: "dev_he4rtbot"
+          DB_DATABASE: "dev_he4rtbot"
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
 
@@ -94,5 +95,6 @@ jobs:
           DB_HOST: "127.0.0.1"
           DB_CONNECTION: "testing"
           DB_TEST_DATABASE: "dev_he4rtbot"
+          DB_DATABASE: "dev_he4rtbot"
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
