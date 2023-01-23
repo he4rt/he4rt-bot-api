@@ -81,6 +81,7 @@ jobs:
       - name: Run Migration
         run: php artisan migrate -v
         env:
+          DB_HOST: "127.0.0.1"
           DB_TEST_DATABASE: "dev_he4rtbot"
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
@@ -90,6 +91,7 @@ jobs:
           php -r "file_exists('.env') || copy('.env.pipeline', '.env');"
           vendor/bin/phpunit --coverage-text
         env:
+          DB_HOST: "127.0.0.1"
           DB_CONNECTION: "testing"
           DB_TEST_DATABASE: "dev_he4rtbot"
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
