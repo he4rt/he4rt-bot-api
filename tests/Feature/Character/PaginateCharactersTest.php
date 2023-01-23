@@ -3,13 +3,13 @@
 namespace Tests\Feature\Character;
 
 use Heart\Character\Infrastructure\Models\Character;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class PaginateCharactersTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     public function testSuccess()
     {

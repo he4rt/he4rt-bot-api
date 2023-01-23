@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('meeting_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->integer('week_day')->comment('Week day of event');
-            $table->integer('start_at')->comment('Number of minutes past midnight');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('meeting_types')) {
+            Schema::create('meeting_types', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->integer('week_day')->comment('Week day of event');
+                $table->integer('start_at')->comment('Number of minutes past midnight');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
