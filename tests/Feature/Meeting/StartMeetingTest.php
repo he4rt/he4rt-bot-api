@@ -46,4 +46,32 @@ class StartMeetingTest extends TestCase
         $this->assertDatabaseHas('meetings', $expectedResponse);
         $this->assertTrue(Cache::tags(['meetings'])->has('current-meeting'));
     }
+
+    public function testMeetingTypeNotFound(): void
+    {
+        // Arrange
+        $providerName = 'discord';
+        /** @var Provider $provider */
+        $provider = Provider::factory()->create(['provider' => $providerName]);
+
+        $payload = [
+            'meeting_type_id' => 12,
+            'provider_id' => $provider->provider_id
+        ];
+
+        $expectedResponse = [
+            'meeting_type_id' => 12,
+            'admin_id' => $provider->user_id,
+        ];
+
+        // Act
+        $response = $this
+            ->actingAsAdmin()
+            ->postJson(route('events.meeting.postMeeting', ['provider' => $providerName]), $payload);
+
+
+        // Assert
+        //$exception
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
 }
