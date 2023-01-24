@@ -5,6 +5,7 @@ namespace Heart\Meeting\Domain\Actions;
 use Heart\Meeting\Domain\DTO\NewMeetingDTO;
 use Heart\Meeting\Domain\Entities\MeetingEntity;
 use Heart\Meeting\Domain\Repositories\MeetingRepository;
+use Heart\Shared\Domain\Paginator;
 
 class CreateMeeting
 {
