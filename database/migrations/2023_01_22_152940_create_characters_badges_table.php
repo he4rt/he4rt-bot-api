@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('characters_badges', function (Blueprint $table) {
-            $table->foreignUuid('character_id');
-            $table->foreignId('badge_id');
-            $table->timestamp('claimed_at');
-        });
+        if (!Schema::hasTable('characters_badges')) {
+            Schema::create('characters_badges', function (Blueprint $table) {
+                $table->foreignUuid('character_id');
+                $table->foreignId('badge_id');
+                $table->timestamp('claimed_at');
+            });
+        }
     }
 
     /**

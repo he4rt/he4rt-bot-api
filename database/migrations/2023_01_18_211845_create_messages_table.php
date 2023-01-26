@@ -11,7 +11,7 @@ return new class extends Migration {
      * @return void
      */
     public function up()
-    {
+    {if (!Schema::hasTable('messages')) {
         Schema::create('messages', function (Blueprint $table) {
             $table->uuid('id');
             $table->foreignUuid('provider_id')->constrained('providers');
@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->timestamp('sent_at');
             $table->timestamps();
         });
+    }
     }
 
     /**

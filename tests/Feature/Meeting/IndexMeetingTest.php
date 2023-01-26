@@ -4,12 +4,12 @@ namespace Tests\Feature\Meeting;
 
 
 use Heart\Meeting\Infrastructure\Models\Meeting;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class IndexMeetingTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     public function testBotCanListAllMeetings(): void
     {

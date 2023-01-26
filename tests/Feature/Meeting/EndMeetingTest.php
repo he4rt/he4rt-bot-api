@@ -3,13 +3,13 @@
 namespace Meeting;
 
 use Heart\Meeting\Infrastructure\Models\Meeting;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
 class EndMeetingTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     public function testEndMeeting(): void
     {
