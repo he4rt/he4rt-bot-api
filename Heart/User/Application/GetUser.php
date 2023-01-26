@@ -14,8 +14,8 @@ class GetUser
     }
 
     /** @throws UserEntityException */
-    public function handle(int $userId): UserEntity
+    public function handle(string $userId): UserEntity
     {
-        return $this->repository->find(new UserId($userId));
+        return $this->repository->find($userId);
     }
 }

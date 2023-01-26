@@ -3,6 +3,7 @@
 namespace Heart\User\Presentation;
 
 use App\Http\Controllers\Controller;
+use Heart\User\Application\FindProfile;
 use Heart\User\Application\GetUser;
 use Heart\User\Application\GetUsersPaginated;
 use Heart\User\Domain\Exceptions\UserEntityException;
@@ -25,5 +26,10 @@ class UsersController extends Controller
                 $e->getCode()
             );
         }
+    }
+
+    public function getProfile(string $value, FindProfile $profile)
+    {
+        return response()->json($profile->handle($value));
     }
 }

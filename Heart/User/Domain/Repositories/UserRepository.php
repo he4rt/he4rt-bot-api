@@ -3,6 +3,7 @@
 namespace Heart\User\Domain\Repositories;
 
 use Heart\Shared\Domain\Paginator;
+use Heart\User\Domain\Entities\ProfileEntity;
 use Heart\User\Domain\Entities\UserEntity;
 use Heart\User\Domain\Exceptions\UserEntityException;
 use Heart\User\Domain\ValueObjects\UserId;
@@ -14,7 +15,9 @@ interface UserRepository
     public function get(): array;
 
     /** @throws UserEntityException */
-    public function find(UserId $id): UserEntity;
+    public function find(string $id): UserEntity;
 
-    public function findByUsername(string $username): UserEntity;
+    public function findByUsername(string $username): ?UserEntity;
+
+    public function findProfile(string $userId): ProfileEntity;
 }

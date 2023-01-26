@@ -24,6 +24,7 @@ class Character extends Model
     protected $table = 'characters';
 
     protected $fillable = [
+        'id',
         'user_id',
         'reputation',
         'experience',
