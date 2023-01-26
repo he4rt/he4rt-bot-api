@@ -33,14 +33,15 @@ class FindBadgeBySlugTest extends TestCase
 
     public function testFindBadgeBySlug(): void
     {
+        $slug = 'é-o-canhas';
         $this->badgeRepositoryStub
             ->shouldReceive('findBySlug')
-            ->with("é o canhas")
+            ->with($slug)
             ->once()
             ->andReturn($this->badgeEntity);
 
         $test = new FindBadgeBySlug($this->badgeRepositoryStub);
 
-        $test->handle("é o canhas");
+        $test->handle($slug);
     }
 }
