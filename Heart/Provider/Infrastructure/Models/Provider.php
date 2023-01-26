@@ -2,6 +2,7 @@
 
 namespace Heart\Provider\Infrastructure\Models;
 
+use Heart\Message\Infrastructure\Models\Message;
 use Heart\Provider\Infrastructure\Factories\ProviderFactory;
 use Heart\User\Infrastructure\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -34,6 +35,14 @@ class Provider extends Model
         'email',
     ];
 
+    protected $appends = [
+        'messages_count'
+    ];
+
+    public function getMessagesCountAttribute(): int
+    {
+        return $this->messages()->count();
+    }
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -42,6 +51,11 @@ class Provider extends Model
     public function tokens(): HasMany
     {
         return $this->hasMany(Token::class);
+    }
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class);
     }
 
     protected static function newFactory(): ProviderFactory

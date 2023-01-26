@@ -2,6 +2,7 @@
 
 namespace Heart\Message\Infrastructure\Models;
 
+use Heart\Message\Infrastructure\Factories\MessageFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,4 +24,9 @@ class Message extends Model
         'sent_at',
         'obtained_experience',
     ];
+
+    protected static function newFactory(): MessageFactory
+    {
+        return MessageFactory::new();
+    }
 }

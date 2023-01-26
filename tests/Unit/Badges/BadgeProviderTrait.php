@@ -9,11 +9,12 @@ trait BadgeProviderTrait
     public function validBadgePayload(array $fields = []): array
     {
         return [
-            'id'          => 12,
-            'name'        => 'canhassi',
+            'id' => 12,
+            'name' => 'canhassi',
             'description' => 'é o canhas, esqueça tudo!',
+            'image_url' => 'vaicaralho.jpg',
             'redeem_code' => 'he4rtDevelopers',
-            'active'      => true
+            'active' => true
         ];
     }
 

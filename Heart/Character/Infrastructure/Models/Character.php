@@ -31,6 +31,20 @@ class Character extends Model
         'daily_bonus_claimed_at'
     ];
 
+    protected $appends = [
+        'ranking'
+    ];
+
+    public function getRankingAttribute(): int
+    {
+        return $this->newQuery()
+                ->orderByDesc('experience')
+                ->pluck('id')
+                ->filter(fn($id) => $id == $this->getKey())
+                ->keys()
+                ->first() + 1;
+    }
+
     public function wallet(): HasOne
     {
         return $this->hasOne(Wallet::class);

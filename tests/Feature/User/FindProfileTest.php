@@ -5,6 +5,7 @@ namespace Tests\Feature\User;
 use Heart\Badges\Infrastructure\Model\Badge;
 use Heart\Character\Domain\Entities\CharacterEntity;
 use Heart\Character\Infrastructure\Models\Character;
+use Heart\Message\Infrastructure\Models\Message;
 use Heart\Provider\Infrastructure\Models\Provider;
 use Heart\User\Infrastructure\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -19,7 +20,7 @@ class FindProfileTest extends TestCase
     {
         $user = User::factory()
             ->has(Character::factory(), 'character')
-            ->has(Provider::factory())
+            ->has(Provider::factory()->has(Message::factory()->count(2)))
             ->create();
 
         $badge = Badge::factory()->create();
@@ -30,7 +31,7 @@ class FindProfileTest extends TestCase
         $response = $this
             ->actingAsAdmin()
             ->getJson(route('users.profile', ['value' => $user->username]));
-        $response->dump('badges');
+
         $response->assertStatus(Response::HTTP_OK)
             ->assertJsonStructure([
                 'id',
@@ -41,6 +42,12 @@ class FindProfileTest extends TestCase
                     'level',
                     'experience',
                     'daily_bonus_claimed_at',
+                ],
+                'connectedProviders' => [
+                    0 => [
+                        'provider',
+                        'messages_count'
+                    ]
                 ],
                 'badges'
             ]);

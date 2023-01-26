@@ -46,7 +46,7 @@ class ProfileEntity implements \JsonSerializable
             'information' => $this->informationEntity,
             'address' => $this->addressEntity,
             'character' => $this->characterEntity,
-            'providers' => $this->connectedProviders,
+            'connectedProviders' => $this->connectedProviders,
             'badges' => $this->badges
         ];
     }

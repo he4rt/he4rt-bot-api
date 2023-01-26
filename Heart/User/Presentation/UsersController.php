@@ -28,7 +28,7 @@ class UsersController extends Controller
         }
     }
 
-    public function getProfile(string $value, FindProfile $profile)
+    public function getProfile(string $value, FindProfile $profile): JsonResponse
     {
         return response()->json($profile->handle($value));
     }

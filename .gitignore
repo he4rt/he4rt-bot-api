@@ -4,7 +4,7 @@
 /public/storage
 /storage/*.key
 /vendor
-.env
+.env*
 .env.testing
 .env.backup
 .env.production
