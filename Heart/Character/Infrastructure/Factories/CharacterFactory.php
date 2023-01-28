@@ -21,6 +21,7 @@ class CharacterFactory extends Factory
     public function definition(): array
     {
         return [
+            'id' => $this->faker->uuid(),
             'user_id' => User::factory(),
             'reputation' => $this->faker->numberBetween(1, 10),
             'experience' => $this->faker->numberBetween(1, 5000),

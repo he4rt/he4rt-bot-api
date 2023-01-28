@@ -4,6 +4,7 @@ namespace Heart\User\Infrastructure\Repositories;
 
 use Heart\Shared\Domain\Paginator;
 use Heart\Shared\Infrastructure\Paginator as PaginatorConcrete;
+use Heart\User\Domain\Entities\ProfileEntity;
 use Heart\User\Domain\Entities\UserEntity;
 use Heart\User\Domain\Exceptions\UserEntityException;
 use Heart\User\Domain\Repositories\UserRepository;
@@ -33,10 +34,37 @@ class UserEloquentRepository implements UserRepository
     }
 
     /** @throws UserEntityException */
-    public function find(UserId $id): UserEntity
+    public function find(string $id): UserEntity
     {
-        $user = $this->query->find($id->value())->toArray();
+        $user = $this->query->find($id)->toArray();
 
         return UserEntity::fromArray($user);
+    }
+
+    public function findByUsername(string $username): ?UserEntity
+    {
+        $user = $this->query->where('username', $username)
+            ->first();
+
+        if (!$user) {
+            return null;
+        }
+
+        return UserEntity::fromArray($user->toArray());
+    }
+
+    public function findProfile(string $userId): ProfileEntity
+    {
+        $user = $this->query->newQuery()
+            ->with([
+                'character',
+                'providers',
+                'information',
+                'character.badges',
+                'address',
+                'character.pastSeasons'
+            ])->find($userId);
+
+        return ProfileEntity::make($user->toArray());
     }
 }

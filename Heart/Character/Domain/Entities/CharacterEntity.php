@@ -2,7 +2,9 @@
 
 namespace Heart\Character\Domain\Entities;
 
-class CharacterEntity
+use JsonSerializable;
+
+class CharacterEntity implements JsonSerializable
 {
     public string $id;
     public string $userId;
@@ -45,6 +47,17 @@ class CharacterEntity
         return [
             'user_id' => $this->userId,
             'reputation' => $this->reputation,
+            'experience' => $this->level->getExperience(),
+            'daily_bonus_claimed_at' => $this->dailyReward->claimedAt,
+        ];
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'user_id' => $this->userId,
+            'reputation' => $this->reputation,
+            'level' => $this->level->getLevel(),
             'experience' => $this->level->getExperience(),
             'daily_bonus_claimed_at' => $this->dailyReward->claimedAt,
         ];

@@ -36,12 +36,12 @@ class GetUserTest extends TestCase
     {
         $this->repositoryStub
             ->shouldReceive('find')
-            ->with(UserId::class)
+            ->with('12')
             ->once()
             ->andReturn($this->userEntity);
 
         $test = new GetUser($this->repositoryStub);
 
-        $test->handle(12);
+        $test->handle('12');
     }
 }

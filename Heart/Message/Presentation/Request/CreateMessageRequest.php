@@ -13,10 +13,7 @@ class CreateMessageRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        $urlPieces = explode('/', $this->url());
-        $provider = array_pop($urlPieces);
-
-        $this->merge(['provider' => $provider]);
+        $this->merge(['provider' => $this->route('provider')]);
     }
 
     public function rules(): array

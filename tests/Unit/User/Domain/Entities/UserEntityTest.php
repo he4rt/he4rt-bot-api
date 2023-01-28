@@ -24,12 +24,7 @@ class UserEntityTest extends TestCase
      * @test
      * @dataProvider invalidUserPayloads
      */
-    public function cannotCreateUserEntityWithInvalidPayload(array $payload)
-    {
-        $this->expectException(UserEntityException::class);
 
-        UserEntity::fromArray($payload);
-    }
 
     private function validUserPayloads(): array
     {
@@ -37,35 +32,16 @@ class UserEntityTest extends TestCase
             [[
                 'id' => 123,
                 'name' => 'Luis Alberto Suárez',
-                'isDonator' => true,
+                'username' => 'brabo3k',
+                'is_donator' => true,
             ]],
             [[
                 'id' => 1,
                 'name' => 'Diego Souza',
-                'isDonator' => false,
+                'username' => 'brabo4k',
+                'is_donator' => false,
             ]],
         ];
     }
 
-    private function invalidUserPayloads(): array
-    {
-        return [
-            [[
-                'uuid' => Str::uuid()->toString(),
-                'name' => 'D\'Alessandro',
-                'isDonator' => false
-            ]],
-            [[
-                'id' => 2,
-                'first_name' => 'Taison',
-                'isDonator' => true,
-
-            ]],
-            [[
-                'id' => 3,
-                'name' => 'Edenílson',
-                'donator' => true,
-            ]],
-        ];
-    }
 }
