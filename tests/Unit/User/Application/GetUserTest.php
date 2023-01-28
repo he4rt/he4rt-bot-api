@@ -1,11 +1,10 @@
 <?php
 
-namespace Tests\Unit\User\Domain\Application;
+namespace Tests\Unit\User\Application;
 
 use Heart\User\Application\GetUser;
 use Heart\User\Domain\Entities\UserEntity;
 use Heart\User\Domain\Repositories\UserRepository;
-use Heart\User\Domain\ValueObjects\UserId;
 use Mockery as m;
 use Mockery\MockInterface;
 use Tests\Unit\User\UserProviderTrait;
