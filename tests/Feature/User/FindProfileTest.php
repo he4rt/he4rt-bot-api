@@ -5,8 +5,11 @@ namespace Tests\Feature\User;
 use Heart\Badges\Infrastructure\Model\Badge;
 use Heart\Character\Domain\Entities\CharacterEntity;
 use Heart\Character\Infrastructure\Models\Character;
+use Heart\Character\Infrastructure\Models\PastSeason;
 use Heart\Message\Infrastructure\Models\Message;
 use Heart\Provider\Infrastructure\Models\Provider;
+use Heart\User\Infrastructure\Models\Address;
+use Heart\User\Infrastructure\Models\Information;
 use Heart\User\Infrastructure\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +22,9 @@ class FindProfileTest extends TestCase
     public function testCanFindProfile()
     {
         $user = User::factory()
-            ->has(Character::factory(), 'character')
+            ->has(Character::factory()->has(PastSeason::factory()), 'character')
+            ->has(Address::factory(), 'address')
+            ->has(Information::factory(), 'information')
             ->has(Provider::factory()->has(Message::factory()->count(2)))
             ->create();
 
@@ -31,7 +36,6 @@ class FindProfileTest extends TestCase
         $response = $this
             ->actingAsAdmin()
             ->getJson(route('users.profile', ['value' => $user->username]));
-
         $response->assertStatus(Response::HTTP_OK)
             ->assertJsonStructure([
                 'id',
@@ -49,7 +53,15 @@ class FindProfileTest extends TestCase
                         'messages_count'
                     ]
                 ],
-                'badges'
+                'badges',
+                'address' => [
+                    'country'
+                ],
+                'pastSeasons' => [
+                    0 => [
+                        'season_id'
+                    ]
+                ]
             ]);
     }
 }

@@ -15,6 +15,16 @@ class BadgeCollection extends ArrayIterator implements JsonSerializable
         return $this;
     }
 
+    public static function make(array $badgesPayload): self
+    {
+        $badges = [];
+        foreach ($badgesPayload as $badgePayload) {
+            $badges[] = BadgeEntity::make($badgePayload);
+        }
+
+        return new self($badges);
+    }
+
     public function jsonSerialize(): array
     {
         return $this->getArrayCopy();

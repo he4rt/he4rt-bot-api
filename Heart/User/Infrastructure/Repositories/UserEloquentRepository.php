@@ -56,8 +56,14 @@ class UserEloquentRepository implements UserRepository
     public function findProfile(string $userId): ProfileEntity
     {
         $user = $this->query->newQuery()
-            ->with(['character', 'providers', 'character.badges'])
-            ->find($userId);
+            ->with([
+                'character',
+                'providers',
+                'information',
+                'character.badges',
+                'address',
+                'character.pastSeasons'
+            ])->find($userId);
 
         return ProfileEntity::make($user->toArray());
     }
