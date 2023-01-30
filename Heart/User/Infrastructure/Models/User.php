@@ -2,7 +2,6 @@
 
 namespace Heart\User\Infrastructure\Models;
 
-
 use Heart\Character\Infrastructure\Models\Character;
 use Heart\Provider\Infrastructure\Models\Provider;
 use Heart\User\Infrastructure\Factories\UserFactory;
@@ -12,6 +11,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * @property string $id
+ * @property string $username
+ * @property bool $is_donator
+ */
 class User extends Model
 {
     use HasFactory;
