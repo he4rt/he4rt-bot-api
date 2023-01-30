@@ -20,7 +20,7 @@ class FindProvider
         return Cache::remember(
             $providerCacheKey,
             TTL::fromDays(2),
-            fn() => $this->findProvider($provider, $providerId)
+            fn () => $this->findProvider($provider, $providerId)
         );
     }
 

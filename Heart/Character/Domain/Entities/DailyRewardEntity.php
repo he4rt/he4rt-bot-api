@@ -11,7 +11,7 @@ class DailyRewardEntity
 
     public function __construct(?string $claimedAt)
     {
-        $dateTime = DateTime::createFromFormat("Y-m-d H:i:s", $claimedAt);
+        $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', $claimedAt);
         $this->claimedAt = $dateTime;
     }
 
@@ -20,6 +20,7 @@ class DailyRewardEntity
         $dateTimeInterval = DateInterval::createFromDateString('1 day');
         $oneDayLater = (clone $this->claimedAt)->add($dateTimeInterval);
         $now = new DateTime(now());
+
         return $now > $oneDayLater;
     }
 
@@ -27,5 +28,4 @@ class DailyRewardEntity
     {
         return 1;
     }
-
 }

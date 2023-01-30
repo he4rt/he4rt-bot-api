@@ -25,6 +25,6 @@ class MeetingFactory extends Factory
 
     public function unfinished(): self
     {
-        return $this->state(fn() => ['ends_at' => null, 'content' => null]);
+        return $this->state(fn () => ['ends_at' => null, 'content' => null]);
     }
 }

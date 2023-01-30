@@ -2,8 +2,8 @@
 
 namespace Heart\Character\Infrastructure\Models;
 
-use Heart\Character\Infrastructure\Factories\CharacterFactory;
 use Heart\Badges\Infrastructure\Model\Badge;
+use Heart\Character\Infrastructure\Factories\CharacterFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,11 +29,11 @@ class Character extends Model
         'user_id',
         'reputation',
         'experience',
-        'daily_bonus_claimed_at'
+        'daily_bonus_claimed_at',
     ];
 
     protected $appends = [
-        'ranking'
+        'ranking',
     ];
 
     public function getRankingAttribute(): int
@@ -41,7 +41,7 @@ class Character extends Model
         return $this->newQuery()
                 ->orderByDesc('experience')
                 ->pluck('id')
-                ->filter(fn($id) => $id == $this->getKey())
+                ->filter(fn ($id) => $id == $this->getKey())
                 ->keys()
                 ->first() + 1;
     }

@@ -6,7 +6,6 @@ use Heart\Authentication\OAuth\Domain\DTO\OAuthAccessDTO;
 
 class TwitchOAuthAccessDTO extends OAuthAccessDTO
 {
-
     public static function make(array $payload): self
     {
         return new self(

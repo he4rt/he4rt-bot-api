@@ -15,7 +15,7 @@ class Wallet extends Model
 
     protected $fillable = [
         'character_id',
-        'balance'
+        'balance',
     ];
 
     public function character(): BelongsTo

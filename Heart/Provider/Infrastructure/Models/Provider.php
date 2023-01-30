@@ -36,13 +36,14 @@ class Provider extends Model
     ];
 
     protected $appends = [
-        'messages_count'
+        'messages_count',
     ];
 
     public function getMessagesCountAttribute(): int
     {
         return $this->messages()->count();
     }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

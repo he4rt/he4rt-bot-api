@@ -14,7 +14,7 @@ class PersistDailyBonus
     public function handle(string $characterId): void
     {
         $character = $this->characterRepository->findById($characterId);
-        if (!$character->dailyReward->canClaim()) {
+        if (! $character->dailyReward->canClaim()) {
             throw CharacterException::alreadyClaimed($character->dailyReward);
         }
 

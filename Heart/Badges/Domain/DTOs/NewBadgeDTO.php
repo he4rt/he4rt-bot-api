@@ -34,7 +34,7 @@ class NewBadgeDTO implements \JsonSerializable
             'description' => $this->description,
             'image_url' => $this->imageUrl,
             'redeem_code' => $this->redeemCode,
-            'active' => $this->active
+            'active' => $this->active,
         ];
     }
 }

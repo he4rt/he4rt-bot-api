@@ -24,6 +24,7 @@ class PastSeasonCollection extends ArrayIterator implements JsonSerializable
 
         return new self($pastSeasons);
     }
+
     public function jsonSerialize(): array
     {
         return $this->getArrayCopy();

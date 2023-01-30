@@ -23,7 +23,7 @@ class ClaimDailyBonusTest extends TestCase
         $provider = $user->providers[0];
         $routeParams = [
             'provider' => $provider->provider,
-            'providerId' => $provider->provider_id
+            'providerId' => $provider->provider_id,
         ];
         $expected = $user->character->daily_bonus_claimed_at;
         $this->travelTo(now()->addHours(24)->addMinutes(2));
@@ -45,7 +45,7 @@ class ClaimDailyBonusTest extends TestCase
         $provider = $user->providers[0];
         $routeParams = [
             'provider' => $provider->provider,
-            'providerId' => $provider->provider_id
+            'providerId' => $provider->provider_id,
         ];
 
         $this->postJson(route('characters.dailyReward', $routeParams))

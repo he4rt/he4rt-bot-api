@@ -19,7 +19,7 @@ class TwitchSubscribersClient implements TwitchSubscribersService
         $response = $this->client->request('GET', $uri, [
             'headers' => [
                 'Client-ID' => config('kingdom.integrations.twitch.client_id'),
-                'Authorization' => 'Bearer ' . $dto->accessToken,
+                'Authorization' => 'Bearer '.$dto->accessToken,
             ],
             'query' => [
                 'user_id' => $twitchId,
@@ -32,6 +32,7 @@ class TwitchSubscribersClient implements TwitchSubscribersService
         if (count($response) == 0) {
             return null;
         }
+
         return TwitchSubscriberDTO::make($response[0]);
     }
 }

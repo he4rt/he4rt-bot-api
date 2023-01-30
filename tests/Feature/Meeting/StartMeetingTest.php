@@ -20,11 +20,10 @@ class StartMeetingTest extends TestCase
         /** @var Provider $provider */
         $provider = Provider::factory()->create(['provider' => $providerName]);
 
-
         $meetingType = MeetingType::factory()->create();
         $payload = [
             'meeting_type_id' => $meetingType->getKey(),
-            'provider_id' => $provider->provider_id
+            'provider_id' => $provider->provider_id,
         ];
 
         $expectedResponse = [
@@ -36,7 +35,6 @@ class StartMeetingTest extends TestCase
         $response = $this
             ->actingAsAdmin()
             ->postJson(route('events.meeting.postMeeting', ['provider' => $providerName]), $payload);
-
 
         // Assert
         $response->assertStatus(Response::HTTP_CREATED)
@@ -55,7 +53,7 @@ class StartMeetingTest extends TestCase
 
         $payload = [
             'meeting_type_id' => 12,
-            'provider_id' => $provider->provider_id
+            'provider_id' => $provider->provider_id,
         ];
 
         $expectedResponse = [

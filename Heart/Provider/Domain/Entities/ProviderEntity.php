@@ -18,8 +18,7 @@ class ProviderEntity
         string $provider,
         string $providerId,
         string $providerEmail
-    )
-    {
+    ) {
         $this->id = $id;
         $this->userId = $userId;
         $this->provider = new ProviderData($provider, $providerId, $providerEmail);
@@ -35,5 +34,4 @@ class ProviderEntity
             $payload['email'],
         );
     }
-
 }

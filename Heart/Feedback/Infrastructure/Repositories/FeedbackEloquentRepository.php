@@ -21,7 +21,7 @@ class FeedbackEloquentRepository implements FeedbackRepository
             ->newQuery()
             ->find($id);
 
-        if (!$model) {
+        if (! $model) {
             throw FeedbackException::idNotFound($id);
         }
 

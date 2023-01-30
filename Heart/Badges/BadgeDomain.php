@@ -8,12 +8,11 @@ use Heart\Core\Contracts\DomainInterface;
 
 class BadgeDomain extends DomainInterface
 {
-
     public function registerProvider(): array
     {
         return [
             BadgeServiceProvider::class,
-            BadgeRouteProvider::class
+            BadgeRouteProvider::class,
         ];
     }
 }

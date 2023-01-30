@@ -25,11 +25,11 @@ class CreateFeedbackRequest extends FormRequest
             'message' => [
                 'required',
                 'string',
-                'max:4000'
+                'max:4000',
             ],
             'type' => [
                 'required',
-                'string'
+                'string',
             ],
         ];
     }

@@ -6,8 +6,8 @@ use Heart\Badges\Domain\Actions\PersistBadge;
 use Heart\Badges\Domain\DTOs\NewBadgeDTO;
 use Heart\Badges\Domain\Entities\BadgeEntity;
 use Heart\Badges\Domain\Repositories\BadgeRepository;
-use Mockery\MockInterface;
 use Mockery as m;
+use Mockery\MockInterface;
 use Tests\TestCase;
 use Tests\Unit\Badges\BadgeProviderTrait;
 
@@ -30,7 +30,7 @@ class PersistBadgeTest extends TestCase
             'canhassi', // provider
             $this->badgeEntity->name,
             $this->badgeEntity->description,
-            "https://canhassi.tech", // image URL
+            'https://canhassi.tech', // image URL
             $this->badgeEntity->redeemCode,
             $this->badgeEntity->active
         );

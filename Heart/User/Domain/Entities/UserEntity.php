@@ -4,7 +4,6 @@ namespace Heart\User\Domain\Entities;
 
 use Exception;
 use Heart\User\Domain\Exceptions\UserEntityException;
-use Heart\User\Domain\ValueObjects\UserId;
 use Heart\User\Domain\ValueObjects\UserName;
 
 class UserEntity
@@ -15,6 +14,7 @@ class UserEntity
         public readonly bool $isDonator,
     ) {
     }
+
     /** @throws UserEntityException */
     public static function make(array $payload): self
     {
@@ -27,7 +27,6 @@ class UserEntity
         } catch (Exception $e) {
             throw UserEntityException::failedToCreateEntity();
         }
-
     }
 
     /** @throws UserEntityException */

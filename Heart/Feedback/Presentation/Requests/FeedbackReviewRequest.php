@@ -20,7 +20,7 @@ class FeedbackReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'action' => ['required', 'in:' . implode(',', ReviewTypeEnum::getTypes())],
+            'action' => ['required', 'in:'.implode(',', ReviewTypeEnum::getTypes())],
             'staff_id' => ['required'],
             'reason' => ['nullable', 'string', 'max:1000'],
         ];

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class ProviderFactory extends Factory
 {
     protected $model = Provider::class;
+
     public function definition(): array
     {
         return [

@@ -2,8 +2,6 @@
 
 namespace Heart\Integrations\Twitch\Common;
 
-
-
 use Heart\Integrations\Twitch\OAuth\Domain\TwitchOAuthService;
 use Heart\Integrations\Twitch\Subscriber\Domain\TwitchSubscribersService;
 

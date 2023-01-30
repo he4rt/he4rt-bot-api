@@ -20,7 +20,7 @@ class DeleteBadgeTest extends TestCase
             ->assertStatus(Response::HTTP_NO_CONTENT);
 
         $this->assertDatabaseMissing('badges', [
-            'id' => $badge->id
+            'id' => $badge->id,
         ]);
     }
 }

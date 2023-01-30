@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('meeting_types')) {
+        if (! Schema::hasTable('meeting_types')) {
             Schema::create('meeting_types', function (Blueprint $table) {
                 $table->id();
                 $table->string('name');

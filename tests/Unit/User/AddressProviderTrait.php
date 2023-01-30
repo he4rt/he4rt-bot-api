@@ -14,7 +14,7 @@ trait AddressProviderTrait
             'state' => 'São Paulo',
             'city' => 'São Paulo',
             'zip_code' => '12121212',
-            ...$fields
+            ...$fields,
         ];
     }
 

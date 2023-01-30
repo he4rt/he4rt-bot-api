@@ -10,8 +10,8 @@ use Heart\User\Domain\Actions\GetProfile;
 use Heart\User\Domain\Entities\ProfileEntity;
 use Heart\User\Domain\Entities\UserEntity;
 use Heart\User\Domain\Repositories\UserRepository;
-use Mockery\MockInterface;
 use Mockery as m;
+use Mockery\MockInterface;
 use Tests\TestCase;
 use Tests\Unit\Character\ProviderProviderTrait;
 use Tests\Unit\User\ProfileProviderTrait;
@@ -20,9 +20,7 @@ use Tests\Unit\User\UserProviderTrait;
 class FindProfileTest extends TestCase
 {
     use UserProviderTrait;
-
     use ProviderProviderTrait;
-
     use ProfileProviderTrait;
 
     private MockInterface $userRepositoryStub;
@@ -70,7 +68,7 @@ class FindProfileTest extends TestCase
 
         $test = new FindProfile($this->getProfileStub, $this->userRepositoryStub, $this->providerRepositoryStub);
 
-        $test->handle("canhassi");
+        $test->handle('canhassi');
     }
 
     public function testFindProfileWithProviderIdSuccess(): void
@@ -94,7 +92,7 @@ class FindProfileTest extends TestCase
 
         $test = new FindProfile($this->getProfileStub, $this->userRepositoryStub, $this->providerRepositoryStub);
 
-        $test->handle("canhassi-id");
+        $test->handle('canhassi-id');
     }
 
     public function testProfileNotFound(): void
@@ -113,6 +111,6 @@ class FindProfileTest extends TestCase
 
         $test = new FindProfile($this->getProfileStub, $this->userRepositoryStub, $this->providerRepositoryStub);
 
-        $test->handle("canhassi-id");
+        $test->handle('canhassi-id');
     }
 }

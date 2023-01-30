@@ -30,7 +30,6 @@ class FeedbackReviewDTO implements JsonSerializable
         );
     }
 
-
     public function jsonSerialize(): array
     {
         return [

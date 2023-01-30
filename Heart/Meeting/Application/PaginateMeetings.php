@@ -15,6 +15,7 @@ class PaginateMeetings
     public function handle(string $provider): Paginator
     {
         $provider = ProviderEnum::from($provider);
+
         return $this->paginateMeetingsAction->handle($provider);
     }
 }

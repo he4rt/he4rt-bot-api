@@ -8,10 +8,8 @@ class ProviderData
         private readonly string $provider,
         private readonly string $providerId,
         private readonly string $providerEmail
-    )
-    {
+    ) {
     }
-
 
     public function getProviderId(): string
     {

@@ -21,13 +21,12 @@ class User extends Model
     use HasFactory;
     use HasUuids;
 
-
     protected $table = 'users';
 
     protected $fillable = [
         'id',
         'username',
-        'is_donator'
+        'is_donator',
     ];
 
     public function address(): HasOne
@@ -49,7 +48,6 @@ class User extends Model
     {
         return $this->hasOne(Character::class);
     }
-
 
     protected static function newFactory(): UserFactory
     {

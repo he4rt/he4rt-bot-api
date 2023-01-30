@@ -28,7 +28,6 @@ class BadgeEntity implements JsonSerializable
         );
     }
 
-
     public function jsonSerialize(): array
     {
         return [

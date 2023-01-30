@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class InformationFactory extends Factory
 {
     protected $model = Information::class;
+
     public function definition(): array
     {
         return [
@@ -19,7 +20,7 @@ class InformationFactory extends Factory
             'linkedin_url' => $this->faker->url(),
             'github_url' => $this->faker->url(),
             'birthdate' => $this->faker->date(),
-            'about' => $this->faker->text()
+            'about' => $this->faker->text(),
         ];
     }
 }

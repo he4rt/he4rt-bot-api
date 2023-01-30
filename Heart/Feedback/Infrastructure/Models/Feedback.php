@@ -22,7 +22,7 @@ class Feedback extends Model
         'sender_id',
         'target_id',
         'type',
-        'message'
+        'message',
     ];
 
     public function review(): HasOne

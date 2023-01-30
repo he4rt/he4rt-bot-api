@@ -8,6 +8,6 @@ class MeetingExceptions extends \Exception
 {
     public static function meetingTypeNotFound(): self
     {
-        return new self("meeting type not found!!", Response::HTTP_NOT_FOUND);
+        return new self('meeting type not found!!', Response::HTTP_NOT_FOUND);
     }
 }

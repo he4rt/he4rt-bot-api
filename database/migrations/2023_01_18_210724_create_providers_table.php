@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('providers')) {
+        if (! Schema::hasTable('providers')) {
             Schema::create('providers', function (Blueprint $table) {
                 $table->uuid('id')->primary();
                 $table->foreignUuid('user_id')->constrained('users');

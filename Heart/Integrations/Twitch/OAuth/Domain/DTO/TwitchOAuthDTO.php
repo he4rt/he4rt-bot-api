@@ -10,6 +10,7 @@ class TwitchOAuthDTO extends OAuthUserDTO
     public static function make(OAuthAccessDTO $credentials, array $payload): OAuthUserDTO
     {
         $user = $payload['data'][0];
+
         return new self(
             credentials: $credentials,
             providerId: $user['id'],

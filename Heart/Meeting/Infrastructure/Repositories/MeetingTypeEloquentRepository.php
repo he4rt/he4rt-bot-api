@@ -17,7 +17,7 @@ class MeetingTypeEloquentRepository implements MeetingTypeRepository
         /** @var MeetingType $model */
         $model = $this->model->find($meetingTypeId);
 
-        if (!$model) {
+        if (! $model) {
             return null;
         }
 

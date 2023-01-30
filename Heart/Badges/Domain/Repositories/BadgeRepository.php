@@ -7,7 +7,6 @@ use Heart\Badges\Domain\Entities\BadgeEntity;
 
 interface BadgeRepository
 {
-
     public function create(NewBadgeDTO $badgeDTO): BadgeEntity;
 
     public function findBySlug(string $badgeSlug): BadgeEntity;

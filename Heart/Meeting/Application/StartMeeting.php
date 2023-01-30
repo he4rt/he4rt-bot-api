@@ -13,11 +13,10 @@ use Illuminate\Support\Facades\Cache;
 class StartMeeting
 {
     public function __construct(
-        private readonly CreateMeeting   $createMeetingAction,
-        private readonly FindProvider    $findProvider,
+        private readonly CreateMeeting $createMeetingAction,
+        private readonly FindProvider $findProvider,
         private readonly FindMeetingType $findMeetingType,
-    )
-    {
+    ) {
     }
 
     public function handle(string $provider, string $providerId, int $meetingTypeId): MeetingEntity

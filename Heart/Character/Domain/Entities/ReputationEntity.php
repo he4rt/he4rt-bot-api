@@ -5,6 +5,7 @@ namespace Heart\Character\Domain\Entities;
 class ReputationEntity
 {
     private int $points;
+
     public function __construct(int $points)
     {
         $this->points = $points;

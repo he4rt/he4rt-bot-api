@@ -3,14 +3,13 @@
 namespace Tests\Unit\User\Domain\Entities;
 
 use Heart\User\Domain\Entities\UserEntity;
-use Heart\User\Domain\Exceptions\UserEntityException;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class UserEntityTest extends TestCase
 {
     /**
      * @test
+     *
      * @dataProvider validUserPayloads
      */
     public function canCreateEntity(array $userPayload)
@@ -22,10 +21,9 @@ class UserEntityTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider invalidUserPayloads
      */
-
-
     private function validUserPayloads(): array
     {
         return [
@@ -43,5 +41,4 @@ class UserEntityTest extends TestCase
             ]],
         ];
     }
-
 }

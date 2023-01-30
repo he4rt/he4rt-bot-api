@@ -18,11 +18,11 @@ class Badge extends Model
         'description',
         'image_url',
         'redeem_code',
-        'active'
+        'active',
     ];
 
     protected $casts = [
-        'active' => 'boolean'
+        'active' => 'boolean',
     ];
 
     protected static function newFactory(): BadgeFactory

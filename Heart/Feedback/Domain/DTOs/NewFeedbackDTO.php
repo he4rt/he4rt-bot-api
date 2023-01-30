@@ -30,7 +30,7 @@ class NewFeedbackDTO implements JsonSerializable
             'sender_id' => $this->senderId,
             'target_id' => $this->targetId,
             'type' => $this->type,
-            'message' => $this->message
+            'message' => $this->message,
         ];
     }
 }

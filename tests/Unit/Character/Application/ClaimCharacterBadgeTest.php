@@ -18,7 +18,6 @@ use Tests\Unit\Character\ProviderProviderTrait;
 class ClaimCharacterBadgeTest extends TestCase
 {
     use ProviderProviderTrait;
-
     use BadgeProviderTrait;
 
     private MockInterface $persistClaimBadgeStub;
@@ -54,7 +53,7 @@ class ClaimCharacterBadgeTest extends TestCase
     {
         $this->findProviderStub
             ->shouldReceive('handle')
-            ->with("canhassi-provider", "canhassi-id")
+            ->with('canhassi-provider', 'canhassi-id')
             ->once()
             ->andReturn($this->providerEntity);
 

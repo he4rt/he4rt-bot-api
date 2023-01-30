@@ -18,7 +18,7 @@ class BadgeFactory extends Factory
             'description' => $this->faker->sentence(),
             'image_url' => $this->faker->imageUrl(),
             'redeem_code' => $this->faker->slug(2),
-            'active' => true
+            'active' => true,
         ];
     }
 }

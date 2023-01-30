@@ -17,6 +17,7 @@ class OAuthController extends Controller
     public function getAuthenticate(string $provider, OAuthService $action): RedirectResponse
     {
         $action->handle($provider, request()->input('code'));
+
         return redirect()->intended('/profile');
     }
 }

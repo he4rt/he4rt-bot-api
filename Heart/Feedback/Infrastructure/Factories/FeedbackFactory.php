@@ -17,7 +17,7 @@ class FeedbackFactory extends Factory
             'sender_id' => User::factory(),
             'target_id' => User::factory(),
             'type' => $this->faker->randomElement(['compliment', 'improvement']),
-            'message' => $this->faker->sentence()
+            'message' => $this->faker->sentence(),
         ];
     }
 }

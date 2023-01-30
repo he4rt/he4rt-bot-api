@@ -6,5 +6,4 @@ use Heart\Authentication\OAuth\Domain\Interfaces\OAuthClientContract;
 
 interface TwitchOAuthService extends OAuthClientContract
 {
-
 }

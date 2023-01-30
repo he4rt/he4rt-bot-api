@@ -8,7 +8,6 @@ use Heart\Meeting\Infrastructure\Providers\MeetingServiceProvider;
 
 class MeetingDomain extends DomainInterface
 {
-
     public function registerProvider(): array
     {
         return [

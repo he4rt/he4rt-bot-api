@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class TokenFactory extends Factory
 {
     protected $model = Token::class;
+
     public function definition(): array
     {
         return [
@@ -16,7 +17,7 @@ class TokenFactory extends Factory
             'provider_id' => Provider::factory(),
             'access_token' => $this->faker->uuid(),
             'refresh_token' => $this->faker->uuid(),
-            'expires_in' => $this->faker->randomNumber(4)
+            'expires_in' => $this->faker->randomNumber(4),
         ];
     }
 }

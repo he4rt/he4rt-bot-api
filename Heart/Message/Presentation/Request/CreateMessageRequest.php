@@ -24,7 +24,7 @@ class CreateMessageRequest extends FormRequest
             'provider_message_id' => ['required'],
             'channel_id' => ['required'],
             'content' => ['required', 'string'],
-            'sent_at' => ['required', 'date']
+            'sent_at' => ['required', 'date'],
         ];
     }
 }

@@ -20,7 +20,7 @@ class CreateFeedbackTest extends TestCase
             'sender_id' => $providerSender->provider_id,
             'target_id' => $providerTarget->provider_id,
             'message' => 'mt legal vc',
-            'type' => 'elogio'
+            'type' => 'elogio',
         ];
 
         $this->postJson(route('feedbacks.create'), $payload)

@@ -37,7 +37,7 @@ class Meeting extends Model
 
     public function isEnded(): bool
     {
-        return (bool)$this->attributes['ends_at'];
+        return (bool) $this->attributes['ends_at'];
     }
 
     public function meetingType(): HasOne

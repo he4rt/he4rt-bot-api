@@ -25,7 +25,7 @@ class Review extends Model
 
     protected $casts = [
         'status' => ReviewTypeEnum::class,
-        'received_at' => 'timestamp'
+        'received_at' => 'timestamp',
     ];
 
     public function feedback(): BelongsTo

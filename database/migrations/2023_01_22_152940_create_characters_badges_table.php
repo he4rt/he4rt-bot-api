@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('characters_badges')) {
+        if (! Schema::hasTable('characters_badges')) {
             Schema::create('characters_badges', function (Blueprint $table) {
                 $table->foreignUuid('character_id');
                 $table->foreignId('badge_id');

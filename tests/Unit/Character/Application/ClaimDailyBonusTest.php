@@ -3,12 +3,12 @@
 namespace Tests\Unit\Character\Application;
 
 use Heart\Character\Application\ClaimDailyBonus;
-use Heart\Character\Domain\Actions\PersistDailyBonus;
-use Heart\Provider\Domain\Entities\ProviderEntity;
-use Mockery\MockInterface;
-use Mockery as m;
 use Heart\Character\Application\FindCharacterIdByUserId;
+use Heart\Character\Domain\Actions\PersistDailyBonus;
 use Heart\Provider\Application\FindProvider;
+use Heart\Provider\Domain\Entities\ProviderEntity;
+use Mockery as m;
+use Mockery\MockInterface;
 use Tests\TestCase;
 use Tests\Unit\Character\ProviderProviderTrait;
 

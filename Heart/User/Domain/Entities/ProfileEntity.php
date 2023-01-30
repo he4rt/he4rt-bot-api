@@ -48,7 +48,7 @@ class ProfileEntity implements JsonSerializable
             'character' => $this->characterEntity,
             'connectedProviders' => $this->connectedProviders,
             'badges' => $this->badges,
-            'pastSeasons' => $this->pastSeasons
+            'pastSeasons' => $this->pastSeasons,
         ];
     }
 }

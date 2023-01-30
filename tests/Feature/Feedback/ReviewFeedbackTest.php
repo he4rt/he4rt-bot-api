@@ -32,24 +32,23 @@ class ReviewFeedbackTest extends TestCase
 
     public static function dataProvider(): array
     {
-
         return [
             'approve feedback' => [
                 'action' => 'approved',
                 'payload' => [],
                 'expect' => [
                     'status' => 'approved',
-                ]
+                ],
             ],
             'decline feedback' => [
                 'action' => 'declined',
                 'payload' => [
-                    'reason' => 'bobo'
+                    'reason' => 'bobo',
                 ],
                 'expect' => [
                     'status' => 'declined',
-                    'reason' => 'bobo'
-                ]
+                    'reason' => 'bobo',
+                ],
             ],
         ];
     }

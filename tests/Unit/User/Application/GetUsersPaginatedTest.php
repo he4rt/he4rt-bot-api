@@ -5,8 +5,8 @@ namespace Tests\Unit\User\Domain\Application;
 use Heart\Shared\Domain\Paginator;
 use Heart\User\Application\GetUsersPaginated;
 use Heart\User\Domain\Repositories\UserRepository;
-use Mockery\MockInterface;
 use Mockery as m;
+use Mockery\MockInterface;
 use Tests\TestCase;
 
 class GetUsersPaginatedTest extends TestCase

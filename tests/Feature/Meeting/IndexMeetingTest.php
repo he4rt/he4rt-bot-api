@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Meeting;
 
-
 use Heart\Meeting\Infrastructure\Models\Meeting;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -41,9 +40,9 @@ class IndexMeetingTest extends TestCase
                             'start_at',
                             'created_at',
                             'updated_at',
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ]
         );
     }

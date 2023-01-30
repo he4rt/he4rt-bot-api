@@ -22,7 +22,7 @@ class WalletFactory extends Factory
     {
         return [
             'character_id' => Character::factory(),
-            'balance' => $this->faker->randomNumber(1, 99999)
+            'balance' => $this->faker->randomNumber(1, 99999),
         ];
     }
 }

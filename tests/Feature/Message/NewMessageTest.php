@@ -29,7 +29,7 @@ class NewMessageTest extends TestCase
             'provider_message_id' => '12312312',
             'channel_id' => '312321',
             'content' => '321312',
-            'sent_at' => now()->toDateTimeString()
+            'sent_at' => now()->toDateTimeString(),
         ];
 
         $this
@@ -38,7 +38,7 @@ class NewMessageTest extends TestCase
 
         $this->assertDatabaseMissing('characters', [
             'user_id' => $user->getKey(),
-            'experience' => 1
+            'experience' => 1,
         ]);
     }
 
@@ -64,7 +64,7 @@ class NewMessageTest extends TestCase
             'provider_message_id' => '12312312',
             'channel_id' => '312321',
             'content' => '321312',
-            'sent_at' => now()->toDateTimeString()
+            'sent_at' => now()->toDateTimeString(),
         ];
 
         $this
@@ -73,12 +73,12 @@ class NewMessageTest extends TestCase
 
         $this->assertDatabaseMissing('characters', [
             'user_id' => $user->getKey(),
-            'experience' => 1
+            'experience' => 1,
         ]);
 
         $this->assertDatabaseHas('meeting_participants', [
             'meeting_id' => $meeting->id,
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
         $userAttendedCacheKey = sprintf('meeting-%s-attended', $user->id);
         $this->assertTrue(Cache::tags(['meetings'])->has($userAttendedCacheKey));

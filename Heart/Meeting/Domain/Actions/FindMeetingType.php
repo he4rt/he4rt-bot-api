@@ -4,7 +4,6 @@ namespace Heart\Meeting\Domain\Actions;
 
 use Heart\Meeting\Domain\Entities\MeetingTypeEntity;
 use Heart\Meeting\Domain\Exceptions\MeetingException;
-use Heart\Meeting\Domain\Repositories\MeetingRepository;
 use Heart\Meeting\Domain\Repositories\MeetingTypeRepository;
 
 class FindMeetingType
@@ -17,7 +16,7 @@ class FindMeetingType
     {
         $meetingTypeEntity = $this->meetingTypeRepository->findById($meetingType);
 
-        if (!$meetingTypeEntity) {
+        if (! $meetingTypeEntity) {
             throw MeetingException::meetingTypeNotFound();
         }
 

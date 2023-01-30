@@ -4,7 +4,6 @@ namespace Heart\Provider\Domain\Actions;
 
 use Heart\Provider\Domain\Entities\ProviderEntity;
 use Heart\Provider\Domain\Repositories\ProviderRepository;
-use Heart\Provider\Infrastructure\Models\Provider;
 
 class GetProviderById
 {

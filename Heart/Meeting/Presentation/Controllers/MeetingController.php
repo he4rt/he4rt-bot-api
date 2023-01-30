@@ -4,8 +4,8 @@ namespace Heart\Meeting\Presentation\Controllers;
 
 use App\Http\Controllers\Controller;
 use Heart\Meeting\Application\EndMeeting;
-use Heart\Meeting\Application\StartMeeting;
 use Heart\Meeting\Application\PaginateMeetings;
+use Heart\Meeting\Application\StartMeeting;
 use Heart\Meeting\Domain\Exceptions\MeetingException;
 use Heart\Meeting\Presentation\Requests\MeetingRequest;
 use Illuminate\Http\JsonResponse;
@@ -17,7 +17,6 @@ class MeetingController extends Controller
     {
         return response()->json($paginateMeetings->handle($provider));
     }
-
 
     public function postMeeting(
         string $provider,
@@ -31,17 +30,17 @@ class MeetingController extends Controller
             );
         } catch (MeetingException $e) {
             return response()->json([
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ], $e->getCode());
         }
     }
-
 
     public function postEndMeeting(
         string $provider,
         EndMeeting $endMeeting,
     ): Response {
         $endMeeting->handle();
+
         return response()->noContent();
     }
 }

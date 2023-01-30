@@ -15,6 +15,7 @@ class MessagesController extends Controller
         NewMessage $action,
     ): Response {
         $action->handle($request->validated());
+
         return response()->noContent();
     }
 }

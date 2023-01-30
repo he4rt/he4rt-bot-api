@@ -3,7 +3,6 @@
 namespace Tests\Unit\User;
 
 use Heart\User\Domain\Entities\UserEntity;
-use Heart\User\Domain\ValueObjects\UserId;
 use Heart\User\Domain\ValueObjects\UserName;
 
 trait UserProviderTrait
@@ -14,7 +13,7 @@ trait UserProviderTrait
             'id' => 12,
             'username' => new UserName('canhassi'),
             'isDonator' => false,
-            ...$fields
+            ...$fields,
         ];
     }
 

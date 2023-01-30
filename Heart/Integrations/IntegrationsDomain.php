@@ -10,7 +10,7 @@ class IntegrationsDomain extends DomainInterface
     public function registerProvider(): array
     {
         return [
-            TwitchIntegrationProvider::class
+            TwitchIntegrationProvider::class,
         ];
     }
 }

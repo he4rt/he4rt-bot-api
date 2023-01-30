@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Factories\Factory as EloquentFactory;
 
 abstract class Factory extends EloquentFactory
 {
-    protected $connection = "testing";
+    protected $connection = 'testing';
 }

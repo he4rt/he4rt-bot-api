@@ -8,8 +8,7 @@ class DomainDTO
         public readonly string $namespace,
         public readonly string $filePath,
         public readonly string $fileName
-    )
-    {
+    ) {
     }
 
     public static function make(string $namespace, array $domainPayload): self

@@ -20,9 +20,10 @@ class MeetingEntity
 
     public static function make(array $payload): self
     {
-        $endsAt = !empty($payload['ends_at'])
+        $endsAt = ! empty($payload['ends_at'])
             ? new DateTime($payload['ends_at'])
             : null;
+
         return new self(
             id: $payload['id'],
             content: $payload['content'] ?? null,

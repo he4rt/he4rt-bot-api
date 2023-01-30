@@ -7,11 +7,10 @@ use Heart\Provider\Infrastructure\Providers\ProviderServiceProvider;
 
 class ProviderDomain extends DomainInterface
 {
-
     public function registerProvider(): array
     {
         return [
-            ProviderServiceProvider::class
+            ProviderServiceProvider::class,
         ];
     }
 }

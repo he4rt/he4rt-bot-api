@@ -27,7 +27,7 @@ class MeetingEloquentRepository implements MeetingRepository
         $meeting = $this->model->newQuery()->create([
             'meeting_type_id' => $dto->meetingTypeId,
             'admin_id' => $adminId,
-            'starts_at' => now()
+            'starts_at' => now(),
         ]);
 
         return MeetingEntity::make($meeting->toArray());

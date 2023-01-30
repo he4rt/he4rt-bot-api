@@ -14,7 +14,7 @@ class UserFactory extends Factory
         return [
             'id' => $this->faker->uuid(),
             'username' => $this->faker->userName(),
-            'is_donator' => false
+            'is_donator' => false,
         ];
     }
 }

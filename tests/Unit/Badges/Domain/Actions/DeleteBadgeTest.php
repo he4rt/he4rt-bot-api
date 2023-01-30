@@ -5,8 +5,8 @@ namespace Tests\Unit\Badges\Domain\Actions;
 use Heart\Badges\Domain\Actions\DeleteBadge;
 use Heart\Badges\Domain\Entities\BadgeEntity;
 use Heart\Badges\Domain\Repositories\BadgeRepository;
-use Mockery\MockInterface;
 use Mockery as m;
+use Mockery\MockInterface;
 use Tests\TestCase;
 use Tests\Unit\Badges\BadgeProviderTrait;
 

@@ -8,7 +8,6 @@ use Heart\User\Domain\Entities\ProfileEntity;
 use Heart\User\Domain\Entities\UserEntity;
 use Heart\User\Domain\Exceptions\UserEntityException;
 use Heart\User\Domain\Repositories\UserRepository;
-use Heart\User\Domain\ValueObjects\UserId;
 use Heart\User\Infrastructure\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -46,7 +45,7 @@ class UserEloquentRepository implements UserRepository
         $user = $this->query->where('username', $username)
             ->first();
 
-        if (!$user) {
+        if (! $user) {
             return null;
         }
 
@@ -62,7 +61,7 @@ class UserEloquentRepository implements UserRepository
                 'information',
                 'character.badges',
                 'address',
-                'character.pastSeasons'
+                'character.pastSeasons',
             ])->find($userId);
 
         return ProfileEntity::make($user->toArray());

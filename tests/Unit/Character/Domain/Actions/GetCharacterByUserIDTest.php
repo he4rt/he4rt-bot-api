@@ -2,12 +2,11 @@
 
 namespace Tests\Unit\Character\Domain\Actions;
 
-use Heart\Character\Domain\Actions\FindCharacter;
 use Heart\Character\Domain\Actions\GetCharacterByUserId;
 use Heart\Character\Domain\Entities\CharacterEntity;
 use Heart\Character\Domain\Repositories\CharacterRepository;
-use Mockery\MockInterface;
 use Mockery as m;
+use Mockery\MockInterface;
 use Tests\TestCase;
 use Tests\Unit\Character\CharacterProviderTrait;
 

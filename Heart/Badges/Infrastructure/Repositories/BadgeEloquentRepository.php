@@ -16,6 +16,7 @@ class BadgeEloquentRepository implements BadgeRepository
     public function create(NewBadgeDTO $badgeDTO): BadgeEntity
     {
         $model = $this->model->newQuery()->create($badgeDTO->jsonSerialize());
+
         return BadgeEntity::make($model->toArray());
     }
 

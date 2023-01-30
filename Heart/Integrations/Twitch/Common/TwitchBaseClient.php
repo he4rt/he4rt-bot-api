@@ -10,7 +10,6 @@ use Heart\Integrations\Twitch\Subscriber\Infrastructure\TwitchSubscribersClient;
 
 final class TwitchBaseClient implements TwitchService
 {
-
     public function __construct(private readonly Client $client)
     {
     }

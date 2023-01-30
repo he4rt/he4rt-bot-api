@@ -9,7 +9,7 @@ class LevelEntity
         726, 729, 858, 924, 990, 1056, 1122, 1188, 1254, 1320,
         1029, 1078, 1127, 1176, 1225, 1274, 1323, 1372, 1421, 1470,
         2046, 2112, 2178, 2244, 2310, 2376, 2442, 2508, 2574, 2640,
-        3649, 3738, 3827, 3916, 4005, 4094, 4183, 4272, 4361, 4450
+        3649, 3738, 3827, 3916, 4005, 4094, 4183, 4272, 4361, 4450,
     ];
 
     private int $level = 1;
@@ -25,7 +25,6 @@ class LevelEntity
         $this->setCurrentLevel();
     }
 
-
     private function setCurrentLevel(): void
     {
         $experienceNeeded = 0;
@@ -33,6 +32,7 @@ class LevelEntity
             $experienceNeeded += $experience;
             if ($this->experience <= $experienceNeeded) {
                 $this->level = $level;
+
                 return;
             }
         }
@@ -52,7 +52,7 @@ class LevelEntity
         $experienceObtained = ($messagePound / ($this->level * $memberStatusMultiplier) * 20);
         $this->addExperience($experienceObtained);
 
-        return (int)$experienceObtained;
+        return (int) $experienceObtained;
     }
 
     private function getLevelExpoent(): float

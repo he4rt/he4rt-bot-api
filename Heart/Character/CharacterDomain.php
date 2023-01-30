@@ -8,7 +8,6 @@ use Heart\Core\Contracts\DomainInterface;
 
 class CharacterDomain extends DomainInterface
 {
-
     public function registerProvider(): array
     {
         return [

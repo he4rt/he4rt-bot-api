@@ -6,9 +6,9 @@ use Heart\Badges\Application\CreateBadge;
 use Heart\Badges\Domain\Actions\PersistBadge;
 use Heart\Badges\Domain\DTOs\NewBadgeDTO;
 use Heart\Badges\Domain\Entities\BadgeEntity;
-use Mockery\MockInterface;
-use Mockery as m;
 use Mockery;
+use Mockery as m;
+use Mockery\MockInterface;
 use Tests\TestCase;
 use Tests\Unit\Badges\BadgeProviderTrait;
 
@@ -52,12 +52,12 @@ class CreateBadgeTest extends TestCase
     private function dataProvider(): array
     {
         return [
-            'provider'    => 'canhassi-provider',
-            'name'        => 'canhassi',
+            'provider' => 'canhassi-provider',
+            'name' => 'canhassi',
             'description' => 'é o canhas, esqueça tudo!',
-            'image_url'    => 'https://canhassi.tech',
-            'redeem_code'  => 'he4rtDevelopers',
-            'active'      => true
+            'image_url' => 'https://canhassi.tech',
+            'redeem_code' => 'he4rtDevelopers',
+            'active' => true,
         ];
     }
 }

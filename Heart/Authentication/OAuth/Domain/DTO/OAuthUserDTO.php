@@ -6,17 +6,16 @@ abstract class OAuthUserDTO
 {
     public function __construct(
         public OAuthAccessDTO $credentials,
-        public string  $providerId,
-        public string  $providerName,
-        public string  $username,
-        public string  $name,
+        public string $providerId,
+        public string $providerName,
+        public string $username,
+        public string $name,
         public ?string $email,
         public ?string $avatarUrl,
-    )
-    {
+    ) {
     }
 
-    public abstract static function make(OAuthAccessDTO $credentials, array $payload): self;
+    abstract public static function make(OAuthAccessDTO $credentials, array $payload): self;
 
     public function toDatabase(): array
     {

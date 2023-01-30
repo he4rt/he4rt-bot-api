@@ -8,7 +8,6 @@ class DeleteBadge
 {
     public function __construct(private readonly BadgeRepository $badgeRepository)
     {
-
     }
 
     public function handle(string $badgeId): void

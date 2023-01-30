@@ -6,8 +6,8 @@ use Heart\Character\Domain\Actions\FindCharacter;
 use Heart\Character\Domain\Actions\IncrementExperience;
 use Heart\Character\Domain\Entities\CharacterEntity;
 use Heart\Character\Domain\Repositories\CharacterRepository;
-use Mockery\MockInterface;
 use Mockery as m;
+use Mockery\MockInterface;
 use Tests\TestCase;
 use Tests\Unit\Character\CharacterProviderTrait;
 
@@ -51,6 +51,6 @@ class IncrementExperienceTest extends TestCase
 
         $test = new IncrementExperience($this->characterRepositoryStub, $this->findCharacterStub);
 
-        $test->handle($this->characterEntity->id, "CONGRATS!!");
+        $test->handle($this->characterEntity->id, 'CONGRATS!!');
     }
 }

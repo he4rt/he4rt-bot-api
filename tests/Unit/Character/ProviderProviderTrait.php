@@ -14,7 +14,7 @@ trait ProviderProviderTrait
             'provider' => 'he4rt',
             'provider_id' => 'provider-id',
             'email' => 'canhas@gmail.com',
-            ...$fields
+            ...$fields,
         ];
     }
 

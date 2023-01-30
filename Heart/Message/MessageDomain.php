@@ -8,12 +8,11 @@ use Heart\Message\Infrastructure\Providers\MessageServiceProvider;
 
 class MessageDomain extends DomainInterface
 {
-
     public function registerProvider(): array
     {
         return [
             MessageServiceProvider::class,
-            MessageRouteProvider::class
+            MessageRouteProvider::class,
         ];
     }
 }

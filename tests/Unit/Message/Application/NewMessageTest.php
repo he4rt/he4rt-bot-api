@@ -86,8 +86,8 @@ class NewMessageTest extends TestCase
                     'channel_id' => '31231267312',
                     'content' => 'deixa o sub',
                     'sent_at' => '2023-01-18 22:36:32',
-                ]
-            ]
+                ],
+            ],
         ];
     }
 }

@@ -4,8 +4,6 @@ namespace Heart\Feedback\Application;
 
 use Heart\Feedback\Domain\Actions\PersistFeedbackReview;
 use Heart\Feedback\Domain\DTOs\FeedbackReviewDTO;
-use Heart\Feedback\Domain\Enums\ReviewTypeEnum;
-use Heart\Feedback\Domain\Repositories\FeedbackRepository;
 use Heart\Provider\Application\FindProvider;
 use Heart\Provider\Domain\Enums\ProviderEnum;
 

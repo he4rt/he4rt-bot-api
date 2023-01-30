@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('meeting_participants')) {
+        if (! Schema::hasTable('meeting_participants')) {
             Schema::create('meeting_participants', function (Blueprint $table) {
                 $table->foreignUuid('meeting_id')->constrained('meetings');
                 $table->foreignUuid('user_id')->constrained('users');

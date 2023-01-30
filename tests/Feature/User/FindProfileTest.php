@@ -32,10 +32,10 @@ class FindProfileTest extends TestCase
         $character = $user->character;
         $character->badges()->attach($badge->id, ['claimed_at' => now()]);
 
-        $response = $this
+        $this
             ->actingAsAdmin()
-            ->getJson(route('users.profile', ['value' => $user->username]));
-        $response->assertStatus(Response::HTTP_OK)
+            ->getJson(route('users.profile', ['value' => $user->username]))
+            ->assertStatus(Response::HTTP_OK)
             ->assertJsonStructure([
                 'id',
                 'username',
@@ -49,18 +49,18 @@ class FindProfileTest extends TestCase
                 'connectedProviders' => [
                     0 => [
                         'provider',
-                        'messages_count'
-                    ]
+                        'messages_count',
+                    ],
                 ],
                 'badges',
                 'address' => [
-                    'country'
+                    'country',
                 ],
                 'pastSeasons' => [
                     0 => [
-                        'season_id'
-                    ]
-                ]
+                        'season_id',
+                    ],
+                ],
             ]);
     }
 
@@ -77,10 +77,10 @@ class FindProfileTest extends TestCase
         $character = $user->character;
         $character->badges()->attach($badge->id, ['claimed_at' => now()]);
 
-        $response = $this
+        $this
             ->actingAsAdmin()
-            ->getJson(route('users.profile', ['value' => $user->providers[0]->provider_id]));
-        $response->assertStatus(Response::HTTP_OK)
+            ->getJson(route('users.profile', ['value' => $user->providers[0]->provider_id]))
+            ->assertStatus(Response::HTTP_OK)
             ->assertJsonStructure([
                 'id',
                 'username',
@@ -94,18 +94,18 @@ class FindProfileTest extends TestCase
                 'connectedProviders' => [
                     0 => [
                         'provider',
-                        'messages_count'
-                    ]
+                        'messages_count',
+                    ],
                 ],
                 'badges',
                 'address' => [
-                    'country'
+                    'country',
                 ],
                 'pastSeasons' => [
                     0 => [
-                        'season_id'
-                    ]
-                ]
+                        'season_id',
+                    ],
+                ],
             ]);
     }
 }

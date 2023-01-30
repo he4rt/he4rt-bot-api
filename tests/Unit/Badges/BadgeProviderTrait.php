@@ -14,7 +14,7 @@ trait BadgeProviderTrait
             'description' => 'é o canhas, esqueça tudo!',
             'image_url' => 'vaicaralho.jpg',
             'redeem_code' => 'he4rtDevelopers',
-            'active' => true
+            'active' => true,
         ];
     }
 

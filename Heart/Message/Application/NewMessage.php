@@ -56,7 +56,7 @@ class NewMessage
         ProviderEntity $providerEntity,
         NewMessageDTO $messageDTO
     ): void {
-        if (!Cache::tags(['meetings'])->has('current-meeting')) {
+        if (! Cache::tags(['meetings'])->has('current-meeting')) {
             return;
         }
         $userAttendedCacheKey = sprintf('meeting-%s-attended', $providerEntity->userId);

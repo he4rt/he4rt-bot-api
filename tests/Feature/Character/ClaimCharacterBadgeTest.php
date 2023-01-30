@@ -28,7 +28,7 @@ class ClaimCharacterBadgeTest extends TestCase
 
         $response = $this->postJson(route('characters.claimBadge', [
             'provider' => $provider->provider,
-            'providerId' => $provider->provider_id
+            'providerId' => $provider->provider_id,
         ]), ['redeem_code' => $badge->redeem_code]);
 
         $response->assertStatus(Response::HTTP_NO_CONTENT);
@@ -36,7 +36,7 @@ class ClaimCharacterBadgeTest extends TestCase
         $this->assertDatabaseHas('characters_badges', [
             'character_id' => $user->character->id,
             'badge_id' => $badge->id,
-            'claimed_at' => now()
+            'claimed_at' => now(),
         ]);
     }
 }

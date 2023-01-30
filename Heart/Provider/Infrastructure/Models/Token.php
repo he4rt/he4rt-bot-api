@@ -25,7 +25,7 @@ class Token extends Model
         'provider_id',
         'access_token',
         'refresh_token',
-        'expires_in'
+        'expires_in',
     ];
 
     // TODO: expires token should have an human interface and auto refresh

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Heart\Core\Contracts;
-
 
 abstract class DomainInterface
 {
@@ -18,5 +16,5 @@ abstract class DomainInterface
         return $this->disabled;
     }
 
-    public abstract function registerProvider(): array;
+    abstract public function registerProvider(): array;
 }

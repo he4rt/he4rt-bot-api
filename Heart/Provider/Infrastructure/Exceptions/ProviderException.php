@@ -14,6 +14,7 @@ class ProviderException extends Exception
             $provider,
             $providerId
         );
+
         return new self($message, Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 }

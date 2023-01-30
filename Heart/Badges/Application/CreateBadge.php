@@ -15,6 +15,7 @@ class CreateBadge
     public function handle(array $payload): BadgeEntity
     {
         $newBadgeDTO = NewBadgeDTO::make($payload);
+
         return $this->persistBadge->handle($newBadgeDTO);
     }
 }

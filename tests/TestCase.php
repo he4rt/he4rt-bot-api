@@ -11,7 +11,7 @@ abstract class TestCase extends BaseTestCase
     protected function actingAsAdmin(): self
     {
         return $this->withHeaders([
-            'X-He4rt-Authorization' => config('he4rt.server_key')
+            'X-He4rt-Authorization' => config('he4rt.server_key'),
         ]);
     }
 }

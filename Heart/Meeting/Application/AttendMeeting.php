@@ -16,7 +16,6 @@ class AttendMeeting
 
     public function handle(string $userId): void
     {
-
         $meetingId = $this->getMeetingId();
 
         $this->persistAttendMeeting->handle($meetingId, $userId);
@@ -26,7 +25,7 @@ class AttendMeeting
 
     public function getMeetingId(): string
     {
-        if (!Cache::tags(['meetings'])->has('current-meeting')) {
+        if (! Cache::tags(['meetings'])->has('current-meeting')) {
             throw MeetingException::nonexistentMeeting();
         }
 

@@ -4,7 +4,6 @@ namespace Heart\Provider\Domain\Repositories;
 
 use Heart\Authentication\OAuth\Domain\DTO\OAuthUserDTO;
 use Heart\Provider\Domain\Entities\ProviderEntity;
-use Heart\Provider\Infrastructure\Models\Provider;
 
 interface ProviderRepository
 {

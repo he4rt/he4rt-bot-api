@@ -12,12 +12,11 @@ use Kingdom\Authentication\OAuth\Domain\Actions\GetOAuthUser;
 final class OAuthService
 {
     public function __construct(
-        private GetOAuthUser          $getUserAction,
-        private ProviderRepository    $providerRepository,
-        private TokenRepository       $tokenRepository,
+        private GetOAuthUser $getUserAction,
+        private ProviderRepository $providerRepository,
+        private TokenRepository $tokenRepository,
         private SubscribersRepository $subscribersRepository
-    )
-    {
+    ) {
     }
 
     public function handle(string $provider, string $code)
@@ -27,6 +26,7 @@ final class OAuthService
         } catch (ClientException $e) {
             if (str_contains($e->getMessage(), 'Invalid authorization code')) {
                 $OAuthProviderEnum = OAuthProviderEnum::from($provider);
+
                 return redirect()->to($OAuthProviderEnum->getProvider()->redirectUrl());
             }
 
@@ -38,6 +38,7 @@ final class OAuthService
         if ($persistedProvider) {
             $this->tokenRepository->create($persistedProvider->getKey(), $providerUser->credentials);
             Auth::login($persistedProvider->subscriber);
+
             return;
         }
 

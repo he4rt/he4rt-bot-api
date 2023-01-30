@@ -7,8 +7,8 @@ use Heart\User\Domain\Entities\UserEntity;
 use Heart\User\Domain\Repositories\UserRepository;
 use Mockery as m;
 use Mockery\MockInterface;
-use Tests\Unit\User\UserProviderTrait;
 use Tests\TestCase;
+use Tests\Unit\User\UserProviderTrait;
 
 class GetUserTest extends TestCase
 {

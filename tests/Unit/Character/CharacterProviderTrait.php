@@ -14,7 +14,7 @@ trait CharacterProviderTrait
             'experience' => 500,
             'reputation' => 1,
             'daily_bonus_claimed_at' => now()->format('Y-m-d H:i:s'),
-            ...$fields
+            ...$fields,
         ];
     }
 
@@ -22,5 +22,4 @@ trait CharacterProviderTrait
     {
         return CharacterEntity::make($this->validCharacterPayload());
     }
-
 }

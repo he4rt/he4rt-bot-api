@@ -26,15 +26,15 @@ class TwitchOAuthClient implements TwitchOAuthService
 
     public function auth(string $code): TwitchOAuthAccessDTO
     {
-        $uri = "https://id.twitch.tv/oauth2/token";
+        $uri = 'https://id.twitch.tv/oauth2/token';
         $response = $this->client->request('POST', $uri, [
             'form_params' => [
                 'client_id' => config('kingdom.integrations.twitch.client_id'),
                 'client_secret' => config('kingdom.integrations.twitch.client_secret'),
                 'grant_type' => 'authorization_code',
                 'code' => $code,
-                'redirect_uri' => config('kingdom.integrations.twitch.redirect_uri')
-            ]
+                'redirect_uri' => config('kingdom.integrations.twitch.redirect_uri'),
+            ],
         ]);
 
         return TwitchOAuthAccessDTO::make(
@@ -44,15 +44,16 @@ class TwitchOAuthClient implements TwitchOAuthService
 
     public function getAuthenticatedUser(OAuthAccessDTO $credentials): TwitchOAuthDTO
     {
-        $uri = "https://api.twitch.tv/helix/users";
+        $uri = 'https://api.twitch.tv/helix/users';
         $response = $this->client->request('GET', $uri, [
             'headers' => [
                 'Client-ID' => config('kingdom.integrations.twitch.client_id'),
-                'Authorization' => 'Bearer ' . $credentials->accessToken,
-            ]
+                'Authorization' => 'Bearer '.$credentials->accessToken,
+            ],
         ]);
 
         $payload = json_decode($response->getBody()->getContents(), true);
+
         return TwitchOAuthDTO::make($credentials, $payload);
     }
 }

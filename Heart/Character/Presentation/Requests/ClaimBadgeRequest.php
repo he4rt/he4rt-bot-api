@@ -14,7 +14,7 @@ class ClaimBadgeRequest extends FormRequest
     public function rules()
     {
         return [
-            'redeem_code' => ['required', 'string']
+            'redeem_code' => ['required', 'string'],
         ];
     }
 }

@@ -8,12 +8,11 @@ use Heart\Feedback\Infrastructure\Providers\FeedbackServiceProvider;
 
 class FeedbackDomain extends DomainInterface
 {
-
     public function registerProvider(): array
     {
         return [
             FeedbackServiceProvider::class,
-            FeedbackRouteProvider::class
+            FeedbackRouteProvider::class,
         ];
     }
 }

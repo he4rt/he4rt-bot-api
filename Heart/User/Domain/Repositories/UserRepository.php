@@ -6,7 +6,6 @@ use Heart\Shared\Domain\Paginator;
 use Heart\User\Domain\Entities\ProfileEntity;
 use Heart\User\Domain\Entities\UserEntity;
 use Heart\User\Domain\Exceptions\UserEntityException;
-use Heart\User\Domain\ValueObjects\UserId;
 
 interface UserRepository
 {

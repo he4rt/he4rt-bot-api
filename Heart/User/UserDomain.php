@@ -12,7 +12,7 @@ class UserDomain extends DomainInterface
     {
         return [
             UserServiceProvider::class,
-            UserRouteProvider::class
+            UserRouteProvider::class,
         ];
     }
 }

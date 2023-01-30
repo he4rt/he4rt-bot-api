@@ -2,9 +2,7 @@
 
 namespace Heart\Message\Domain\DTO;
 
-use DateTime;
 use Heart\Provider\Domain\Enums\ProviderEnum;
-use Heart\Provider\Infrastructure\Factories\ProviderFactory;
 
 class NewMessageDTO
 {

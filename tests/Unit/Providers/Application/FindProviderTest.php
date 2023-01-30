@@ -22,7 +22,6 @@ class FindProviderTest extends TestCase
             ->with($cacheKey, TTL::fromDays(2), m::type('closure'))
             ->andReturn(new ProviderEntity(1, 1, 1, 1, '1'));
 
-
         $action = new FindProvider($getProviderStub);
 
         $result = $action->handle('twitch', '123');

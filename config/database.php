@@ -66,7 +66,7 @@ return [
                     PDO::MYSQL_ATTR_SSL_KEY => '/certs/client-key.pem',
                     PDO::MYSQL_ATTR_SSL_CERT => '/certs/client-cert.pem',
                     PDO::MYSQL_ATTR_SSL_CA => '/certs/ca.pem',
-                ] : []
+                ] : [],
         ],
         'testing' => [
             'driver' => 'mysql',

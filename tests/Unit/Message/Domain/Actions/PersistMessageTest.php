@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Message\Domain\Actions;
 
-use Dflydev\DotAccessData\Data;
 use Heart\Message\Domain\Actions\PersistMessage;
 use Heart\Message\Domain\DTO\NewMessageDTO;
 use Heart\Message\Domain\Entities\MessageEntity;
@@ -32,7 +31,7 @@ class PersistMessageTest extends TestCase
             $this->messageEntity->providerMessageId,
             $this->messageEntity->channelId,
             $this->messageEntity->content,
-            "2023-01-24" //sentAt in string
+            '2023-01-24' //sentAt in string
         );
     }
 
@@ -46,12 +45,12 @@ class PersistMessageTest extends TestCase
     {
         $this->messageRepositoryStub
             ->shouldReceive('create')
-            ->with($this->messageDTO, "canhassi", $this->messageEntity->obtainedExperience)
+            ->with($this->messageDTO, 'canhassi', $this->messageEntity->obtainedExperience)
             ->once()
             ->andReturn($this->messageEntity);
 
         $test = new PersistMessage($this->messageRepositoryStub);
 
-        $test->handle($this->messageDTO, $this->messageEntity->obtainedExperience, "canhassi");
+        $test->handle($this->messageDTO, $this->messageEntity->obtainedExperience, 'canhassi');
     }
 }

@@ -17,7 +17,7 @@ class ProviderEloquentRepository implements ProviderRepository
             ->where('provider_id', $providerId)
             ->first();
 
-        if (!$model) {
+        if (! $model) {
             throw ProviderException::notFound($provider, $providerId);
         }
 
@@ -28,7 +28,7 @@ class ProviderEloquentRepository implements ProviderRepository
     {
         return Provider::create([
             'subscriber_id' => $subscriberId,
-            ...$user->toDatabase()
+            ...$user->toDatabase(),
         ]);
     }
 

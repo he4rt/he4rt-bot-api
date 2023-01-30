@@ -12,13 +12,14 @@ class BotAuthentication
     {
         $apiKey = $request->header('X-He4rt-Authorization');
 
-        if (!$apiKey) {
+        if (! $apiKey) {
             return response()->json(['error' => 'Chave não encontrada'], Response::HTTP_UNAUTHORIZED);
         }
 
         if ($apiKey !== config('he4rt.server_key')) {
             return response()->json(['error' => 'Chave incorreta'], Response::HTTP_UNAUTHORIZED);
         }
+
         return $next($request);
     }
 }

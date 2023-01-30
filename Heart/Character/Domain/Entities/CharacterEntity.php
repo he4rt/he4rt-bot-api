@@ -7,9 +7,13 @@ use JsonSerializable;
 class CharacterEntity implements JsonSerializable
 {
     public string $id;
+
     public string $userId;
+
     public LevelEntity $level;
+
     public DailyRewardEntity $dailyReward;
+
     public ReputationEntity $reputation;
 
     public function __construct(
