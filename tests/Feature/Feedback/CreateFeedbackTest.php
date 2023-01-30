@@ -1,9 +1,8 @@
 <?php
 
-namespace Feedback;
+namespace Tests\Feature\Feedback;
 
 use Heart\Provider\Infrastructure\Models\Provider;
-use Heart\User\Infrastructure\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;

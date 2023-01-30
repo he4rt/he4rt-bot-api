@@ -2,6 +2,7 @@
 
 namespace Heart\Feedback\Infrastructure\Repositories;
 
+use Heart\Feedback\Domain\DTOs\FeedbackReviewDTO;
 use Heart\Feedback\Domain\DTOs\NewFeedbackDTO;
 use Heart\Feedback\Domain\Entities\FeedbackEntity;
 use Heart\Feedback\Domain\Repositories\FeedbackRepository;
@@ -18,5 +19,16 @@ class FeedbackEloquentRepository implements FeedbackRepository
         $model = $this->model->newQuery()->create($dto->jsonSerialize());
 
         return FeedbackEntity::make($model->toArray());
+    }
+
+    public function reviewFeedback(FeedbackReviewDTO $dto)
+    {
+        return $this->model->newQuery()
+            ->find($dto->feedbackId)
+            ->review()
+            ->create([
+                ...$dto->jsonSerialize(),
+                'received_at' => now(),
+            ]);
     }
 }
