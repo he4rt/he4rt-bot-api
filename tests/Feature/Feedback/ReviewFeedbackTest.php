@@ -2,16 +2,15 @@
 
 namespace Tests\Feature\Feedback;
 
-use Carbon\Carbon;
 use Heart\Feedback\Infrastructure\Models\Feedback;
 use Heart\Provider\Infrastructure\Models\Provider;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class ReviewFeedbackTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     /** @dataProvider dataProvider */
     public function testCanHandleFeedback(string $action, array $payload, array $expected): void

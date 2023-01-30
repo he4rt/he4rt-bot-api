@@ -6,14 +6,13 @@ use Heart\Character\Infrastructure\Models\Character;
 use Heart\Meeting\Infrastructure\Models\Meeting;
 use Heart\Provider\Infrastructure\Models\Provider;
 use Heart\User\Infrastructure\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Cache;
-use Mockery as m;
 use Tests\TestCase;
 
 class NewMessageTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     public function testCanCreateAMessage(): void
     {

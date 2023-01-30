@@ -4,14 +4,14 @@ namespace Tests\Feature\Meeting;
 
 use Heart\Meeting\Infrastructure\Models\MeetingType;
 use Heart\Provider\Infrastructure\Models\Provider;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class StartMeetingTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     public function testBotCanStartNewMeeting(): void
     {

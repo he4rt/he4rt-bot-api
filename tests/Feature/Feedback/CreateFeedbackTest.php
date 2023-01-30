@@ -3,13 +3,13 @@
 namespace Tests\Feature\Feedback;
 
 use Heart\Provider\Infrastructure\Models\Provider;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class CreateFeedbackTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     public function testCanCreate()
     {

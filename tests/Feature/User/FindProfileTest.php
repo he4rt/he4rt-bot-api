@@ -3,7 +3,6 @@
 namespace Tests\Feature\User;
 
 use Heart\Badges\Infrastructure\Model\Badge;
-use Heart\Character\Domain\Entities\CharacterEntity;
 use Heart\Character\Infrastructure\Models\Character;
 use Heart\Character\Infrastructure\Models\PastSeason;
 use Heart\Message\Infrastructure\Models\Message;
@@ -11,13 +10,13 @@ use Heart\Provider\Infrastructure\Models\Provider;
 use Heart\User\Infrastructure\Models\Address;
 use Heart\User\Infrastructure\Models\Information;
 use Heart\User\Infrastructure\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class FindProfileTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     public function testCanFindProfile()
     {
