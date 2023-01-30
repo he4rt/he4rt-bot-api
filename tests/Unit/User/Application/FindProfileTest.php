@@ -88,7 +88,7 @@ class FindProfileTest extends TestCase
 
         $this->getProfileStub
             ->shouldReceive('handle')
-            ->with($this->providerEntity->id)
+            ->with($this->providerEntity->userId)
             ->once()
             ->andReturn($this->profileEntity);
 

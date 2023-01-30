@@ -19,7 +19,7 @@ class FindProfileTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function testCanFindProfile()
+    public function testCanFindProfileWithUsername(): void
     {
         $user = User::factory()
             ->has(Character::factory()->has(PastSeason::factory()), 'character')
@@ -36,6 +36,51 @@ class FindProfileTest extends TestCase
         $response = $this
             ->actingAsAdmin()
             ->getJson(route('users.profile', ['value' => $user->username]));
+        $response->assertStatus(Response::HTTP_OK)
+            ->assertJsonStructure([
+                'id',
+                'username',
+                'character' => [
+                    'user_id',
+                    'reputation',
+                    'level',
+                    'experience',
+                    'daily_bonus_claimed_at',
+                ],
+                'connectedProviders' => [
+                    0 => [
+                        'provider',
+                        'messages_count'
+                    ]
+                ],
+                'badges',
+                'address' => [
+                    'country'
+                ],
+                'pastSeasons' => [
+                    0 => [
+                        'season_id'
+                    ]
+                ]
+            ]);
+    }
+
+    public function testCanFindProfileWithProviderId(): void
+    {
+        $user = User::factory()
+            ->has(Character::factory()->has(PastSeason::factory()), 'character')
+            ->has(Address::factory(), 'address')
+            ->has(Information::factory(), 'information')
+            ->has(Provider::factory()->has(Message::factory()->count(2)))
+            ->create();
+        $badge = Badge::factory()->create();
+
+        $character = $user->character;
+        $character->badges()->attach($badge->id, ['claimed_at' => now()]);
+
+        $response = $this
+            ->actingAsAdmin()
+            ->getJson(route('users.profile', ['value' => $user->providers[0]->provider_id]));
         $response->assertStatus(Response::HTTP_OK)
             ->assertJsonStructure([
                 'id',
