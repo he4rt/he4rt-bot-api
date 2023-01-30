@@ -11,8 +11,8 @@ class PersistFeedbackReview
     {
     }
 
-    public function handle(FeedbackReviewDTO $feedbackReviewDTO)
+    public function handle(FeedbackReviewDTO $feedbackReviewDTO): void
     {
-        return $this->feedbackRepository->reviewFeedback($feedbackReviewDTO);
+        $this->feedbackRepository->reviewFeedback($feedbackReviewDTO);
     }
 }

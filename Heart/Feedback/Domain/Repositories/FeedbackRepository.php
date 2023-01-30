@@ -10,7 +10,7 @@ interface FeedbackRepository
 {
     public function create(NewFeedbackDTO $dto): FeedbackEntity;
 
-    public function reviewFeedback(FeedbackReviewDTO $dto);
+    public function reviewFeedback(FeedbackReviewDTO $dto): void;
 
     public function findById(string $id): FeedbackEntity;
 }

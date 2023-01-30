@@ -35,9 +35,9 @@ class FeedbackEloquentRepository implements FeedbackRepository
         return FeedbackEntity::make($model->toArray());
     }
 
-    public function reviewFeedback(FeedbackReviewDTO $dto)
+    public function reviewFeedback(FeedbackReviewDTO $dto): void
     {
-        return $this->model->newQuery()
+        $this->model->newQuery()
             ->find($dto->feedbackId)
             ->review()
             ->create([

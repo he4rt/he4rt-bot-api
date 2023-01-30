@@ -11,7 +11,7 @@ class CreateFeedbackTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testCanCreate()
+    public function testCanCreate(): void
     {
         $providerSender = Provider::factory()->create(['provider' => 'discord']);
         $providerTarget = Provider::factory()->create(['provider' => 'discord']);
