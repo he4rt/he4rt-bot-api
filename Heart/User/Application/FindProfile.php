@@ -28,7 +28,7 @@ class FindProfile
         $providerEntity = $this->providerRepository->findByProviderId($value);
 
         if ($providerEntity) {
-            return $this->profile->handle($providerEntity->id);
+            return $this->profile->handle($providerEntity->userId);
         }
 
         throw ProfileException::notFound();

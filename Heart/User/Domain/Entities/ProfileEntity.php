@@ -23,7 +23,6 @@ class ProfileEntity implements JsonSerializable
 
     public static function make(array $payload): self
     {
-
         $badges = BadgeCollection::make($payload['character']['badges']);
         $pastSeasons = PastSeasonCollection::make($payload['character']['past_seasons']);
 

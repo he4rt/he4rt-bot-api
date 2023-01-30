@@ -24,7 +24,7 @@ class ProviderEloquentRepository implements ProviderRepository
         return ProviderEntity::make($model->toArray());
     }
 
-    public function create(string $subscriberId, OAuthUserDTO $user): Provider
+    public function create(string $subscriberId, OAuthUserDTO $user): ProviderEntity
     {
         return Provider::create([
             'subscriber_id' => $subscriberId,
@@ -32,8 +32,10 @@ class ProviderEloquentRepository implements ProviderRepository
         ]);
     }
 
-    public function findByProviderId(string $providerId): ?Provider
+    public function findByProviderId(string $providerId): ?ProviderEntity
     {
-        return Provider::find($providerId);
+        $model = Provider::where('provider_id', $providerId)->first();
+
+        return ProviderEntity::make($model->toArray());
     }
 }

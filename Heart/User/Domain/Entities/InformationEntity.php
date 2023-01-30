@@ -33,6 +33,7 @@ class InformationEntity implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
+            'id' => $this->id,
             'user_id' => $this->userId,
             'name' => $this->name,
             'nickname' => $this->nickname,
