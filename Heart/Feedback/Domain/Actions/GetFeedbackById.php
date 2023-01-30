@@ -2,6 +2,9 @@
 
 namespace Heart\Feedback\Domain\Actions;
 
+use Heart\Feedback\Domain\Entities\FeedbackEntity;
+use Heart\Feedback\Domain\Repositories\FeedbackRepository;
+
 class GetFeedbackById
 {
     private FeedbackRepository $repository;
@@ -11,17 +14,8 @@ class GetFeedbackById
         $this->repository = $repository;
     }
 
-    /**
-     * @param int $id
-     * @return Model
-     * @throws FeedbackException
-     */
-    public function handle(int $id): Model
+    public function handle(string $id): FeedbackEntity
     {
-        try {
-            return $this->repository->getById($id);
-        } catch (Exception $e) {
-            throw FeedbackException::idNotFound($id);
-        }
+        return $this->repository->findById($id);
     }
 }

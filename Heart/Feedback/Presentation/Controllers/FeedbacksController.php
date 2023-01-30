@@ -3,25 +3,27 @@
 namespace Heart\Feedback\Presentation\Controllers;
 
 use Heart\Feedback\Application\ReviewFeedback;
-use Heart\Feedback\Domain\Actions\ApproveFeedback;
 use Heart\Feedback\Domain\Actions\CreateFeedback;
-use Heart\Feedback\Domain\Actions\DeclineFeedback;
-use Heart\Feedback\Domain\Enums\ReviewTypeEnum;
-use Heart\Feedback\Presentation\Requests\FeedbackReviewRequest;
+use Heart\Feedback\Domain\Actions\GetFeedbackById;
 use Heart\Feedback\Presentation\Requests\CreateFeedbackRequest;
-use Heart\Feedback\Presentation\Requests\DeclineFeedbackRequest;
+use Heart\Feedback\Presentation\Requests\FeedbackReviewRequest;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class FeedbacksController
 {
-    public function create(CreateFeedbackRequest $request, CreateFeedback $create): JsonResponse
+    public function getFeedback(
+        string $feedbackId,
+        GetFeedbackById $getFeedbackById,
+    ): JsonResponse {
+        return response()->json(
+            $getFeedbackById->handle($feedbackId)
+        );
+    }
+
+    public function postFeedback(CreateFeedbackRequest $request, CreateFeedback $create): JsonResponse
     {
-        try {
-            return response()->json($create->handle($request->validated()), Response::HTTP_CREATED);
-        } catch (UserException $e) {
-            return response()->json(['error' => $e->getMessage()], $e->getCode());
-        }
+        return response()->json($create->handle($request->validated()), Response::HTTP_CREATED);
     }
 
     public function postReview(
