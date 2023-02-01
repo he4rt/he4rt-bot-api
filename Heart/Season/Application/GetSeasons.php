@@ -2,6 +2,7 @@
 
 namespace Heart\Season\Application;
 
+use Heart\Season\Domain\Collections\SeasonCollection;
 use Heart\Season\Domain\Repositories\SeasonRepository;
 
 class GetSeasons
@@ -10,7 +11,7 @@ class GetSeasons
     {
     }
 
-    public function handle(): array
+    public function handle(): SeasonCollection
     {
         return $this->repository->getAll();
     }

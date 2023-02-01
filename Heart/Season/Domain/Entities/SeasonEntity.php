@@ -15,7 +15,7 @@ class SeasonEntity
         public int $meetingCount,
         public int $badgesCount,
         public DateTime $startAt,
-        public DateTime $endAt,
+        public ?DateTime $endAt,
     ) {
     }
 

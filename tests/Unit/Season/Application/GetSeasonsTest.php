@@ -3,6 +3,7 @@
 namespace Tests\Unit\Season\Application;
 
 use Heart\Season\Application\GetSeasons;
+use Heart\Season\Domain\Collections\SeasonCollection;
 use Heart\Season\Domain\Entities\SeasonEntity;
 use Heart\Season\Domain\Repositories\SeasonRepository;
 use Mockery\MockInterface;
@@ -36,7 +37,7 @@ class GetSeasonsTest extends TestCase
         $this->seasonRepositoryStub
             ->shouldReceive('getAll')
             ->once()
-            ->andReturn(array());
+            ->andReturn(new SeasonCollection());
 
         $test = new GetSeasons($this->seasonRepositoryStub);
 

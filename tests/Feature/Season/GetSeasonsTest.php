@@ -18,18 +18,16 @@ class GetSeasonsTest extends TestCase
 
         $response->assertOk();
         $response->assertJsonStructure([
-            'seasons' => [
-                [
-                    'id',
-                    'name',
-                    'description',
-                    'messagesCount',
-                    'participantsCount',
-                    'meetingCount',
-                    'badgesCount',
-                    'startAt',
-                    'endAt',
-                ]
+            [
+                'id',
+                'name',
+                'description',
+                'messagesCount',
+                'participantsCount',
+                'meetingCount',
+                'badgesCount',
+                'startAt',
+                'endAt',
             ]
         ]);
     }

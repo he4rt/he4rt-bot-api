@@ -11,7 +11,7 @@ class SeasonsController extends Controller
 {
     public function getSeasons(GetSeasons $getSeasons): JsonResponse
     {
-        return response()->json(['seasons' => $getSeasons->handle()]);
+        return response()->json($getSeasons->handle());
     }
 
     public function getCurrent(GetCurrentSeason $currentSeason): JsonResponse

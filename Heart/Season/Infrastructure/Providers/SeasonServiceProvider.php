@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
 
 class SeasonServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->app->bind(SeasonRepository::class, SeasonEloquentRepository::class);
     }

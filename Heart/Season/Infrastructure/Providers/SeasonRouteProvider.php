@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 class SeasonRouteProvider extends RouteServiceProvider
 {
-    public function map()
+    public function map(): void
     {
         Route::prefix('season')->group(function () {
             Route::get('/v2/seasons', [SeasonsController::class, 'getSeasons'])->name('get-seasons');

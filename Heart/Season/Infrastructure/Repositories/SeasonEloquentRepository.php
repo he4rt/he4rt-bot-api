@@ -12,17 +12,16 @@ class SeasonEloquentRepository implements SeasonRepository
 {
     private Builder $query;
 
-    public function __construct(private readonly Season $model, private readonly SeasonCollection $seasonCollection)
+    public function __construct(private readonly Season $model)
     {
         $this->query = $this->model->newQuery();
     }
 
-    public function getAll(): array
+    public function getAll(): SeasonCollection
     {
         $collection = $this->query->get();
 
-        return $this->seasonCollection::make($collection->toArray())
-            ->jsonSerialize();
+        return SeasonCollection::make($collection->toArray());
     }
 
     public function getCurrent(): SeasonEntity
