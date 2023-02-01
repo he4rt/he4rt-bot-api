@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('feedbacks', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('sender_id')->constrained('users');
-            $table->foreignUuid('target_id')->constrained('users');
+            $table->foreignUuid('sender_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignUuid('target_id')->constrained('users')->cascadeOnDelete();
             $table->string('type');
             $table->text('message');
             $table->timestamps();

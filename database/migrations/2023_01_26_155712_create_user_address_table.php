@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('user_address', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('user_id')->constrained('users');
+            $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('country', 4)->nullable();
             $table->string('state', 4)->nullable();
             $table->string('city')->nullable();
