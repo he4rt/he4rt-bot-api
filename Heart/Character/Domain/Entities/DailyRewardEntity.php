@@ -12,7 +12,7 @@ class DailyRewardEntity
     public function __construct(?string $claimedAt)
     {
         $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', $claimedAt);
-        if (!$dateTime) {
+        if (! $dateTime) {
             $dateTime = null;
         }
 

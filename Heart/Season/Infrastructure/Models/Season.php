@@ -17,30 +17,30 @@ class Season extends Model
 
     protected $table = 'seasons';
 
-   protected $fillable = [
-       'id',
-       'name',
-       'description',
-       'messages_count',
-       'participants_count',
-       'meeting_count',
-       'badges_count',
-       'started_at',
-       'ended_at',
-   ];
+    protected $fillable = [
+        'id',
+        'name',
+        'description',
+        'messages_count',
+        'participants_count',
+        'meeting_count',
+        'badges_count',
+        'started_at',
+        'ended_at',
+    ];
 
-   public function badges(): HasMany
-   {
-       return $this->hasMany(Badge::class);
-   }
-
-   public function meetings(): HasMany
-   {
-       return $this->hasMany(Meeting::class);
-   }
-
-    protected static function newFactory(): SeasonFactory
+    public function badges(): HasMany
     {
-        return SeasonFactory::new();
+        return $this->hasMany(Badge::class);
     }
+
+    public function meetings(): HasMany
+    {
+        return $this->hasMany(Meeting::class);
+    }
+
+     protected static function newFactory(): SeasonFactory
+     {
+         return SeasonFactory::new();
+     }
 }

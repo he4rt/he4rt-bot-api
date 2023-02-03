@@ -12,7 +12,7 @@ class SeasonRouteProvider extends RouteServiceProvider
     {
         Route::prefix('season')->group(function () {
             Route::get('/v2/seasons', [SeasonsController::class, 'getSeasons'])->name('get-seasons');
-            Route::get('/v2/seasons/current', [SeasonsController::class , 'getCurrent'])
+            Route::get('/v2/seasons/current', [SeasonsController::class, 'getCurrent'])
                 ->name('seasons.current');
         });
     }

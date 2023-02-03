@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
     public function up()
     {
         Schema::create('seasons_rankings', function (Blueprint $table) {

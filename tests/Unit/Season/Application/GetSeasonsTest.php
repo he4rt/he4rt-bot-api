@@ -6,8 +6,8 @@ use Heart\Season\Application\GetSeasons;
 use Heart\Season\Domain\Collections\SeasonCollection;
 use Heart\Season\Domain\Entities\SeasonEntity;
 use Heart\Season\Domain\Repositories\SeasonRepository;
-use Mockery\MockInterface;
 use Mockery as m;
+use Mockery\MockInterface;
 use Tests\TestCase;
 use Tests\Unit\Season\SeasonProviderTrait;
 

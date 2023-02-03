@@ -70,7 +70,7 @@ class LevelEntity
         $experienceObtained = ($messagePound / ($this->level * $memberStatusMultiplier) * 20);
         $this->addExperience($experienceObtained);
 
-        return (int)$experienceObtained;
+        return (int) $experienceObtained;
     }
 
     private function getLevelExpoent(): float

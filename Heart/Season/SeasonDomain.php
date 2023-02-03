@@ -8,12 +8,11 @@ use Heart\Season\Infrastructure\Providers\SeasonServiceProvider;
 
 class SeasonDomain extends DomainInterface
 {
-
     public function registerProvider(): array
     {
         return [
             SeasonServiceProvider::class,
-            SeasonRouteProvider::class
+            SeasonRouteProvider::class,
         ];
     }
 }
