@@ -10,8 +10,10 @@ class MessageRouteProvider extends RouteServiceProvider
 {
     public function map()
     {
-        Route::prefix('messages')->group(function () {
-            Route::post('/{provider}', [MessagesController::class, 'postMessage'])->name('messages.create');
+        Route::prefix('api')->middleware(['api', 'bot-auth'])->group(function () {
+            Route::prefix('messages')->group(function () {
+                Route::post('/{provider}', [MessagesController::class, 'postMessage'])->name('messages.create');
+            });
         });
     }
 }
