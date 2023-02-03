@@ -20,7 +20,7 @@ class EndMeeting
 
     public function getAndClearMeetingId(): string
     {
-        $meetingId = Cache::get('current-meeting');
+        $meetingId = Cache::tags(['meetings'])->get('current-meeting');
         $this->clearMeetingCache();
 
         return $meetingId;
