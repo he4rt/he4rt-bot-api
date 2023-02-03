@@ -31,7 +31,7 @@ class ProviderEntity
             $payload['user_id'],
             $payload['provider'],
             $payload['provider_id'],
-            $payload['email'],
+            $payload['email'] ?? null,
         );
     }
 }

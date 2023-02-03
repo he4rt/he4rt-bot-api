@@ -10,6 +10,7 @@ use Heart\User\Domain\Exceptions\UserEntityException;
 use Heart\User\Domain\Repositories\UserRepository;
 use Heart\User\Infrastructure\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Ramsey\Uuid\Uuid;
 
 class UserEloquentRepository implements UserRepository
 {
@@ -45,7 +46,7 @@ class UserEloquentRepository implements UserRepository
         $user = $this->query->where('username', $username)
             ->first();
 
-        if (! $user) {
+        if (!$user) {
             return null;
         }
 
@@ -65,5 +66,21 @@ class UserEloquentRepository implements UserRepository
             ])->find($userId);
 
         return ProfileEntity::make($user->toArray());
+    }
+
+    public function createUser(string $username): UserEntity
+    {
+        $model = $this->model
+            ->newQuery()
+            ->create([
+                'id' => Uuid::uuid4()->toString(),
+                'username' => $username,
+                'is_donator' => false,
+            ]);
+
+        $model->address()->create();
+        $model->information()->create();
+
+        return UserEntity::fromArray($model->toArray());
     }
 }
