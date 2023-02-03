@@ -83,4 +83,15 @@ class UserEloquentRepository implements UserRepository
 
         return UserEntity::fromArray($model->toArray());
     }
+
+    public function updateProfile(ProfileEntity $profileEntity): ProfileEntity
+    {
+        $model = $this->model
+            ->newQuery()
+            ->find($profileEntity->id);
+
+        $model->information()->update($profileEntity->informationEntity->jsonSerialize());
+
+        return $this->findProfile($profileEntity->id);
+    }
 }

@@ -5,11 +5,11 @@ namespace Heart\User\Domain\Entities;
 class AddressEntity implements \JsonSerializable
 {
     public function __construct(
-        public readonly string $id,
-        private readonly ?string $country,
-        private readonly ?string $state,
-        private readonly ?string $city,
-        private readonly ?int $zipCode,
+        public string $id,
+        private ?string $country,
+        private ?string $state,
+        private ?string $city,
+        private ?int $zipCode,
     ) {
     }
 
