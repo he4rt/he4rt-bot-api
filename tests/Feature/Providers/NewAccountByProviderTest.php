@@ -23,7 +23,7 @@ class NewAccountByProviderTest extends TestCase
             ->actingAsAdmin()
             ->postJson(route('providers.store', ['provider' => $provider]), $payload);
 
-        $response->assertStatus(Response::HTTP_NO_CONTENT);
+        $response->assertStatus(Response::HTTP_CREATED);
 
         $this->assertDatabaseHas('users', [
             'username' => $payload['username']
@@ -32,6 +32,10 @@ class NewAccountByProviderTest extends TestCase
         $this->assertDatabaseHas('providers', [
             'provider' => $provider,
             'provider_id' => $payload['provider_id']
+        ]);
+
+        $this->assertDatabaseHas('characters', [
+            'user_id' => $response['userId']
         ]);
     }
 

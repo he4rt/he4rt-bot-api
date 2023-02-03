@@ -80,6 +80,7 @@ class UserEloquentRepository implements UserRepository
 
         $model->address()->create();
         $model->information()->create();
+        $model->character()->create();
 
         return UserEntity::fromArray($model->toArray());
     }

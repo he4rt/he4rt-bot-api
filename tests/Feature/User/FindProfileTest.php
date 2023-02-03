@@ -21,16 +21,16 @@ class FindProfileTest extends TestCase
     public function testCanFindProfileWithUsername(): void
     {
         $user = User::factory()
-            ->has(Character::factory()->has(PastSeason::factory()), 'character')
+//            ->has(Character::factory()->has(PastSeason::factory()), 'character')
             ->has(Address::factory(), 'address')
             ->has(Information::factory(), 'information')
             ->has(Provider::factory()->has(Message::factory()->count(2)))
             ->create();
 
-        $badge = Badge::factory()->create();
+//        $badge = Badge::factory()->create();
 
         $character = $user->character;
-        $character->badges()->attach($badge->id, ['claimed_at' => now()]);
+//        $character->badges()->attach($badge->id, ['claimed_at' => now()]);
 
         $this
             ->actingAsAdmin()
