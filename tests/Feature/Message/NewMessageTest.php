@@ -33,6 +33,7 @@ class NewMessageTest extends TestCase
         ];
 
         $this
+            ->actingAsAdmin()
             ->postJson(route('messages.create', ['provider' => $provider->provider]), $payload)
             ->assertNoContent();
 
@@ -68,6 +69,7 @@ class NewMessageTest extends TestCase
         ];
 
         $this
+            ->actingAsAdmin()
             ->postJson(route('messages.create', ['provider' => $provider->provider]), $payload)
             ->assertNoContent();
 

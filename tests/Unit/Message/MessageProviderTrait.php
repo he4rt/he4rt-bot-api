@@ -16,7 +16,7 @@ trait MessageProviderTrait
             'season_id' => 12,
             'channel_id' => 'canal-foda',
             'content' => 'conteudo-foda',
-            'sent_at' => Carbon::now()->toString(),
+            'sent_at' => new \DateTime(Carbon::now()->toString()),
             'obtained_experience' => 12,
             ...$fields,
         ];

@@ -27,7 +27,9 @@ class ClaimDailyBonusTest extends TestCase
         ];
         $expected = $user->character->daily_bonus_claimed_at;
         $this->travelTo(now()->addHours(24)->addMinutes(2));
-        $this->postJson(route('characters.dailyReward', $routeParams))
+        $this
+            ->actingAsAdmin()
+            ->postJson(route('characters.dailyReward', $routeParams))
             ->assertStatus(Response::HTTP_NO_CONTENT);
 
         $this->assertDatabaseMissing('characters', [
@@ -48,7 +50,9 @@ class ClaimDailyBonusTest extends TestCase
             'providerId' => $provider->provider_id,
         ];
 
-        $this->postJson(route('characters.dailyReward', $routeParams))
+        $this
+            ->actingAsAdmin()
+            ->postJson(route('characters.dailyReward', $routeParams))
             ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 }

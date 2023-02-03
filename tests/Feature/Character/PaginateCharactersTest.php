@@ -17,7 +17,9 @@ class PaginateCharactersTest extends TestCase
             'daily_bonus_claimed_at' => now()->toDateTimeString(),
         ]);
 
-        $this->getJson(route('characters.getCharacters', ['characterId' => $character->getKey()]))
+        $this
+            ->actingAsAdmin()
+            ->getJson(route('characters.getCharacters', ['characterId' => $character->getKey()]))
             ->assertStatus(Response::HTTP_OK)
             ->assertSee($character->experience);
     }

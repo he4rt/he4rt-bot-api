@@ -17,6 +17,7 @@ class PastSeasonFactory extends Factory
             'character_id' => Character::factory(),
             'ranking_position' => $this->faker->numberBetween(1, 1000),
             'experience' => $this->faker->numberBetween(1, 1000),
+            'level' => 1,
             'messages_count' => $this->faker->numberBetween(1, 1000),
             'badges_count' => $this->faker->numberBetween(1, 1000),
             'meetings_count' => $this->faker->numberBetween(1, 1000),

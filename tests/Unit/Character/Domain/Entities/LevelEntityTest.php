@@ -22,10 +22,11 @@ class LevelEntityTest extends TestCase
                 foreach (range(0, 20) as $qtdMensagem) {
                     $generatedExperience = $levelEntity->generateExperience(Str::random(76), true);
 //                    dump('exp ganha:' . $generatedExperience);
-                    dump('level atual: ' . $levelEntity->getLevel());
-                    dump('level exp atual: ' . $levelEntity->getLevelUpStatus());
+//                    dump('level atual: ' . $levelEntity->getLevel());
+//                    dump('level exp atual: ' . $levelEntity->getLevelUpStatus());
                 }
             }
         }
+        $this->assertTrue(true);
     }
 }

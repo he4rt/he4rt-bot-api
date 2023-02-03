@@ -19,10 +19,12 @@ class ReviewFeedbackTest extends TestCase
         $staffProvider = Provider::factory()->create(['provider' => 'discord']);
 
         $payload['staff_id'] = $staffProvider->provider_id;
-        $response = $this->postJson(route('feedbacks.review', [
-            'feedbackId' => $feedback->id,
-            'action' => $action,
-        ]), $payload);
+        $response = $this
+            ->actingAsAdmin()
+            ->postJson(route('feedbacks.review', [
+                'feedbackId' => $feedback->id,
+                'action' => $action,
+            ]), $payload);
 
         $response->assertStatus(Response::HTTP_CREATED);
 
