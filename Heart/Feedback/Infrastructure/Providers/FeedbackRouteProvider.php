@@ -10,11 +10,13 @@ class FeedbackRouteProvider extends RouteServiceProvider
 {
     public function map()
     {
-        Route::get('/v2/feedbacks/{feedbackId}', [FeedbacksController::class, 'getFeedback'])
-            ->name('feedbacks.show');
-        Route::post('/v2/feedbacks', [FeedbacksController::class, 'postFeedback'])
-            ->name('feedbacks.create');
-        Route::post('/v2/feedbacks/{feedbackId}/{action}', [FeedbacksController::class, 'postReview'])
-            ->name('feedbacks.review');
+        Route::prefix('api')->middleware(['api', 'bot-auth'])->group(function () {
+            Route::get('feedbacks/{feedbackId}', [FeedbacksController::class, 'getFeedback'])
+                ->name('feedbacks.show');
+            Route::post('feedbacks', [FeedbacksController::class, 'postFeedback'])
+                ->name('feedbacks.create');
+            Route::post('feedbacks/{feedbackId}/{action}', [FeedbacksController::class, 'postReview'])
+                ->name('feedbacks.review');
+        });
     }
 }
