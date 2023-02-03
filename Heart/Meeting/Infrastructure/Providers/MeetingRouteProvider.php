@@ -10,14 +10,14 @@ class MeetingRouteProvider extends RouteServiceProvider
 {
     public function map()
     {
-        Route::prefix('events/{provider}')->name('events.')
-            ->middleware('bot-auth')
-            ->group(function () {
+        Route::prefix('api')->middleware(['api', 'bot-auth'])->group(function () {
+            Route::prefix('events/{provider}')->name('events.')->group(function () {
                 Route::prefix('meeting')->name('meeting.')->group(function () {
                     Route::get('/', [MeetingController::class, 'getMeetings'])->name('getMeetings');
                     Route::post('/start', [MeetingController::class, 'postMeeting'])->name('postMeeting');
                     Route::post('/end', [MeetingController::class, 'postEndMeeting'])->name('postEndMeeting');
                 });
             });
+        });
     }
 }
