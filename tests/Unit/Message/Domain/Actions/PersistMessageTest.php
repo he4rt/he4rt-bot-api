@@ -31,7 +31,7 @@ class PersistMessageTest extends TestCase
             $this->messageEntity->providerMessageId,
             $this->messageEntity->channelId,
             $this->messageEntity->content,
-            '2023-01-24' //sentAt in string
+            new \DateTime('2023-01-24') //sentAt in string
         );
     }
 

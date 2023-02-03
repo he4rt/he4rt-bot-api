@@ -11,14 +11,13 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('feedbacks', function (Blueprint $table) {
+        Schema::create('characters_leveling_logs', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('sender_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignUuid('target_id')->constrained('users')->cascadeOnDelete();
-            $table->string('type');
-            $table->text('message');
+            $table->integer('season_id');
+            $table->foreignUuid('character_id')->constrained('characters');
+            $table->integer('level');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('feedbacks');
+        Schema::dropIfExists('characters_leveling_logs');
     }
 };

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         if (! Schema::hasTable('characters_badges')) {
             Schema::create('characters_badges', function (Blueprint $table) {
-                $table->foreignUuid('character_id');
-                $table->foreignId('badge_id');
+                $table->foreignUuid('character_id')->constrained('characters')->cascadeOnDelete();
+                $table->foreignId('badge_id')->constrained('badges')->cascadeOnDelete();
                 $table->timestamp('claimed_at');
             });
         }

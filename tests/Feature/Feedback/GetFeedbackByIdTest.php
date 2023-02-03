@@ -15,7 +15,9 @@ class GetFeedbackByIdTest extends TestCase
     {
         $feedback = Feedback::factory()->create();
 
-        $this->getJson(route('feedbacks.show', ['feedbackId' => $feedback->id]))
+        $this
+            ->actingAsAdmin()
+            ->getJson(route('feedbacks.show', ['feedbackId' => $feedback->id]))
             ->assertStatus(Response::HTTP_OK);
     }
 }

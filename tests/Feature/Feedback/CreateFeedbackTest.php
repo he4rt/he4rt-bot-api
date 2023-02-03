@@ -23,7 +23,9 @@ class CreateFeedbackTest extends TestCase
             'type' => 'elogio',
         ];
 
-        $this->postJson(route('feedbacks.create'), $payload)
+        $this
+            ->actingAsAdmin()
+            ->postJson(route('feedbacks.create'), $payload)
             ->assertStatus(Response::HTTP_CREATED);
 
         $payload['sender_id'] = $providerSender->user->id;

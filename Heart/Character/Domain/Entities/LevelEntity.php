@@ -38,6 +38,24 @@ class LevelEntity
         }
     }
 
+    public function getExperienceNeededToLevelUp(): int
+    {
+        $experienceNeeded = 0;
+        foreach ($this->experienceTable as $index => $expTable) {
+            if ($this->level + 1 == $index) {
+                return $experienceNeeded;
+            }
+            $experienceNeeded += $expTable;
+        }
+
+        return $experienceNeeded;
+    }
+
+    public function getLevelUpStatus(): int
+    {
+        return $this->getExperienceNeededToLevelUp() - $this->experience;
+    }
+
     public function getLevel(): int
     {
         return $this->level;

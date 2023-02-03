@@ -17,7 +17,7 @@ class ProviderEntity
         string $userId,
         string $provider,
         string $providerId,
-        string $providerEmail
+        ?string $providerEmail
     ) {
         $this->id = $id;
         $this->userId = $userId;

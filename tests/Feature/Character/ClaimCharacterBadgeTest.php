@@ -26,10 +26,12 @@ class ClaimCharacterBadgeTest extends TestCase
 
         $provider = $user->providers[0];
 
-        $response = $this->postJson(route('characters.claimBadge', [
-            'provider' => $provider->provider,
-            'providerId' => $provider->provider_id,
-        ]), ['redeem_code' => $badge->redeem_code]);
+        $response = $this
+            ->actingAsAdmin()
+            ->postJson(route('characters.claimBadge', [
+                'provider' => $provider->provider,
+                'providerId' => $provider->provider_id,
+            ]), ['redeem_code' => $badge->redeem_code]);
 
         $response->assertStatus(Response::HTTP_NO_CONTENT);
 

@@ -10,10 +10,12 @@ class BadgeRouteProvider extends RouteServiceProvider
 {
     public function map()
     {
-        Route::middleware('bot-auth')->prefix('v2/badges')->group(function () {
-            Route::get('/', [BadgesController::class, 'getBadges'])->name('badges.index');
-            Route::post('/', [BadgesController::class, 'postBadge'])->name('badges.store');
-            Route::delete('/{badgeId}', [BadgesController::class, 'deleteBadge'])->name('badges.destroy');
+        Route::prefix('api')->middleware(['api', 'bot-auth'])->group(function () {
+            Route::prefix('badges')->group(function () {
+                Route::get('/', [BadgesController::class, 'getBadges'])->name('badges.index');
+                Route::post('/', [BadgesController::class, 'postBadge'])->name('badges.store');
+                Route::delete('/{badgeId}', [BadgesController::class, 'deleteBadge'])->name('badges.destroy');
+            });
         });
     }
 }

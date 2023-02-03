@@ -14,7 +14,7 @@ class EndMeetingTest extends TestCase
     public function testEndMeeting(): void
     {
         $meeting = Meeting::factory()->create();
-        Cache::set('current-meeting', $meeting->id);
+        Cache::tags(['meetings'])->set('current-meeting', $meeting->id);
 
         $this->actingAsAdmin()
             ->postJson(route('events.meeting.postEndMeeting', ['provider' => 'discord']))

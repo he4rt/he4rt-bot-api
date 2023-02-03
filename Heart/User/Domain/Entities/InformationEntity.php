@@ -11,7 +11,7 @@ class InformationEntity implements \JsonSerializable
         private readonly string $nickname,
         private readonly string $linkedinUrl,
         private readonly string $githubUrl,
-        private readonly string $birthdate,
+        private readonly ?string $birthdate,
         private readonly string $about,
     ) {
     }

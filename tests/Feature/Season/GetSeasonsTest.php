@@ -28,7 +28,7 @@ class GetSeasonsTest extends TestCase
                 'badgesCount',
                 'startAt',
                 'endAt',
-            ]
+            ],
         ]);
     }
 }

@@ -60,7 +60,7 @@ class CharacterEntity implements JsonSerializable
     {
         return [
             'user_id' => $this->userId,
-            'reputation' => $this->reputation,
+            'reputation' => $this->reputation->getPoints(),
             'level' => $this->level->getLevel(),
             'experience' => $this->level->getExperience(),
             'daily_bonus_claimed_at' => $this->dailyReward->claimedAt,

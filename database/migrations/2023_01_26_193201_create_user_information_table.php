@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('user_information', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('user_id')->constrained('users');
+            $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('name')->nullable();
             $table->string('nickname')->nullable();
             $table->string('linkedin_url')->nullable();

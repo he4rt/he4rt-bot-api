@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Character\Character\Domain\Entities;
+namespace Tests\Unit\Character\Domain\Entities;
 
 use Heart\Character\Domain\Entities\CharacterEntity;
 use PHPUnit\Framework\TestCase;

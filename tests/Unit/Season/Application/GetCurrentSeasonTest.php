@@ -5,8 +5,8 @@ namespace Tests\Unit\Season\Application;
 use Heart\Season\Application\GetCurrentSeason;
 use Heart\Season\Domain\Entities\SeasonEntity;
 use Heart\Season\Domain\Repositories\SeasonRepository;
-use Mockery\MockInterface;
 use Mockery as m;
+use Mockery\MockInterface;
 use Tests\TestCase;
 use Tests\Unit\Season\SeasonProviderTrait;
 
@@ -25,7 +25,7 @@ class GetCurrentSeasonTest extends TestCase
         $this->seasonEntity = $this->validSeasonEntity();
     }
 
-    function tearDown(): void
+    public function tearDown(): void
     {
         parent::tearDown();
         m::close();
