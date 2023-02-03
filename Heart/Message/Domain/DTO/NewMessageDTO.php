@@ -12,7 +12,7 @@ class NewMessageDTO
         public string $providerMessageId,
         public string $channelId,
         public string $content,
-        public string $sentAt,
+        public \DateTime $sentAt,
     ) {
     }
 
@@ -24,7 +24,7 @@ class NewMessageDTO
             providerMessageId: $payload['provider_message_id'],
             channelId: $payload['channel_id'],
             content: $payload['content'],
-            sentAt: $payload['sent_at']
+            sentAt: new \DateTime($payload['sent_at'])
         );
     }
 }
