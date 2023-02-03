@@ -17,7 +17,6 @@ class UserRouteProvider extends RouteServiceProvider
                 Route::put('/profile/{value}', [UsersController::class, 'putProfile'])
                     ->name('users.profile.update');
                 Route::get('/{id}', [UsersController::class, 'getUser'])->name('get-user');
-                Route::post('/', [UsersController::class, 'postUser'])->name('post-user');
             });
         });
     }
