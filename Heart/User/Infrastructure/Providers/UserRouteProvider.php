@@ -10,7 +10,7 @@ class UserRouteProvider extends RouteServiceProvider
 {
     public function map(): void
     {
-        Route::prefix('users')->middleware('bot-auth')->group(function () {
+        Route::prefix('users')->group(function () {
             Route::get('/', [UsersController::class, 'getUsers'])->name('get-users');
             Route::get('/profile/{value}', [UsersController::class, 'getProfile'])->name('users.profile');
             Route::get('/{id}', [UsersController::class, 'getUser'])->name('get-user');
