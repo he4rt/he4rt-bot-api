@@ -27,7 +27,7 @@ class MessageEntity
             seasonId: $payload['season_id'],
             channelId: $payload['channel_id'],
             content: $payload['content'],
-            sentAt: new DateTime($payload['sent_at']),
+            sentAt: $payload['sent_at'],
             obtainedExperience: $payload['obtained_experience']
         );
     }
