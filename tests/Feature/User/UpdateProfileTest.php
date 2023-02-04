@@ -42,4 +42,33 @@ class UpdateProfileTest extends TestCase
 
         $this->assertDatabaseHas('user_information', $payload['info']);
     }
+
+    public function testSuccessWithOneField()
+    {
+        $user = User::factory()
+            ->has(Character::factory()->has(PastSeason::factory()), 'character')
+            ->has(Address::factory(), 'address')
+            ->has(Information::factory(), 'information')
+            ->has(Provider::factory()->has(Message::factory()->count(2)))
+            ->create();
+
+        $payload = [
+            'info' => [
+                'github_url' => 'https://github.com/danielhe4rt',
+            ]
+        ];
+        $userExpected = $user->information
+            ->only(['nickname', 'linkedin_url']);
+
+        $response = $this
+            ->actingAsAdmin()
+            ->putJson(route('users.profile.update', ['value' => $user->username]), $payload);
+
+
+        $userExpected['github_url'] = $payload['info']['github_url'];
+
+        $response->assertStatus(Response::HTTP_OK);
+
+        $this->assertDatabaseHas('user_information', $userExpected);
+    }
 }

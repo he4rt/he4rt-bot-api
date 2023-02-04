@@ -18,12 +18,12 @@ class InformationEntity implements \JsonSerializable
 
     public function update(array $payload)
     {
-        $this->name = $payload['name'];
-        $this->nickname = $payload['nickname'];
-        $this->about = $payload['about'];
-        $this->githubUrl = $payload['github_url'];
-        $this->linkedinUrl = $payload['linkedin_url'];
-        $this->birthdate = $payload['birthdate'];
+        $this->name = $payload['name'] ?? $this->name;
+        $this->nickname = $payload['nickname'] ?? $this->nickname;
+        $this->about = $payload['about'] ?? $this->about;
+        $this->githubUrl = $payload['github_url'] ?? $this->githubUrl;
+        $this->linkedinUrl = $payload['linkedin_url'] ?? $this->linkedinUrl;
+        $this->birthdate = $payload['birthdate'] ?? $this->birthdate;
     }
 
     public static function make(array $payload): self
