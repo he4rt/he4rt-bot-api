@@ -18,8 +18,6 @@ class RankingByLevelTest extends TestCase
             ->actingAsAdmin()
             ->getJson(route('ranking.leveling'));
 
-        $response->dump();
-
         $response->assertStatus(Response::HTTP_OK);
     }
 }
