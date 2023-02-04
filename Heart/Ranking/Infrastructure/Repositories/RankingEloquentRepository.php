@@ -13,7 +13,7 @@ class RankingEloquentRepository implements RankingRepository
     {
         $ranking = Character::with(['user'])
             ->orderByDesc('experience')
-            ->paginate();
+            ->paginate(10);
         return PaginatorConcrete::paginate($ranking);
     }
 }
