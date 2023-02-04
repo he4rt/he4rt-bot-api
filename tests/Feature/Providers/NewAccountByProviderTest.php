@@ -52,7 +52,7 @@ class NewAccountByProviderTest extends TestCase
             ->actingAsAdmin()
             ->postJson(route('providers.store', ['provider' => $provider->provider]), $payload);
 
-        $response->assertStatus(Response::HTTP_NO_CONTENT);
+        $response->assertStatus(Response::HTTP_CREATED);
 
         $this->assertDatabaseMissing('users', [
             'username' => $payload['username']

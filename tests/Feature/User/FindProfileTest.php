@@ -21,7 +21,7 @@ class FindProfileTest extends TestCase
     public function testCanFindProfileWithUsername(): void
     {
         $user = User::factory()
-//            ->has(Character::factory()->has(PastSeason::factory()), 'character')
+            ->has(Character::factory()->has(PastSeason::factory()), 'character')
             ->has(Address::factory(), 'address')
             ->has(Information::factory(), 'information')
             ->has(Provider::factory()->has(Message::factory()->count(2)))
