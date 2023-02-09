@@ -16,7 +16,6 @@ use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Knuckles\Scribe\Extracting\Strategies\Responses\UseResponseFileTag;
 
 class UsersController extends Controller
 {
@@ -73,9 +72,9 @@ class UsersController extends Controller
             'email' => 'email',
             'name' => 'string',
             'nickname' => 'string',
-            'git' => ['string', 'starts_with:github.com,https://github.com'],
+            'git' => ['nullable', 'string', 'starts_with:github.com,https://github.com'],
             'about' => 'string',
-            'linkedin' => ['string', 'starts_with:linkedin.com,https://linkedin.com'],
+            'linkedin' => ['nullable', 'string', 'starts_with:linkedin.com,https://linkedin.com'],
             'is_donator' => 'bool',
             'uf' => 'size:2',
             'birthday' => 'date_format:Y-m-d',
