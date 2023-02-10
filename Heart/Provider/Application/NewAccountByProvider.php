@@ -15,7 +15,7 @@ class NewAccountByProvider
     ) {
     }
 
-    public function handle(ProviderEnum $providerEnum, string $providerId, string $username)
+    public function handle(ProviderEnum $providerEnum, string $providerId, string $username): ProviderEntity
     {
         $existentProvider = $this->providerRepository->getProvider($providerEnum->value, $providerId);
 
