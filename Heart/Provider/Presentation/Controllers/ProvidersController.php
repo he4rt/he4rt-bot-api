@@ -14,7 +14,7 @@ class ProvidersController extends Controller
         CreateProviderRequest $request,
         string $provider,
         NewAccountByProvider $action,
-    ) {
+    ): JsonResponse {
         $response = $action->handle(
             ProviderEnum::from($provider),
             $request->input('provider_id'),
