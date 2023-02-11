@@ -1,6 +1,6 @@
 <?php
 
-namespace Providers;
+namespace Tests\Feature\Providers;
 
 use Heart\Provider\Infrastructure\Models\Provider;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Meeting;
+namespace Tests\Feature\Meeting;
 
 use Heart\Meeting\Infrastructure\Models\Meeting;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

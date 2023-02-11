@@ -1,6 +1,6 @@
 <?php
 
-namespace Ranking;
+namespace Tests\Feature\Ranking;
 
 use Heart\Character\Infrastructure\Models\Character;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
