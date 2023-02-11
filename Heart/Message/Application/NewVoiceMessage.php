@@ -5,6 +5,7 @@ namespace Heart\Message\Application;
 use Heart\Character\Application\FindCharacterIdByUserId;
 use Heart\Character\Domain\Actions\IncrementExperience;
 use Heart\Message\Domain\DTO\NewVoiceMessageDTO;
+use Heart\Message\Domain\Repositories\VoiceRepository;
 use Heart\Provider\Application\FindProvider;
 
 class NewVoiceMessage
@@ -13,8 +14,8 @@ class NewVoiceMessage
         private readonly FindProvider $findProvider,
         private readonly FindCharacterIdByUserId $findCharacterId,
         private readonly IncrementExperience $characterExperience,
-    )
-    {
+        private readonly VoiceRepository $voiceRepository
+    ) {
     }
 
     public function persist(array $payload): void
@@ -24,8 +25,13 @@ class NewVoiceMessage
             $voiceDTO->provider->value,
             $voiceDTO->providerId
         );
-        $characterId = $this->findCharacterId->handle($provider->userId);
 
-        $this->characterExperience->incrementByVoiceMessage($characterId, $voiceDTO->voiceState);
+        $characterId = $this->findCharacterId->handle($provider->userId);
+        $obtainedExperience = $this->characterExperience->incrementByVoiceMessage(
+            $characterId,
+            $voiceDTO->voiceState
+        );
+
+        $this->voiceRepository->create($voiceDTO, $provider->id, $obtainedExperience);
     }
 }

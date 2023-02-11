@@ -25,6 +25,7 @@ class NewVoiceMessageTest extends TestCase
             'provider' => $provider->provider,
             'provider_id' => $provider->provider_id,
             'state' => VoiceStatesEnum::Muted->value,
+            'channel_name' => 'Estudando'
         ];
 
         $this->actingAsAdmin()
@@ -34,6 +35,11 @@ class NewVoiceMessageTest extends TestCase
         $this->assertDatabaseMissing('characters', [
             'user_id' => $user->getKey(),
             'experience' => 1,
+        ]);
+
+        $this->assertDatabaseHas('voice_messages', [
+            'state' => $payload['state'],
+            'channel_name' => $payload['channel_name']
         ]);
     }
 }
