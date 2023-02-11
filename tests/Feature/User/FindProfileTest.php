@@ -27,10 +27,10 @@ class FindProfileTest extends TestCase
             ->has(Provider::factory()->has(Message::factory()->count(2)))
             ->create();
 
-        $badge = Badge::factory()->create();
+//        $badge = Badge::factory()->create();
 
         $character = $user->character;
-        $character->badges()->attach($badge->id, ['claimed_at' => now()]);
+//        $character->badges()->attach($badge->id, ['claimed_at' => now()]);
 
         $this
             ->actingAsAdmin()

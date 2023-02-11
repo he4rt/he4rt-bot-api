@@ -14,6 +14,11 @@ class MessageRouteProvider extends RouteServiceProvider
             Route::prefix('messages')->group(function () {
                 Route::post('/{provider}', [MessagesController::class, 'postMessage'])->name('messages.create');
             });
+
+            Route::prefix('voices')->group(function () {
+                Route::post('/{provider}', [MessagesController::class, 'postVoiceMessage'])
+                    ->name('voices.create');
+            });
         });
     }
 }

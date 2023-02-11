@@ -18,5 +18,9 @@ interface UserRepository
 
     public function findByUsername(string $username): ?UserEntity;
 
+    public function createUser(string $username): UserEntity;
+
     public function findProfile(string $userId): ProfileEntity;
+
+    public function updateProfile(ProfileEntity $profileEntity): ProfileEntity;
 }

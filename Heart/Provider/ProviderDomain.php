@@ -3,6 +3,7 @@
 namespace Heart\Provider;
 
 use Heart\Core\Contracts\DomainInterface;
+use Heart\Provider\Infrastructure\Providers\ProviderRouteProvider;
 use Heart\Provider\Infrastructure\Providers\ProviderServiceProvider;
 
 class ProviderDomain extends DomainInterface
@@ -11,6 +12,7 @@ class ProviderDomain extends DomainInterface
     {
         return [
             ProviderServiceProvider::class,
+            ProviderRouteProvider::class
         ];
     }
 }

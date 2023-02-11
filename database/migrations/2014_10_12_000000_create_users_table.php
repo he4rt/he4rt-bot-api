@@ -16,7 +16,7 @@ return new class extends Migration
         if (! Schema::hasTable('users')) {
             Schema::create('users', function (Blueprint $table) {
                 $table->uuid('id')->primary();
-                $table->string('username');
+                $table->string('username')->unique()->index();
                 $table->boolean('is_donator')->default(false);
                 $table->timestamps();
             });

@@ -2,6 +2,8 @@
 
 namespace Heart\Character\Domain\Entities;
 
+use Heart\Character\Domain\Enums\VoiceStatesEnum;
+
 class LevelEntity
 {
     private array $experienceTable = [
@@ -38,7 +40,7 @@ class LevelEntity
         }
     }
 
-    public function getExperienceNeededToLevelUp(): int
+    private function getExperienceNeededToLevelUp(): int
     {
         $experienceNeeded = 0;
         foreach ($this->experienceTable as $index => $expTable) {
@@ -73,17 +75,15 @@ class LevelEntity
         return (int) $experienceObtained;
     }
 
-    private function getLevelExpoent(): float
+    public function generateVoiceExperience(VoiceStatesEnum $states, bool $isSupporter = false): int
     {
-        return match (true) {
-            $this->level >= 1 && $this->level <= 10 => 1.5,
-            $this->level >= 11 && $this->level <= 20 => 1.4,
-            $this->level >= 21 && $this->level <= 30 => 1.3,
-            $this->level >= 31 && $this->level <= 40 => 1.4,
-            $this->level >= 41 && $this->level <= 50 => 1.5,
-            $this->level >= 50 => 2.0
-        };
+        $memberStatusMultiplier = $isSupporter ? 0.25 : 0.4;
+        $experienceObtained = ($states->getExperienceMultiplier() / ($this->level * $memberStatusMultiplier) * 20);
+        $this->addExperience($experienceObtained);
+
+        return (int) $experienceObtained;
     }
+
 
     public function getExperience(): int
     {

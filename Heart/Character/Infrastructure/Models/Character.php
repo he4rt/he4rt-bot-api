@@ -3,10 +3,13 @@
 namespace Heart\Character\Infrastructure\Models;
 
 use Heart\Badges\Infrastructure\Model\Badge;
+use Heart\Character\Domain\Entities\LevelEntity;
 use Heart\Character\Infrastructure\Factories\CharacterFactory;
+use Heart\User\Infrastructure\Models\User;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -34,6 +37,7 @@ class Character extends Model
 
     protected $appends = [
         'ranking',
+        'level'
     ];
 
     public function getRankingAttribute(): int
@@ -44,6 +48,16 @@ class Character extends Model
                 ->filter(fn ($id) => $id == $this->getKey())
                 ->keys()
                 ->first() + 1;
+    }
+
+    public function getLevelAttribute(): int
+    {
+        return (new LevelEntity($this->experience))->getLevel();
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function wallet(): HasOne
