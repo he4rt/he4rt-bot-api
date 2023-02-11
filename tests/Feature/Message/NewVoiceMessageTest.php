@@ -15,6 +15,8 @@ class NewVoiceMessageTest extends TestCase
 
     public function testCanCreateVoiceMessage()
     {
+        config(['he4rt.season.id' => 2]);
+
         $user = User::factory()
             ->has(Character::factory(['experience' => 1]), 'character')
             ->has(Provider::factory(), 'providers')
@@ -39,7 +41,8 @@ class NewVoiceMessageTest extends TestCase
 
         $this->assertDatabaseHas('voice_messages', [
             'state' => $payload['state'],
-            'channel_name' => $payload['channel_name']
+            'channel_name' => $payload['channel_name'],
+            'season_id' => 2
         ]);
     }
 }
