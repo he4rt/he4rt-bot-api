@@ -54,7 +54,6 @@ class NewMessage
 
     private function meetingAttender(
         ProviderEntity $providerEntity,
-        NewMessageDTO $messageDTO
     ): void {
         if (! Cache::tags(['meetings'])->has('current-meeting')) {
             return;
