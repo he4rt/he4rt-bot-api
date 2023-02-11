@@ -3,6 +3,7 @@
 namespace Heart\Character\Domain\Actions;
 
 use Heart\Character\Domain\Entities\CharacterEntity;
+use Heart\Character\Domain\Enums\VoiceStatesEnum;
 use Heart\Character\Domain\Repositories\CharacterRepository;
 
 class IncrementExperience
@@ -13,16 +14,19 @@ class IncrementExperience
     ) {
     }
 
-    public function handle(string $characterId, string $message): int
+    public function incrementByTextMessage(string $characterId, string $message): int
     {
         $characterEntity = $this->findCharacter->handle($characterId);
+        $experienceObtained = $characterEntity->level->generateExperience($message);
+        $this->characterRepository->updateExperience($characterEntity);
 
-        return $this->getExperienceObtained($characterEntity, $message);
+        return $experienceObtained;
     }
 
-    private function getExperienceObtained(CharacterEntity $characterEntity, string $message): int
+    public function incrementByVoiceMessage(string $characterId, VoiceStatesEnum $voiceState): int
     {
-        $experienceObtained = $characterEntity->level->generateExperience($message);
+        $characterEntity = $this->findCharacter->handle($characterId);
+        $experienceObtained = $characterEntity->level->generateVoiceExperience($voiceState);
         $this->characterRepository->updateExperience($characterEntity);
 
         return $experienceObtained;

@@ -3,6 +3,7 @@
 namespace Heart\Provider\Application;
 
 use Heart\Provider\Domain\DTOs\NewProviderDTO;
+use Heart\Provider\Domain\Entities\ProviderEntity;
 use Heart\Provider\Domain\Enums\ProviderEnum;
 use Heart\Provider\Domain\Repositories\ProviderRepository;
 use Heart\User\Domain\Repositories\UserRepository;

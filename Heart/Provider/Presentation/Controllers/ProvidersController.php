@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Heart\Provider\Application\NewAccountByProvider;
 use Heart\Provider\Domain\Enums\ProviderEnum;
 use Heart\Provider\Presentation\Requests\CreateProviderRequest;
+use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProvidersController extends Controller

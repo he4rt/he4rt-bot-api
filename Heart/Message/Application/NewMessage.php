@@ -22,7 +22,7 @@ class NewMessage
     ) {
     }
 
-    public function handle(array $payload): void
+    public function persist(array $payload): void
     {
         $messageDTO = NewMessageDTO::make($payload);
 
@@ -49,7 +49,7 @@ class NewMessage
     {
         $characterId = $this->findCharacterId->handle($userId);
 
-        return $this->characterExperience->handle($characterId, $content);
+        return $this->characterExperience->incrementByTextMessage($characterId, $content);
     }
 
     private function meetingAttender(

@@ -47,7 +47,7 @@ class NewMessageTest extends TestCase
             ->andReturn('id-character-foda');
 
         $characterExperienceStub
-            ->shouldReceive('handle')
+            ->shouldReceive('incrementByTextMessage')
             ->once()
             ->with('id-character-foda', $payload['content'])
             ->andReturn($obtainedExperience);
@@ -70,7 +70,7 @@ class NewMessageTest extends TestCase
             $attendMeetingStub
         );
 
-        $action->handle($payload);
+        $action->persist($payload);
         Cache::flush();
     }
 

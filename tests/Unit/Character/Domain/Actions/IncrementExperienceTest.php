@@ -51,6 +51,6 @@ class IncrementExperienceTest extends TestCase
 
         $test = new IncrementExperience($this->characterRepositoryStub, $this->findCharacterStub);
 
-        $test->handle($this->characterEntity->id, 'CONGRATS!!');
+        $test->incrementByTextMessage($this->characterEntity->id, 'CONGRATS!!');
     }
 }
