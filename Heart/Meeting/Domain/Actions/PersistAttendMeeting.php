@@ -10,7 +10,7 @@ class PersistAttendMeeting
     {
     }
 
-    public function handle(string $meetingId, string $userId)
+    public function handle(string $meetingId, string $userId): void
     {
         $this->meetingRepository->attendMeeting($meetingId, $userId);
     }
