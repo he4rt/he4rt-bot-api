@@ -22,7 +22,12 @@ class MigrateDatabaseTest extends TestCase
         $user = User::factory()
             ->has(Message::factory(['season_id' => $season->id])->count(3))
             ->has(\App\Models\User\Season::factory(), 'seasonInfo')
-            ->create();
+            ->create(['level' => 1]);
+
+        $user = User::factory()
+            ->has(Message::factory(['season_id' => $season->id])->count(3))
+            ->has(\App\Models\User\Season::factory(), 'seasonInfo')
+            ->create(['level' => 3]);
 
         Feedback::factory()
             ->has(FeedbackReview::factory(), 'reviews')

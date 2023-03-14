@@ -5,6 +5,7 @@ namespace App\Actions\Commands;
 use App\Models\Feedback\Feedback;
 use App\Models\User\Message;
 use App\Models\User\User;
+use Carbon\Carbon;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,7 @@ class MigrateDatabase
 
     public function run(): void
     {
+        $this->createBetaTesterBadge();
         User::query()->chunk(500, fn($users) => $this->migrateChunk($users));
 
         Feedback::query()->each(fn(Feedback $feedback) => $this->migrateFeedback($feedback));
@@ -37,6 +39,7 @@ class MigrateDatabase
         $users->map(fn(User $user) => $this->persistNewUser($user))
             ->map(fn(User $user) => $this->persistUserProvider($user))
             ->map(fn(User $user) => $this->persistCharacter($user))
+            ->each(fn(User $user) => $this->persistBetaTesterBadge($user))
             ->each(fn(User $user) => $this->persistBasicInformation($user))
             ->each(fn(User $user) => $this->persistProviderMessages($user))
             ->each(fn(User $user) => $this->persistSeasonRanking($user))
@@ -209,5 +212,37 @@ class MigrateDatabase
                 'created_at' => $review->created_at,
                 'updated_at' => $review->updated_at,
             ]);
+    }
+
+    private function persistBetaTesterBadge(User $user)
+    {
+        if ($user->level >= 2) {
+            $this->v2
+                ->table('characters_badges')
+                ->insert([
+                    'character_id' => $user->characterId,
+                    'badge_id' => 1,
+                    'claimed_at' => Carbon::now()
+                ]);
+        }
+    }
+
+    private function createBetaTesterBadge()
+    {
+        $badge = [
+            'id' => 1,
+            'provider' => 'discord',
+            'name' => '2023 Beta Tester',
+            'description' => 'Você participou dos meses de teste da nossa comunidade!',
+            'image_url' => 'https://place-hold.it/300/300',
+            'redeem_code' => 'pre-season-2023',
+            'active' => false,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ];
+
+        $this->v2
+            ->table('badges')
+            ->insert($badge);
     }
 }
