@@ -90,11 +90,11 @@ class LevelEntity
         return $this->experience;
     }
 
-    public function getPercentageExperience(int $currentExperience, int $currentLevel): float
+    public function getPercentageExperience(): float
     {
-        $levelMin = $currentLevel * 89;
+        $levelMin = $this->getLevel() * 89;
 
-        $difference = $currentExperience - $levelMin;
+        $difference =  $this->getExperience() - $levelMin;
 
         if ($difference == 0) {
             return 100.0;
