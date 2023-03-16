@@ -64,6 +64,10 @@ class CharacterEntity implements JsonSerializable
             'level' => $this->level->getLevel(),
             'experience' => $this->level->getExperience(),
             'daily_bonus_claimed_at' => $this->dailyReward->claimedAt,
+            'percentage_experience' => LevelEntity::getPercentageExperience(
+                $this->level->getExperience(),
+                $this->level->getLevel()
+            )
         ];
     }
 }

@@ -17,6 +17,9 @@ class FindProfile
     ) {
     }
 
+    /**
+     * @throws ProfileException
+     */
     public function handle(string $value): ProfileEntity
     {
         $userEntity = $this->userRepository->findByUsername($value);
