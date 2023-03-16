@@ -15,52 +15,28 @@ He4rt Discord Bot API
 
 ## Features
 
-* [x] Gerenciamento de Usuários 
-* [x] Pontos Diários
-* [] Sistemas de Temporada 
-* [] Sistema de Apostas
-* [] Ranking
-* [] Sistema de Leveling 
-
 ## Endpoints
 
 TODO: documentar
 
 ### Requirements
 
-- [PHP 7.4](https://php.net)
-- [Composer 2](https://getcomposer.org)
+- [Docker](https://docs.docker.com/get-docker/)
 
-### Run
-
-```bash
-php artisan migrate --seed
-
-php -S 0.0.0.0:8000
-vendor/bin/phpunit 
-```
-
-### Gerar Documentação
-
-A documentação dos endpoints é gerada via [scribe](https://scribe.knuckles.wtf/laravel/getting-started).
-
-Para gerar a Doc localmente, basta rodar o comando abaixo.
+### Configuring
 
 ```bash
-php artisan scribe:generate
+make build
+make migrate
 ```
 
-A doc ficará disponível no endpoint `/docs`.
+### Running tests
 
-## Differences to [v1](https://github.com/he4rt/He4rt-Bot)
+```bash
+make test
+```
 
-- PHP 5.6 > PHP 7.4;
-- Lumen 6 > Lumen 8;
-- Implementação de Actions
-- Adição de Testes de Integração
-- Documentação Apropriada
-
-### Lista de Refatoração
-
-- Banco de dados
-- Isolar Requests
+With filter: 
+```bash
+make test filter=ClassName
+```

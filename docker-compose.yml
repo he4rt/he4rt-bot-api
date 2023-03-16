@@ -1,22 +1,58 @@
-version: '3'
-
+version: '3.1'
 services:
-  mysql:
-    image: mysql:8
-    command: --default-authentication-plugin=mysql_native_password
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql-data:/var/lib/mysql
-      - ./migrations:/docker-entrypoint-initdb.d
-    environment:
-      MYSQL_DATABASE: he4rt
-      MYSQL_ROOT_PASSWORD: root
-
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-
+    mysql:
+        image: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        ports:
+            - '3306:3306'
+        environment:
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - mysql:/data
+        networks:
+            - app-network
+    app:
+        container_name: discord-bot-api
+        build:
+            context: ./
+        networks:
+            - app-network
+        depends_on:
+            - mysql
+        volumes:
+            - ./:/var/www/
+    webserver:
+        image: nginx:alpine
+        container_name: webserver
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "88:80"
+            - "443:443"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+        networks:
+            - app-network
+    cache:
+        image: redis:6.2-alpine
+        restart: always
+        ports:
+            - '6379:6379'
+        command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+        volumes:
+            - cache:/data
+        networks:
+            - app-network
+networks:
+    app-network:
+        driver: bridge
 volumes:
-  mysql-data:
+    cache:
+        driver: local
+    mysql:
+        driver: local

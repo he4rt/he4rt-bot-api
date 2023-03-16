@@ -3,27 +3,23 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class BotAuthentication
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure $next
-     * @return mixed
-     */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        $apiKey = $request->header('Authorization');
+        $apiKey = $request->header('X-He4rt-Authorization');
 
-        if (!$apiKey) {
-            return response()->json(['error' => 'Chave não encontrada'], 401);
+        if (! $apiKey) {
+            return response()->json(['error' => 'Chave não encontrada'], Response::HTTP_UNAUTHORIZED);
         }
 
         if ($apiKey !== config('he4rt.server_key')) {
-            return response()->json(['error' => 'Chave incorreta'], 401);
+            return response()->json(['error' => 'Chave incorreta'], Response::HTTP_UNAUTHORIZED);
         }
+
         return $next($request);
     }
 }

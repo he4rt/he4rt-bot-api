@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Events\MeetingType;
+use Heart\Meeting\Infrastructure\Models\MeetingType;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMeetingTypes extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -34,4 +34,4 @@ class CreateMeetingTypes extends Migration
     {
         MeetingType::whereIn('name', ['Reunião Semanal', 'Reunião das Primas'])->forceDelete();
     }
-}
+};
