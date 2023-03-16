@@ -14,7 +14,7 @@ class ProfileEntity implements JsonSerializable
         public readonly string $username,
         public readonly InformationEntity $informationEntity,
         public readonly AddressEntity $addressEntity,
-        public readonly CharacterEntity $characterEntity,
+        public readonly array $characterEntity,
         public readonly array $connectedProviders,
         public readonly BadgeCollection $badges,
         public readonly PastSeasonCollection $pastSeasons,
@@ -31,7 +31,7 @@ class ProfileEntity implements JsonSerializable
             username: $payload['username'],
             informationEntity: InformationEntity::make($payload['information']),
             addressEntity: AddressEntity::make($payload['address']),
-            characterEntity: CharacterEntity::make($payload['character']),
+            characterEntity: CharacterEntity::make($payload['character'])->jsonSerialize(),
             connectedProviders: $payload['providers'],
             badges: $badges,
             pastSeasons: $pastSeasons

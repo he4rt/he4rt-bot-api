@@ -3,6 +3,7 @@
 namespace Heart\User\Presentation\Controllers;
 
 use App\Http\Controllers\Controller;
+use Heart\User\Application\Exceptions\ProfileException;
 use Heart\User\Application\FindProfile;
 use Heart\User\Application\GetUser;
 use Heart\User\Application\GetUsersPaginated;
@@ -30,6 +31,9 @@ class UsersController extends Controller
         }
     }
 
+    /**
+     * @throws ProfileException
+     */
     public function getProfile(string $value, FindProfile $profile): JsonResponse
     {
         return response()->json($profile->handle($value));
