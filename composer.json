@@ -14,6 +14,7 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
+        "marvinlabs/laravel-discord-logger": "^1.4",
         "predis/predis": "^2.1"
     },
     "require-dev": {
