@@ -10,7 +10,7 @@ class ProviderException extends Exception
     public static function notFound(string $provider, string $providerId): self
     {
         $message = sprintf(
-            'Provider %s has not candidate for ID \'%s\'',
+            'Provider %s has no candidate for ID \'%s\'',
             $provider,
             $providerId
         );

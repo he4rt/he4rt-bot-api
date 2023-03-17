@@ -9,6 +9,7 @@ use Heart\Message\Application\NewMessage;
 use Heart\Message\Domain\Actions\PersistMessage;
 use Heart\Message\Domain\DTO\NewMessageDTO;
 use Heart\Provider\Application\FindProvider;
+use Heart\Provider\Application\NewAccountByProvider;
 use Heart\Provider\Domain\Entities\ProviderEntity;
 use Illuminate\Support\Facades\Cache;
 use Mockery as m;
@@ -25,6 +26,7 @@ class NewMessageTest extends TestCase
         $characterExperienceStub = m::mock(IncrementExperience::class);
         $persistMessageStub = m::mock(PersistMessage::class);
         $attendMeetingStub = m::mock(AttendMeeting::class);
+        $newUserStub = m::mock(NewAccountByProvider::class);
 
         $obtainedExperience = 1;
         $providerEntityMock = new ProviderEntity(
@@ -67,7 +69,8 @@ class NewMessageTest extends TestCase
             $findProviderStub,
             $findCharacterStub,
             $characterExperienceStub,
-            $attendMeetingStub
+            $attendMeetingStub,
+            $newUserStub
         );
 
         $action->persist($payload);

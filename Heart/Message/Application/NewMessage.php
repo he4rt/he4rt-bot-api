@@ -8,7 +8,9 @@ use Heart\Meeting\Application\AttendMeeting;
 use Heart\Message\Domain\Actions\PersistMessage;
 use Heart\Message\Domain\DTO\NewMessageDTO;
 use Heart\Provider\Application\FindProvider;
+use Heart\Provider\Application\NewAccountByProvider;
 use Heart\Provider\Domain\Entities\ProviderEntity;
+use Heart\Provider\Infrastructure\Exceptions\ProviderException;
 use Illuminate\Support\Facades\Cache;
 
 class NewMessage
@@ -19,17 +21,26 @@ class NewMessage
         private readonly FindCharacterIdByUserId $findCharacterId,
         private readonly IncrementExperience $characterExperience,
         private readonly AttendMeeting $attendMeeting,
+        private readonly NewAccountByProvider $createAccount
     ) {
     }
 
     public function persist(array $payload): void
     {
         $messageDTO = NewMessageDTO::make($payload);
+        try {
+            $providerEntity = $this->findProvider->handle(
+                $messageDTO->provider->value,
+                $messageDTO->providerId
+            );
 
-        $providerEntity = $this->findProvider->handle(
-            $messageDTO->provider->value,
-            $messageDTO->providerId
-        );
+        } catch (ProviderException) {
+            $providerEntity = $this->createAccount->handle(
+                $messageDTO->provider,
+                $messageDTO->providerId,
+                'discord-' . $messageDTO->providerId
+            );
+        }
 
         $obtainedExperience = $this->persistCharacterExperience(
             $providerEntity->userId,

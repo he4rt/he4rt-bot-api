@@ -195,6 +195,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         \Heart\Core\Providers\CoreProvider::class,
+        /*
+         * Loggers Service Providers...
+         */
+        MarvinLabs\DiscordLogger\ServiceProvider::class
     ],
 
     /*
