@@ -43,7 +43,36 @@ class NewMessageTest extends TestCase
         ]);
     }
 
-    public function testCanCreateAMessageAndReceiveAMeetingCheck()
+    public function testCanCreateAMessageWithLevelZero(): void
+    {
+        Cache::tags(['meetings'])->flush();
+
+        $user = User::factory()
+            ->has(Character::factory(['experience' => 0]), 'character')
+            ->has(Provider::factory(), 'providers')
+            ->create();
+        $provider = $user->providers[0];
+        $payload = [
+            'provider' => $provider->provider,
+            'provider_id' => $provider->provider_id,
+            'provider_message_id' => '12312312',
+            'channel_id' => '312321',
+            'content' => '321312',
+            'sent_at' => now()->toDateTimeString(),
+        ];
+
+        $this
+            ->actingAsAdmin()
+            ->postJson(route('messages.create', ['provider' => $provider->provider]), $payload)
+            ->assertNoContent();
+
+        $this->assertDatabaseMissing('characters', [
+            'user_id' => $user->getKey(),
+            'experience' => 1,
+        ]);
+    }
+
+    public function testCanCreateAMessageAndReceiveAMeetingCheck(): void
     {
         Cache::tags(['meetings'])->flush();
 
