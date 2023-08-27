@@ -29,7 +29,7 @@ class HandleInviteTest extends TestCase
     /** @dataProvider inviteDataProvider */
     public function test_user_can_accept_invite(InviteAnswerEnum $inviteStatus): void
     {
-        $route = route('teams.handle.invite', ['invitation' => $this->invite->id]);
+        $route = route('teams.handle.invite', ['invite_id' => $this->invite->id]);
         $payload = ['answer' => $inviteStatus->value];
 
         $this->postJson($route, $payload)

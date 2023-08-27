@@ -7,6 +7,7 @@ use Heart\Team\Domain\Enums\InviteAnswerEnum;
 use Heart\Team\Infrastructure\Models\Invite;
 use Heart\Team\Infrastructure\Models\Team;
 use Heart\Team\Presentation\Requests\CreateInviteRequest;
+use Heart\User\Infrastructure\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,12 +43,29 @@ class TeamInvitationController extends Controller
         }
 
         $inviteStatus = InviteAnswerEnum::from($request->input('answer'));
-        dump($invite);
+
         match ($inviteStatus) {
             InviteAnswerEnum::ACCEPT => $invite->accept(),
             InviteAnswerEnum::DECLINE => $invite->delete(),
         };
 
         return response()->json(['message' => $inviteStatus->getMessage()], $inviteStatus->getCode());
+    }
+
+    public function listInvites(string $userId): JsonResponse
+    {
+        $user = User::query()
+            ->where('id', $userId)
+            ->first();
+
+        if (! $user) {
+            return response()->json('Not found this user', Response::HTTP_NOT_FOUND);
+        }
+
+        $invites = Invite::query()
+            ->where('member_id', $user->id)
+            ->get();
+
+        return response()->json($invites);
     }
 }
