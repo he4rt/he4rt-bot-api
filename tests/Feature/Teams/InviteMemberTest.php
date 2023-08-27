@@ -5,11 +5,12 @@ namespace Tests\Feature\Teams;
 use Heart\Team\Infrastructure\Models\Team;
 use Heart\User\Infrastructure\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class InviteMemberTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     public function test_leader_or_subleader_can_invite_a_member(): void
     {

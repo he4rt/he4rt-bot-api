@@ -3,12 +3,12 @@
 namespace Tests\Feature\Teams;
 
 use Heart\Team\Infrastructure\Models\Team;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class GetTeamByIdTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     private Team $team;
 
@@ -19,10 +19,10 @@ class GetTeamByIdTest extends TestCase
     }
 
 
-    /** @dataProvider retrieveSucessfulTeamDataProvider */
+    /** @dataProvider retrieveSuccessfulTeamDataProvider */
     public function test_user_can_retrieve_a_specific_team(mixed $payload): void
     {
-        $this->getJson(route('teams.show', ['team' => $payload]))
+        $this->getJson(route('teams.show', ['team' => $this->team->slug]))
             ->assertOk()
             ->assertJsonStructure([
                 'id',
@@ -33,11 +33,11 @@ class GetTeamByIdTest extends TestCase
     /** @dataProvider retrieveInvalidTeamDataProvider */
     public function test_user_should_receive_404_to_a_invalid_team($payload)
     {
-        $this->getJson(route('teams.show', ['team' => $payload]))
+        $this->getJson(route('teams.show', ['team' => 9]))
             ->assertNotFound();
     }
 
-    public static function retrieveSucessfulTeamDataProvider(): array
+    public static function retrieveSuccessfulTeamDataProvider(): array
     {
         return [
             'retrieve with id' => [
