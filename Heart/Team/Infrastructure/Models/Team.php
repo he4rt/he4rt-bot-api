@@ -10,8 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-
-
 class Team extends Model
 {
     use HasFactory;
@@ -24,17 +22,17 @@ class Team extends Model
         'description',
         'logo_url',
         'leader_id',
-        'sub_leader_id'
+        'sub_leader_id',
     ];
 
     protected $appends = [
-        'members_count'
+        'members_count',
     ];
 
     public function membersCount(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->members()->count()
+            get: fn () => $this->members()->count()
         );
     }
 
@@ -57,7 +55,6 @@ class Team extends Model
     {
         return $this->hasMany(Invite::class);
     }
-
 
     public function isLeadership(string $memberId): bool
     {

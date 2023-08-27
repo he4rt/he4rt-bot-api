@@ -4,7 +4,6 @@ namespace Tests\Feature\Teams;
 
 use Heart\Team\Infrastructure\Models\Team;
 use Heart\User\Infrastructure\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -19,7 +18,7 @@ class InviteMemberTest extends TestCase
 
         $payload = [
             'invited_by' => $team->leader_id,
-            'member_id' => $member->getKey()
+            'member_id' => $member->getKey(),
         ];
 
         $this->postJson(route('teams.invite.store', ['team' => $team->getKey()]), $payload)

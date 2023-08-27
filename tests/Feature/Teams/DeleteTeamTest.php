@@ -1,8 +1,8 @@
 <?php
 
 namespace Feature\Teams;
+
 use Heart\Team\Infrastructure\Models\Team;
-use Heart\User\Infrastructure\Models\User;
 use Tests\TestCase;
 
 class DeleteTeamTest extends TestCase

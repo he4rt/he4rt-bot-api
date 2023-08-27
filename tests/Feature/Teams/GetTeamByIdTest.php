@@ -18,7 +18,6 @@ class GetTeamByIdTest extends TestCase
         $this->team = Team::factory()->create(['slug' => 'he4rtless']);
     }
 
-
     /** @dataProvider retrieveSuccessfulTeamDataProvider */
     public function test_user_can_retrieve_a_specific_team(mixed $payload): void
     {
@@ -26,7 +25,7 @@ class GetTeamByIdTest extends TestCase
             ->assertOk()
             ->assertJsonStructure([
                 'id',
-                'members_count'
+                'members_count',
             ]);
     }
 
@@ -41,7 +40,7 @@ class GetTeamByIdTest extends TestCase
     {
         return [
             'retrieve with id' => [
-                'payload' => '1'
+                'payload' => '1',
             ],
             'retrieve with slug' => [
                 'payload' => 'he4rtless',
@@ -53,7 +52,7 @@ class GetTeamByIdTest extends TestCase
     {
         return [
             'retrieve with id' => [
-                'payload' => '123'
+                'payload' => '123',
             ],
             'retrieve with slug' => [
                 'payload' => 'he4rtless-ftw',

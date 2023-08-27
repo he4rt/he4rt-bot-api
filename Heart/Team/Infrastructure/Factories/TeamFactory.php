@@ -17,7 +17,7 @@ class TeamFactory extends Factory
             'description' => $this->faker->sentence(),
             'logo_url' => $this->faker->imageUrl(),
             'slug' => $this->faker->slug(),
-            'leader_id' => User::factory()
+            'leader_id' => User::factory(),
         ];
     }
 }

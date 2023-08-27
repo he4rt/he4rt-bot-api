@@ -22,7 +22,7 @@ class Invite extends Model
     ];
 
     public $timestamps = [
-        'accepted_at' => 'timestamp'
+        'accepted_at' => 'timestamp',
     ];
 
     public function team(): BelongsTo
@@ -38,6 +38,14 @@ class Invite extends Model
     public function invitedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'invited_by');
+    }
+
+    public function accept(): void
+    {
+        $this->team->members()->create([
+            'member_id' => $this->member_id,
+            'role_id' => 1,
+        ]);
     }
 
     protected static function newFactory(): InviteFactory

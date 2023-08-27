@@ -5,7 +5,6 @@ namespace Tests\Feature\Teams;
 use Heart\Team\Infrastructure\Models\Role;
 use Heart\Team\Infrastructure\Models\Team;
 use Heart\User\Infrastructure\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -22,7 +21,7 @@ class CreateTeamTest extends TestCase
             'leader_id' => $user->getKey(),
             'name' => 'He4rtless Cr3w',
             'description' => 'Just another he4rt crew',
-            'logo_url' => 'https://placehold.it/300x300'
+            'logo_url' => 'https://placehold.it/300x300',
         ];
 
         $this->postJson(route('teams.store'), $payload)
@@ -30,7 +29,7 @@ class CreateTeamTest extends TestCase
             ->assertJson([
                 'id' => 1,
                 ...$payload,
-                'members_count' => 1
+                'members_count' => 1,
             ]);
 
         $this->assertDatabaseHas('teams', $payload);
@@ -38,7 +37,7 @@ class CreateTeamTest extends TestCase
         $this->assertDatabaseHas('team_members', [
             'member_id' => $user->getKey(),
             'team_id' => 1,
-            'role_id' => $role->getKey()
+            'role_id' => $role->getKey(),
         ]);
     }
 
@@ -50,7 +49,7 @@ class CreateTeamTest extends TestCase
             'leader_id' => $team->leader->getKey(),
             'name' => 'He4rtless Cr3w',
             'description' => 'Just another he4rt crew',
-            'logo_url' => 'https://placehold.it/300x300'
+            'logo_url' => 'https://placehold.it/300x300',
         ];
 
         $this->postJson(route('teams.store'), $payload)

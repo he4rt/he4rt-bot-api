@@ -15,7 +15,7 @@ class CreateTeamRequest extends FormRequest
     {
         return [
             'leader_id' => [
-                'required', 'exists:users,id', 'unique:teams,leader_id'
+                'required', 'exists:users,id', 'unique:teams,leader_id',
             ],
             'name' => ['required'],
             'description' => ['required'],

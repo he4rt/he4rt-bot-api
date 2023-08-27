@@ -11,7 +11,7 @@ class TeamRouteProvider extends RouteServiceProvider
 {
     public function map(): void
     {
-        Route::prefix('/teams')->name('teams.')->group(function() {
+        Route::prefix('/teams')->name('teams.')->group(function () {
             Route::get('/', [TeamController::class, 'getTeams'])->name('index');
             Route::post('/', [TeamController::class, 'postTeam'])->name('store');
             Route::get('/{team}', [TeamController::class, 'getTeam'])->name('show');
@@ -23,10 +23,7 @@ class TeamRouteProvider extends RouteServiceProvider
 //            Route::delete('/teams/{team}/members/{user}', [TeamMemberController::class, 'destroy'])->name('team-members.destroy');
 //
             Route::post('/team-invitations/{invitation}', [TeamInvitationController::class, 'handleInvite'])
-//                ->middleware(['signed'])
                 ->name('handle.invite');
         });
-
-
     }
 }

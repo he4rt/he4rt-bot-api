@@ -25,7 +25,7 @@ class TeamController extends Controller
 
         $team->members()->create([
             'member_id' => $team->leader_id,
-            'role_id' => 1
+            'role_id' => 1,
         ]);
 
         return response()->json($team, Response::HTTP_CREATED);
@@ -65,11 +65,13 @@ class TeamController extends Controller
 
         if ($currentTeam = Team::query()->find($team)) {
             $currentTeam->delete();
+
             return response()->noContent();
         }
 
         if ($currentTeam = Team::query()->where('slug', $team)->first()) {
             $currentTeam->delete();
+
             return response()->noContent();
         }
 

@@ -8,12 +8,11 @@ use Heart\Team\Infrastructure\Providers\TeamServiceProvider;
 
 class TeamsDomain extends DomainInterface
 {
-
     public function registerProvider(): array
     {
         return [
             TeamServiceProvider::class,
-            TeamRouteProvider::class
+            TeamRouteProvider::class,
         ];
     }
 }
