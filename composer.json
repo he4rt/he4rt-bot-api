@@ -8,8 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.1",
-        "ext-pdo": "*",
+        "php": "^8.3",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
