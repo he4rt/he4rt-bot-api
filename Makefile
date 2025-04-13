@@ -28,7 +28,7 @@ bash:
 test:
 	    @$(eval testsuite ?= 'all')
 	    @$(eval filter ?= '.')
-	    @docker exec -it discord-bot-api vendor/bin/phpunit --filter=$(filter) --stop-on-failure
+	    @docker exec -it discord-bot-api vendor/bin/phpunit --filter=$(filter) --stop-on-failure --testdox
 migrate:
 	    @docker exec -it discord-bot-api php artisan migrate --database=testing --seed
 	    @docker exec -it discord-bot-api php artisan migrate --seed

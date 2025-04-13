@@ -13,11 +13,12 @@ use Heart\Provider\Application\NewAccountByProvider;
 use Heart\Provider\Domain\Entities\ProviderEntity;
 use Illuminate\Support\Facades\Cache;
 use Mockery as m;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class NewMessageTest extends TestCase
 {
-    /** @dataProvider dataProvider */
+    #[DataProvider('dataProvider')]
     public function testNewMessage(string $provider, array $payload)
     {
         Cache::tags(['meetings'])->put('current-meeting', 'é o canhas');

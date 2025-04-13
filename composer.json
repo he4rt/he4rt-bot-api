@@ -10,20 +10,20 @@
     "require": {
         "php": "^8.3",
         "guzzlehttp/guzzle": "^7.2",
-        "laravel/framework": "^9.19",
-        "laravel/sanctum": "^3.0",
-        "laravel/tinker": "^2.7",
-        "marvinlabs/laravel-discord-logger": "^1.4",
+        "laravel/framework": "^v12",
+        "laravel/sanctum": "^v4",
+        "laravel/tinker": "^v2",
+        "marvinlabs/laravel-discord-logger": "^v1",
         "predis/predis": "^2.1"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.9.1",
-        "laravel/pint": "^1.0",
-        "laravel/sail": "^1.0.1",
-        "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^6.1",
-        "phpunit/phpunit": "^9.5.10",
-        "spatie/laravel-ignition": "^1.0",
+        "fakerphp/faker": "^v1",
+        "laravel/pint": "^v1",
+        "laravel/sail": "^v1",
+        "mockery/mockery": "^1",
+        "nunomaduro/collision": "^v8",
+        "phpunit/phpunit": "^12.1.2",
+        "spatie/laravel-ignition": "^2.9.1",
         "squizlabs/php_codesniffer": "*"
     },
     "autoload": {

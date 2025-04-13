@@ -3,13 +3,13 @@
 namespace Tests\Unit\Character\Domain\Entities;
 
 use Heart\Character\Domain\Entities\CharacterEntity;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class CharacterEntityTest extends TestCase
 {
-    /**
-     * @dataProvider characterProvider
-     */
+
+    #[DataProvider('characterProvider')]
     public function testInstanceCharacterEntityTest($id, $userId, $reputation, $experience, $claimedAt, $expectedLevel)
     {
         $characterEntity = new CharacterEntity($id, $reputation, $userId, $experience, $claimedAt);
@@ -18,7 +18,7 @@ class CharacterEntityTest extends TestCase
         self::assertInstanceOf(CharacterEntity::class, $characterEntity);
     }
 
-    public function characterProvider(): array
+    public static function characterProvider(): array
     {
         return [
             [1, 1, 1, 548, '2023-01-14 00:26:25', 4],
@@ -27,9 +27,7 @@ class CharacterEntityTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider makeCharacterProvider
-     */
+    #[DataProvider('makeCharacterProvider')]
     public function testMakeCharacter($payload, $expectedLevel): void
     {
         $characterEntity = CharacterEntity::make($payload);
@@ -38,7 +36,7 @@ class CharacterEntityTest extends TestCase
         self::assertInstanceOf(CharacterEntity::class, $characterEntity);
     }
 
-    public function makeCharacterProvider(): array
+    public static function makeCharacterProvider(): array
     {
         return [
             [['id' => 1, 'user_id' => 1, 'reputation' => 1, 'experience' => 548, 'daily_bonus_claimed_at' => '2023-01-14 00:26:25'], 4],

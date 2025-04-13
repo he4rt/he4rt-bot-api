@@ -5,6 +5,7 @@ namespace Tests\Feature\Feedback;
 use Heart\Feedback\Infrastructure\Models\Feedback;
 use Heart\Provider\Infrastructure\Models\Provider;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
@@ -12,7 +13,7 @@ class ReviewFeedbackTest extends TestCase
 {
     use DatabaseTransactions;
 
-    /** @dataProvider dataProvider */
+    #[DataProvider('dataProvider')]
     public function testCanHandleFeedback(string $action, array $payload, array $expected): void
     {
         $feedback = Feedback::factory()->create();
@@ -38,7 +39,7 @@ class ReviewFeedbackTest extends TestCase
             'approve feedback' => [
                 'action' => 'approved',
                 'payload' => [],
-                'expect' => [
+                'expected' => [
                     'status' => 'approved',
                 ],
             ],
@@ -47,7 +48,7 @@ class ReviewFeedbackTest extends TestCase
                 'payload' => [
                     'reason' => 'bobo',
                 ],
-                'expect' => [
+                'expected' => [
                     'status' => 'declined',
                     'reason' => 'bobo',
                 ],

@@ -3,28 +3,21 @@
 namespace Tests\Unit\User\Domain\Entities;
 
 use Heart\User\Domain\Entities\UserEntity;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class UserEntityTest extends TestCase
 {
-    /**
-     * @test
-     *
-     * @dataProvider validUserPayloads
-     */
-    public function canCreateEntity(array $userPayload)
+
+    #[DataProvider('validUserPayloads')]
+    public function testCanCreateEntity(array $userPayload)
     {
         $user = UserEntity::fromArray($userPayload);
 
         $this->assertInstanceOf(UserEntity::class, $user);
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider invalidUserPayloads
-     */
-    private function validUserPayloads(): array
+    public static function validUserPayloads(): array
     {
         return [
             [[

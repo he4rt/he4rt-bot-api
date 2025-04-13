@@ -3,11 +3,12 @@
 namespace Tests\Unit\Character\Domain\Entities;
 
 use Heart\Character\Domain\Entities\ReputationEntity;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class ReputationEntityTest extends TestCase
 {
-    /** @dataProvider reputationDataProvider */
+    #[DataProvider('reputationDataProvider')]
     public function testReputation(int $points, string $operation, int $expectedPoints, string $expectedBadge): void
     {
         $reputation = new ReputationEntity($points);

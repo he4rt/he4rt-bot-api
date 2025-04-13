@@ -2,8 +2,8 @@ version: '3.1'
 services:
     mysql:
         image: mysql
-        command: --default-authentication-plugin=mysql_native_password
-        restart: always
+
+        restart: unless-stopped
         ports:
             - '3306:3306'
         environment:
@@ -15,6 +15,7 @@ services:
             - mysql:/data
         networks:
             - app-network
+
     app:
         container_name: discord-bot-api
         build:
