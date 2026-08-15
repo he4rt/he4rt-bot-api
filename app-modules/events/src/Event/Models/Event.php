@@ -18,6 +18,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * @property string $id
@@ -33,11 +35,12 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property Carbon $updated_at
  */
 #[Table(name: 'events')]
-final class Event extends Model
+final class Event extends Model implements HasMedia
 {
     /** @use HasFactory<EventFactory> */
     use HasFactory;
     use HasUuids;
+    use InteractsWithMedia;
 
     protected $fillable = [
         'slug',
@@ -70,6 +73,13 @@ final class Event extends Model
     public function checkInCodes(): HasMany
     {
         return $this->hasMany(CheckInCode::class);
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('cover')
+            ->singleFile()
+            ->useDisk('public');
     }
 
     public function isPast(): bool

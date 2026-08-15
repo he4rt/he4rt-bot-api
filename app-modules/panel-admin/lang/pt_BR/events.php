@@ -12,6 +12,7 @@ return [
         'type' => 'Tipo',
         'location' => 'Local',
         'description' => 'Descrição',
+        'cover' => 'Capa',
         'starts_at' => 'Início',
         'ends_at' => 'Término',
         'status' => 'Status',

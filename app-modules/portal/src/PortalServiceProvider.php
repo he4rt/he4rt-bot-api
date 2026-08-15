@@ -13,6 +13,7 @@ use He4rt\Portal\Retrospective\CommunityRetrospectivePage;
 use He4rt\Portal\ShortLink\ShortLinkRedirectController;
 use He4rt\Portal\Sitemap\SitemapController;
 use He4rt\Portal\SocialLinks\SocialLinksPage;
+use He4rt\Portal\Livewire\UpcomingEventsSection;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Head\HeadServiceProvider;
@@ -129,5 +130,6 @@ class PortalServiceProvider extends ServiceProvider
         });
 
         Livewire::component('hero-section', HeroSection::class);
+        Livewire::component('upcoming-events-section', UpcomingEventsSection::class);
     }
 }

@@ -8,6 +8,7 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -59,6 +60,13 @@ final class EventForm
                 Textarea::make('description')
                     ->label(__('panel-admin::events.columns.description'))
                     ->nullable()
+                    ->columnSpanFull(),
+
+                SpatieMediaLibraryFileUpload::make('cover')
+                    ->label(__('panel-admin::events.columns.cover'))
+                    ->collection('cover')
+                    ->image()
+                    ->imageEditor()
                     ->columnSpanFull(),
 
                 DateTimePicker::make('starts_at')
