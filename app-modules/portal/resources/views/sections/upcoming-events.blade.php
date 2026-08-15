@@ -89,7 +89,8 @@
                         }
                     },
                 }"
-                x-init="update(); $nextTick(() => update()); window.addEventListener('resize', () => update());"
+                x-init="update(); $nextTick(() => update())"
+                @resize.window="update()"
             >
                 <button
                     type="button"

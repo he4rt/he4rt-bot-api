@@ -106,13 +106,13 @@ it('exibe badge Online quando o local é online', function (): void {
         ->assertDontSee('Presencial');
 });
 
-it('aponta o botão Participar para a página pública do evento', function (): void {
-    $event = Event::factory()->published()->create([
+it('aponta o botão Participar para o Discord da comunidade', function (): void {
+    Event::factory()->published()->create([
         'title' => 'He4rt Conf 2026',
     ]);
 
     livewire(UpcomingEventsSection::class)
-        ->assertSee('/app/events/'.$event->id, escape: false)
+        ->assertSee('href="https://discord.gg/he4rt"', escape: false)
         ->assertSee('Participar');
 });
 
