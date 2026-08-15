@@ -71,7 +71,6 @@
                         this.moved = false;
                         this.startX = e.clientX;
                         this.startLeft = $refs.track.scrollLeft;
-                        $refs.track.setPointerCapture?.(e.pointerId);
                     },
                     move(e) {
                         if (!this.dragging) return;
@@ -125,6 +124,27 @@
                         <div class="events-slide shrink-0 snap-start basis-[clamp(280px,30%,400px)]">
                             <article
                                 class="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-outline-low/60 bg-elevation-surface transition-all duration-500 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl"
+                                x-data="{
+                                    shareData: @js([
+                                        'title' => $event->title,
+                                        'text' => implode("\n", array_filter([
+                                            $event->title,
+                                            $event->description,
+                                            $event->location,
+                                            $occurrence->translatedFormat('d M Y H:i'),
+                                        ])) . "\n\nSaiba mais -> " . url('/'),
+                                    ]),
+                                    copied: false,
+                                    share() {
+                                        if (navigator.share) {
+                                            navigator.share(this.shareData).catch(() => {});
+                                        } else if (navigator.clipboard) {
+                                            navigator.clipboard.writeText(this.shareData.text);
+                                            this.copied = true;
+                                            setTimeout(() => (this.copied = false), 2000);
+                                        }
+                                    },
+                                }"
                             >
                                 <div class="relative h-40 shrink-0 overflow-hidden sm:h-44">
                                     <div class="absolute inset-0 h-full w-full">
@@ -163,6 +183,17 @@
                                         {{ $offline ? 'Presencial' : 'Online' }}
                                     </span>
 
+                                    <button
+                                        type="button"
+                                        class="absolute top-4 right-4 z-10 grid h-9 w-9 place-items-center rounded-full bg-black/40 text-white backdrop-blur transition-colors hover:bg-primary"
+                                        @click="share()"
+                                        :title="copied ? 'Link copiado!' : 'Compartilhar evento'"
+                                        aria-label="Compartilhar evento"
+                                    >
+                                        <x-filament::icon icon="heroicon-s-share" class="h-4 w-4" x-show="!copied" />
+                                        <x-filament::icon icon="heroicon-s-check" class="h-4 w-4" x-cloak x-show="copied" />
+                                    </button>
+
                                     <time
                                         class="text-text-high absolute bottom-4 left-4 flex items-center gap-1.5 text-sm font-semibold"
                                         datetime="{{ $occurrence->toIso8601String() }}"
@@ -189,7 +220,7 @@
                                     </div>
 
                                     <x-he4rt::button
-                                        :href="url('/app/events/'.$event->id)"
+                                        :href="'https://discord.gg/he4rt'"
                                         target="_blank"
                                         variant="outline"
                                         size="sm"
