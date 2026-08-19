@@ -79,7 +79,7 @@ it('renderiza badge de data e placeholder He4rt quando o evento não tem capa', 
 
     livewire(UpcomingEventsSection::class)
         ->assertSee('Workshop: Rust do Zero ao Deploy')
-        ->assertSee('landingLogo.svg', escape: false)
+        ->assertSee('logo.svg', escape: false)
         ->assertSee('Online')
         ->assertSee('id="agenda"', escape: false);
 });
@@ -106,13 +106,13 @@ it('exibe badge Online quando o local é online', function (): void {
         ->assertDontSee('Presencial');
 });
 
-it('aponta o botão Participar para o Discord da comunidade', function (): void {
-    Event::factory()->published()->create([
+it('aponta o botão Participar para a página do evento', function (): void {
+    $event = Event::factory()->published()->create([
         'title' => 'He4rt Conf 2026',
     ]);
 
     livewire(UpcomingEventsSection::class)
-        ->assertSee('href="https://discord.gg/he4rt"', escape: false)
+        ->assertSee('href="'.url('/app/events/'.$event->id).'"', escape: false)
         ->assertSee('Participar');
 });
 
