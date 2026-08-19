@@ -124,7 +124,7 @@
 
                         <div class="events-slide shrink-0 snap-start basis-[clamp(280px,30%,400px)]">
                             <article
-                                class="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-outline-low/60 bg-elevation-surface transition-all duration-500 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl"
+                                class="group relative flex h-full flex-col overflow-hidden rounded-[1.35rem] border border-outline-low/70 bg-elevation-surface/95 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl"
                                 x-data="{
                                     shareData: @js([
                                         'title' => $event->title,
@@ -147,7 +147,7 @@
                                     },
                                 }"
                             >
-                                <div class="relative h-40 shrink-0 overflow-hidden sm:h-44">
+                                <div class="relative h-36 shrink-0 overflow-hidden sm:h-40">
                                     <div class="absolute inset-0 h-full w-full">
                                         @if ($cover)
                                             <img
@@ -157,36 +157,37 @@
                                                 @if ($cover->height) height="{{ $cover->height }}" @endif
                                                 loading="lazy"
                                                 fetchpriority="low"
-                                                class="h-full w-full object-cover"
+                                                class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                                             />
                                         @else
                                             <div
-                                                class="from-primary/12 to-primary/4 flex h-full w-full items-center justify-center bg-gradient-to-br"
+                                                class="from-primary/20 via-primary/5 to-elevation-surface flex h-full w-full items-center justify-center bg-gradient-to-br"
                                                 aria-hidden="true"
                                             >
                                                 <img
-                                                    src="{{ asset('images/landingLogo.svg') }}"
+                                                    src="{{ asset('images/logo.svg') }}"
                                                     alt=""
-                                                    class="h-3/5 w-auto opacity-70"
+                                                    class="h-3/5 w-auto opacity-25"
                                                 />
                                             </div>
                                         @endif
                                     </div>
 
                                     <div
-                                        class="pointer-events-none absolute inset-0 bg-gradient-to-t from-elevation-surface via-elevation-surface/20 to-black/25"
+                                        class="pointer-events-none absolute inset-0 bg-gradient-to-t from-elevation-surface via-elevation-surface/35 to-transparent"
                                         aria-hidden="true"
                                     ></div>
 
                                     <span
-                                        class="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-[10px] font-bold tracking-wide text-white uppercase"
+                                        class="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3.5 py-1.5 text-xs font-bold tracking-wide text-primary uppercase shadow-sm backdrop-blur"
                                     >
+                                        <x-filament::icon :icon="$offline ? 'heroicon-s-map-pin' : 'heroicon-s-signal'" class="h-4 w-4" />
                                         {{ $offline ? 'Presencial' : 'Online' }}
                                     </span>
 
                                     <button
                                         type="button"
-                                        class="absolute top-4 right-4 z-10 grid h-9 w-9 place-items-center rounded-full bg-black/40 text-white backdrop-blur transition-colors hover:bg-primary"
+                                        class="absolute top-4 right-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-white/90 text-text-high shadow-sm backdrop-blur transition-colors hover:bg-primary hover:text-white"
                                         @click="share()"
                                         :title="copied ? 'Link copiado!' : 'Compartilhar evento'"
                                         aria-label="Compartilhar evento"
@@ -195,38 +196,39 @@
                                         <x-filament::icon icon="heroicon-s-check" class="h-4 w-4" x-cloak x-show="copied" />
                                     </button>
 
+                                </div>
+
+                                <div class="flex flex-1 flex-col gap-3 px-6 pt-4 pb-3">
                                     <time
-                                        class="text-text-high absolute bottom-4 left-4 flex items-center gap-1.5 text-sm font-semibold"
+                                        class="text-text-high flex items-center gap-2 text-sm font-semibold tracking-wide"
                                         datetime="{{ $occurrence->toIso8601String() }}"
                                     >
                                         <x-filament::icon icon="heroicon-o-calendar-days" class="text-primary h-4 w-4" />
                                         {{ $occurrence->format('d') }} {{ strtoupper($occurrence->translatedFormat('M')) }}
                                         • {{ $occurrence->format('H:i') }}
                                     </time>
-                                </div>
 
-                                <div class="flex flex-1 flex-col gap-2 p-6 pt-4">
-                                    <h3 class="text-text-high text-lg font-bold tracking-tight">{{ $event->title }}</h3>
+                                    <h3 class="text-text-high text-xl leading-tight font-bold tracking-tight">{{ $event->title }}</h3>
 
                                     @if ($event->description)
-                                        <p class="text-text-medium text-sm">{{ $event->description }}</p>
+                                        <p class="text-text-medium text-sm leading-relaxed">{{ $event->description }}</p>
                                     @endif
                                 </div>
 
-                                <div class="mt-auto flex items-center justify-between gap-3 border-t border-outline-low/60 px-6 py-4">
+                                <div class="mt-auto flex items-center justify-between gap-3 px-6 pb-5 pt-2">
                                     <div class="text-text-medium min-w-0">
                                         @if ($event->location)
-                                            <p class="truncate text-xs">{{ $event->location }}</p>
+                                            <p class="truncate text-sm">{{ $event->location }}</p>
                                         @endif
                                     </div>
 
                                     <x-he4rt::button
-                                        :href="'https://discord.gg/he4rt'"
-                                        target="_blank"
-                                        variant="outline"
+                                        :href="url('/app/events/'.$event->id)"
+                                        variant="solid"
                                         size="sm"
-                                        icon="heroicon-s-chevron-right"
-                                        class="shrink-0"
+                                        rounded="lg"
+                                        icon="heroicon-s-arrow-right"
+                                        class="!w-auto shrink-0 px-5 py-2.5 text-sm shadow-lg shadow-primary/20"
                                     >
                                         Participar
                                     </x-he4rt::button>
