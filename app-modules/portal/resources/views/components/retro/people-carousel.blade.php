@@ -1,4 +1,8 @@
 @props (['items', 'size' => 48, 'startRank' => null])
+@php
+    // O maior total do trilho vira a régua de todas as barras de composição.
+    $maxTotal = max([1, ...array_column($items, 'total')]);
+@endphp
 <div
     class="pcarousel"
     x-data="{
@@ -103,6 +107,7 @@
                     :person="$person"
                     :rank="$startRank !== null ? $startRank + $i : null"
                     :size="$size"
+                    :max-total="$maxTotal"
                 />
             </div>
         @endforeach

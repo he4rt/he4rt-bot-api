@@ -127,6 +127,58 @@ it('destaca mensagens com reação e fixadas, e a mais reagida', function (): vo
         ->and($topMessage['messages'][0]['content'])->toBe('mensagem campeã');
 });
 
+it('conta as pessoas do papo e aponta o dia mais falante', function (): void {
+    $alice = dcIdentity('Alice');
+    $bob = dcIdentity('Bob');
+
+    Message::factory()->create(['external_identity_id' => $alice->id, 'sent_at' => '2026-06-02 15:00:00']);
+    Message::factory()->count(3)->create(['external_identity_id' => $bob->id, 'sent_at' => '2026-06-04 15:00:00']);
+
+    $messages = dcSlide(($this->collect)(), 'discord.messages');
+
+    expect($messages['people'])->toBe(2)
+        ->and($messages['peak'])->toMatchArray(['date' => '04/06', 'messages' => 3]);
+});
+
+it('devolve o ritmo da semana com as 7 posições, no fuso de exibição', function (): void {
+    $alice = dcIdentity('Alice');
+
+    // 15h UTC = 12h em São Paulo: terça segue terça (ISO 2).
+    Message::factory()->count(2)->create(['external_identity_id' => $alice->id, 'sent_at' => '2026-06-02 15:00:00']);
+    // 1h UTC da terça = 22h de segunda em São Paulo (ISO 1).
+    Message::factory()->create(['external_identity_id' => $alice->id, 'sent_at' => '2026-06-02 01:00:00']);
+
+    $messages = dcSlide(($this->collect)(), 'discord.messages');
+
+    expect($messages['days'])->toHaveCount(7)
+        ->and(array_column($messages['days'], 'weekday'))->toBe(range(1, 7))
+        ->and($messages['days'][0])->toMatchArray(['weekday' => 1, 'messages' => 1])
+        ->and($messages['days'][1])->toMatchArray(['weekday' => 2, 'messages' => 2]);
+});
+
+it('devolve as 24 horas do histograma de mensagens, inclusive as vazias', function (): void {
+    $alice = dcIdentity('Alice');
+
+    Message::factory()->create(['external_identity_id' => $alice->id, 'sent_at' => '2026-06-02 15:00:00']);
+
+    $messages = dcSlide(($this->collect)(), 'discord.messages');
+
+    expect($messages['hours'])->toHaveCount(24)
+        ->and(array_column($messages['hours'], 'hour'))->toBe(range(0, 23))
+        ->and(array_sum(array_column($messages['hours'], 'messages')))->toBe(1);
+});
+
+it('rankeia chatters com o XP e as reações que as mensagens puxaram', function (): void {
+    $alice = dcIdentity('Alice');
+
+    Message::factory()->create(['external_identity_id' => $alice->id, 'sent_at' => '2026-06-02', 'obtained_experience' => 10, 'reactions_total' => 3]);
+    Message::factory()->create(['external_identity_id' => $alice->id, 'sent_at' => '2026-06-03', 'obtained_experience' => 20, 'reactions_total' => 0]);
+
+    $messages = dcSlide(($this->collect)(), 'discord.messages');
+
+    expect($messages['chatters'][0])->toMatchArray(['name' => 'Alice', 'messages' => 2, 'xp' => 30, 'reactions' => 3]);
+});
+
 it('agrega o board de voz por participantes, XP e canais', function (): void {
     $alice = dcIdentity('Alice');
     $bob = dcIdentity('Bob');

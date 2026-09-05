@@ -3,7 +3,10 @@
     $fmt = fn ($d): string => $d instanceof \Carbon\CarbonInterface
         ? $d->timezone(config('app.display_timezone'))->format('d/m/Y')
         : (string) $d;
-    $labels = collect($sources)->map(fn ($source): string => $source->label)->implode(', ');
+    $people = collect($sources)
+        ->flatMap(fn ($source) => $source->slides)
+        ->first(fn ($slide): bool => $slide->kind() === 'github.core')
+        ?->toArray()['people'] ?? [];
 @endphp
 <section class="slide" data-label="Obrigado">
     <div class="slide-inner" style="text-align: center; max-width: 940px">
@@ -15,13 +18,22 @@
                 Cada PR, cada mensagem, cada call e cada reação manteve a He4rt viva.
             @endif
         </p>
-        <div data-anim style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 30px">
-            @foreach ($sources as $source)
-                <span class="bdg neu" style="font-size: 1rem; padding: 8px 16px">{{ $source->label }}</span>
-            @endforeach
-        </div>
-        <p class="hint" data-anim style="margin-top: 30px">
-            gerado a partir de {{ $labels }} · {{ $fmt($since) }} — {{ $fmt($until) }}
-        </p>
+        @if (count($people))
+            <div class="closing-wall" data-anim>
+                @foreach ($people as $person)
+                    <img
+                        class="mini"
+                        src="{{ $person['avatar'] }}"
+                        onerror="this.onerror=null;this.src='https://github.com/{{ $person['login'] }}.png'"
+                        loading="lazy"
+                        width="46"
+                        height="46"
+                        alt="{{ $person['login'] }}"
+                        title="{{ $person['login'] }}"
+                    />
+                @endforeach
+            </div>
+        @endif
+        <p class="hint" data-anim style="margin-top: 30px">{{ $fmt($since) }} — {{ $fmt($until) }}</p>
     </div>
 </section>

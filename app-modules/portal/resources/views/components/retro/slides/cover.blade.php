@@ -1,4 +1,4 @@
-@props(['sources', 'since', 'until', 'coverTitle' => null, 'coverIntro' => null])
+@props(['since', 'until', 'coverTitle' => null, 'coverIntro' => null])
 @php
     $fmt = fn ($d): string => $d instanceof \Carbon\CarbonInterface
         ? $d->timezone(config('app.display_timezone'))->format('d/m/Y')
@@ -29,24 +29,6 @@
                 Participação da comunidade <b>He4rt</b> em cada frente — <b>gente, código, conversa e presença</b>.
             @endif
         </p>
-        <div data-anim style="display: flex; flex-direction: column; gap: 18px; margin-top: 26px">
-            @foreach ($sources as $source)
-                <div>
-                    <div
-                        class="mono"
-                        style="font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brand-soft); margin-bottom: 9px"
-                    >{{ $source->label }}</div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center">
-                        @foreach ($source->headline->metrics as $metric)
-                            <span class="bdg neu" style="font-size: 1rem; padding: 7px 14px">
-                                <b style="color: var(--text)">{{ number_format($metric->value, 0, ',', '.') }}</b>
-                                {{ $metric->label }}
-                            </span>
-                        @endforeach
-                    </div>
-                </div>
-            @endforeach
-        </div>
         <div class="hint" data-anim>navegue com <kbd>←</kbd> <kbd>→</kbd></div>
     </div>
 </section>

@@ -75,10 +75,11 @@ final class DiscordSource implements CuratableSource, MeasuresPerson, Retrospect
 
     public function collect(Period $period, SourceFilters $filters): SourceResult
     {
-        $totalMessages = $this->messages($period, $filters)->count();
-        $withReactions = $this->messages($period, $filters)->where('reactions_total', '>', 0)->count();
-        $pinned = $this->messages($period, $filters)->where('is_pinned', operator: true)->count();
+        $messageTotals = $this->messageTotals($period, $filters);
         $chatters = $this->topChatters($period, $filters);
+        $messageDays = $this->messagesByWeekday($period, $filters);
+        $messageHours = $this->messagesByHour($period, $filters);
+        $messagePeak = $this->peakMessageDay($period, $filters);
 
         $voiceTotals = $this->voiceTotals($period, $filters);
         $participants = $voiceTotals['participants'];
@@ -101,17 +102,18 @@ final class DiscordSource implements CuratableSource, MeasuresPerson, Retrospect
         return new SourceResult(
             key: $this->key(),
             label: $this->label(),
-            headline: $this->headline($totalMessages, $participants, $joins, $totalReactions),
+            headline: $this->headline($messageTotals['total'], $participants, $joins, $totalReactions),
             slides: $this->slides(
                 voiceTotals: $voiceTotals,
                 channels: $channels,
                 voicePeople: $voicePeople,
                 voiceHours: $voiceHours,
                 voicePeak: $voicePeak,
-                totalMessages: $totalMessages,
-                withReactions: $withReactions,
-                pinned: $pinned,
+                messageTotals: $messageTotals,
+                messagePeak: $messagePeak,
                 chatters: $chatters,
+                messageDays: $messageDays,
+                messageHours: $messageHours,
                 joins: $joins,
                 boosts: $boosts,
                 totalReactions: $totalReactions,
@@ -258,7 +260,11 @@ final class DiscordSource implements CuratableSource, MeasuresPerson, Retrospect
      * @param  list<array{name: string, xp: int, joins: int, channels: int}>  $voicePeople
      * @param  list<array{hour: int, joins: int}>  $voiceHours
      * @param  array{date: string, joins: int}|null  $voicePeak
-     * @param  list<array{name: string, messages: int}>  $chatters
+     * @param  array{total: int, with_reactions: int, pinned: int, people: int}  $messageTotals
+     * @param  array{date: string, messages: int}|null  $messagePeak
+     * @param  list<array{name: string, messages: int, xp: int, reactions: int}>  $chatters
+     * @param  list<array{weekday: int, messages: int}>  $messageDays
+     * @param  list<array{hour: int, messages: int}>  $messageHours
      * @param  list<array{name: string, count: int, custom: bool}>  $emojis
      * @param  list<array{content: string, author: string, reactions: int}>  $topMessages
      * @return list<Slide>
@@ -269,10 +275,11 @@ final class DiscordSource implements CuratableSource, MeasuresPerson, Retrospect
         array $voicePeople,
         array $voiceHours,
         ?array $voicePeak,
-        int $totalMessages,
-        int $withReactions,
-        int $pinned,
+        array $messageTotals,
+        ?array $messagePeak,
         array $chatters,
+        array $messageDays,
+        array $messageHours,
         int $joins,
         int $boosts,
         int $totalReactions,
@@ -294,8 +301,17 @@ final class DiscordSource implements CuratableSource, MeasuresPerson, Retrospect
             );
         }
 
-        if ($totalMessages > 0) {
-            $slides[] = new MessagesSlide($totalMessages, $withReactions, $pinned, $chatters);
+        if ($messageTotals['total'] > 0) {
+            $slides[] = new MessagesSlide(
+                total: $messageTotals['total'],
+                withReactions: $messageTotals['with_reactions'],
+                pinned: $messageTotals['pinned'],
+                people: $messageTotals['people'],
+                peak: $messagePeak,
+                chatters: $chatters,
+                days: $messageDays,
+                hours: $messageHours,
+            );
         }
 
         if ($joins > 0 || $boosts > 0) {
@@ -429,7 +445,110 @@ final class DiscordSource implements CuratableSource, MeasuresPerson, Retrospect
     }
 
     /**
-     * @return list<array{name: string, messages: int}>
+     * Números do topo do painel de conversas numa passada só — mesmo argumento
+     * do voiceTotals(): messages é a maior tabela do banco e cada agregado a
+     * mais seria outra varredura do mesmo recorte.
+     *
+     * @return array{total: int, with_reactions: int, pinned: int, people: int}
+     */
+    private function messageTotals(Period $period, SourceFilters $filters): array
+    {
+        $row = $this->messages($period, $filters)
+            ->toBase()
+            ->selectRaw('COUNT(*) AS total')
+            ->selectRaw('COUNT(*) FILTER (WHERE reactions_total > 0) AS with_reactions')
+            ->selectRaw('COUNT(*) FILTER (WHERE is_pinned) AS pinned')
+            ->selectRaw('COUNT(DISTINCT external_identity_id) AS people')
+            ->first();
+
+        return [
+            'total' => $this->countOf($row?->total),
+            'with_reactions' => $this->countOf($row?->with_reactions),
+            'pinned' => $this->countOf($row?->pinned),
+            'people' => $this->countOf($row?->people),
+        ];
+    }
+
+    /**
+     * O dia mais falante do recorte, agrupado no fuso de exibição — ver
+     * peakVoiceDay() para o porquê do fuso e do GROUP BY posicional.
+     *
+     * @return array{date: string, messages: int}|null
+     */
+    private function peakMessageDay(Period $period, SourceFilters $filters): ?array
+    {
+        $row = $this->messages($period, $filters)
+            ->toBase()
+            ->selectRaw('(sent_at AT TIME ZONE ?)::date AS day', [$this->displayTimezone()])
+            ->selectRaw('COUNT(*) AS messages')
+            ->groupByRaw('1')
+            ->orderByRaw('2 DESC')
+            ->first();
+
+        $messages = $this->countOf($row?->messages);
+        $day = $row?->day;
+
+        if ($messages === 0 || (!is_string($day) && !$day instanceof DateTimeInterface)) {
+            return null;
+        }
+
+        return [
+            'date' => CarbonImmutable::parse($day)->format('d/m'),
+            'messages' => $messages,
+        ];
+    }
+
+    /**
+     * Mensagens por dia da semana, no fuso de exibição, com as 7 posições
+     * sempre presentes (ISO: 1 = segunda) — dia sem papo é uma barra zerada,
+     * não uma barra ausente.
+     *
+     * @return list<array{weekday: int, messages: int}>
+     */
+    private function messagesByWeekday(Period $period, SourceFilters $filters): array
+    {
+        $counts = $this->messages($period, $filters)
+            ->toBase()
+            ->selectRaw('EXTRACT(ISODOW FROM sent_at AT TIME ZONE ?)::int AS weekday', [$this->displayTimezone()])
+            ->selectRaw('COUNT(*) AS messages')
+            // Ver peakVoiceDay(): agrupar pela posição evita o segundo placeholder.
+            ->groupByRaw('1')
+            ->pluck('messages', 'weekday');
+
+        return array_map(
+            static fn (int $weekday): array => ['weekday' => $weekday, 'messages' => (int) ($counts[$weekday] ?? 0)],
+            range(1, 7),
+        );
+    }
+
+    /**
+     * Mensagens por hora do dia, no fuso de exibição, com as 24 posições sempre
+     * presentes — o histograma é irmão do voiceByHour().
+     *
+     * @return list<array{hour: int, messages: int}>
+     */
+    private function messagesByHour(Period $period, SourceFilters $filters): array
+    {
+        $counts = $this->messages($period, $filters)
+            ->toBase()
+            ->selectRaw('EXTRACT(HOUR FROM sent_at AT TIME ZONE ?)::int AS hour', [$this->displayTimezone()])
+            ->selectRaw('COUNT(*) AS messages')
+            // Ver peakVoiceDay(): agrupar pela posição evita o segundo placeholder.
+            ->groupByRaw('1')
+            ->pluck('messages', 'hour');
+
+        return array_map(
+            static fn (int $hour): array => ['hour' => $hour, 'messages' => (int) ($counts[$hour] ?? 0)],
+            range(0, 23),
+        );
+    }
+
+    /**
+     * Quem mais conversou: mensagens, XP tirado delas e quanta reação o que a
+     * pessoa escreveu puxou. Só o topo resolve nome (uma query a mais para 8
+     * linhas).
+     *
+     * @return list<array{name: string, messages: int, xp: int, reactions: int}>
      */
     private function topChatters(Period $period, SourceFilters $filters): array
     {
@@ -437,7 +556,12 @@ final class DiscordSource implements CuratableSource, MeasuresPerson, Retrospect
             ->groupBy('external_identity_id')
             ->orderByRaw('COUNT(*) DESC')
             ->limit(8)
-            ->get(['external_identity_id', DB::raw('COUNT(*) AS messages')]);
+            ->get([
+                'external_identity_id',
+                DB::raw('COUNT(*) AS messages'),
+                DB::raw('COALESCE(SUM(obtained_experience), 0) AS xp'),
+                DB::raw('COALESCE(SUM(reactions_total), 0) AS reactions'),
+            ]);
 
         $names = $this->displayNames($this->identityIds($rows));
 
@@ -445,6 +569,8 @@ final class DiscordSource implements CuratableSource, MeasuresPerson, Retrospect
             $rows->map(fn (Message $row): array => [
                 'name' => $names[$row->external_identity_id] ?? 'Anônimo',
                 'messages' => (int) $row->getAttribute('messages'),
+                'xp' => (int) $row->getAttribute('xp'),
+                'reactions' => (int) $row->getAttribute('reactions'),
             ])->all(),
         );
     }

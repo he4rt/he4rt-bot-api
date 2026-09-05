@@ -1,4 +1,4 @@
-@props (['person', 'rank' => null, 'size' => 44, 'compact' => false])
+@props (['person', 'rank' => null, 'size' => 44, 'compact' => false, 'maxTotal' => null])
 @php ($ns = $size >= 80 ? '1.7rem' : '1.18rem')
 <div class="card">
     <div class="phead">
@@ -28,7 +28,7 @@
             <span class="total-pill">#{{ $rank }}</span>
         @endif
     </div>
-    <x-portal::retro.composition-bar :person="$person" />
+    <x-portal::retro.composition-bar :person="$person" :max-total="$maxTotal" />
     @if ($compact)
         <x-portal::retro.activity-icons :person="$person" />
     @else

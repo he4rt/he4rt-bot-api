@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace He4rt\Community\Retrospective\DTOs;
 
+use Carbon\CarbonImmutable;
 use He4rt\Community\Retrospective\Enums\PromotionStage;
 
 /**
@@ -28,6 +29,7 @@ final readonly class PromotionCard
         public PromotionStage $stage,
         public ?string $reason = null,
         public array $groups = [],
+        public ?CarbonImmutable $memberSince = null,
     ) {}
 
     /**
@@ -43,6 +45,7 @@ final readonly class PromotionCard
         }
 
         $reason = $payload['reason'] ?? null;
+        $memberSince = $payload['member_since'] ?? null;
 
         return new self(
             userId: $userId,
@@ -52,6 +55,9 @@ final readonly class PromotionCard
             stage: $stage,
             reason: is_string($reason) && $reason !== '' ? $reason : null,
             groups: self::groups($payload['groups'] ?? []),
+            memberSince: is_string($memberSince) && $memberSince !== ''
+                ? CarbonImmutable::parse($memberSince)
+                : null,
         );
     }
 
@@ -67,6 +73,7 @@ final readonly class PromotionCard
             'avatar' => $this->avatar,
             'stage' => $this->stage->value,
             'reason' => $this->reason,
+            'member_since' => $this->memberSince?->toIso8601String(),
             'groups' => array_map(
                 fn (PromotionMetricGroup $group): array => [
                     'source_key' => $group->sourceKey,

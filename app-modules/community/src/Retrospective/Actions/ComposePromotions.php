@@ -76,6 +76,7 @@ final readonly class ComposePromotions
                 stage: $entry->stage,
                 reason: $entry->reason,
                 groups: $this->groups($person, $period, $filters),
+                memberSince: $person->memberSince,
             );
         }
 

@@ -131,9 +131,12 @@ it('apresenta a He4rt entre a capa e os números', function (): void {
         ->assertSee('Reunião Semanal')
         ->assertSee('Spaces')
         ->assertSee('frequência de encontro')
-        // Canais: vêm do config, e o que este recorte mediu leva selo.
+        // Canais: constelação com todos em pé de igualdade — vêm do config,
+        // e nenhum leva selo nem CTA próprio.
+        ->assertSee('Todos os caminhos dão no mesmo lugar')
         ->assertSee('github.com')
-        ->assertSee('medido aqui');
+        ->assertSee('class="const-star"', escape: false)
+        ->assertDontSee('medido aqui');
 });
 
 it('não anuncia marco que ainda não tinha acontecido no recorte', function (): void {

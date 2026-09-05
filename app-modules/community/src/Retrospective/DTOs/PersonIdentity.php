@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace He4rt\Community\Retrospective\DTOs;
 
+use Carbon\CarbonImmutable;
+
 /**
  * Uma pessoa do deck em termos que TODA fonte entende: quem ela é para exibição
  * mais as contas que ela tem em cada plataforma.
@@ -18,6 +20,7 @@ final readonly class PersonIdentity
 {
     /**
      * @param  array<string, PersonAccount>  $accounts  provider => conta
+     * @param  CarbonImmutable|null  $memberSince  o mais antigo entre entrar no Discord e criar a conta no site
      */
     public function __construct(
         public string $userId,
@@ -25,6 +28,7 @@ final readonly class PersonIdentity
         public string $username,
         public string $avatar,
         public array $accounts = [],
+        public ?CarbonImmutable $memberSince = null,
     ) {}
 
     public function account(string $provider): ?PersonAccount

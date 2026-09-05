@@ -93,6 +93,7 @@ final class GithubSource implements CuratableSource, MeasuresPerson, Retrospecti
             // Repos exibidos = só os com PR no recorte (mesmo universo dos cards).
             'repos' => count($repos),
             'total' => $contributions->count(),
+            'days' => max(1, (int) ceil($period->since->diffInDays($period->until))),
         ];
 
         return new SourceResult(
@@ -494,12 +495,23 @@ final class GithubSource implements CuratableSource, MeasuresPerson, Retrospecti
                         ->sortByDesc(fn (array $pr): int => $pr['additions'] + $pr['deletions'])
                         ->values()
                         ->all(),
+                    // Quem mais abriu PR primeiro; presença sem PR (review,
+                    // issue, comentário) fica no fim com métricas zeradas — o
+                    // trilho do slide separa os dois grupos por esse critério.
                     'people' => $items
                         ->groupBy('actor_login')
-                        ->map(fn (Collection $group, string $login): array => [
-                            'login' => $login,
-                            'avatar' => $this->avatar($login, $group->first()?->actor_id),
-                        ])
+                        ->map(function (Collection $group, string $login): array {
+                            $authored = $group->filter(fn (GithubContribution $contribution): bool => $contribution->type === ContributionType::Pr);
+
+                            return [
+                                'login' => $login,
+                                'avatar' => $this->avatar($login, $group->first()?->actor_id),
+                                'prs' => $authored->count(),
+                                'additions' => $this->sumMeta($authored, 'additions'),
+                                'deletions' => $this->sumMeta($authored, 'deletions'),
+                            ];
+                        })
+                        ->sort(fn (array $a, array $b): int => [$b['prs'], $b['additions'] + $b['deletions']] <=> [$a['prs'], $a['additions'] + $a['deletions']])
                         ->values()
                         ->all(),
                     'metrics' => [

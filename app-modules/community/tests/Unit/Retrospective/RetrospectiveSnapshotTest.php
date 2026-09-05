@@ -2,11 +2,14 @@
 
 declare(strict_types=1);
 
+use Carbon\CarbonImmutable;
 use He4rt\Community\Retrospective\DTOs\HeadlineMetrics;
 use He4rt\Community\Retrospective\DTOs\Metric;
+use He4rt\Community\Retrospective\DTOs\PromotionCard;
 use He4rt\Community\Retrospective\DTOs\RetrospectiveSnapshot;
 use He4rt\Community\Retrospective\DTOs\SourceFilters;
 use He4rt\Community\Retrospective\DTOs\SourceResult;
+use He4rt\Community\Retrospective\Enums\PromotionStage;
 use He4rt\Community\Retrospective\Slides\FrozenSlide;
 
 it('faz round-trip e reidrata slides como FrozenSlide', function (): void {
@@ -76,4 +79,30 @@ it('assume os filtros padrão em snapshot antigo, sem a chave', function (): voi
 
     expect($restored->filters->hideBots)->toBeTrue()
         ->and($restored->filters->exclusions)->toBeEmpty();
+});
+
+it('congela e reidrata o member_since dos cartões da tag', function (): void {
+    $card = new PromotionCard(
+        userId: 'u1',
+        name: 'Fulana',
+        username: 'fulana',
+        avatar: 'a.png',
+        stage: PromotionStage::Promoted,
+        memberSince: CarbonImmutable::parse('2020-03-01T00:00:00+00:00'),
+    );
+
+    $payload = $card->toArray();
+    $hydrated = PromotionCard::makeFromPayload($payload);
+
+    expect($payload['member_since'])->toBe('2020-03-01T00:00:00+00:00')
+        ->and($hydrated?->memberSince?->toIso8601String())->toBe('2020-03-01T00:00:00+00:00');
+});
+
+it('cartão congelado antes do member_since reidrata sem a data', function (): void {
+    $hydrated = PromotionCard::makeFromPayload([
+        'user_id' => 'u1',
+        'stage' => 'promoted',
+    ]);
+
+    expect($hydrated?->memberSince)->toBeNull();
 });

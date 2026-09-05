@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Carbon\CarbonImmutable;
 use He4rt\Community\Retrospective\DTOs\DeckConfig;
 use He4rt\Community\Retrospective\DTOs\Metric;
 use He4rt\Community\Retrospective\DTOs\PromotionCard;
@@ -23,6 +24,7 @@ function promoCard(string $id, PromotionStage $stage, ?string $reason = 'segurou
             new PromotionMetricGroup('discord', 'Discord', [new Metric('Mensagens', 8_132)]),
             new PromotionMetricGroup('github', 'GitHub', [new Metric('PRs', 47)]),
         ],
+        memberSince: CarbonImmutable::parse('2021-03-10 12:00:00'),
     );
 }
 
@@ -51,7 +53,7 @@ it('não desenha slide sem ninguém e obedece o on/off da curadoria', function (
         ->and($slides[0]->kind)->toBe(PromotionSection::SPOTLIGHT);
 });
 
-it('conta um passo de abertura mais três por pessoa só no slide da tag', function (): void {
+it('conta abertura, três por pessoa e o finale só no slide da tag', function (): void {
     $slides = PromotionSection::slides(
         [
             promoCard('u1', PromotionStage::Spotlight),
@@ -62,7 +64,7 @@ it('conta um passo de abertura mais três por pessoa só no slide da tag', funct
     );
 
     expect($slides[0]->steps())->toBe(0)
-        ->and($slides[1]->steps())->toBe(7);
+        ->and($slides[1]->steps())->toBe(8);
 });
 
 it('a view da tag declara os passos e marca cada faixa da revelação', function (): void {
@@ -70,15 +72,19 @@ it('a view da tag declara os passos e marca cada faixa da revelação', function
 
     $html = Blade::render('@include("portal::retro.slides.he4rt.tag", ["cards" => $cards])', ['cards' => $cards]);
 
-    // 1 + 3 por pessoa; a primeira pessoa entra no passo 1 e a segunda no 4.
-    expect($html)->toContain('data-steps="7"')
+    // 2 + 3 por pessoa; a primeira pessoa entra no passo 1, a segunda no 4 e o
+    // finale — o marcador que recua a câmera — ocupa o último passo.
+    expect($html)->toContain('data-steps="8"')
         ->and($html)->toContain('data-reveal="0"')
         ->and($html)->toContain('data-reveal="1"')
         ->and($html)->toContain('data-reveal="2"')
         ->and($html)->toContain('data-reveal="3"')
         ->and($html)->toContain('data-reveal="4"')
+        ->and($html)->toContain('class="promo-finale" data-reveal="7"')
         ->and($html)->toContain('Fulana u1')
-        ->and($html)->toContain('8.132');
+        ->and($html)->toContain('8.132')
+        ->and($html)->toContain('na comunidade desde')
+        ->and($html)->toContain('2021');
 });
 
 it('o slide de destaques mostra todo mundo e não consome setas', function (): void {

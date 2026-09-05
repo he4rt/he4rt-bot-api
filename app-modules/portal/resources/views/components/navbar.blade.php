@@ -45,55 +45,57 @@
         {{-- a PILL de vidro --}}
         <nav
             :class="scrolled
-                ? 'mt-2 bg-elevation-surface/80 py-2 shadow-lg shadow-zinc-950/12 dark:shadow-black/40'
-                : 'mt-4 bg-elevation-surface/55 py-3 shadow-md shadow-zinc-950/8 dark:shadow-black/20'"
-            class="relative flex items-center justify-between gap-4 rounded-2xl px-4 ring-1 ring-zinc-950/8 backdrop-blur-xl transition-all duration-300 dark:ring-white/10 md:px-6"
+                ? 'mt-2 bg-elevation-surface/80 py-3 dark:bg-zinc-900/80'
+                : 'mt-4 bg-elevation-surface/55 py-4 dark:bg-zinc-900/60'"
+            class="relative flex items-center justify-between gap-4 rounded-2xl px-4 shadow-md backdrop-blur-xl transition-all duration-300 dark:rounded-xl dark:shadow-white/5 md:px-6"
         >
             <x-portal::logo size="sm" />
 
             {{-- navegação + CTAs alinhados à direita (desktop) --}}
-            <div class="hidden items-center gap-6 lg:flex">
-                <div class="flex items-center gap-1">
+            <div class="hidden items-center gap-8 lg:flex">
+                <div class="flex items-center gap-4">
                     @foreach ($links as $link)
                         <a
                             href="{{ $link['href'] }}"
                             @if ($link['active']) aria-current="page" @endif
-                            class="group relative rounded-full px-3 py-1.5 text-sm font-medium transition-colors {{ $link['active'] ? 'text-text-high' : 'text-text-medium hover:text-text-high' }}"
+                            class="relative border-b px-3 py-1.5 text-sm transition-all duration-200 hover:-translate-y-0.5 {{ $link['active'] ? 'text-text-high border-purple-700 font-semibold' : 'text-text-medium hover:text-text-high border-transparent font-medium' }}"
                         >
-                            <span
-                                class="absolute inset-0 -z-10 rounded-full bg-zinc-950/5 transition-opacity dark:bg-white/5 {{ $link['active'] ? 'opacity-100' : 'opacity-0 group-hover:opacity-100' }}"
-                            ></span>
                             {{ $link['label'] }}
-                            @if ($link['active'])
-                                <span
-                                    class="absolute -bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[var(--primary)]"
-                                ></span>
-                            @endif
                         </a>
                     @endforeach
-                </div>
 
-                <div class="flex items-center gap-2">
                     <x-he4rt::button
                         href="https://loja.heartdevs.com/he4rt/"
                         size="sm"
                         variant="outline"
-                        icon="heroicon-s-shopping-bag"
+                        icon="heroicon-o-shopping-bag"
                         iconPosition="leading"
-                        iconOnly
                         aria-label="Loja"
                         target="_blank"
                         rel="noopener"
-                    />
-                    <x-he4rt::button href="/app" size="sm" variant="outline"> Área do Usuário </x-he4rt::button>
+                        class="text-text-medium hover:text-text-high rounded-lg border-none bg-transparent px-3 py-2.5 font-medium hover:bg-transparent focus:ring-2 focus:ring-purple-600"
+                    >
+                        Loja
+                    </x-he4rt::button>
+                </div>
+
+                <div class="flex items-center gap-3">
                     <x-he4rt::button
                         href="https://discord.gg/he4rt"
                         size="sm"
                         icon="fab-discord"
                         iconPosition="leading"
-                        class="hp-navbar-static-icon"
+                        class="hp-navbar-static-icon dark:text-text-high rounded-lg bg-none bg-[#f3e8ff] px-4 py-2.5 text-sm font-medium text-purple-600 hover:bg-[#e9d5ff] focus:ring-2 focus:ring-purple-600 dark:bg-[#8525d8]/15 dark:hover:bg-[#8525d8]/25"
                     >
                         Discord
+                    </x-he4rt::button>
+                    <x-he4rt::button
+                        href="/app"
+                        size="sm"
+                        variant="outline"
+                        class="text-text-light focus:ring-offset-elevation-surface rounded-lg border-none bg-purple-600 px-4 py-2.5 text-sm font-semibold shadow-sm hover:bg-purple-700 focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"
+                    >
+                        Área do Usuário
                     </x-he4rt::button>
                 </div>
             </div>

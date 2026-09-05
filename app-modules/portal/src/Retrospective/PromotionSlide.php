@@ -50,13 +50,14 @@ final readonly class PromotionSlide
      * Quantos apertos de seta o slide consome antes de liberar a navegação.
      *
      * A revelação é granular — nome, números e motivo de cada pessoa, um passo
-     * por vez — mais o passo 0, que abre com a pergunta e ninguém na tela. O
+     * por vez — entre o passo 0, que abre com a pergunta e ninguém na tela, e o
+     * passo final, em que a câmera recua e revela todo mundo lado a lado. O
      * slide de destaques não revela nada: mostra a grade inteira de uma vez.
      */
     public function steps(): int
     {
         return $this->stage === PromotionStage::Promoted
-            ? 1 + (count($this->cards) * 3)
+            ? 2 + (count($this->cards) * 3)
             : 0;
     }
 }

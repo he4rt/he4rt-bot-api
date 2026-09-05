@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace He4rt\Community\Retrospective\Actions;
 
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
+use He4rt\Community\Retrospective\Contracts\MembershipDates;
 use He4rt\Community\Retrospective\Contracts\PersonDirectory;
 use He4rt\Community\Retrospective\DTOs\PersonAccount;
 use He4rt\Community\Retrospective\DTOs\PersonIdentity;
+use He4rt\Identity\ExternalIdentity\Enums\IdentityProvider;
 use He4rt\Identity\User\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -23,6 +27,8 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  */
 final readonly class ResolvePeople implements PersonDirectory
 {
+    public function __construct(private MembershipDates $membershipDates) {}
+
     /**
      * @param  list<string>  $userIds
      * @return array<string, PersonIdentity> id do usuário => pessoa
@@ -43,10 +49,17 @@ final readonly class ResolvePeople implements PersonDirectory
             ->whereIn('id', array_values(array_unique($userIds)))
             ->get();
 
+        $accountsByUser = [];
+
+        foreach ($users as $user) {
+            $accountsByUser[$user->id] = $this->accounts($user);
+        }
+
+        $joinedAt = $this->joinedAt($accountsByUser);
         $people = [];
 
         foreach ($users as $user) {
-            $accounts = $this->accounts($user);
+            $accounts = $accountsByUser[$user->id];
 
             $people[$user->id] = new PersonIdentity(
                 userId: $user->id,
@@ -54,6 +67,7 @@ final readonly class ResolvePeople implements PersonDirectory
                 username: $user->username,
                 avatar: $this->avatar($user, $accounts),
                 accounts: $accounts,
+                memberSince: $this->memberSince($user, $accounts, $joinedAt),
             );
         }
 
@@ -85,30 +99,89 @@ final readonly class ResolvePeople implements PersonDirectory
     }
 
     /**
-     * Cascata do mais próprio para o mais genérico: a foto que a pessoa subiu
-     * aqui, depois a das plataformas, e só então o fallback pelo username.
+     * GitHub primeiro, Discord depois, o do sistema por último.
      *
-     * O fallback é o último a entrar de propósito — `getFilamentAvatarUrl()` monta
-     * a URL do GitHub com o username DO SITE, que na maioria das contas não existe
-     * lá e devolve a imagem de erro.
+     * A URL `github.com/{username}.png` usa o username da conta VINCULADA, então
+     * sempre resolve para a foto real — diferente do fallback final, que monta a
+     * mesma URL com o username do site e costuma devolver a imagem de erro.
      *
      * @param  array<string, PersonAccount>  $accounts
      */
     private function avatar(User $user, array $accounts): string
     {
+        $github = $accounts[IdentityProvider::GitHub->value] ?? null;
+
+        if ($github?->username !== null) {
+            return sprintf('https://github.com/%s.png', $github->username);
+        }
+
+        $discord = $accounts[IdentityProvider::Discord->value] ?? null;
+
+        if ($discord?->avatar !== null && $discord->avatar !== '') {
+            return $discord->avatar;
+        }
+
         $uploaded = $user->getFirstMediaUrl('avatar');
 
         if ($uploaded !== '') {
             return $uploaded;
         }
 
-        foreach ($accounts as $account) {
-            if ($account->avatar !== null && $account->avatar !== '') {
-                return $account->avatar;
+        return sprintf('https://github.com/%s.png', $user->username);
+    }
+
+    /**
+     * Desde quando a pessoa está na comunidade: o que vier PRIMEIRO entre entrar
+     * no servidor do Discord e criar a conta no site. A conta do site costuma vir
+     * anos depois da chegada, então sem a data do Discord o "desde" mentiria.
+     *
+     * @param  array<string, PersonAccount>  $accounts
+     * @param  array<string, CarbonImmutable>  $joinedAt  id da identidade => entrada no Discord
+     */
+    private function memberSince(User $user, array $accounts, array $joinedAt): ?CarbonImmutable
+    {
+        $dates = [];
+
+        if ($user->created_at instanceof CarbonInterface) {
+            $dates[] = $user->created_at->toImmutable();
+        }
+
+        $discord = $accounts[IdentityProvider::Discord->value] ?? null;
+
+        if ($discord !== null && isset($joinedAt[$discord->identityId])) {
+            $dates[] = $joinedAt[$discord->identityId];
+        }
+
+        if ($dates === []) {
+            return null;
+        }
+
+        usort($dates, static fn (CarbonImmutable $a, CarbonImmutable $b): int => $a <=> $b);
+
+        return $dates[0];
+    }
+
+    /**
+     * Uma ida só à integração para o lote inteiro, pelo mesmo motivo do
+     * carregamento dos usuários: são poucos cartões, mas perguntar pessoa a
+     * pessoa custaria uma query por cartão.
+     *
+     * @param  array<string, array<string, PersonAccount>>  $accountsByUser
+     * @return array<string, CarbonImmutable>
+     */
+    private function joinedAt(array $accountsByUser): array
+    {
+        $identityIds = [];
+
+        foreach ($accountsByUser as $accounts) {
+            $discord = $accounts[IdentityProvider::Discord->value] ?? null;
+
+            if ($discord !== null) {
+                $identityIds[] = $discord->identityId;
             }
         }
 
-        return sprintf('https://github.com/%s.png', $user->username);
+        return $this->membershipDates->execute($identityIds);
     }
 
     private function stringOrNull(mixed $value): ?string

@@ -124,23 +124,27 @@
                     $dispatch('retro-moved', { index: this.active });
                 }
             },
+            // Método, não expressão inline: o Alpine compila atributo como
+            // `__self.result = <expressão>`, e um bloco multi-linha ali é
+            // SyntaxError silencioso — o teclado inteiro morre.
+            keyboard($event) {
+                // Embutido no builder, o deck divide o teclado com o inspector:
+                // setas dentro de um campo movem o cursor, não o deck.
+                if ($event.target.closest('input, textarea, select, [contenteditable]')) return;
+
+                if ($event.key === 'ArrowRight') {
+                    this.forward();
+                    $event.preventDefault();
+                } else if ($event.key === 'ArrowLeft') {
+                    this.back();
+                    $event.preventDefault();
+                }
+            },
         }"
         {{-- Navegação por fora do deck: o Deck Builder aponta o preview para o
              slide que o operador acabou de selecionar na coluna de estrutura. --}}
         x-on:retro-goto.window="go($event.detail.index, { silent: true })"
-        @keydown.window="
-            // Embutido no builder, o deck divide o teclado com o inspector: setas
-            // dentro de um campo movem o cursor, não o deck.
-            if ($event.target.closest('input, textarea, select, [contenteditable]')) return;
-
-            if ($event.key === 'ArrowRight') {
-                forward();
-                $event.preventDefault();
-            } else if ($event.key === 'ArrowLeft') {
-                back();
-                $event.preventDefault();
-            }
-        "
+        @keydown.window="keyboard($event)"
     >
         @unless ($bare)
             <div class="progress">

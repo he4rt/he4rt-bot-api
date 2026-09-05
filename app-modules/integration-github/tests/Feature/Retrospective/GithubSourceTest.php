@@ -99,6 +99,7 @@ it('agrega contribuições por pessoa com contagem por tipo e total, ordenado de
 
     expect($meta['people'])->toBe(2)
         ->and($meta['total'])->toBe(3)
+        ->and($meta['days'])->toBe(7)
         ->and($people[0]['login'])->toBe('maria')
         ->and($people[0]['total'])->toBe(2)
         ->and($people[0]['prs'])->toBe(1)
@@ -217,6 +218,20 @@ it('agrupa PRs por repositório e lista destaques por linhas mudadas', function 
         ->and($highlights[0]['num'])->toBe(1)
         ->and($highlights[0]['additions'])->toBe(500)
         ->and($highlights[0]['repo'])->toBe('he4rt/heartdevs.com');
+});
+
+it('quebra as pessoas do repo por PRs e churn, autores antes de quem só esteve por perto', function (): void {
+    ghContribution(['actor_login' => 'joao', 'repo' => 'he4rt/x', 'type' => ContributionType::Pr, 'external_ref' => 'pr:2', 'occurred_at' => '2026-06-02', 'metadata' => ['state' => 'open', 'merged' => false, 'title' => 'pequeno', 'url' => 'u2', 'additions' => 10, 'deletions' => 2, 'changed_files' => 1]]);
+    ghContribution(['actor_login' => 'ana', 'repo' => 'he4rt/x', 'type' => ContributionType::Review, 'external_ref' => 'review:1', 'occurred_at' => '2026-06-02']);
+    ghContribution(['actor_login' => 'maria', 'repo' => 'he4rt/x', 'type' => ContributionType::Pr, 'external_ref' => 'pr:1', 'occurred_at' => '2026-06-02', 'metadata' => ['state' => 'merged', 'merged' => true, 'title' => 'grande', 'url' => 'u1', 'additions' => 500, 'deletions' => 100, 'changed_files' => 5]]);
+
+    $people = ghRepos(($this->collect)())[0]['people'];
+
+    expect(array_column($people, 'login'))->toBe(['maria', 'joao', 'ana'])
+        ->and($people[0]['prs'])->toBe(1)
+        ->and($people[0]['additions'])->toBe(500)
+        ->and($people[0]['deletions'])->toBe(100)
+        ->and($people[2]['prs'])->toBe(0);
 });
 
 it('esconde da lista repos sem PR no recorte mas mantém suas contribuições nas stats', function (): void {

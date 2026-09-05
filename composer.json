@@ -125,7 +125,8 @@
             "composer run-script post-root-package-install",
             "composer run-script key:generate",
             "composer run-script post-create-project-cmd",
-            "@php artisan storage:link --ansi"
+            "@php artisan storage:link --ansi",
+            "@php artisan he4rt:boost-reminder --ansi"
         ],
         "bot": "@php artisan bot:boot",
         "dev": [

@@ -6,7 +6,6 @@
         <x-portal::retro.slides.empty />
     @else
         <x-portal::retro.slides.cover
-            :sources="$sources"
             :since="$since"
             :until="$until"
             :coverTitle="$coverTitle ?? null"

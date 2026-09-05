@@ -3,54 +3,91 @@
     chegou de fora — daqui em diante o deck só fala em números, e eles já vão
     fazer sentido.
 
-    Os canais saem do config `he4rt.social_media`, a mesma fonte da página /redes:
-    um link novo aparece aqui sem ninguém lembrar de vir editar o deck. Os canais
-    que ESTE recorte mediu ganham selo, que é o que amarra a apresentação aos
-    slides seguintes em vez de deixar uma lista de links solta.
+    Constelação: os canais são estrelas na MESMA órbita, equidistantes do
+    coração da He4rt. Nenhum canal manda — a igualdade não é dita, é geométrica,
+    e "a He4rt não cabe num lugar só" vira literal: toda porta dá no mesmo
+    centro. Por isso não há CTA — o destino é o núcleo, as portas são todas.
+
+    Os canais saem do config `he4rt.social_media`, a mesma fonte da página
+    /redes: um link novo entra na órbita e as estrelas se redistribuem sozinhas,
+    sem ninguém lembrar de vir editar o deck.
 --}}
 @php
-    $measured = collect($sources)->pluck('key')->all();
     $links = \He4rt\Portal\SocialLinks\SocialLinksPage::links();
-    $discord = config()->string('he4rt.social_media.discord.url');
+    $count = max(count($links), 1);
+
+    /*
+     | Raio em % da caixa da constelação, não em px: a órbita escala com o slide
+     | e sobra borda para o rótulo de cada estrela não vazar do quadrado.
+     */
+    $radius = 41;
 @endphp
 <section class="slide" data-label="Onde entrar">
     <div class="slide-inner">
-        <span class="sec-tag" data-anim>Onde encontrar</span>
-        <h2 class="sec" data-anim>A He4rt não cabe num lugar só</h2>
-        <p class="sec-sub" data-anim>
-            O Discord é a sala de estar e o GitHub é a bancada. O resto é por onde a comunidade
-            aparece para quem ainda não chegou — sem processo seletivo, nível mínimo nem
-            linguagem certa.
-        </p>
+        <div class="join-grid">
+            <div>
+                <span class="sec-tag" data-anim>Onde encontrar</span>
+                <h2 class="sec" data-anim>Todos os caminhos dão no mesmo lugar</h2>
+                <p class="sec-sub" data-anim>
+                    Não existe porta principal. Cada canal é uma entrada com a mesma distância
+                    do centro — <b style="color: var(--text)">sem processo seletivo, nível mínimo
+                    nem linguagem certa</b>. Escolhe a tua e chega.
+                </p>
+                <p class="hint" data-anim>↗ cada estrela é clicável</p>
+            </div>
 
-        <div class="pgrid" data-anim style="margin-top: 26px">
-            @foreach ($links as $link)
-                <a class="card chan" href="{{ $link->url }}" target="_blank" rel="noopener">
-                    <span class="chan-ic">
-                        <x-filament::icon :icon="$link->icon" />
-                    </span>
+            {{--
+                `--n` dimensiona o ciclo de energia: a cada tique de 2,5s a
+                estrela seguinte acende e o raio dela alimenta o núcleo, dando a
+                volta completa em `$count` tiques. Estrela e raio compartilham o
+                mesmo `--i`, então os dois pulsam juntos.
+            --}}
+            <div class="const" data-anim style="--n: {{ $count }}">
+                <div class="const-ring" aria-hidden="true"></div>
 
-                    <span style="min-width: 0">
-                        <span class="chan-name">{{ $link->label }}</span>
-                        <span class="chan-host">
-                            {{ \Illuminate\Support\Str::of($link->url)->after('//')->before('/') }}
+                @foreach ($links as $position => $link)
+                    <span
+                        class="const-spoke"
+                        aria-hidden="true"
+                        style="
+                            transform: rotate({{ round(-90 + ($position * 360 / $count), 2) }}deg);
+                            --i: {{ $position }};
+                            --ac: {{ $link->accentDark ?? $link->accent }};
+                        "
+                    ></span>
+                @endforeach
+
+                <span class="const-core" aria-hidden="true">&lt;4</span>
+
+                @foreach ($links as $position => $link)
+                    @php
+                        $angle = deg2rad(-90 + ($position * 360 / $count));
+                    @endphp
+                    <a
+                        class="const-star"
+                        href="{{ $link->url }}"
+                        target="_blank"
+                        rel="noopener"
+                        style="
+                            --sx: {{ round(50 + $radius * cos($angle), 2) }}%;
+                            --sy: {{ round(50 + $radius * sin($angle), 2) }}%;
+                            --ac: {{ $link->accentDark ?? $link->accent }};
+                            --i: {{ $position }};
+                        "
+                    >
+                        <span class="const-star-ic">
+                            <x-filament::icon :icon="$link->icon" />
                         </span>
-                    </span>
 
-                    @if (in_array($link->key, $measured, strict: true))
-                        <span class="bdg neu" style="margin-inline-start: auto">medido aqui</span>
-                    @endif
-                </a>
-            @endforeach
-        </div>
-
-        <div data-anim style="text-align: center">
-            <a class="cta" href="{{ $discord }}" target="_blank" rel="noopener">
-                Entrar na He4rt
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
-                    <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-            </a>
+                        <span class="const-star-label">
+                            <span class="const-star-name">{{ $link->label }}</span>
+                            <span class="const-star-host">
+                                {{ \Illuminate\Support\Str::of($link->url)->after('//')->before('/') }}
+                            </span>
+                        </span>
+                    </a>
+                @endforeach
+            </div>
         </div>
     </div>
 </section>
