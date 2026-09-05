@@ -18,8 +18,8 @@
             {{ $this->form }}
         </div>
 
-        {{-- Preview card + connections (right, 1/3, sticky) --}}
-        <div class="hidden space-y-6 xl:sticky xl:top-4 xl:block">
+        {{-- Preview card + connections (right, 1/3, sticky no desktop) --}}
+        <div class="space-y-6 xl:sticky xl:top-4">
             @include ('panel-app::components.profile-preview-card',
                 [
                     'data' => $this->data,
