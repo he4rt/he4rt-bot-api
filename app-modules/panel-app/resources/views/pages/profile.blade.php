@@ -10,6 +10,9 @@
                 [
                     'avatarPreviewUrl' => $this->avatarPreviewUrl,
                     'coverPreviewUrl' => $this->coverPreviewUrl,
+                    'coverAspectRatio' => $this->coverAspectRatio,
+                    'coverFocalY' => $this->coverFocalY,
+                    'avatarFocalY' => $this->avatarFocalY,
                     'initials' => $this->initials,
                     'name' => auth()->user()->name,
                     'birthdateForm' => $this->birthdateForm,
@@ -27,7 +30,10 @@
                     'character' => $this->character,
                     'initials' => $this->initials,
                     'avatarPreviewUrl' => $this->avatarPreviewUrl,
-                    'coverPreviewUrl' => $this->coverPreviewUrl
+                    'coverPreviewUrl' => $this->coverPreviewUrl,
+                    'coverAspectRatio' => $this->coverAspectRatio,
+                    'coverFocalY' => $this->coverFocalY,
+                    'avatarFocalY' => $this->avatarFocalY
                 ])
 
             <div class="rounded-xl bg-white p-4 ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10">

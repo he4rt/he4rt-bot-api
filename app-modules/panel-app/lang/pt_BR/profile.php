@@ -58,12 +58,21 @@ return [
     ],
 
     'hints' => [
+        'adjust_framing' => 'Arraste para escolher a faixa da imagem que fica visível.',
+        'image_upload' => ':formats até :max_mb MB. Recomendado :width × :height px, mínimo :min_width × :min_height px depois do recorte. GIF mantém a animação, mas o recorte a remove.',
+        'image_upload_with_gif_limit' => ':formats até :max_mb MB, GIF até :gif_mb MB. Recomendado :width × :height px, mínimo :min_width × :min_height px depois do recorte. GIF mantém a animação, mas o recorte a remove.',
         'headline' => 'Ex: Frontend Developer, Product Designer',
         'available_for_proposals' => 'Quando ativo, recrutadores verão um badge verde no seu perfil',
         'has_disability' => 'Informação sensível — usada apenas para vagas afirmativas/PcD.',
         'expected_salary' => 'Valor mensal em R$. Informação privada, usada apenas em propostas.',
         'skills' => 'Selecione suas skills e informe o nível e os anos de experiência em cada uma.',
         'city' => 'Se sua cidade não estiver na listagem, pesquise.',
+    ],
+
+    'validation' => [
+        'image_dimensions' => 'A imagem, depois do recorte, precisa ter no mínimo :min_width × :min_height px. O recomendado é :width × :height px.',
+        'image_mimetypes' => 'Formato não suportado. Envie uma imagem :formats.',
+        'image_unconverted_max_size' => 'GIF pode ter no máximo :gif_mb MB. Como ele é exibido do jeito que chega, sem compressão, o arquivo pesa em cada visita ao perfil.',
     ],
 
     'actions' => [
@@ -73,6 +82,9 @@ return [
         'add_skill' => 'Adicionar skill',
         'change_avatar' => 'Alterar foto',
         'change_cover' => 'Alterar capa',
+        'adjust_avatar' => 'Ajustar enquadramento da foto',
+        'adjust_cover' => 'Ajustar enquadramento',
+        'save_framing' => 'Salvar enquadramento',
         'save_avatar' => 'Salvar foto',
         'save_cover' => 'Salvar capa',
     ],
@@ -81,6 +93,7 @@ return [
         'saved' => 'Perfil salvo com sucesso!',
         'avatar_updated' => 'Foto atualizada com sucesso!',
         'cover_updated' => 'Capa atualizada com sucesso!',
+        'framing_updated' => 'Enquadramento salvo!',
         'no_profile' => 'Perfil não encontrado para este tenant.',
     ],
 

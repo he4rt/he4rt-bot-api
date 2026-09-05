@@ -58,12 +58,21 @@ return [
     ],
 
     'hints' => [
+        'adjust_framing' => 'Drag to choose which slice of the image stays visible.',
+        'image_upload' => ':formats up to :max_mb MB. Recommended :width × :height px, at least :min_width × :min_height px after cropping. GIFs keep their animation, but cropping drops it.',
+        'image_upload_with_gif_limit' => ':formats up to :max_mb MB, GIF up to :gif_mb MB. Recommended :width × :height px, at least :min_width × :min_height px after cropping. GIFs keep their animation, but cropping drops it.',
         'headline' => 'e.g. Frontend Developer, Product Designer',
         'available_for_proposals' => 'When active, recruiters will see a green badge on your profile',
         'city' => 'If your city is not listed, search for it.',
         'has_disability' => 'Sensitive information — used only for affirmative-action roles.',
         'expected_salary' => 'Monthly amount in BRL. Private, used only in proposals.',
         'skills' => 'Pick your skills and set your level and years of experience for each.',
+    ],
+
+    'validation' => [
+        'image_dimensions' => 'After cropping, the image must be at least :min_width × :min_height px. The recommended size is :width × :height px.',
+        'image_mimetypes' => 'Unsupported format. Upload a :formats image.',
+        'image_unconverted_max_size' => 'A GIF can be at most :gif_mb MB. It is served exactly as it arrives, with no compression, so the file weighs on every profile visit.',
     ],
 
     'actions' => [
@@ -73,6 +82,9 @@ return [
         'add_skill' => 'Add skill',
         'change_avatar' => 'Change photo',
         'change_cover' => 'Change cover',
+        'adjust_avatar' => 'Adjust photo framing',
+        'adjust_cover' => 'Adjust framing',
+        'save_framing' => 'Save framing',
         'save_avatar' => 'Save photo',
         'save_cover' => 'Save cover',
     ],
@@ -81,6 +93,7 @@ return [
         'saved' => 'Profile saved successfully!',
         'avatar_updated' => 'Photo updated successfully!',
         'cover_updated' => 'Cover updated successfully!',
+        'framing_updated' => 'Framing saved!',
         'no_profile' => 'Profile not found for this tenant.',
     ],
 
