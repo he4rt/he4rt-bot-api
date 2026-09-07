@@ -4,6 +4,8 @@
 
 Manages event participation lifecycle: enrollment, check-in, attendance tracking, and XP reward dispatching. Covers in-person meetups, workshops, and multi-day conferences.
 
+Also owns the community **Gallery** (sub-domain `Gallery/`): photo albums from past gatherings, published on the portal at `/galeria`.
+
 ## Glossary
 
 | Term                       | Definition                                                                                                                                                                                                                  | Not to be confused with                                                                                 |
@@ -20,6 +22,9 @@ Manages event participation lifecycle: enrollment, check-in, attendance tracking
 | **Transition**             | An auditable state change on an enrollment. Every transition is recorded with actor, timestamp, and reason. Written by application code (Actions), never by database triggers.                                              |                                                                                                         |
 | **No-show**                | Terminal state for a participant who confirmed but never checked in. Assigned automatically by a scheduled job after the event ends. No systemic consequences in MVP (future: may affect eligibility).                      |                                                                                                         |
 | **Application**            | An enrollment method where the participant submits a dynamic form (JSONB schema defined in policy) and waits for organizer approval. Results in `pending → confirmed` or `pending → rejected`.                              | "Submission" (CFP) — application is for participation, submission is for presenting (out of MVP scope). |
+| **Album**                  | A curated set of photos from one gathering. Has a slug, title, date (`happened_at`), optional location/description and an optional link to an Event. Exists in `draft` until `published_at` is set. Public only when published **and** it has at least one photo.                | "Event" — an album may exist for a gathering that was never an Event record (pub, confraternização). |
+| **Photo**                  | One media item in an album's `photos` collection (Spatie Media Library). Ordered by `order_column`; carries `caption` and `highlight` as custom properties. Conversions: `thumb` (640×480 crop) and `large` (max 1920).                                                            | "Media" — the storage row; Photo is the domain reading of it.                                          |
+| **Highlight**              | A photo flagged by the organizer to represent the album on the gallery listing. When none is flagged, the first three photos by order stand in.                                                                                                                                 | "Cover" — the single first highlight, used for `og:image`.                                              |
 
 ## State Machine — Enrollment
 
@@ -60,6 +65,7 @@ checked_in
 - **Events → Gamification**: Events dispatches domain events (`EnrollmentConfirmed`, `ParticipantCheckedIn`, `ParticipantAttended`). Gamification listens and awards XP. Events does not know how XP works.
 - **Bot Discord → Events**: Bot dispatches domain events (e.g., `CheckInRequested`). Events module listens and processes. Bot is transport, Events owns the rules.
 - **Events → Identity**: Events reads User and Tenant models. No writes to Identity.
+- **Portal / Panel Admin → Events (Gallery)**: `portal` renders `/galeria` from `Album` read models; `panel-admin` owns the album CRUD and photo curation. Events registers no route and renders no UI for the gallery.
 
 ## Out of Scope (MVP)
 
@@ -72,3 +78,5 @@ checked_in
 - Agenda / schedule display
 - Paid events / payment integration
 - No-show penalties
+- Home photo carousel (issue #504, phase 2) — the gallery lives only at `/galeria`
+- Photos linked to a specific enrollment or participant
