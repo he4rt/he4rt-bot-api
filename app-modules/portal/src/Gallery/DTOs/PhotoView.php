@@ -22,21 +22,10 @@ final readonly class PhotoView
         $photo = Photo::fromMedia($media);
 
         return new self(
-            thumbUrl: self::url($media, PhotoConversion::Thumb),
-            largeUrl: self::url($media, PhotoConversion::Large),
+            thumbUrl: PhotoConversion::Thumb->urlFor($media),
+            largeUrl: PhotoConversion::Large->urlFor($media),
             caption: $photo->caption,
             highlight: $photo->highlight,
         );
-    }
-
-    /**
-     * A conversão roda em fila. Até ela existir, o portal serve o original
-     * em vez de um link quebrado.
-     */
-    private static function url(Media $media, PhotoConversion $conversion): string
-    {
-        return $media->hasGeneratedConversion($conversion->value)
-            ? $media->getUrl($conversion->value)
-            : $media->getUrl();
     }
 }

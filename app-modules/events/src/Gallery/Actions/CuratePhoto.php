@@ -12,10 +12,10 @@ final class CuratePhoto
 {
     public function handle(Media $media, CuratePhotoData $data): Media
     {
-        $caption = $data->caption !== null ? mb_trim($data->caption) : null;
+        $caption = mb_trim($data->caption ?? '');
 
         $media
-            ->setCustomProperty(Photo::CAPTION, $caption !== '' ? $caption : null)
+            ->setCustomProperty(Photo::CAPTION, $caption === '' ? null : $caption)
             ->setCustomProperty(Photo::HIGHLIGHT, $data->highlight);
 
         $media->save();

@@ -46,7 +46,7 @@ final class PhotosRelationManager extends RelationManager
             ->columns([
                 ImageColumn::make('preview')
                     ->label(__('panel-admin::albums.photos.columns.preview'))
-                    ->state(fn (Media $record): string => $this->previewUrl($record))
+                    ->state(fn (Media $record): string => PhotoConversion::Thumb->urlFor($record))
                     ->imageHeight(64)
                     ->square(),
 
@@ -88,12 +88,5 @@ final class PhotosRelationManager extends RelationManager
                     DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    private function previewUrl(Media $media): string
-    {
-        $thumb = PhotoConversion::Thumb->value;
-
-        return $media->hasGeneratedConversion($thumb) ? $media->getUrl($thumb) : $media->getUrl();
     }
 }

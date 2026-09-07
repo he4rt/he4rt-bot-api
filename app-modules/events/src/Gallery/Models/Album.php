@@ -119,9 +119,7 @@ final class Album extends Model implements HasMedia
     {
         $photos = $this->getMedia(self::PHOTOS);
 
-        $flagged = $photos->filter(
-            fn (Media $media): bool => (bool) $media->getCustomProperty(Photo::HIGHLIGHT, default: false),
-        );
+        $flagged = $photos->filter(fn (Media $media): bool => Photo::fromMedia($media)->highlight);
 
         $chosen = $flagged->isNotEmpty() ? $flagged : $photos->take(self::CARD_HIGHLIGHTS);
 

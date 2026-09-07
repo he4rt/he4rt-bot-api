@@ -8,6 +8,7 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasDescription;
 use Filament\Support\Contracts\HasLabel;
 use Spatie\Image\Enums\Fit;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * Fonte única das versões de uma foto de álbum: nome da conversão no media
@@ -62,6 +63,17 @@ enum PhotoConversion: string implements HasColor, HasDescription, HasLabel
             self::Thumb => Fit::Crop,
             self::Large => Fit::Max,
         };
+    }
+
+    /**
+     * As conversões rodam em fila. Até a desta versão existir, quem exibe
+     * recebe o arquivo original em vez de um link quebrado.
+     */
+    public function urlFor(Media $media): string
+    {
+        return $media->hasGeneratedConversion($this->value)
+            ? $media->getUrl($this->value)
+            : $media->getUrl();
     }
 
     public function getLabel(): string
