@@ -19,6 +19,7 @@ enum ModerationType: string implements HasColor, HasLabel
     case Warn = 'warn';
     case Kick = 'kick';
     case Suspension = 'suspension';
+    case MessageDeleted = 'message_deleted';
 
     public function getLabel(): string
     {
@@ -30,6 +31,7 @@ enum ModerationType: string implements HasColor, HasLabel
             self::Warn => 'Warning',
             self::Kick => 'Kick',
             self::Suspension => 'Suspension',
+            self::MessageDeleted => 'Mensagem apagada',
         };
     }
 
@@ -39,7 +41,7 @@ enum ModerationType: string implements HasColor, HasLabel
             self::Ban, self::Kick => 'danger',
             self::Unban, self::Unmute => 'success',
             self::Mute, self::Suspension => 'warning',
-            self::Warn => 'info',
+            self::Warn, self::MessageDeleted => 'info',
         };
     }
 }

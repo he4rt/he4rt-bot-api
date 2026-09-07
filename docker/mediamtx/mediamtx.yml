@@ -1,0 +1,29 @@
+logLevel: info
+
+authMethod: http
+authHTTPAddress: http://host.docker.internal:8000/live/ingest/auth
+authHTTPExclude:
+  - action: api
+  - action: metrics
+  - action: pprof
+
+api: yes
+apiAddress: :9997
+
+rtsp: no
+webrtc: no
+srt: no
+
+rtmp: yes
+rtmpAddress: :1935
+
+hls: yes
+hlsAddress: :8888
+hlsVariant: lowLatency
+
+paths:
+  live:
+    runOnOnline: |
+      wget -q -O- --header="Content-Type: application/json" --header="X-Live-Webhook-Secret: $LIVE_WEBHOOK_SECRET" --post-data="{\"event\":\"online\",\"path\":\"$MTX_PATH\"}" http://host.docker.internal:8000/live/ingest/webhook
+    runOnOffline: |
+      wget -q -O- --header="Content-Type: application/json" --header="X-Live-Webhook-Secret: $LIVE_WEBHOOK_SECRET" --post-data="{\"event\":\"offline\",\"path\":\"$MTX_PATH\"}" http://host.docker.internal:8000/live/ingest/webhook

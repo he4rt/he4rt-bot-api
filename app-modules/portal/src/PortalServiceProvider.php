@@ -7,6 +7,8 @@ namespace He4rt\Portal;
 use He4rt\Portal\Articles\ArticlesPage;
 use He4rt\Portal\Home\HeroSection;
 use He4rt\Portal\Home\Homepage;
+use He4rt\Portal\Live\LiveChat;
+use He4rt\Portal\Live\LivePage;
 use He4rt\Portal\Retrospective\CommunityRetrospectivePage;
 use He4rt\Portal\ShortLink\ShortLinkRedirectController;
 use He4rt\Portal\Sitemap\SitemapController;
@@ -65,6 +67,13 @@ class PortalServiceProvider extends ServiceProvider
                     description: 'Os artigos publicados pela organização He4rt Developers no dev.to, por tema e por quem escreveu.',
                 );
 
+            Route::get('/live', LivePage::class)
+                ->name('portal.live')
+                ->withHead(
+                    title: 'Live da comunidade',
+                    description: 'Acompanhe ao vivo as transmissões da comunidade He4rt Developers.',
+                );
+
             Route::get('/comunidade/retrospectiva', CommunityRetrospectivePage::class)
                 ->name('community.retrospective')
                 ->withHead(
@@ -112,5 +121,6 @@ class PortalServiceProvider extends ServiceProvider
         });
 
         Livewire::component('hero-section', HeroSection::class);
+        Livewire::component('portal.live-chat', LiveChat::class);
     }
 }

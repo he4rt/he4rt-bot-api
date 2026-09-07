@@ -22,5 +22,6 @@
     <php>
         <ini name="memory_limit" value="2G"/>
         <env name="APP_ENV" value="testing"/>
+        <env name="BROADCAST_CONNECTION" value="log"/>
     </php>
 </phpunit>

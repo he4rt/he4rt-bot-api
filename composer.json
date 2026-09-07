@@ -30,6 +30,7 @@
         "he4rt/integration-github": "^1.0.0",
         "he4rt/integration-twitch": "^1.0.0",
         "he4rt/integration-whatsapp": "^1.0.0",
+        "he4rt/live": "^1.0.0",
         "he4rt/marketing": "^1.0.0",
         "he4rt/moderation": "^1.0.0",
         "he4rt/onboarding": "^1.0.0",
@@ -43,6 +44,7 @@
         "laravel/framework": "^13.25.0",
         "laravel/head": "^0.2.0",
         "laravel/nightwatch": "^1.28.7",
+        "laravel/reverb": "^1.11",
         "laravel/sanctum": "^4.3.3",
         "laravel/telescope": "^5.22.1",
         "laravel/tinker": "^3.0.2",
@@ -131,7 +133,7 @@
         "bot": "@php artisan bot:boot",
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite"
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#67e8f9,#fb7185,#fdba74\" \"php artisan serve --host=0.0.0.0\" \"php artisan queue:listen --tries=1\" \"php artisan reverb:start\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,reverb,logs,vite"
         ],
         "pint": "vendor/bin/pint --parallel",
         "test:pint": "vendor/bin/pint --test --parallel",

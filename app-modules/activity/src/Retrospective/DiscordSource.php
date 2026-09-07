@@ -383,7 +383,9 @@ final class DiscordSource implements CuratableSource, MeasuresPerson, Retrospect
      * Base de mensagens do recorte. hideBots derruba source_kind='bot' mas mantém
      * linhas históricas com source_kind nulo. As exclusions entram aqui (e não na
      * composição) porque mexem no dado: o que é excluído some dos slides e também
-     * dos números (ADR-0001).
+     * dos números (ADR-0001). Filtra pelo provider da identidade porque messages
+     * agora também guarda o chat das lives (IdentityProvider::He4rtLives), que não
+     * é Discord e não pode inflar a retrospectiva dele.
      *
      * @return Builder<Message>
      */
@@ -393,6 +395,7 @@ final class DiscordSource implements CuratableSource, MeasuresPerson, Retrospect
 
         return Message::query()
             ->whereBetween('sent_at', [$period->since, $period->until])
+            ->whereHas('provider', fn (Builder $query): Builder => $query->where('provider', IdentityProvider::Discord))
             ->when(
                 $filters->hideBots,
                 fn (Builder $query): Builder => $query->where(function (Builder $inner): void {

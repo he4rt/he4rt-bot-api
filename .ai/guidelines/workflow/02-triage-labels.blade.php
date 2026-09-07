@@ -51,6 +51,7 @@ Every issue must be tagged with the module(s) it affects. Labels follow the patt
 | `mod:integration-devto`  | `integration-devto`      | Dev.to integration       |
 | `mod:integration-discord`| `integration-discord`    | Discord OAuth/API        |
 | `mod:integration-twitch` | `integration-twitch`     | Twitch integration       |
+| `mod:live`               | `live`                   | Live streaming           |
 | `mod:marketing`          | `marketing`              | Encurtador, campanhas    |
 | `mod:moderation`         | `moderation`             | Moderation pipeline      |
 | `mod:panel-admin`        | `panel-admin`            | Admin Filament panel     |

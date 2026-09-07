@@ -1,0 +1,30 @@
+{
+    "name": "he4rt/live",
+    "description": "",
+    "type": "library",
+    "version": "1.0",
+    "license": "proprietary",
+    "require": {
+        "he4rt/activity": "^1.0.0",
+        "he4rt/identity": "^1.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "He4rt\\Live\\": "src/",
+            "He4rt\\Live\\Database\\Factories\\": "database/factories/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "He4rt\\Live\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "He4rt\\Live\\LiveServiceProvider"
+            ]
+        }
+    }
+}

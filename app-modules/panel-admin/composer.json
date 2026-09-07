@@ -4,7 +4,9 @@
     "type": "library",
     "version": "1.0",
     "license": "proprietary",
-    "require": {},
+    "require": {
+        "he4rt/live": "^1.0.0"
+    },
     "autoload": {
         "psr-4": {
             "He4rt\\PanelAdmin\\": "src/",

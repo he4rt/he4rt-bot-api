@@ -13,6 +13,7 @@ use He4rt\Community\Retrospective\DTOs\Period;
 use He4rt\Community\Retrospective\DTOs\SourceFilters;
 use He4rt\Community\Retrospective\DTOs\SourceResult;
 use He4rt\Community\Retrospective\Enums\ExclusionKind;
+use He4rt\Identity\ExternalIdentity\Enums\IdentityProvider;
 use He4rt\Identity\ExternalIdentity\Models\ExternalIdentity;
 
 beforeEach(function (): void {
@@ -40,7 +41,10 @@ function dcSlide(SourceResult $result, string $kind): array
 
 function dcIdentity(string $name): ExternalIdentity
 {
-    return ExternalIdentity::factory()->create(['metadata' => ['username' => $name]]);
+    return ExternalIdentity::factory()->create([
+        'provider' => IdentityProvider::Discord,
+        'metadata' => ['username' => $name],
+    ]);
 }
 
 /**

@@ -25,3 +25,5 @@ Schedule::command('backup:monitor')
     ->daily()
     ->at('09:00')
     ->timezone(config('app.display_timezone'));
+
+Schedule::command('live:sample-viewers')->everyMinute();

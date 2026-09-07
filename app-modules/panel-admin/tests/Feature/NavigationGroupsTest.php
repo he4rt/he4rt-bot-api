@@ -82,3 +82,9 @@ test('identidades externas não aparece mais solto no topo', function (): void {
 
     expect($labels)->not->toContain('External Identities');
 });
+
+test('o resource de lives aparece como item de topo, fora de grupo', function (): void {
+    $labels = navigationItemLabels(adminNavigationGroup(label: null));
+
+    expect($labels)->toContain('Lives');
+});

@@ -21,6 +21,7 @@
         "@tailwindcss/typography": "0.5.20",
         "@tailwindcss/vite": "4.3.3",
         "concurrently": "10.0.5",
+        "hls.js": "^1.7.1",
         "husky": "9.1.7",
         "laravel-vite-plugin": "3.2.0",
         "lint-staged": "17.3.0",
@@ -38,5 +39,9 @@
             "vendor/bin/rector process",
             "vendor/bin/pint"
         ]
+    },
+    "dependencies": {
+        "laravel-echo": "^2.4.0",
+        "pusher-js": "^8.6.0"
     }
 }
