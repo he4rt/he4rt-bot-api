@@ -19,7 +19,7 @@
 }
 
 .hp-headline-title {
-    @apply font-bold drop-shadow-lg;
+    @apply font-bold drop-shadow-lg drop-shadow-text-dark/15;
 }
 
 .hp-headline-subtitle {
