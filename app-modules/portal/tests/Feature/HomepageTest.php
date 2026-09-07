@@ -62,3 +62,9 @@ it('leva para o acervo pela navbar', function (): void {
         ->assertOk()
         ->assertSee('href="/artigos"', escape: false);
 });
+
+it('leva para a galeria pela navbar', function (): void {
+    get('/')
+        ->assertOk()
+        ->assertSee('href="/galeria"', escape: false);
+});

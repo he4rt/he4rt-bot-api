@@ -23,6 +23,8 @@ it('serve as rotas do portal dentro do grupo web', function (string $name): void
 })->with([
     'community.retrospective',
     'community.retrospective.preview',
+    'gallery',
+    'gallery.album',
     'social-links',
 ]);
 
