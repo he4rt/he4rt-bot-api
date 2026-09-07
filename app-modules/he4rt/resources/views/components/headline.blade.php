@@ -105,7 +105,7 @@
 
             @isset($description)
                 <p
-                    class="hp-headline-description {{ $animate ? "delay-300" : "" }}"
+                    {{ $description->attributes->class(["hp-headline-description", "delay-300" => $animate]) }}
                     @if ($animate)
                         x-show="shown"
                         x-transition:enter="{{ $anim["enter"] }}"
