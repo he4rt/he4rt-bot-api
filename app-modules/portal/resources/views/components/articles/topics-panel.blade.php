@@ -32,7 +32,7 @@
              e apaga o `display: none` que o x-show escreve, deixando o painel aberto
              no load. Com objeto o Alpine escreve só a propriedade ligada. --}}
         x-bind:style="{ maxHeight: topicsMaxHeight + 'px' }"
-        class="border-outline-low bg-elevation-02dp absolute start-0 top-full z-50 mt-2 w-[min(22rem,calc(100vw-3rem))] overflow-y-auto overscroll-contain rounded-lg border p-2 shadow-lg shadow-black/20"
+        class="border-outline-low bg-elevation-05dp absolute inset-s-0 top-full z-50 mt-2 w-[min(22rem,calc(100vw-3rem))] overflow-y-auto overscroll-contain rounded-lg border p-2 shadow-lg shadow-text-high/18"
         style="scrollbar-width: thin"
     >
         <p class="text-text-medium px-2 pt-1 pb-2 font-mono text-[0.65rem] tracking-[0.15em] uppercase">
