@@ -1,2 +1,11 @@
 parameters:
-    ignoreErrors: []
+    ignoreErrors:
+        # O stub do Larastan restringe DB::raw() a literal-string. Aqui o valor
+        # é o nome qualificado da chave do dono, envolvido pelo grammar, sem
+        # entrada externa: o cast ::text é a única forma de comparar uuid com
+        # o model_id (varchar) da tabela media no Postgres.
+        -
+            message: '#^Parameter \#1 \$value of static method Illuminate\\Database\\Connection::raw\(\) expects float\|int\|literal-string, non-falsy-string given\.$#'
+            identifier: argument.type
+            count: 1
+            path: src/Gallery/Support/PhotosRelation.php

@@ -9,8 +9,10 @@ use He4rt\Events\CheckIn\Listeners\GenerateQrTokenOnConfirmed;
 use He4rt\Events\CheckIn\Listeners\HandleBotCheckIn;
 use He4rt\Events\Console\Commands\ClosePendingEventsCommand;
 use He4rt\Events\Enrollment\Events\EnrollmentConfirmed;
+use He4rt\Events\Gallery\Models\Album;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,6 +25,10 @@ class EventsServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'events');
+
+        Relation::morphMap([
+            'events_album' => Album::class,
+        ]);
 
         Event::listen(EnrollmentConfirmed::class, GenerateQrTokenOnConfirmed::class);
         Event::listen(CheckInRequested::class, HandleBotCheckIn::class);

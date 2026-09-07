@@ -50,4 +50,11 @@ return [
         'admin' => 'Admin',
         'system' => 'System',
     ],
+
+    'photo_conversion' => [
+        'thumb' => 'Thumbnail',
+        'large' => 'Large',
+        'thumb_description' => 'Cropped 640x480 for cards and grids.',
+        'large_description' => 'Up to 1920px on the longest side, for the lightbox.',
+    ],
 ];
