@@ -13,6 +13,7 @@ use Filament\Support\Facades\FilamentAsset;
 use He4rt\PanelAdmin\Contributions\Widgets\ActivityTimelineWidget;
 use He4rt\PanelAdmin\Discord\DiscordCluster;
 use He4rt\PanelAdmin\Enums\NavigationGroup as NavGroup;
+use He4rt\PanelAdmin\Filament\Resources\Albums\AlbumResource;
 use He4rt\PanelAdmin\Filament\Resources\ContentEntries\ContentEntryResource;
 use He4rt\PanelAdmin\Filament\Resources\Events\EventResource;
 use He4rt\PanelAdmin\Filament\Resources\ExternalIdentities\ExternalIdentityResource;
@@ -64,6 +65,7 @@ class PanelAdminServiceProvider extends ServiceProvider
                     ContentEntryResource::class,
                     InteractionResource::class,
                     RetrospectiveResource::class,
+                    AlbumResource::class,
                 ])
                 ->discoverResources(
                     in: __DIR__.'/Moderation/Resources',
@@ -176,6 +178,7 @@ class PanelAdminServiceProvider extends ServiceProvider
                         ...ContentEntryResource::getNavigationItems(),
                         ...InteractionResource::getNavigationItems(),
                         ...RetrospectiveResource::getNavigationItems(),
+                        ...AlbumResource::getNavigationItems(),
                     ]),
             ]);
     }
