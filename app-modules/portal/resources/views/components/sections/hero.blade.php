@@ -18,7 +18,7 @@
                 <x-he4rt::headline size="2xl" :keywords="['potencial']">
                     <x-slot:badge>
                         <x-he4rt::badge>
-                            <x-filament::icon icon="heroicon-o-book-open" class="h-5 w-5" />
+                            <x-filament::icon icon="heroicon-o-book-open" class="text-icon-light h-5 w-5" />
                             Comunidade Open Source
                         </x-he4rt::badge>
                     </x-slot>
