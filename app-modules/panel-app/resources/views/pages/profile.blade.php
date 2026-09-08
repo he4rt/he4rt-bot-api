@@ -10,6 +10,9 @@
                 [
                     'avatarPreviewUrl' => $this->avatarPreviewUrl,
                     'coverPreviewUrl' => $this->coverPreviewUrl,
+                    'coverAspectRatio' => $this->coverAspectRatio,
+                    'coverFocalY' => $this->coverFocalY,
+                    'avatarFocalY' => $this->avatarFocalY,
                     'initials' => $this->initials,
                     'name' => auth()->user()->name,
                     'birthdateForm' => $this->birthdateForm,
@@ -18,8 +21,8 @@
             {{ $this->form }}
         </div>
 
-        {{-- Preview card + connections (right, 1/3, sticky) --}}
-        <div class="hidden space-y-6 xl:sticky xl:top-4 xl:block">
+        {{-- Preview card + connections (right, 1/3, sticky no desktop) --}}
+        <div class="space-y-6 xl:sticky xl:top-4">
             @include ('panel-app::components.profile-preview-card',
                 [
                     'data' => $this->data,
@@ -27,7 +30,10 @@
                     'character' => $this->character,
                     'initials' => $this->initials,
                     'avatarPreviewUrl' => $this->avatarPreviewUrl,
-                    'coverPreviewUrl' => $this->coverPreviewUrl
+                    'coverPreviewUrl' => $this->coverPreviewUrl,
+                    'coverAspectRatio' => $this->coverAspectRatio,
+                    'coverFocalY' => $this->coverFocalY,
+                    'avatarFocalY' => $this->avatarFocalY
                 ])
 
             <div class="rounded-xl bg-white p-4 ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10">

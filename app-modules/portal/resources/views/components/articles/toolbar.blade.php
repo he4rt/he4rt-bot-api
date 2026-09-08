@@ -6,13 +6,13 @@
 {{-- Barra de controle do acervo. Fica sticky dentro da coluna de artigos: como o
      containing block de um grid item é a própria área da grid, promovê-la a filha
      direta do grid faria o sticky morrer em silêncio. --}}
-<div class="bg-elevation-surface/93 border-outline-low sticky top-0 z-30 -mx-1 mb-4 border-b px-1 pt-2 pb-3 backdrop-blur-xl">
+<div class="bg-elevation-surface/93 sticky top-0 z-30 -mx-1 mt-10 mb-4 px-1 pt-2 pb-3 backdrop-blur-xl">
     <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
         <h2 class="text-text-medium font-mono text-xs tracking-[0.2em] uppercase">Artigos</h2>
 
         <x-portal::articles.topics-panel :topics="$topics" :total="$total" />
 
-        <span class="text-text-low font-mono text-xs">↓ mais recentes</span>
+        <span class="text-text-medium font-mono text-xs">↓ mais recentes</span>
 
         <p class="text-text-medium ms-auto font-mono text-xs tabular-nums" aria-live="polite">
             <span class="text-text-high font-semibold" x-text="visibleCount">{{ $total }}</span>
@@ -39,7 +39,7 @@
     </div>
 
     {{-- Segunda linha: só existe quando há recorte ativo. --}}
-    <div class="mt-2 flex flex-wrap items-center gap-2" x-show="hasFilters" x-cloak style="display: none">
+    <div class="mt-4 flex flex-wrap items-center gap-2" x-show="hasFilters" x-cloak style="display: none">
         <template x-if="author">
             <button
                 type="button"

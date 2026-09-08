@@ -3,7 +3,7 @@
 {{-- Acima da grade e na largura dela: o destaque abre a listagem em vez de
      disputar a primeira dobra com o título da página. --}}
 <article
-    class="border-outline-low bg-elevation-01dp hover:border-primary relative mb-6 flex flex-col gap-5 rounded-lg border p-4 transition-colors duration-300 sm:flex-row sm:items-center"
+    class="bg-elevation-01dp shadow-sm shadow-text-high/8 hover:bg-elevation-02dp hover:shadow-md relative mb-6 flex flex-col gap-5 rounded-lg p-4 transition-[background-color,box-shadow,transform] duration-300 hover:scale-[1.02] motion-reduce:transition-none motion-reduce:hover:scale-100 sm:flex-row sm:items-center"
 >
     @if ($article->coverImage)
         <img
@@ -19,9 +19,9 @@
 
     <div class="flex min-w-0 flex-col gap-2.5">
         <span
-            class="border-primary/32 bg-primary/5 text-text-high w-fit rounded-full border px-3 py-1 font-mono text-[0.65rem] tracking-wide"
+            class="bg-primary/5 text-text-medium w-fit rounded-full px-3 py-1 font-mono text-[0.65rem] tracking-wide"
         >
-            ★ destaque · mais reagido dos últimos 12 meses
+            <span class="text-primary">★</span> destaque · mais reagido dos últimos 12 meses
         </span>
 
         <h2 class="text-text-high line-clamp-2 text-xl leading-snug font-semibold lg:text-2xl">
@@ -39,14 +39,25 @@
             <p class="text-text-medium line-clamp-2 max-w-2xl text-sm leading-relaxed">{{ $article->description }}</p>
         @endif
 
-        <div class="text-text-medium flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
-            <span class="flex items-center gap-2">
+        <div class="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg px-4 py-3 text-[0.7rem] font-medium">
+            <span class="flex min-w-0 items-center gap-1.5">
                 <x-portal::articles.author-avatar :name="$article->authorName" :avatar="$article->authorAvatar" size="size-5" />
-                <span class="text-text-high font-medium">{{ $article->authorName }}</span>
+                <span class="text-text-medium truncate font-medium">{{ $article->authorName }}</span>
             </span>
-            <span class="font-mono tabular-nums">♥ {{ $article->reactions }}</span>
-            <span class="font-mono tabular-nums">{{ $article->readingMinutes }} min</span>
-            <span class="font-mono">{{ $article->publishedLabel() }}</span>
+            <span class="text-text-medium ms-auto flex items-center gap-2.5 font-mono tabular-nums">
+                <span title="reações" class="flex items-center gap-1">
+                    <x-heroicon-o-heart class="text-icon-medium size-3.5" />
+                    {{ $article->reactions }}
+                </span>
+                <span title="tempo de leitura" class="flex items-center gap-1">
+                    <x-heroicon-o-clock class="text-icon-medium size-3.5" />
+                    {{ $article->readingMinutes }} min
+                </span>
+                <span title="publicado em" class="flex items-center gap-1">
+                    <x-heroicon-o-calendar class="text-icon-medium size-3.5" />
+                    {{ $article->publishedLabel() }}
+                </span>
+            </span>
         </div>
     </div>
 </article>
