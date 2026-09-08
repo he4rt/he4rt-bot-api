@@ -25,6 +25,7 @@ final class SitemapController extends Controller
         'home' => ['changefreq' => 'daily', 'priority' => '1.0'],
         'social-links' => ['changefreq' => 'monthly', 'priority' => '0.6'],
         'community.retrospective' => ['changefreq' => 'weekly', 'priority' => '0.7'],
+        'gallery' => ['changefreq' => 'weekly', 'priority' => '0.7'],
     ];
 
     public function __invoke(): Response
