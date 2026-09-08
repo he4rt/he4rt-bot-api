@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Date;
 
 return [
-    'admins' => env('HE4RT_ADMINS_USERNAMES', 'danielhe4rt,kaster'),
     'season' => [
         'id' => (int) env('HE4RT_SEASON_ID', 2),
         'minimum_level_for_retro' => env('HE4RT_SEASON_MIN_LEVEL', 3),

@@ -9,6 +9,7 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use He4rt\Identity\Authorization\Enums\UserRole;
 use He4rt\Identity\User\Enums\UserSituation;
 use He4rt\Identity\User\Models\User;
 
@@ -38,6 +39,13 @@ class UserInfolist
                         IconEntry::make('is_donator')
                             ->label('Apoiador')
                             ->boolean(),
+
+                        TextEntry::make('roles.name')
+                            ->label('Papéis')
+                            ->badge()
+                            ->formatStateUsing(fn (string $state): string => UserRole::from($state)->getLabel())
+                            ->color(fn (string $state): array => UserRole::from($state)->getColor())
+                            ->placeholder('Nenhum'),
 
                         TextEntry::make('first_login_at')
                             ->label('Primeiro login')

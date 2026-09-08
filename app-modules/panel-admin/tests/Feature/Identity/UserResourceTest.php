@@ -3,7 +3,9 @@
 declare(strict_types=1);
 
 use Filament\Facades\Filament;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\TextInput;
+use He4rt\Identity\Authorization\Enums\UserRole;
 use He4rt\Identity\ExternalIdentity\Models\ExternalIdentity;
 use He4rt\Identity\User\Models\User;
 use He4rt\PanelAdmin\Filament\Resources\Users\Pages\EditUser;
@@ -11,16 +13,16 @@ use He4rt\PanelAdmin\Filament\Resources\Users\Pages\ListUsers;
 use He4rt\PanelAdmin\Filament\Resources\Users\RelationManagers\ProvidersRelationManager;
 use He4rt\PanelAdmin\Filament\Resources\Users\UserResource;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 
 use function Pest\Livewire\livewire;
 
 beforeEach(function (): void {
     config([
-        'he4rt.admins' => 'danielhe4rt',
         'app.display_timezone' => 'America/Sao_Paulo',
     ]);
 
-    $this->admin = User::factory()->create(['username' => 'danielhe4rt']);
+    $this->admin = User::factory()->superAdmin()->create();
 
     $this->actingAs($this->admin);
 
@@ -122,4 +124,59 @@ test('o relation manager de identidades lista os provedores do usuário', functi
         ->loadTable()
         ->assertOk()
         ->assertCanSeeTableRecords([$identity]);
+});
+
+test('o form expõe os papéis como lista de checkbox', function (): void {
+    $other = User::factory()->create();
+
+    livewire(EditUser::class, ['record' => $other->getKey()])
+        ->assertSchemaComponentExists('roles', checkComponentUsing: fn (CheckboxList $field): bool => !$field->isDisabled());
+});
+
+test('salvar o form concede super admin a outro usuário', function (): void {
+    $other = User::factory()->create();
+    $role = Role::findByName(UserRole::SuperAdmin->value, UserRole::GUARD);
+
+    livewire(EditUser::class, ['record' => $other->getKey()])
+        ->fillForm(['roles' => [$role->getKey()]])
+        ->call('save')
+        ->assertHasNoFormErrors();
+
+    expect($other->fresh()?->hasRole(UserRole::SuperAdmin))->toBeTrue();
+});
+
+test('salvar o form sem papéis revoga super admin de outro usuário', function (): void {
+    $other = User::factory()->superAdmin()->create();
+
+    livewire(EditUser::class, ['record' => $other->getKey()])
+        ->fillForm(['roles' => []])
+        ->call('save')
+        ->assertHasNoFormErrors();
+
+    expect($other->fresh()?->hasRole(UserRole::SuperAdmin))->toBeFalse();
+});
+
+test('o admin não altera os próprios papéis', function (): void {
+    livewire(EditUser::class, ['record' => $this->admin->getKey()])
+        ->assertSchemaComponentExists('roles', checkComponentUsing: fn (CheckboxList $field): bool => $field->isDisabled())
+        ->fillForm(['roles' => []])
+        ->call('save')
+        ->assertHasNoFormErrors();
+
+    expect($this->admin->fresh()?->hasRole(UserRole::SuperAdmin))->toBeTrue();
+});
+
+test('a coluna de papéis existe na tabela', function (): void {
+    livewire(ListUsers::class)->loadTable()->assertTableColumnExists('roles.name');
+});
+
+test('o filtro de papel separa super admin de usuário comum', function (): void {
+    $regular = User::factory()->create();
+    $role = Role::findByName(UserRole::SuperAdmin->value, UserRole::GUARD);
+
+    livewire(ListUsers::class)
+        ->loadTable()
+        ->filterTable('roles', $role->getKey())
+        ->assertCanSeeTableRecords([$this->admin])
+        ->assertCanNotSeeTableRecords([$regular]);
 });

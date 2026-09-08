@@ -8,6 +8,8 @@ use He4rt\Activity\Message\Models\Message;
 use He4rt\Community\Meeting\Models\Meeting;
 use He4rt\Gamification\Character\Models\Character;
 use He4rt\Gamification\Season\Models\Season;
+use He4rt\Identity\Authorization\Enums\UserRole;
+use He4rt\Identity\Database\Seeders\RolesSeeder;
 use He4rt\Identity\ExternalIdentity\Models\ExternalIdentity;
 use He4rt\Identity\User\Models\User;
 use Illuminate\Database\Seeder;
@@ -17,6 +19,8 @@ class BaseSeeder extends Seeder
 {
     public function run(): void
     {
+        $this->call(RolesSeeder::class);
+
         $admin = User::factory()
             ->create([
                 'username' => 'danielhe4rt',
@@ -24,6 +28,8 @@ class BaseSeeder extends Seeder
                 'email' => 'admin@admin.com',
                 'password' => Hash::make('admin'),
             ]);
+
+        $admin->assignRole(UserRole::SuperAdmin);
 
         Character::factory()
             ->recycle($admin)

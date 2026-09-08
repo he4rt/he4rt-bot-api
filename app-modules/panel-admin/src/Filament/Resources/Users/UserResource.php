@@ -80,7 +80,7 @@ class UserResource extends Resource
         // subquery correlacionada (withCount) falha no Postgres por falta de
         // cast. O eager load compara por valor bindado e funciona.
         return parent::getEloquentQuery()
-            ->with(['profile', 'providers']);
+            ->with(['profile', 'providers', 'roles']);
     }
 
     /**
