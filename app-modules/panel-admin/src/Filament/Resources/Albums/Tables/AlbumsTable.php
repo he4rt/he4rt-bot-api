@@ -14,6 +14,7 @@ use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use He4rt\Events\Gallery\Enums\PhotoConversion;
 use He4rt\Events\Gallery\Models\Album;
+use Illuminate\Database\Eloquent\Builder;
 
 final class AlbumsTable
 {
@@ -67,8 +68,10 @@ final class AlbumsTable
             ->filters([
                 TernaryFilter::make('published')
                     ->label(__('panel-admin::albums.columns.published_at'))
-                    ->nullable()
-                    ->attribute('published_at')
+                    ->queries(
+                        true: self::onlyPublished(...),
+                        false: self::onlyDrafts(...),
+                    )
                     ->trueLabel(__('panel-admin::albums.filters.published'))
                     ->falseLabel(__('panel-admin::albums.filters.drafts')),
             ])
@@ -81,5 +84,26 @@ final class AlbumsTable
                     DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    /**
+     * Mesma regra de `Album::scopePublished()`: um agendado para o futuro ainda
+     * não está publicado.
+     *
+     * @param  Builder<Album>  $query
+     * @return Builder<Album>
+     */
+    private static function onlyPublished(Builder $query): Builder
+    {
+        return $query->published();
+    }
+
+    /**
+     * @param  Builder<Album>  $query
+     * @return Builder<Album>
+     */
+    private static function onlyDrafts(Builder $query): Builder
+    {
+        return $query->whereNull('published_at');
     }
 }

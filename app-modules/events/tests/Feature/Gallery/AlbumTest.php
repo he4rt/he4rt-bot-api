@@ -90,6 +90,12 @@ test('when an album has no photos, then the withPhotos scope excludes it', funct
     expect(Album::query()->published()->withPhotos()->pluck('id')->all())->toBe([$withPhotos->id]);
 });
 
+test('when the factory is asked for zero photos, then no media is created', function (): void {
+    $album = Album::factory()->withPhotos(0)->create();
+
+    expect($album->getMedia(Album::PHOTOS))->toBeEmpty();
+});
+
 test('when the linked event is deleted, then the album survives without an event', function (): void {
     $event = Event::factory()->create();
     $album = Album::factory()->forEvent($event)->create();

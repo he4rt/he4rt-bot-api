@@ -65,6 +65,17 @@ test('o filtro de publicados esconde os rascunhos', function (): void {
         ->assertCanNotSeeTableRecords([$draft]);
 });
 
+test('o filtro de publicados esconde os agendados para o futuro', function (): void {
+    $published = Album::factory()->published()->create();
+    $scheduled = Album::factory()->scheduled()->create();
+
+    livewire(ListAlbums::class)
+        ->loadTable()
+        ->filterTable('published', true)
+        ->assertCanSeeTableRecords([$published])
+        ->assertCanNotSeeTableRecords([$scheduled]);
+});
+
 test('cria um álbum com fotos em lote na collection de fotos', function (): void {
     livewire(CreateAlbum::class)
         ->fillForm(albumFormData([

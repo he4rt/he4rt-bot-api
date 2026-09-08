@@ -1,12 +1,12 @@
 ---
 type: adr
-title: "Galeria de fotos como sub-domínio de Events"
+title: 'Galeria de fotos como sub-domínio de Events'
 module: events
 status: accepted
 date: 2026-09-07
 author: danielhe4rt
 related:
-  plan: events/2026-09-07-galeria-de-fotos
+    plan: events/2026-09-07-galeria-de-fotos
 ---
 
 # 0009 — Galeria de fotos como sub-domínio de Events
@@ -28,8 +28,8 @@ domínio: um módulo novo, o `portal` (que só renderiza) ou o `events`.
 - As fotos são a coleção `photos` do Spatie Media Library no próprio `Album`.
   Legenda e destaque são `custom_properties` da media, lidos pelo DTO `Photo`.
   Não existe tabela `events_photos`.
-- Um álbum só é público quando `published_at` está no passado **e** tem ao
-  menos uma foto. Rascunho e álbum vazio respondem 404 no portal.
+- Um álbum só é público quando `published_at` não está no futuro (o instante
+  atual conta) **e** tem ao menos uma foto. Rascunho e álbum vazio respondem 404 no portal.
 - Events não registra rota nem UI. O `portal` é dono da borda pública
   (`/galeria`, `/galeria/{slug}`) e o `panel-admin` do CRUD e da curadoria,
   no mesmo desenho do ADR-0004 de `marketing`.

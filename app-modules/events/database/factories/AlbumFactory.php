@@ -37,6 +37,13 @@ final class AlbumFactory extends Factory
         ]);
     }
 
+    public function scheduled(): static
+    {
+        return $this->state(fn (): array => [
+            'published_at' => now()->addDay(),
+        ]);
+    }
+
     public function forEvent(Event $event): static
     {
         return $this->state(fn (): array => [
@@ -51,7 +58,7 @@ final class AlbumFactory extends Factory
     public function withPhotos(int $count = 3): static
     {
         return $this->afterCreating(static function (Album $album) use ($count): void {
-            foreach (range(1, $count) as $index) {
+            for ($index = 1; $index <= $count; $index++) {
                 $album
                     ->addMedia(UploadedFile::fake()->image("foto-{$index}.jpg", 1_600, 1_200))
                     ->toMediaCollection(Album::PHOTOS);
