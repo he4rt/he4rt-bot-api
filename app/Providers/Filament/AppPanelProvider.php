@@ -59,8 +59,8 @@ class AppPanelProvider extends PanelProvider
             ->userMenuItems([
                 'profile' => fn (Action $action): Action => $action
                     ->label(__('app.user_menu.my_profile'))
-->url(ProfilePage::getUrl()),
-->icon(null)
+                    ->url(ProfilePage::getUrl())
+                    ->icon(null),
             ])
             ->middleware([
                 EncryptCookies::class,
