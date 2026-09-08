@@ -49,7 +49,13 @@ expect()->extend('toBeOne', fn () => $this->toBe(1));
 |
 */
 
-function something(): void
+/**
+ * O media library despacha as conversões para a conexão de fila do ambiente e
+ * só depois do commit. Num teste, a fila é a real e a transação nunca comita,
+ * então as conversões precisam rodar na hora para existirem.
+ */
+function runMediaConversionsInline(): void
 {
-    // ..
+    config()->set('media-library.queue_connection_name', 'sync');
+    config()->set('media-library.queue_conversions_after_database_commit', value: false);
 }

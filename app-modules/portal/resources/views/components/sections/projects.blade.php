@@ -1,5 +1,5 @@
 <section class="hp-section" id="projects">
-    <div class="hp-container">
+    <div class="hp-page hp-container">
         <x-he4rt::headline align="center" size="md" :keywords="['prática']">
             <x-slot:badge>
                 <x-he4rt::badge>

@@ -268,7 +268,7 @@ final readonly class BackfillRepository
      */
     private function record(NewContributionDTO $contribution, ?callable $onProgress): void
     {
-        $recorded = $this->recorder->execute($contribution);
+        $recorded = $this->recorder->execute($contribution, emit: true);
 
         if ($onProgress !== null) {
             $onProgress($contribution, $recorded->wasRecentlyCreated);

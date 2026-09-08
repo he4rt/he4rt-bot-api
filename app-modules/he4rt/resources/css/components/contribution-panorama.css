@@ -1,0 +1,78 @@
+/* Panorama de contribuições da home: contadores, colunas por mês e barra de composição. */
+
+.cp-stats {
+    @apply grid w-full grid-cols-1 gap-6 sm:grid-cols-3;
+
+    .cp-stat {
+        @apply border-outline-low flex flex-col gap-1 rounded-lg border p-6;
+
+        dt {
+            @apply text-text-low order-2 text-sm;
+        }
+
+        dd {
+            @apply text-text-high order-1 text-4xl font-bold tabular-nums;
+        }
+
+        .cp-stat-soft {
+            @apply text-2xl font-semibold capitalize;
+        }
+    }
+}
+
+.cp-chart {
+    @apply flex w-full flex-col gap-4;
+
+    figcaption {
+        @apply text-text-low text-sm uppercase tracking-wider;
+    }
+}
+
+.cp-bars {
+    @apply flex h-40 w-full items-end gap-1 sm:gap-2;
+
+    .cp-bar {
+        @apply flex h-full flex-1 flex-col items-center justify-end gap-2;
+    }
+
+    /* A coluna cresce de baixo: o span é a altura, o label fica fora dela. */
+    .cp-bar-fill {
+        @apply bg-primary/70 w-full rounded-t-sm transition-all duration-500;
+    }
+
+    .cp-bar:hover .cp-bar-fill {
+        @apply bg-primary;
+    }
+
+    .cp-bar-label {
+        @apply text-text-low text-xs capitalize;
+    }
+}
+
+.cp-composition {
+    @apply flex h-4 w-full overflow-hidden rounded-full;
+
+    .cp-segment {
+        @apply h-full;
+    }
+}
+
+.cp-legend {
+    @apply flex flex-wrap gap-x-6 gap-y-2;
+
+    li {
+        @apply flex items-center gap-2 text-sm;
+    }
+
+    .cp-dot {
+        @apply h-2.5 w-2.5 shrink-0 rounded-full;
+    }
+
+    .cp-legend-label {
+        @apply text-text-low;
+    }
+
+    .cp-legend-count {
+        @apply text-text-high font-semibold tabular-nums;
+    }
+}

@@ -5,10 +5,12 @@ declare(strict_types=1);
 use He4rt\Identity\ExternalIdentity\Actions\ConnectApiKeyIdentity;
 use He4rt\Identity\ExternalIdentity\Enums\CredentialsType;
 use He4rt\Identity\ExternalIdentity\Enums\IdentityProvider;
+use He4rt\Identity\ExternalIdentity\Events\ExternalIdentityConnected;
 use He4rt\Identity\ExternalIdentity\Exceptions\InvalidApiKeyException;
 use He4rt\Identity\ExternalIdentity\Models\ExternalIdentity;
 use He4rt\Identity\User\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 
 function fakeDevToProfile(int $id = 12_345, string $username = 'danielhe4rt'): void
@@ -113,4 +115,33 @@ test('refuses a provider that authenticates via oauth', function (): void {
         ->toThrow(InvalidArgumentException::class);
 
     expect(ExternalIdentity::query()->count())->toBe(0);
+});
+
+test('connecting via api key dispatches ExternalIdentityConnected', function (): void {
+    fakeDevToProfile();
+    Event::fake([ExternalIdentityConnected::class]);
+
+    $user = User::factory()->create();
+
+    $identity = resolve(ConnectApiKeyIdentity::class)
+        ->execute($user, IdentityProvider::DevTo, 'my-secret-key');
+
+    Event::assertDispatched(fn (ExternalIdentityConnected $event): bool => $event->identity->id === $identity->id);
+});
+
+test('reconnecting via api key dispatches ExternalIdentityConnected again', function (): void {
+    fakeDevToProfile();
+
+    $user = User::factory()->create();
+    $action = resolve(ConnectApiKeyIdentity::class);
+
+    $first = $action->execute($user, IdentityProvider::DevTo, 'old-key');
+
+    Event::fake([ExternalIdentityConnected::class]);
+
+    $second = $action->execute($user, IdentityProvider::DevTo, 'new-key');
+
+    expect($second->id)->toBe($first->id);
+
+    Event::assertDispatched(fn (ExternalIdentityConnected $event): bool => $event->identity->id === $second->id);
 });

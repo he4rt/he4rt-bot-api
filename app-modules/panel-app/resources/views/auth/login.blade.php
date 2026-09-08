@@ -141,13 +141,10 @@
                 </div>
 
                 {{-- Divider --}}
-                <div class="relative my-6">
-                    <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-zinc-800"></div>
-                    </div>
-                    <div class="relative flex justify-center text-xs uppercase">
-                        <span class="bg-white px-3 text-zinc-500 dark:bg-gray-950 dark:text-zinc-400">ou</span>
-                    </div>
+                <div class="flex items-center gap-3 my-6">
+                    <hr class="flex-1 border-t border-zinc-800">
+                    <span class="text-xs uppercase text-zinc-500 dark:text-zinc-400">ou</span>
+                    <hr class="flex-1 border-t border-zinc-800">
                 </div>
 
                 {{-- Filament email/password form --}}

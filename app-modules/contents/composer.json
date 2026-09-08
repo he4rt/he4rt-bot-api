@@ -1,0 +1,27 @@
+{
+    "name": "he4rt/contents",
+    "description": "",
+    "type": "library",
+    "version": "1.0.0",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "He4rt\\Contents\\": "src/",
+            "He4rt\\Contents\\Database\\Factories\\": "database/factories/",
+            "He4rt\\Contents\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "He4rt\\Contents\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "He4rt\\Contents\\ContentsServiceProvider"
+            ]
+        }
+    }
+}

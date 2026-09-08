@@ -4,6 +4,7 @@
 @import './base.css';
 
 @import './components/card.css' layer(components);
+@import './components/page.css' layer(components);
 @import './components/section.css' layer(components);
 @import './components/headline.css' layer(components);
 @import './components/button.css' layer(components);
@@ -16,6 +17,7 @@
 @import './components/text.css' layer(components);
 @import './components/icon.css' layer(components);
 @import './components/ticket.css' layer(components);
+@import './components/contribution-panorama.css' layer(components);
 @import './components/partials/author.css' layer(components);
 @import './components/partials/footer.css' layer(components);
 

@@ -8,6 +8,7 @@ use App\Contracts\ApiKeyClientContract;
 use He4rt\Identity\ExternalIdentity\Data\ClientAccessManager;
 use He4rt\Identity\ExternalIdentity\Enums\CredentialsType;
 use He4rt\Identity\ExternalIdentity\Enums\IdentityProvider;
+use He4rt\Identity\ExternalIdentity\Events\ExternalIdentityConnected;
 use He4rt\Identity\ExternalIdentity\Exceptions\InvalidApiKeyException;
 use He4rt\Identity\ExternalIdentity\Models\ExternalIdentity;
 use He4rt\Identity\User\Models\User;
@@ -36,8 +37,8 @@ final class ConnectApiKeyIdentity
 
         $profile = $client->getAuthenticatedUser($apiKey);
 
-        /** @var ExternalIdentity */
-        return $owner->providers()->updateOrCreate(
+        /** @var ExternalIdentity $identity */
+        $identity = $owner->providers()->updateOrCreate(
             [
                 'provider' => $provider,
                 'external_account_id' => $profile->providerId,
@@ -52,5 +53,9 @@ final class ConnectApiKeyIdentity
                 'connected_by' => auth()->id(),
             ]
         );
+
+        event(new ExternalIdentityConnected($identity));
+
+        return $identity;
     }
 }

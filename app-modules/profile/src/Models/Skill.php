@@ -8,6 +8,7 @@ use Carbon\CarbonInterface;
 use He4rt\Profile\Database\Factories\SkillFactory;
 use He4rt\Profile\Enums\SkillCategory;
 use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property CarbonInterface|null $created_at
  * @property CarbonInterface|null $updated_at
  */
+#[UseFactory(factoryClass: SkillFactory::class)]
 #[Table(name: 'skills')]
 final class Skill extends Model
 {

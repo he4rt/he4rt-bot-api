@@ -1,9 +1,24 @@
 @props (['person'])
-@php ($stateColor = fn($state) => [ 'merged' => 'var(--st-merged)', 'open' => 'var(--st-open)', 'closed' => 'var(--st-closed)' ][$state ?? ''] ?? 'var(--st-open)')
+{{--
+    A anatomia do card é fixa de propósito: chips só para PRs (a parte com
+    título, que merece leitura) e UMA régua de contadores para todo o resto.
+    Uma linha rotulada por tipo fazia o card do #1 ter o dobro da altura do #3
+    e quebrava a comparação lado a lado no trilho.
+
+    Só blocos PHP pareados neste arquivo (e nada de diretiva PHP inline, nem
+    citada em comentário): o compilador do Blade casa o primeiro abre com o
+    primeiro fecha ANTES de remover comentários, e qualquer mistura engole o
+    miolo do template como PHP cru.
+--}}
+@php
+    $stateColor = fn ($state) => ['merged' => 'var(--st-merged)', 'open' => 'var(--st-open)', 'closed' => 'var(--st-closed)'][$state ?? ''] ?? 'var(--st-open)';
+@endphp
 <div class="acts">
     @if (count($person['pr_refs']))
-        @php ($prShown = array_slice($person['pr_refs'], 0, 3))
-        @php ($prMore = count($person['pr_refs']) - count($prShown))
+        @php
+            $prShown = array_slice($person['pr_refs'], 0, 3);
+            $prMore = count($person['pr_refs']) - count($prShown);
+        @endphp
         <div class="act act-pr" style="--c: var(--t-pr)">
             <span class="act-h">Abriu PR</span>
             <span class="act-items">
@@ -23,57 +38,31 @@
             </span>
         </div>
     @endif
-    @if ($person['reviews'] > 0)
-        <div class="act act-review" style="--c: var(--t-review)">
-            <span class="act-h">Revisou</span
-            ><span class="act-items"
-                ><span class="ref"><span class="rn">{{ $person['reviews'] }}</span> reviews</span></span
-            >
-        </div>
-    @endif
-    @if (count($person['issue_refs']))
-        @php ($issueShown = array_slice($person['issue_refs'], 0, 3))
-        @php ($issueMore = count($person['issue_refs']) - count($issueShown))
-        <div class="act act-issue" style="--c: var(--t-issue)">
-            <span class="act-h">Abriu issue</span>
-            <span class="act-items">
-                @foreach ($issueShown as $ref)
-                    <a
-                        class="ref"
-                        @if ($ref['url']) href="{{ $ref['url'] }}" target="_blank" rel="noopener" @endif
-                        title="{{ $ref['title'] }}"
-                    >
-                        <span class="rn">#{{ $ref['num'] }}</span><span class="rt">{{ $ref['title'] }}</span></a
-                    >
-                @endforeach
-                @if ($issueMore > 0)
-                    <span class="ref more">mais {{ $issueMore }}…</span>
-                @endif
-            </span>
-        </div>
-    @endif
-    @if ($person['comments'] > 0)
-        <div class="act act-comment" style="--c: var(--t-comment)">
-            <span class="act-h">Comentou</span
-            ><span class="act-items"
-                ><span class="ref"><span class="rn">{{ $person['comments'] }}</span> comentários</span></span
-            >
-        </div>
-    @endif
-    @if ($person['review_comments'] > 0)
-        <div class="act act-review-comment" style="--c: var(--t-review-comment)">
-            <span class="act-h">Comentou em review</span
-            ><span class="act-items"
-                ><span class="ref"><span class="rn">{{ $person['review_comments'] }}</span> em reviews</span></span
-            >
-        </div>
-    @endif
-    @if ($person['commits'] > 0)
-        <div class="act act-commit" style="--c: var(--t-commit)">
-            <span class="act-h">Commitou</span
-            ><span class="act-items"
-                ><span class="ref"><span class="rn">{{ $person['commits'] }}</span> commits</span></span
-            >
+    @php
+        $stats = array_values(
+            array_filter(
+                [
+                    ['cls' => 'act-review', 'c' => '--t-review', 'n' => $person['reviews'], 'label' => 'reviews'],
+                    ['cls' => 'act-issue', 'c' => '--t-issue', 'n' => count($person['issue_refs']), 'label' => 'issues'],
+                    ['cls' => 'act-comment', 'c' => '--t-comment', 'n' => $person['comments'], 'label' => 'coment.'],
+                    ['cls' => 'act-review-comment', 'c' => '--t-review-comment', 'n' => $person['review_comments'], 'label' => 'em review'],
+                    ['cls' => 'act-commit', 'c' => '--t-commit', 'n' => $person['commits'], 'label' => 'commits'],
+                ],
+                fn (array $stat): bool => $stat['n'] > 0,
+            ),
+        );
+    @endphp
+    @if (count($stats))
+        <div class="cstats strip">
+            @foreach ($stats as $stat)
+                <span
+                    class="cstat {{ $stat['cls'] }}"
+                    style="--c: var({{ $stat['c'] }})"
+                    title="{{ $stat['n'] }} {{ $stat['label'] }}"
+                >
+                    <span class="cstat-n">{{ $stat['n'] }}</span><span class="cstat-l">{{ $stat['label'] }}</span>
+                </span>
+            @endforeach
         </div>
     @endif
 </div>

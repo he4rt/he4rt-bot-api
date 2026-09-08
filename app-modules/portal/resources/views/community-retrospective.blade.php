@@ -1,37 +1,46 @@
-@php ($noData = count($repoOptions) === 0)
+@php ($noData = count($sources) === 0)
+@use(He4rt\Portal\Retrospective\AboutSection)
+@use(He4rt\Portal\Retrospective\SlideView)
 <x-portal::retro.deck :stateKey="$stateKey" :bare="$noData">
-    @unless ($noData)
-        <x-slot:filters>
-            <x-portal::retro.filters
-                :repoOptions="$repoOptions"
-                :repos="$repos"
-                :types="$types"
-                :hideBots="$hideBots"
-                :byRepo="$byRepo"
-                :showHighlights="$showHighlights"
-            />
-        </x-slot:filters>
-    @endunless
-
     @if ($noData)
         <x-portal::retro.slides.empty />
     @else
-        <x-portal::retro.slides.cover :meta="$data['meta']" :period="$data['period']" />
-        <x-portal::retro.slides.panorama :meta="$data['meta']" />
-        @if ($byRepo)
-            @foreach ($data['repos'] as $i => $repo)
-                <x-portal::retro.slides.repo :repo="$repo" :index="$i + 1" />
+        {{-- Uma capa por público: a de retrospectiva abre com balanço, a de
+             onboarding recebe quem chegou. O resto do deck é o mesmo. --}}
+        @include(SlideView::cover($coverKind), [
+            'since' => $since,
+            'until' => $until,
+            'edition' => $edition ?? null,
+            'hosts' => $hosts ?? [],
+            'coverTitle' => $coverTitle ?? null,
+            'coverIntro' => $coverIntro ?? null,
+        ])
+
+        {{-- Quem a He4rt é, antes dos números de quem ela fez. Seção fixa: não
+             vem do snapshot nem passa pelo ComposeDeck, então nenhuma curadoria
+             a desliga — ela é o contexto que faz o resto significar algo. --}}
+        @foreach (AboutSection::slides() as $about)
+            @include($about->view(), ['sources' => $sources, 'since' => $since, 'until' => $until])
+        @endforeach
+
+        @foreach ($sources as $source)
+            @foreach ($source->slides as $slide)
+                @include(SlideView::kind($slide->kind()), $slide->toArray())
             @endforeach
-        @endif
-        @if ($showHighlights && count($data['highlights']))
-            <x-portal::retro.slides.highlights :highlights="$data['highlights']" />
-        @endif
-        @if (count($data['people']))
-            <x-portal::retro.slides.core :people="$data['people']" />
-            @if (count($data['people']) > 5)
-                <x-portal::retro.slides.community :people="$data['people']" />
-            @endif
-        @endif
-        <x-portal::retro.slides.closing :meta="$data['meta']" :people="$data['people']" :period="$data['period']" />
+        @endforeach
+
+        {{-- O ritual da tag, entre os números e o fecho. Posição fixa: tudo que
+             veio antes é a prova do que se afirma aqui, então este bloco não é
+             arrastável — só ligável e desligável (PromotionSection). --}}
+        @foreach ($promotions as $promotion)
+            @include($promotion->view(), ['cards' => $promotion->cards])
+        @endforeach
+
+        <x-portal::retro.slides.closing
+            :sources="$sources"
+            :since="$since"
+            :until="$until"
+            :closingText="$closingText ?? null"
+        />
     @endif
 </x-portal::retro.deck>

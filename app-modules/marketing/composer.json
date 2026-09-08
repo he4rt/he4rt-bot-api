@@ -1,0 +1,30 @@
+{
+    "name": "he4rt/marketing",
+    "description": "",
+    "type": "library",
+    "version": "1.0.0",
+    "license": "proprietary",
+    "require": {
+        "he4rt/identity": "^1.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "He4rt\\Marketing\\": "src/",
+            "He4rt\\Marketing\\Database\\Factories\\": "database/factories/",
+            "He4rt\\Marketing\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "He4rt\\Marketing\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "He4rt\\Marketing\\MarketingServiceProvider"
+            ]
+        }
+    }
+}

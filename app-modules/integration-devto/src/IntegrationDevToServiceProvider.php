@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace He4rt\IntegrationDevTo;
 
-use He4rt\IntegrationDevTo\Polling\SyncDevToArticles;
-use Illuminate\Console\Scheduling\Schedule;
+use He4rt\Contents\Articles\ArticleProviderRegistry;
+use He4rt\IntegrationDevTo\Articles\DevToArticleProvider;
 use Illuminate\Support\ServiceProvider;
 
 class IntegrationDevToServiceProvider extends ServiceProvider
@@ -17,15 +17,7 @@ class IntegrationDevToServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                SyncDevToArticles::class,
-            ]);
-
-            $this->app->booted(function (): void {
-                $schedule = $this->app->make(Schedule::class);
-                $schedule->command('devto:sync-articles')->everyThirtyMinutes();
-            });
-        }
+        $this->app->make(ArticleProviderRegistry::class)
+            ->register($this->app->make(DevToArticleProvider::class));
     }
 }

@@ -1,5 +1,5 @@
 <section class="hp-section" id="about">
-    <div class="hp-container">
+    <div class="hp-page hp-container">
         <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-16">
             <div class="order-2 grid grid-cols-1 gap-8 sm:order-1 sm:grid-cols-2">
                 <x-he4rt::card>

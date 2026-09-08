@@ -5,12 +5,19 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Date;
 
 return [
-    'admins' => env('HE4RT_ADMINS_USERNAMES', 'danielhe4rt,kaster'),
     'season' => [
         'id' => (int) env('HE4RT_SEASON_ID', 2),
         'minimum_level_for_retro' => env('HE4RT_SEASON_MIN_LEVEL', 3),
     ],
     'server_key' => env('HE4RT_BOT_SECRET', 'he4rt'),
+
+    /*
+     * Quando a He4rt começou. Data única para qualquer lugar que precise contar a
+     * idade da comunidade — hoje a seção "A He4rt" da retrospectiva. A primeira
+     * temporada ('seasons') herda o mesmo marco, mas dizer a idade a partir de um
+     * array de temporadas seria derivar identidade de calendário.
+     */
+    'founded_at' => '2018-08-01',
 
     'features' => [
         'timeline_pin' => env('HE4RT_FEATURE_TIMELINE_PIN', default: false),

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace He4rt\Gamification\Character\Models;
 
 use Carbon\CarbonInterface;
-use He4rt\Activity\Tracking\Concerns\HasInteractions;
 use He4rt\Economy\Concerns\HasWallet;
 use He4rt\Gamification\Badge\Models\Badge;
 use He4rt\Gamification\Database\Factories\CharacterFactory;
@@ -41,7 +40,6 @@ final class Character extends Model
 {
     /** @use HasFactory<CharacterFactory> */
     use HasFactory;
-    use HasInteractions;
     use HasUuids;
     use HasWallet;
 

@@ -56,7 +56,6 @@ boost.json
 .mcp.json
 
 # Generic AI Agents
-AGENTS.md
 GEMINI.md
 QWEN.md
 .output.txt
@@ -67,10 +66,10 @@ QWEN.md
 .ai/*
 .ai/mcp/mcp.json
 !.ai/guidelines/
+!.ai/rules/
 
 # Claude Code
 .claude/
-CLAUDE.md
 
 # GitHub Copilot
 .github/copilot-instructions.md
@@ -122,3 +121,6 @@ CRUSH.md
 .superpowers/
 
 /poc
+
+.codex
+/.codex

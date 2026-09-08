@@ -6,7 +6,7 @@ use He4rt\Activity\Message\Models\Message;
 use He4rt\Identity\ExternalIdentity\Enums\IdentityProvider;
 use He4rt\Identity\ExternalIdentity\Models\ExternalIdentity;
 use He4rt\Identity\User\Models\User;
-use He4rt\Portal\Livewire\HeroSection;
+use He4rt\Portal\Home\HeroSection;
 
 use function Pest\Livewire\livewire;
 

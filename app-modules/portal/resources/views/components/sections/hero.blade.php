@@ -12,13 +12,13 @@
     <div class="absolute -z-1 flex h-[150%] w-[150%] sm:h-full sm:w-full sm:p-16">
         <img src="{{ asset('images/landingLogo.svg') }}" alt="Logo" class="h-full w-full" />
     </div>
-    <div class="hp-container">
+    <div class="hp-page hp-container">
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
             <div class="flex flex-col gap-4">
                 <x-he4rt::headline size="2xl" :keywords="['potencial']">
                     <x-slot:badge>
                         <x-he4rt::badge>
-                            <x-filament::icon icon="heroicon-o-book-open" class="h-5 w-5" />
+                            <x-filament::icon icon="heroicon-o-book-open" class="text-icon-light h-5 w-5" />
                             Comunidade Open Source
                         </x-he4rt::badge>
                     </x-slot>

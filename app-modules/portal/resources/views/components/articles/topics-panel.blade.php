@@ -32,7 +32,7 @@
              e apaga o `display: none` que o x-show escreve, deixando o painel aberto
              no load. Com objeto o Alpine escreve só a propriedade ligada. --}}
         x-bind:style="{ maxHeight: topicsMaxHeight + 'px' }"
-        class="border-outline-low bg-elevation-02dp absolute start-0 top-full z-50 mt-2 w-[min(22rem,calc(100vw-3rem))] overflow-y-auto overscroll-contain rounded-lg border p-2 shadow-lg shadow-black/20"
+        class="border-outline-low bg-elevation-05dp absolute inset-s-0 top-full z-50 mt-2 w-[min(22rem,calc(100vw-3rem))] overflow-y-auto overscroll-contain rounded-lg border p-2 shadow-lg shadow-text-high/18"
         style="scrollbar-width: thin"
     >
         <p class="text-text-medium px-2 pt-1 pb-2 font-mono text-[0.65rem] tracking-[0.15em] uppercase">
@@ -44,14 +44,9 @@
             <button
                 type="button"
                 x-on:click="toggleTopic(@js($entry->tag)); topicsOpen = false"
-                x-on:mouseenter="lensEnter('topic', @js($entry->tag))"
-                x-on:mouseleave="lensLeave()"
                 x-bind:aria-pressed="topic === @js($entry->tag) ? 'true' : 'false'"
-                x-bind:class="{
-                    'bg-primary/16': topic === @js($entry->tag),
-                    'opacity-30': isDim('topic', @js($entry->tag)),
-                }"
-                class="hover:bg-primary/10 group flex w-full cursor-pointer items-center gap-3 rounded-md px-2 py-1.5 text-start transition-[background-color,opacity] duration-200"
+                x-bind:class="{ 'bg-primary/16': topic === @js($entry->tag) }"
+                class="hover:bg-primary/10 group flex w-full cursor-pointer items-center gap-3 rounded-md px-2 py-1.5 text-start transition-colors duration-200"
             >
                 <span class="text-text-high min-w-0 flex-1 truncate font-mono text-xs">#{{ $entry->tag }}</span>
 

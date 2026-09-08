@@ -12,9 +12,7 @@ use He4rt\PanelAdmin\Moderation\Livewire\AppealQueue;
 use function Pest\Livewire\livewire;
 
 beforeEach(function (): void {
-    $this->user = User::factory()->create(['username' => 'danielhe4rt']);
-
-    config(['he4rt.admins' => 'danielhe4rt']);
+    $this->user = User::factory()->superAdmin()->create();
 
     $this->actingAs($this->user);
 

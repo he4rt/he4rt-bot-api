@@ -5,8 +5,13 @@ declare(strict_types=1);
 namespace He4rt\Profile\Data;
 
 use He4rt\Profile\Enums\EmploymentType;
+use Illuminate\Contracts\Support\Arrayable;
+use JsonSerializable;
 
-final readonly class WorkPreferences
+/**
+ * @implements Arrayable<string, mixed>
+ */
+final readonly class WorkPreferences implements Arrayable, JsonSerializable
 {
     /**
      * @param  list<EmploymentType>  $employmentTypes
@@ -55,5 +60,13 @@ final readonly class WorkPreferences
                 $this->employmentTypes,
             ),
         ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }

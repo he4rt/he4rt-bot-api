@@ -1,29 +1,39 @@
-@props (['meta', 'people', 'period'])
+@props(['sources', 'since', 'until', 'closingText' => null])
+@php
+    $fmt = fn ($d): string => $d instanceof \Carbon\CarbonInterface
+        ? $d->timezone(config('app.display_timezone'))->format('d/m/Y')
+        : (string) $d;
+    $people = collect($sources)
+        ->flatMap(fn ($source) => $source->slides)
+        ->first(fn ($slide): bool => $slide->kind() === 'github.core')
+        ?->toArray()['people'] ?? [];
+@endphp
 <section class="slide" data-label="Obrigado">
     <div class="slide-inner" style="text-align: center; max-width: 940px">
         <h2 class="sec" data-anim>Obrigado a quem fez<br />o coração bater 💜</h2>
         <p class="sec-sub" data-anim style="margin: 0 auto">
-            {{ $meta['people'] }} pessoas, {{ $meta['total'] }} interações, {{ number_format($meta['additions'], 0, ',', '.') }} linhas.
-            Toda contribuição manteve a He4rt viva.
+            @if (filled($closingText))
+                {{ $closingText }}
+            @else
+                Cada PR, cada mensagem, cada call e cada reação manteve a He4rt viva.
+            @endif
         </p>
-        <div data-anim style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 30px">
-            @foreach ($people as $p)
-                <a href="{{ $p['url'] }}" target="_blank" rel="noopener" title="{{ '@' . $p['login'] }}"
-                    ><img
+        @if (count($people))
+            <div class="closing-wall" data-anim>
+                @foreach ($people as $person)
+                    <img
                         class="mini"
-                        src="{{ $p['avatar'] }}"
-                        onerror="this.onerror=null;this.src='https://github.com/{{ $p['login'] }}.png'"
-                        width="50"
-                        height="50"
-                        alt="{{ $p['login'] }}"
-                        style="width: 50px; height: 50px"
-                /></a>
-            @endforeach
-        </div>
-        <p
-            class="hint"
-            data-anim
-            style="margin-top: 30px"
-        >gerado a partir da GitHub API · {{ $period['since'] }} — {{ $period['until'] }}</p>
+                        src="{{ $person['avatar'] }}"
+                        onerror="this.onerror=null;this.src='https://github.com/{{ $person['login'] }}.png'"
+                        loading="lazy"
+                        width="46"
+                        height="46"
+                        alt="{{ $person['login'] }}"
+                        title="{{ $person['login'] }}"
+                    />
+                @endforeach
+            </div>
+        @endif
+        <p class="hint" data-anim style="margin-top: 30px">{{ $fmt($since) }} — {{ $fmt($until) }}</p>
     </div>
 </section>

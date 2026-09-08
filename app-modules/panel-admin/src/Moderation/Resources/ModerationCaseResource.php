@@ -90,6 +90,9 @@ class ModerationCaseResource extends Resource
                     ->options(ViolationType::class),
                 SelectFilter::make('severity')
                     ->options(Severity::class),
+                SelectFilter::make('author')
+                    ->relationship('author', 'username')
+                    ->searchable(),
             ]);
     }
 

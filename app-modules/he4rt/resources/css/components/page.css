@@ -1,0 +1,8 @@
+/* Régua única do portal: uma página, um max-width, uma calha lateral.
+   O padding mora no mesmo elemento do max-width — separá-los desloca a borda
+   pela largura da calha e desalinha containers irmãos. */
+.hp-page {
+    @apply mx-auto w-full px-6 lg:px-12;
+
+    max-width: var(--hp-page-max-width);
+}

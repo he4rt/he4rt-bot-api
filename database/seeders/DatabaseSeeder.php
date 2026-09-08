@@ -18,6 +18,7 @@ final class DatabaseSeeder extends Seeder
         $this->call([
             BaseSeeder::class,
             EventsSeeder::class,
+            RetrospectiveDemoSeeder::class,
         ]);
     }
 }

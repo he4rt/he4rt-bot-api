@@ -15,6 +15,7 @@ use He4rt\Identity\ExternalIdentity\Enums\IdentityType;
 use He4rt\Identity\User\Models\User;
 use Illuminate\Database\Eloquent\Attributes\Appends;
 use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -90,6 +91,21 @@ final class ExternalIdentity extends Model
     protected static function newFactory(): ExternalIdentityFactory
     {
         return ExternalIdentityFactory::new();
+    }
+
+    /**
+     * Identidade que uma pessoa realmente conectou, e não um registro criado por
+     * ingestão. As datas sozinhas não separam os dois: a ETL também preenche
+     * connected_at. O que só existe no fluxo OAuth é a credencial.
+     *
+     * @param  Builder<$this>  $query
+     */
+    protected function scopeActivelyConnected(Builder $query): void
+    {
+        $query
+            ->whereNotNull('connected_at')
+            ->whereNull('disconnected_at')
+            ->whereRaw("coalesce(credentials::jsonb->>'access_token', '') <> ''");
     }
 
     protected function getMessagesCountAttribute(): int

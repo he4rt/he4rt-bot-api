@@ -5,11 +5,23 @@ declare(strict_types=1);
 namespace He4rt\PanelAdmin;
 
 use Filament\Navigation\NavigationBuilder;
+use Filament\Navigation\NavigationGroup;
 use Filament\Navigation\NavigationItem;
 use Filament\Panel;
+use Filament\Support\Assets\AlpineComponent;
+use Filament\Support\Facades\FilamentAsset;
+use He4rt\PanelAdmin\Contributions\Widgets\ActivityTimelineWidget;
 use He4rt\PanelAdmin\Discord\DiscordCluster;
+use He4rt\PanelAdmin\Enums\NavigationGroup as NavGroup;
+use He4rt\PanelAdmin\Filament\Resources\Albums\AlbumResource;
+use He4rt\PanelAdmin\Filament\Resources\ContentEntries\ContentEntryResource;
 use He4rt\PanelAdmin\Filament\Resources\Events\EventResource;
 use He4rt\PanelAdmin\Filament\Resources\ExternalIdentities\ExternalIdentityResource;
+use He4rt\PanelAdmin\Filament\Resources\Interactions\InteractionResource;
+use He4rt\PanelAdmin\Filament\Resources\Profiles\ProfileResource;
+use He4rt\PanelAdmin\Filament\Resources\Retrospectives\RetrospectiveResource;
+use He4rt\PanelAdmin\Filament\Resources\Skills\SkillResource;
+use He4rt\PanelAdmin\Filament\Resources\Users\UserResource;
 use He4rt\PanelAdmin\Github\GithubCluster;
 use He4rt\PanelAdmin\Marketing\MarketingCluster;
 use He4rt\PanelAdmin\Moderation\Livewire\AppealQueue;
@@ -41,9 +53,19 @@ class PanelAdminServiceProvider extends ServiceProvider
                     DiscordCluster::class,
                 ])
                 ->navigation($this->buildNavigation(...))
+                ->widgets([
+                    ActivityTimelineWidget::class,
+                ])
                 ->resources([
                     ExternalIdentityResource::class,
                     EventResource::class,
+                    UserResource::class,
+                    ProfileResource::class,
+                    SkillResource::class,
+                    ContentEntryResource::class,
+                    InteractionResource::class,
+                    RetrospectiveResource::class,
+                    AlbumResource::class,
                 ])
                 ->discoverResources(
                     in: __DIR__.'/Moderation/Resources',
@@ -52,6 +74,10 @@ class PanelAdminServiceProvider extends ServiceProvider
                 ->discoverPages(
                     in: __DIR__.'/Moderation/Pages',
                     for: 'He4rt\\PanelAdmin\\Moderation\\Pages',
+                )
+                ->discoverResources(
+                    in: __DIR__.'/Marketing/Resources',
+                    for: 'He4rt\\PanelAdmin\\Marketing\\Resources',
                 )
                 ->discoverPages(
                     in: __DIR__.'/Marketing/Pages',
@@ -84,6 +110,13 @@ class PanelAdminServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'panel-admin');
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'panel-admin');
+
+        FilamentAsset::register([
+            AlpineComponent::make(
+                'activity-timeline',
+                __DIR__.'/../resources/js/components/activity-timeline.js',
+            ),
+        ], package: 'he4rt/panel-admin');
 
         Livewire::component('moderation-queue', ModerationQueue::class);
         Livewire::component('appeal-queue', AppealQueue::class);
@@ -120,16 +153,34 @@ class PanelAdminServiceProvider extends ServiceProvider
 
     private function defaultNavigation(NavigationBuilder $builder): NavigationBuilder
     {
-        return $builder->items([
-            ...Dashboard::getNavigationItems(),
-            ...ModerationCluster::getNavigationItems(),
-            ...MarketingCluster::getNavigationItems(),
-            ...TwitchCluster::getNavigationItems(),
-            ...GithubCluster::getNavigationItems(),
-            ...ExternalIdentityResource::getNavigationItems(),
-            ...EventResource::getNavigationItems(),
-            ...DiscordCluster::getNavigationItems(),
-        ]);
+        return $builder
+            ->items([
+                ...Dashboard::getNavigationItems(),
+                ...ModerationCluster::getNavigationItems(),
+                ...MarketingCluster::getNavigationItems(),
+                ...TwitchCluster::getNavigationItems(),
+                ...GithubCluster::getNavigationItems(),
+                ...DiscordCluster::getNavigationItems(),
+                ...EventResource::getNavigationItems(),
+            ])
+            ->groups([
+                NavigationGroup::make(NavGroup::People->getLabel())
+                    ->icon(NavGroup::People->getIcon())
+                    ->items([
+                        ...UserResource::getNavigationItems(),
+                        ...ExternalIdentityResource::getNavigationItems(),
+                        ...ProfileResource::getNavigationItems(),
+                        ...SkillResource::getNavigationItems(),
+                    ]),
+                NavigationGroup::make(NavGroup::Content->getLabel())
+                    ->icon(NavGroup::Content->getIcon())
+                    ->items([
+                        ...ContentEntryResource::getNavigationItems(),
+                        ...InteractionResource::getNavigationItems(),
+                        ...RetrospectiveResource::getNavigationItems(),
+                        ...AlbumResource::getNavigationItems(),
+                    ]),
+            ]);
     }
 
     private function moderationNavigation(NavigationBuilder $builder): NavigationBuilder

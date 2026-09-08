@@ -27,8 +27,6 @@ final class MergeAccountsAction
 
             event(new AccountsMerged($oldUser->id, $currentUser->id));
 
-            event(new AccountsMerged($oldUser->id, $currentUser->id));
-
             $currentUser->delete();
 
             $this->enrichOldUser($currentUser, $oldUser);

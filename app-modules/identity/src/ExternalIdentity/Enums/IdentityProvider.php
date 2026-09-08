@@ -123,7 +123,7 @@ enum IdentityProvider: string implements HasColor, HasDescription, HasIcon, HasL
             self::Discord => Color::Blue,
             self::Twitch => Color::Purple,
             self::DevTo => Color::Gray,
-            self::Spotify => ['#1DB954'],
+            self::Spotify => Color::hex('#1DB954'),
             self::Steam => Color::Slate,
             self::GitHub => Color::Neutral,
             self::Xbox => Color::Green,

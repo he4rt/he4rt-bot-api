@@ -1,5 +1,5 @@
 <section class="hp-section" id="contact">
-    <div class="hp-container">
+    <div class="hp-page hp-container">
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
             <div class="border-outline-low flex flex-1 flex-col gap-8 rounded-lg border p-8">
                 <x-he4rt::headline size="md">

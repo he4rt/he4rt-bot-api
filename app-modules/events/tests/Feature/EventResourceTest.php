@@ -26,9 +26,7 @@ use He4rt\PanelAdmin\Filament\Resources\Events\RelationManagers\EnrollmentsRelat
 use function Pest\Livewire\livewire;
 
 beforeEach(function (): void {
-    $admin = User::factory()->create(['username' => 'events-test-admin']);
-
-    config(['he4rt.admins' => 'events-test-admin']);
+    $admin = User::factory()->superAdmin()->create(['username' => 'events-test-admin']);
     $this->actingAs($admin);
 
     Filament::setCurrentPanel(Filament::getPanel('admin'));

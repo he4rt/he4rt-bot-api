@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use He4rt\Portal\Livewire\SocialLinksPage;
+use He4rt\Portal\SocialLinks\SocialLinksPage;
 
 use function Pest\Laravel\get;
 

@@ -3,6 +3,10 @@
 
 @theme inline {
     --breakpoint-sm: 821px;
+
+    /* Largura útil de uma página do portal — ver .hp-page */
+    --hp-page-max-width: 1720px;
+
     --font-family-primary: Satoshi, sans-serif;
     --font-family-secondary: Cal-Sans, sans-serif;
     --font-family-code: Fira-Code, monospace;

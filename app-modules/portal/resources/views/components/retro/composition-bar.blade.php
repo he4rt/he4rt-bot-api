@@ -1,4 +1,4 @@
-@props (['person'])
+@props (['person', 'maxTotal' => null])
 @php
     $segments = array_values(
         array_filter(
@@ -18,9 +18,13 @@
         ),
     );
     $sum = array_sum(array_column($segments, 'count')) ?: 1;
+
+    // Com maxTotal a LARGURA da barra vira comparação real entre cards: quem fez
+    // menos tem barra menor, em vez de todo mundo ocupar 100% só mudando as cores.
+    $scale = $maxTotal !== null && $maxTotal > 0 ? min(100, round(($sum / $maxTotal) * 100, 1)) : 100;
 @endphp
 @if (count($segments))
-    <div class="compbar" aria-hidden="true">
+    <div class="compbar" aria-hidden="true" style="width: {{ $scale }}%">
         @foreach ($segments as $segment)
             <span
                 class="seg"

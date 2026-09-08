@@ -5,37 +5,24 @@
 
 <article
     x-show="isVisible({{ $index }})"
-    x-bind:class="{ 'opacity-30 saturate-50': isDim('article', {{ $index }}) }"
-    x-on:mouseenter="lensEnter('article', {{ $index }})"
-    x-on:mouseleave="lensLeave()"
-    class="border-outline-low bg-elevation-01dp hover:border-primary relative flex flex-col gap-3 rounded-lg border p-4 transition-[border-color,transform,opacity,filter] duration-300 hover:scale-[1.02] motion-reduce:transition-none motion-reduce:hover:scale-100 [.is-list_&]:flex-row [.is-list_&]:items-start [.is-list_&]:gap-4 [.is-list_&]:hover:scale-100"
+    class="bg-elevation-02dp border-primary/16 has-[a:focus-visible]:ring-primary relative flex flex-col overflow-hidden rounded-l-none rounded-r-lg border-l-2 shadow-sm shadow-text-high/8 transition-[background-color,box-shadow,transform] duration-200 ease-out hover:-translate-y-0.75 hover:bg-elevation-03dp hover:shadow-md has-[a:focus-visible]:ring-2 motion-reduce:transition-none motion-reduce:hover:translate-y-0 [.is-list_&]:flex-row"
 >
-    @if ($article->coverImage)
-        <img
-            src="{{ $article->coverImage }}"
-            alt=""
-            loading="lazy"
-            decoding="async"
-            class="aspect-video w-full shrink-0 rounded-sm object-cover [.is-list_&]:w-28"
-        />
-    @else
-        <x-portal::articles.cover-fallback class="aspect-video w-full shrink-0 rounded-sm [.is-list_&]:w-28" />
-    @endif
-
-    <div class="flex min-w-0 flex-1 flex-col gap-2">
-        @if ($article->tags !== [])
-            <ul class="flex flex-wrap gap-1.5">
-                @foreach (array_slice($article->tags, 0, 2) as $tag)
-                    <li
-                        class="border-primary/32 bg-primary/5 text-text-medium rounded-lg border px-2 py-0.5 font-mono text-[0.65rem]"
-                    >
-                        #{{ $tag }}
-                    </li>
-                @endforeach
-            </ul>
+    <div class="shrink-0 [.is-list_&]:w-40 sm:[.is-list_&]:w-56">
+        @if ($article->coverImage)
+            <img
+                src="{{ $article->coverImage }}"
+                alt=""
+                loading="lazy"
+                decoding="async"
+                class="aspect-video w-full object-cover [.is-list_&]:aspect-auto [.is-list_&]:h-full"
+            />
+        @else
+            <x-portal::articles.cover-fallback class="aspect-video w-full [.is-list_&]:aspect-auto [.is-list_&]:h-full" />
         @endif
+    </div>
 
-        <h3 class="text-text-high line-clamp-3 text-sm leading-snug font-semibold">
+    <div class="flex min-w-0 flex-1 flex-col px-4 pt-3.5 pb-4">
+        <h3 class="text-text-high line-clamp-3 text-sm leading-snug font-medium">
             <a
                 href="{{ $article->url }}"
                 target="_blank"
@@ -46,18 +33,39 @@
             </a>
         </h3>
 
-        {{-- A API entrega a descrição já truncada; o clamp evita que o "…" dela pareça quebra de layout. --}}
-        <p class="text-text-medium line-clamp-2 text-xs leading-relaxed">{{ $article->description }}</p>
+        {{-- A descrição já vem truncada da fonte; o clamp evita que o "…" dela pareça quebra de layout. --}}
+        <p class="text-text-medium mt-1 line-clamp-2 text-xs leading-relaxed">{{ $article->description }}</p>
 
-        <div class="text-text-medium mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 pt-1 text-[0.7rem]">
-            <span class="flex min-w-0 items-center gap-1.5">
-                <img src="{{ $article->authorAvatar }}" alt="" loading="lazy" decoding="async" width="90" height="90" class="size-4 shrink-0 rounded-full" />
-                <span class="text-text-high truncate font-medium">{{ $article->authorName }}</span>
-            </span>
-            <span class="ms-auto flex items-center gap-2.5 font-mono tabular-nums">
-                <span title="reações">♥ {{ $article->reactions }}</span>
-                <span title="comentários">💬 {{ $article->comments }}</span>
-                <span title="tempo de leitura">{{ $article->readingMinutes }} min</span>
+        @if ($article->tags !== [])
+            <ul class="mt-2.5 flex flex-wrap gap-1.5">
+                @foreach (array_slice($article->tags, 0, 2) as $tag)
+                    <li
+                        class="bg-text-high/6 text-text-medium rounded-md px-2 py-1 font-mono text-[0.75rem] leading-none"
+                    >
+                        #{{ $tag }}
+                    </li>
+                @endforeach
+            </ul>
+        @endif
+
+        {{-- O pt-4 garante respiro claro entre as tags e o rodapé; o mt-auto alinha o rodapé entre cards de alturas diferentes. --}}
+        <div class="mt-auto flex items-center gap-2 pt-4 text-[0.7rem] font-medium">
+            <x-portal::articles.author-avatar :name="$article->authorName" :avatar="$article->authorAvatar" size="size-4" />
+            <span class="text-text-medium truncate font-medium">{{ $article->authorName }}</span>
+
+            <span class="text-text-medium ms-auto flex shrink-0 items-center gap-2.5 font-mono tabular-nums">
+                <span title="reações" class="flex items-center gap-1">
+                    <x-heroicon-o-heart class="text-icon-medium size-3.5" />
+                    {{ $article->reactions }}
+                </span>
+                <span title="comentários" class="flex items-center gap-1">
+                    <x-heroicon-o-chat-bubble-left-ellipsis class="text-icon-medium size-3.5" />
+                    {{ $article->comments }}
+                </span>
+                <span title="tempo de leitura" class="flex items-center gap-1">
+                    <x-heroicon-o-clock class="text-icon-medium size-3.5" />
+                    {{ $article->readingMinutes }} min
+                </span>
             </span>
         </div>
     </div>

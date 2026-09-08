@@ -1,8 +1,8 @@
 @php
-    // Payload mínimo para o recorte e a lente no cliente: quem assina e quais temas
-    // cada artigo carrega. Os cards já vêm renderizados do servidor — o Alpine só
-    // decide o que fica visível e o que esmaece.
-    $lensItems = collect($articles)
+    // Payload mínimo para o recorte no cliente: quem assina e quais temas cada
+    // artigo carrega. Os cards já vêm renderizados do servidor — o Alpine só
+    // decide o que fica visível.
+    $feedItems = collect($articles)
         ->map(fn ($article): array => [
             'a' => $article->authorUsername,
             'n' => $article->authorName,
@@ -12,67 +12,77 @@
         ->all();
 @endphp
 
-<div x-data="articlesFeed(@js($lensItems))" class="pb-20">
-    <x-portal::articles.opening-band :stats="$stats" :highlight="$highlight" />
+<div x-data="articlesFeed(@js($feedItems))" class="pb-20">
+    <x-portal::articles.opening-band :stats="$stats" />
 
-    <div class="mx-auto grid max-w-[1720px] gap-7 px-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:px-12">
-        <div class="min-w-0">
-            @if ($articles === [])
-                {{-- O acervo vem de terceiro; quando o dev.to não responde a página
-                     continua de pé e diz o que houve, em vez de fingir que não há artigos. --}}
-                <div class="border-outline-low bg-elevation-01dp flex flex-col items-center gap-3 rounded-lg border border-dashed p-12 text-center">
-                    <p class="text-text-high text-sm font-semibold">Não deu para carregar o acervo agora.</p>
-                    <p class="text-text-medium max-w-sm text-xs">
-                        Os artigos vivem no dev.to e a listagem não respondeu. Tente recarregar em instantes — ou vá
-                        direto para a organização.
-                    </p>
-                    <x-he4rt::button href="https://dev.to/he4rt" target="_blank" rel="noopener" size="sm">
-                        Abrir no dev.to
-                    </x-he4rt::button>
-                </div>
-            @else
-            <x-portal::articles.toolbar :topics="$topics" :total="count($articles)" />
-
-            {{-- A grade é o padrão do servidor; o Alpine só troca para lista. Assim a
-                 página nasce com layout correto mesmo antes (ou sem) o JS. --}}
-            <div
-                class="grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(260px,1fr))]"
-                x-bind:class="view === 'list' ? 'is-list !grid-cols-1' : ''"
-            >
-                @foreach ($articles as $index => $article)
-                    <x-portal::articles.card :article="$article" :index="$index" />
-                @endforeach
-            </div>
-
-            <div
-                x-show="visibleCount === 0"
-                x-cloak
-                style="display: none"
-                class="border-outline-low bg-elevation-01dp mt-4 flex flex-col items-center gap-3 rounded-lg border border-dashed p-10 text-center"
-            >
-                <p class="text-text-high text-sm font-semibold">Nenhum artigo com essa combinação.</p>
-                <p class="text-text-medium max-w-sm text-xs">
-                    O tema e a pessoa selecionados não se cruzam no acervo. As duas listas seguem ativas — dá para
-                    trocar o recorte sem sair daqui.
-                </p>
-                <button
-                    type="button"
-                    x-on:click="clearAll()"
-                    class="from-primary to-secondary text-text-light cursor-pointer rounded-md bg-gradient-to-br px-4 py-2 text-xs font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-95"
-                >
-                    limpar tudo
-                </button>
-            </div>
-            @endif
-        </div>
-
-        {{-- No telefone a coluna de pessoas vai para baixo do feed: empilhar 17 linhas
-             acima dos cards custaria a dobra inteira. --}}
-        @if ($authors !== [])
-            <div class="order-last lg:sticky lg:top-4 lg:order-none lg:self-start">
-                <x-portal::articles.author-rail :authors="$authors" />
+    <div class="hp-page">
+        @if ($articles !== [] && $highlight)
+            {{-- Mesmas colunas do grid abaixo, só para o destaque herdar a largura
+                 da coluna de artigos em vez de ocupar a página inteira. --}}
+            <div class="grid lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-7">
+                <x-portal::articles.featured :article="$highlight" />
             </div>
         @endif
+
+        <div class="grid gap-7 lg:grid-cols-[minmax(0,1fr)_320px]">
+            <div class="min-w-0">
+                @if ($articles === [])
+                    {{-- O catálogo é preenchido pelo sync; até a primeira rodada rodar, a
+                         página diz o que houve em vez de fingir que ninguém escreveu. --}}
+                    <div class="border-outline-low bg-elevation-01dp flex flex-col items-center gap-3 rounded-lg border border-dashed p-12 text-center">
+                        <p class="text-text-high text-sm font-semibold">Ainda não há artigos por aqui.</p>
+                        <p class="text-text-medium max-w-sm text-xs">
+                            O acervo da comunidade é publicado no dev.to. Enquanto ele não aparece aqui, vá direto
+                            para a organização.
+                        </p>
+                        <x-he4rt::button href="https://dev.to/he4rt" target="_blank" rel="noopener" size="sm">
+                            Abrir no dev.to
+                        </x-he4rt::button>
+                    </div>
+                @else
+                <x-portal::articles.toolbar :topics="$topics" :total="count($articles)" />
+
+                {{-- A grade é o padrão do servidor; o Alpine só troca para lista. Assim a
+                     página nasce com layout correto mesmo antes (ou sem) o JS. --}}
+                <div
+                    class="grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(260px,1fr))]"
+                    x-bind:class="view === 'list' ? 'is-list !grid-cols-1' : ''"
+                >
+                    @foreach ($articles as $index => $article)
+                        <x-portal::articles.card :article="$article" :index="$index" />
+                    @endforeach
+                </div>
+
+                <div
+                    x-show="visibleCount === 0"
+                    x-cloak
+                    style="display: none"
+                    class="border-outline-low bg-elevation-01dp mt-4 flex flex-col items-center gap-3 rounded-lg border border-dashed p-10 text-center"
+                >
+                    <p class="text-text-high text-sm font-semibold">Nenhum artigo com essa combinação.</p>
+                    <p class="text-text-medium max-w-sm text-xs">
+                        O tema e a pessoa selecionados não se cruzam no acervo. As duas listas seguem ativas — dá para
+                        trocar o recorte sem sair daqui.
+                    </p>
+                    <button
+                        type="button"
+                        x-on:click="clearAll()"
+                        class="from-primary to-secondary text-text-light cursor-pointer rounded-md bg-gradient-to-br px-4 py-2 text-xs font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-95"
+                    >
+                        limpar tudo
+                    </button>
+                </div>
+                @endif
+            </div>
+
+            {{-- No telefone a coluna de pessoas vai para baixo do feed: empilhar 17 linhas
+                 acima dos cards custaria a dobra inteira. --}}
+            @if ($authors !== [])
+                <div class="order-last lg:sticky lg:top-4 lg:order-0 lg:mt-8 lg:self-start">
+                    <x-portal::articles.author-rail :authors="$authors" />
+                </div>
+            @endif
+        </div>
     </div>
 
     {{-- Componente class-based: o Livewire 4 exige @assets/@script para JS de componente.
@@ -89,10 +99,6 @@
                 authorSort: 'articles',
                 topicsOpen: false,
                 topicsMaxHeight: 420,
-                lensType: null,
-                lensKey: null,
-                lensTimer: null,
-                lensEnabled: false,
 
                 // Recorte compartilhável: sem isso, "olha os artigos da Cherry" não cabe
                 // num link. Os valores são conferidos contra o acervo antes de aplicar,
@@ -117,12 +123,6 @@
                     this.readUrl()
                     this.$watch('author', () => this.syncUrl())
                     this.$watch('topic', () => this.syncUrl())
-
-                    // A lente é um afeto de ponteiro: no toque viraria clique acidental,
-                    // e sob reduced-motion não deve piscar opacidade.
-                    this.lensEnabled =
-                        window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
-                        !window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
                     this.$watch('topicsOpen', (open) => open && this.$nextTick(() => this.measurePanel()))
                     window.addEventListener('resize', () => this.measurePanel(), { passive: true })
@@ -177,64 +177,6 @@
                 authorName(username) {
                     const item = this.items.find((candidate) => candidate.a === username)
                     return item ? item.n : username
-                },
-
-                lensEnter(type, key) {
-                    if (!this.lensEnabled) return
-                    // O atraso evita a página piscar quando o ponteiro atravessa a lista.
-                    clearTimeout(this.lensTimer)
-                    this.lensTimer = setTimeout(() => {
-                        this.lensType = type
-                        this.lensKey = key
-                    }, 120)
-                },
-
-                lensLeave() {
-                    clearTimeout(this.lensTimer)
-                    this.lensType = null
-                    this.lensKey = null
-                },
-
-                get lensOn() {
-                    return this.lensEnabled && this.lensKey !== null
-                },
-
-                get lensArticles() {
-                    if (!this.lensOn) return null
-                    if (this.lensType === 'article') return new Set([this.lensKey])
-
-                    const key = this.lensKey
-                    const matches =
-                        this.lensType === 'author'
-                            ? (item) => item.a === key
-                            : (item) => item.t.includes(key)
-
-                    const found = new Set()
-                    this.items.forEach((item, index) => matches(item) && found.add(index))
-                    return found
-                },
-
-                get lensAuthors() {
-                    if (!this.lensOn) return null
-                    const found = new Set()
-                    this.lensArticles.forEach((index) => found.add(this.items[index].a))
-                    return found
-                },
-
-                get lensTopics() {
-                    if (!this.lensOn) return null
-                    const found = new Set()
-                    this.lensArticles.forEach((index) => this.items[index].t.forEach((tag) => found.add(tag)))
-                    return found
-                },
-
-                // Esmaece o que não se relaciona, em vez de acender o que se relaciona:
-                // lê mais rápido e não transforma a página num painel de luzes.
-                isDim(kind, key) {
-                    if (!this.lensOn) return false
-                    if (kind === 'article') return !this.lensArticles.has(key)
-                    if (kind === 'author') return !this.lensAuthors.has(key)
-                    return !this.lensTopics.has(key)
                 },
             }))
         })

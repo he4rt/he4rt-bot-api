@@ -1,8 +1,6 @@
 <div>
     <livewire:hero-section />
-    {{--    <x-portal::sections.purpose />--}}
-    {{--    <x-portal::sections.projects />--}}
-    {{--    <x-portal::sections.articles />--}}
-    {{--    <x-portal::sections.testimonials />--}}
-    {{--    <x-portal::sections.contact />--}}
+    {{-- Panorama de contribuições pronto e testado, fora do ar até o desenho da
+         seção ser aprovado: <x-portal::sections.contributions :panorama="..." /> --}}
+    <x-portal::sections.latest-articles :articles="$latestArticles" />
 </div>

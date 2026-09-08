@@ -42,6 +42,7 @@ Every issue must be tagged with the module(s) it affects. Labels follow the patt
 | `mod:activity`           | `activity`               | Activity tracking        |
 | `mod:bot-discord`        | `bot-discord`            | Discord bot              |
 | `mod:community`          | `community`              | Community features       |
+| `mod:contents`           | `contents`               | Published content catalogue |
 | `mod:economy`            | `economy`                | Economy/wallet system    |
 | `mod:events`             | `events`                 | Events & participation   |
 | `mod:gamification`       | `gamification`           | XP, levels, ranking      |
@@ -50,6 +51,7 @@ Every issue must be tagged with the module(s) it affects. Labels follow the patt
 | `mod:integration-devto`  | `integration-devto`      | Dev.to integration       |
 | `mod:integration-discord`| `integration-discord`    | Discord OAuth/API        |
 | `mod:integration-twitch` | `integration-twitch`     | Twitch integration       |
+| `mod:marketing`          | `marketing`              | Encurtador, campanhas    |
 | `mod:moderation`         | `moderation`             | Moderation pipeline      |
 | `mod:panel-admin`        | `panel-admin`            | Admin Filament panel     |
 | `mod:panel-app`          | `panel-app`              | User Filament panel      |

@@ -49,9 +49,56 @@
                         .querySelectorAll('[data-anim]')
                         .forEach((el, k) => (el.style.animationDelay = 110 + Math.min(k, 14) * 60 + 'ms')),
                 );
-                this.go(0);
+                this.go(0, { silent: true });
             },
-            go(i) {
+            stepsOf(slide) {
+                return slide ? Number(slide.dataset.steps || 0) : 0;
+            },
+            stepOf(slide) {
+                return slide ? Number(slide.dataset.step || 0) : 0;
+            },
+            // Contrato genérico, não um caso especial de um slide: qualquer slide
+            // pode declarar `data-steps` e marcar seus elementos com `data-reveal`.
+            // O deck só decide QUANDO cada faixa entra; o que aparece é problema
+            // da partial.
+            setStep(slide, step) {
+                if (!slide) return;
+
+                slide.dataset.step = String(step);
+                slide.querySelectorAll('[data-reveal]').forEach((el) => {
+                    el.classList.toggle('shown', Number(el.dataset.reveal) <= step);
+                });
+            },
+            // A seta só troca de slide depois que o slide atual gastou os passos
+            // dele. Sem isso, a revelação da tag precisaria de uma tecla própria e
+            // quem apresenta pularia o momento inteiro com um toque distraído.
+            forward() {
+                const slide = this.slides[this.active];
+                const steps = this.stepsOf(slide);
+
+                if (steps && this.stepOf(slide) < steps - 1) {
+                    this.setStep(slide, this.stepOf(slide) + 1);
+                    return;
+                }
+
+                this.go(this.active + 1);
+            },
+            back() {
+                const slide = this.slides[this.active];
+
+                if (this.stepsOf(slide) && this.stepOf(slide) > 0) {
+                    this.setStep(slide, this.stepOf(slide) - 1);
+                    return;
+                }
+
+                this.go(this.active - 1);
+            },
+            // `silent` marca o movimento que veio de FORA (o builder mandando o deck
+            // para um slide). Sem isso o anúncio de volta reabriria o mesmo caminho
+            // e as duas pontas ficariam se empurrando.
+            go(i, { silent = false } = {}) {
+                const previous = this.active;
+
                 this.active = Math.max(0, Math.min(i, this.total - 1));
                 this.slides.forEach((s, k) => {
                     s.classList.toggle('active', k === this.active);
@@ -59,26 +106,56 @@
                     if (k === this.active) s.scrollTop = 0;
                 });
                 this.label = this.slides[this.active] ? this.slides[this.active].dataset.label : '';
+
+                // Um slide com passos começa fechado quando se entra por ele
+                // avançando, e ABERTO quando se chega de volta ou de fora (o
+                // builder mandando o preview para cá): quem está editando a lista
+                // quer ver as pessoas, não a tela de suspense.
+                const current = this.slides[this.active];
+                const steps = this.stepsOf(current);
+
+                if (steps) {
+                    this.setStep(current, silent || this.active < previous ? steps - 1 : 0);
+                }
+
+                if (!silent && this.active !== previous) {
+                    // Borbulha até o host: no portal ninguém escuta, no builder é o
+                    // que mantém estrutura e inspector acompanhando o deck.
+                    $dispatch('retro-moved', { index: this.active });
+                }
+            },
+            // Método, não expressão inline: o Alpine compila atributo como
+            // `__self.result = <expressão>`, e um bloco multi-linha ali é
+            // SyntaxError silencioso — o teclado inteiro morre.
+            keyboard($event) {
+                // Embutido no builder, o deck divide o teclado com o inspector:
+                // setas dentro de um campo movem o cursor, não o deck.
+                if ($event.target.closest('input, textarea, select, [contenteditable]')) return;
+
+                if ($event.key === 'ArrowRight') {
+                    this.forward();
+                    $event.preventDefault();
+                } else if ($event.key === 'ArrowLeft') {
+                    this.back();
+                    $event.preventDefault();
+                }
             },
         }"
-        @keydown.window="
-            if ($event.key === 'ArrowRight') {
-                go(active + 1);
-                $event.preventDefault();
-            } else if ($event.key === 'ArrowLeft') {
-                go(active - 1);
-                $event.preventDefault();
-            }
-        "
+        {{-- Navegação por fora do deck: o Deck Builder aponta o preview para o
+             slide que o operador acabou de selecionar na coluna de estrutura. --}}
+        x-on:retro-goto.window="go($event.detail.index, { silent: true })"
+        @keydown.window="keyboard($event)"
     >
         @unless ($bare)
             <div class="progress">
                 <div class="bar" :style="'width: ' + (total ? ((active + 1) / total) * 100 : 0) + '%'"></div>
             </div>
-            <button type="button" class="filter-fab" @click="$dispatch('retro-open-filters')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" /></svg>
-                Filtros
-            </button>
+            @if (filled($filters ?? null))
+                <button type="button" class="filter-fab" @click="$dispatch('retro-open-filters')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" /></svg>
+                    Recorte
+                </button>
+            @endif
         @endunless
 
         <div class="deck">{{ $slot }}</div>
@@ -101,10 +178,10 @@
                     </template>
                 </div>
                 <div class="navactions">
-                    <button type="button" class="navbtn" @click="go(active - 1)" :disabled="active === 0">
+                    <button type="button" class="navbtn" @click="back()" :disabled="active === 0 && ! stepOf(slides[active])">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
                     </button>
-                    <button type="button" class="navbtn" @click="go(active + 1)" :disabled="active >= total - 1">
+                    <button type="button" class="navbtn" @click="forward()" :disabled="active >= total - 1 && stepOf(slides[active]) >= stepsOf(slides[active]) - 1">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
                     </button>
                 </div>

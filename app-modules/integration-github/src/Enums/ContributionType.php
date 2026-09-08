@@ -25,4 +25,17 @@ enum ContributionType: string
     {
         return $this->value.':'.$id;
     }
+
+    /**
+     * Se a própria referência da contribuição é o número que a identifica no repo.
+     * Comentários e reviews penduram-se num número alheio, guardado em target_ref;
+     * commit não tem número nenhum.
+     */
+    public function carriesNumber(): bool
+    {
+        return match ($this) {
+            self::Pr, self::Issue => true,
+            self::Review, self::Comment, self::ReviewComment, self::Commit => false,
+        };
+    }
 }

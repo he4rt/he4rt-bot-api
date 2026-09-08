@@ -13,8 +13,12 @@ use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use He4rt\Identity\ExternalIdentity\Enums\CredentialsType;
+use He4rt\Identity\ExternalIdentity\Enums\IdentityProvider;
 use Illuminate\Database\Eloquent\Builder;
 
 class ExternalIdentitiesTable
@@ -38,7 +42,9 @@ class ExternalIdentitiesTable
 
                 TextColumn::make('provider')
                     ->badge()
-                    ->label('Provider'),
+                    ->label('Provider')
+                    ->searchable()
+                    ->sortable(),
 
                 TextColumn::make('external_account_id')
                     ->label('External Account Id'),
@@ -50,14 +56,16 @@ class ExternalIdentitiesTable
 
                 TextColumn::make('connected_at')
                     ->label('Connected Date')
-                    ->date(),
+                    ->dateTime('d/m/Y H:i')
+                    ->timezone(config('app.display_timezone'))
+                    ->sortable(),
 
                 TextColumn::make('disconnected_at')
                     ->label('Disconnected Date')
-                    ->date(),
-
-                TextColumn::make('metadata')
-                    ->label('Metadata'),
+                    ->dateTime('d/m/Y H:i')
+                    ->timezone(config('app.display_timezone'))
+                    ->placeholder('Ativa')
+                    ->sortable(),
 
                 TextColumn::make('email')
                     ->label('Email')
@@ -65,6 +73,22 @@ class ExternalIdentitiesTable
                     ->sortable(),
             ])
             ->filters([
+                SelectFilter::make('provider')
+                    ->options(IdentityProvider::class)
+                    ->multiple()
+                    ->searchable(),
+
+                SelectFilter::make('credentials_type')
+                    ->options(CredentialsType::class),
+
+                TernaryFilter::make('connection_state')
+                    ->label('Conexão ativa')
+                    ->queries(
+                        true: static fn (Builder $query): Builder => $query->whereNull('disconnected_at'),
+                        false: static fn (Builder $query): Builder => $query->whereNotNull('disconnected_at'),
+                        blank: static fn (Builder $query): Builder => $query,
+                    ),
+
                 TrashedFilter::make(),
             ])
             ->recordActions([

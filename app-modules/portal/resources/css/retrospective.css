@@ -4,6 +4,101 @@
  */
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
+/*
+ | Deck embutido (Deck Builder do painel). O deck se posiciona `fixed` porque no
+ | portal ele É a página; aqui ele precisa caber numa coluna. O host vira o
+ | containing block e o deck passa a se ancorar nele, sem que nada mais no design
+ | system mude — os filhos já são `absolute; inset: 0`.
+ */
+.retro-embed {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.75rem;
+}
+
+.retro-embed .retro {
+    position: absolute;
+}
+
+/*
+ | Miniatura de UM slide (filmstrip do Deck Builder). O palco renderiza o slide em
+ | tamanho de deck e o `scale` o encolhe. Escalar é o que mantém a miniatura
+ | honesta: as proporções internas continuam as do deck grande, só menores.
+ | Encolher a CAIXA em vez de escalar reflowaria o layout e mostraria outra coisa.
+ |
+ | `content-visibility` deixa o browser pular o que está fora da rolagem horizontal
+ | — o filmstrip carrega o deck inteiro, e o operador olha três slides por vez.
+ */
+/*
+ | A largura da miniatura é HERDADA, com 208 de piso: quem monta a tira a define
+ | uma vez no container (`--retro-thumb-width`) e todas as células acompanham,
+ | inclusive os rótulos e o cartão de "sem dado". Declará-la aqui dentro tornaria
+ | a miniatura imune ao container, e cada tamanho novo viraria uma classe nova.
+ */
+.retro-thumb {
+    /* Sem unidade: `scale()` divide os dois, e calc() não divide comprimentos. */
+    --retro-stage-width: 1280;
+    --retro-stage-height: 720;
+
+    position: relative;
+    width: calc(var(--retro-thumb-width, 208) * 1px);
+    aspect-ratio: var(--retro-stage-width) / var(--retro-stage-height);
+    overflow: hidden;
+    border-radius: 0.5rem;
+    background: #0b0a10;
+    content-visibility: auto;
+    contain-intrinsic-size: auto calc(var(--retro-thumb-width, 208) * 1px) auto
+        calc(var(--retro-thumb-width, 208) * var(--retro-stage-height) / var(--retro-stage-width) * 1px);
+}
+
+.retro-thumb-stage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(var(--retro-stage-width) * 1px);
+    height: calc(var(--retro-stage-height) * 1px);
+    transform: scale(calc(var(--retro-thumb-width, 208) / var(--retro-stage-width)));
+    transform-origin: top left;
+    /* O clique é do botão que cobre a miniatura, nunca do carrossel lá dentro. */
+    pointer-events: none;
+}
+
+.retro-thumb .retro {
+    position: absolute;
+}
+
+/*
+ | O slide da miniatura é o único que existe ali: aparece sempre. `.active` e a
+ | animação de entrada são estado do deck NAVEGÁVEL — numa miniatura parada elas
+ | só deixariam o slide invisível.
+ */
+.retro-thumb .retro .slide {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: none;
+    overflow: hidden;
+}
+
+.retro-thumb .retro .slide [data-anim] {
+    opacity: 1;
+    animation: none;
+}
+
+/*
+ | Mesmo motivo, para o que não é `[data-anim]`: traço que só aparece ao ser
+ | desenhado e ponto que só aparece ao estourar ficariam INVISÍVEIS na miniatura,
+ | onde nada anima. Aqui eles nascem no estado final.
+ */
+.retro-thumb .retro .ecg path,
+.retro-thumb .retro .tl-ecg path {
+    stroke-dashoffset: 0;
+}
+
+.retro-thumb .retro .tl-dot {
+    opacity: 1;
+}
+
 .retro {
     --bg: #0b0a10;
     --surface: #15131c;
@@ -19,7 +114,8 @@
     --t-issue: #f6b73c;
     --t-commit: #b39bff;
     --t-review: #2dd4bf;
-    --t-comment: #62a6ff;
+    /* Azul mais escuro que o lilás de commit: separa o par sob protanopia (ΔE 12.2). */
+    --t-comment: #3f7ce0;
     --t-review-comment: #7c83ff;
     --st-merged: #a06bff;
     --st-open: #34d399;
@@ -29,6 +125,16 @@
 
     position: fixed;
     inset: 0;
+
+    /*
+     | Origem das unidades `cqw` do design system. O deck mede a tipografia pela
+     | LARGURA DELE, não pela do viewport: no portal ele ocupa a tela inteira e as
+     | duas coincidem, mas embutido numa coluna do painel — ou numa miniatura do
+     | filmstrip — só o container diz a verdade. `inline-size` contém apenas o eixo
+     | horizontal: a altura segue livre, e nada aqui depende de contenção vertical.
+     */
+    container-type: inline-size;
+
     background: var(--bg);
     color: var(--text);
     font-family: 'Hanken Grotesk', sans-serif;
@@ -64,7 +170,7 @@
     top: -22%;
     left: 50%;
     transform: translateX(-50%);
-    width: 120vw;
+    width: 120cqw;
     height: 80vh;
     background: radial-gradient(
         ellipse at center,
@@ -95,7 +201,7 @@
     overflow: hidden;
 }
 .retro .logo-bg svg {
-    width: min(78vh, 64vw);
+    width: min(78vh, 64cqw);
     height: auto;
     transform: translateY(-2%);
 }
@@ -209,7 +315,7 @@
     font-family: 'Fraunces', serif;
     font-weight: 600;
     line-height: 0.96;
-    font-size: clamp(2.6rem, 7.5vw, 5.4rem);
+    font-size: clamp(2.6rem, 7.5cqw, 5.4rem);
     letter-spacing: -0.02em;
     margin: 0.2em 0 0;
 }
@@ -223,7 +329,7 @@
     padding-right: 0.05em;
 }
 .retro .lead {
-    font-size: clamp(1.02rem, 1.6vw, 1.26rem);
+    font-size: clamp(1.02rem, 1.6cqw, 1.26rem);
     color: var(--muted);
     max-width: 60ch;
 }
@@ -289,6 +395,56 @@
         transform: scale(1.08);
     }
 }
+/* apresentadores da capa de onboarding */
+.retro .cover-hosts {
+    margin-top: 26px;
+}
+.retro .cover-host-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+.retro .cover-host {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 18px 8px 8px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    text-align: left;
+}
+.retro .cover-host img {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow:
+        0 0 0 2px var(--surface),
+        0 0 0 4px rgba(120, 43, 241, 0.45);
+}
+.retro .cover-host-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+.retro .cover-host-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--brand-soft);
+}
+.retro .cover-host-name {
+    font-weight: 600;
+    color: var(--text);
+}
+.retro .cover-host-handle {
+    font-size: 0.86rem;
+    color: var(--muted);
+}
 .retro .hint {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.78rem;
@@ -352,7 +508,7 @@
 .retro .sec {
     font-family: 'Fraunces', serif;
     font-weight: 600;
-    font-size: clamp(1.9rem, 4vw, 2.8rem);
+    font-size: clamp(1.9rem, 4cqw, 2.8rem);
     letter-spacing: -0.01em;
     margin: 0.3em 0 0.2em;
     line-height: 1.04;
@@ -381,7 +537,7 @@
 .retro .stat .v {
     font-family: 'Fraunces', serif;
     font-weight: 600;
-    font-size: clamp(1.8rem, 3.4vw, 2.7rem);
+    font-size: clamp(1.8rem, 3.4cqw, 2.7rem);
     line-height: 1;
     color: var(--text);
 }
@@ -395,6 +551,185 @@
     text-transform: uppercase;
     color: var(--muted);
     margin-top: 9px;
+}
+
+/* panorama do github */
+.retro .faint {
+    color: var(--faint);
+}
+.retro .pan-hero {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(4rem, 11cqw, 7.2rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--brand-soft);
+    margin-top: 0.18em;
+}
+.retro .pan-lead {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.02rem;
+    color: var(--muted);
+    margin: 14px 0 0;
+}
+.retro .pan-lead b {
+    color: var(--text);
+    font-weight: 600;
+}
+.retro .pan-grid {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 18px 56px;
+    align-items: start;
+    margin-top: 8px;
+}
+.retro .pan-sec {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.76rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--brand-soft);
+    margin: 30px 0 14px;
+}
+.retro .pan-sec::before,
+.retro .pan-sec::after {
+    content: '';
+    height: 1px;
+    background: var(--border);
+    width: 26px;
+}
+.retro .pan-sec::after {
+    flex: 0 1 90px;
+}
+.retro .pan-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.retro .pan-row {
+    display: grid;
+    grid-template-columns: 12.5rem 3.6rem minmax(0, 1fr);
+    align-items: center;
+    gap: 14px;
+}
+.retro .pan-row .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.96rem;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.retro .pan-row .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--text);
+    text-align: right;
+}
+.retro .pan-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    border-left: 1px solid var(--border);
+    padding-left: 1px;
+}
+.retro .pan-bar .pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.88rem;
+    color: var(--faint);
+    white-space: nowrap;
+}
+.retro .pan-fill {
+    display: block;
+    height: 14px;
+    border-radius: 0 4px 4px 0;
+    flex-shrink: 0;
+}
+.retro .pan-prs-total {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.96rem;
+    color: var(--muted);
+    margin: 0 0 12px;
+}
+.retro .pan-prs-total b {
+    color: var(--text);
+    font-size: 1.08rem;
+}
+.retro .pan-stack {
+    height: 14px;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    gap: 2px;
+}
+.retro .pan-stack span {
+    height: 100%;
+}
+.retro .pan-states {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.96rem;
+    color: var(--muted);
+    margin: 12px 0 0;
+}
+.retro .pan-states .key {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+}
+.retro .pan-states .key i {
+    width: 9px;
+    height: 9px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+.retro .pan-states .key b {
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+}
+.retro .pan-diff {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-top: 16px;
+    font-size: 0.9rem;
+}
+.retro .pan-diff .bdg {
+    font-size: 0.92rem;
+    padding: 6px 13px;
+}
+.retro .pan-insight {
+    font-size: 1.18rem;
+    color: var(--muted);
+    max-width: 82ch;
+    margin: 34px 0 0;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+}
+.retro .pan-insight b {
+    color: var(--text);
+}
+
+@media (max-width: 900px) {
+    .retro .pan-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+    }
+    .retro .pan-row {
+        grid-template-columns: 8.5rem 3rem minmax(0, 1fr) 2.6rem;
+        gap: 8px;
+    }
 }
 
 /* card */
@@ -422,13 +757,16 @@
     position: relative;
     /* sai da caixa de 1120px do slide-inner pra usar a largura da tela;
        o cabeçalho continua estreito, só o trilho de cards "vaza" pras bordas */
-    width: min(96vw, 1480px);
+    width: min(96cqw, 1480px);
     margin-left: 50%;
     transform: translateX(-50%);
 }
 .retro .pcar-track {
     display: flex;
-    align-items: flex-start;
+    /* stretch + régua pregada no rodapé (abaixo): com a anatomia fixa do card
+       (chips de PR + uma régua de contadores), esticar pela altura do maior é o
+       que alinha o fundo da fileira — flex-start deixava a borda serrilhada */
+    align-items: stretch;
     gap: 16px;
     overflow-x: auto;
     scroll-snap-type: x proximity;
@@ -464,6 +802,21 @@
 .retro .pslide {
     flex: 0 0 clamp(300px, 30%, 460px);
     scroll-snap-align: start;
+    display: flex;
+}
+.retro .pslide .card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.retro .pslide .card .acts {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.retro .pslide .cstats.strip {
+    margin-top: auto;
+    padding-top: 14px;
 }
 .retro .pcar-arrow {
     position: absolute;
@@ -514,12 +867,23 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 14px;
-    /* start (não stretch): o card abraça o conteúdo em vez de esticar até a
-       altura do mais alto da linha — sem "vazião" embaixo dos cards leves */
-    align-items: start;
+    /* stretch: com a anatomia fixa (cabeçalho + barra + pills no rodapé), o que
+       alinha a linha é esticar pela altura do mais alto e pregar as pills
+       embaixo — start deixava o fundo da fileira serrilhado */
+    align-items: stretch;
+}
+.retro .pgrid > div {
+    display: flex;
 }
 .retro .pgrid .card {
     padding: 16px 17px 17px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.retro .pgrid .card .cstats {
+    margin-top: auto;
+    padding-top: 13px;
 }
 
 /* badges */
@@ -632,7 +996,152 @@
     display: inline-block;
 }
 
-/* repo */
+/* repo — trilho de identidade + grid de PRs.
+   A lista de PRs não tem teto (todo PR do recorte entra), então uma coluna só
+   vira um poço de rolagem com metade da tela vazia. O trilho fixa a identidade
+   do repo à esquerda enquanto os PRs correm em duas colunas; o conjunto sai da
+   caixa de 1120px pelo mesmo truque do carrossel de pessoas. */
+.retro .repo-layout {
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 34px;
+    align-items: start;
+    width: min(96cqw, 1400px);
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+.retro .repo-rail {
+    position: sticky;
+    top: 84px;
+}
+.retro .repo-prs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    align-items: start;
+}
+/* repo pequeno (≤4 PRs): coluna única com cards ricos em vez de um grid manco;
+   estreita e centraliza pra não virar três réguas de borda a borda */
+.retro .repo-prs.is-hero {
+    grid-template-columns: minmax(0, 720px);
+    justify-content: center;
+    gap: 14px;
+    align-self: center;
+}
+.retro .tpr.is-hero {
+    padding: 20px 22px;
+    border-radius: 16px;
+}
+.retro .tpr.is-hero .d {
+    font-size: 1.14rem;
+    line-height: 1.35;
+}
+.retro .tpr.is-hero .rn {
+    font-size: 1rem;
+}
+.retro .st-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+@media (max-width: 980px) {
+    .retro .repo-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 22px;
+    }
+    .retro .repo-rail {
+        position: static;
+    }
+    .retro .repo-prs {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* quem mexeu — quebra por pessoa no trilho. A barra escala pelo maior churn DO
+   REPO (não da pessoa), então largura é comparação real entre as linhas; dentro
+   dela o verde/vermelho divide adições e remoções. */
+.retro .rp-list {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+.retro .rp-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--faint);
+}
+.retro .rp-id {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+.retro .rp-login {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.retro .rp-prs {
+    margin-left: auto;
+    flex: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--brand-soft);
+}
+.retro .rp-meter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    /* alinha com o texto: avatar de 24px + gap de 8px */
+    padding-left: 32px;
+}
+.retro .rp-bar {
+    height: 6px;
+    min-width: 8px;
+    border-radius: 999px;
+    overflow: hidden;
+    display: inline-flex;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+}
+.retro .rp-bar .a {
+    background: var(--add);
+    height: 100%;
+}
+.retro .rp-bar .d {
+    background: var(--del);
+    height: 100%;
+}
+.retro .rp-churn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: #7ef0a3;
+    flex: none;
+}
+.retro .rp-churn.is-del {
+    color: #ff9a9a;
+}
+.retro .rp-present {
+    margin-top: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.retro .rp-present-label {
+    font-size: 0.74rem;
+    color: var(--faint);
+}
+
 .retro .repo-ic {
     width: 54px;
     height: 54px;
@@ -650,7 +1159,7 @@
 .retro .repo-name {
     font-family: 'Fraunces', serif;
     font-weight: 600;
-    font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+    font-size: clamp(1.6rem, 3.2cqw, 2.3rem);
     line-height: 1.05;
 }
 
@@ -670,6 +1179,21 @@
 }
 .retro .avstack .mini:first-child {
     margin-left: 0;
+}
+.retro .closing-wall {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 30px;
+}
+.retro .closing-wall .mini {
+    width: 46px;
+    height: 46px;
+    transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.retro .closing-wall .mini:hover {
+    transform: scale(1.18);
 }
 
 /* pessoa */
@@ -845,6 +1369,19 @@
 .retro .cstat-n {
     color: var(--text);
 }
+.retro .cstat-l {
+    margin-left: 5px;
+    font-weight: 400;
+    font-size: 0.72rem;
+    color: var(--muted);
+}
+/* régua de contadores do card cheio: fecha o card com uma linha só, no lugar
+   das linhas rotuladas por tipo (que faziam as alturas divergirem no trilho) */
+.retro .cstats.strip {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+}
 
 /* navbar do deck */
 .retro .navbar {
@@ -984,7 +1521,7 @@
     right: 0;
     bottom: 0;
     width: 360px;
-    max-width: 88vw;
+    max-width: 88cqw;
     z-index: 10;
     background: linear-gradient(180deg, #161320, #100e17);
     border-left: 1px solid var(--border);
@@ -1193,5 +1730,1126 @@
     .retro *::after {
         animation: none !important;
         transition: none !important;
+    }
+}
+
+/* voice board — painel denso de voz (canais, pessoas e horas) */
+
+/*
+ | O painel de voz é o slide mais cheio do deck: quatro blocos empilhados. Encolhe
+ | o respiro padrão do slide e o título para o conteúdo caber na tela sem rolagem,
+ | inclusive dentro do preview do Deck Builder, que é menor que a tela cheia.
+ */
+.retro .slide-inner.is-dense {
+    padding: 40px 34px 56px;
+}
+.retro .slide-inner.is-dense .sec {
+    font-size: clamp(1.5rem, 2.6cqw, 2rem);
+    margin: 0.2em 0 0;
+}
+
+.retro .vb-totals {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-top: 16px;
+}
+.retro .vb-total {
+    background: var(--surface);
+    padding: 10px 12px;
+    text-align: center;
+}
+.retro .vb-total b {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(1.1rem, 1.9cqw, 1.6rem);
+    line-height: 1.1;
+    color: var(--brand-soft);
+    display: block;
+}
+.retro .vb-total span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.56rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-top: 4px;
+}
+
+.retro .vb-cols {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+}
+.retro .vb-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 14px;
+    min-width: 0;
+}
+.retro .vb-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--faint);
+    display: block;
+}
+
+/* arenas */
+.retro .vb-arenas {
+    list-style: none;
+    margin: 10px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+}
+.retro .vb-arena-head {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    min-width: 0;
+}
+.retro .vb-arena-name {
+    font-weight: 600;
+    font-size: 0.84rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1;
+}
+.retro .vb-arena-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--faint);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.retro .vb-arena-joins {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--muted);
+    margin-left: auto;
+    white-space: nowrap;
+    padding-left: 6px;
+}
+.retro .vb-arena-joins b {
+    color: var(--text);
+    font-size: 0.78rem;
+}
+.retro .vb-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.54rem;
+    letter-spacing: 0.06em;
+    color: var(--brand-soft);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 1px 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.retro .vb-track {
+    height: 4px;
+    border-radius: 99px;
+    background: var(--surface-2);
+    overflow: hidden;
+    margin-top: 4px;
+}
+.retro .vb-fill {
+    display: block;
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--brand), var(--brand-2));
+}
+.retro .vb-note {
+    font-size: 0.62rem;
+    color: var(--faint);
+    margin: 9px 0 0;
+}
+
+/* ranking de pessoas */
+.retro .vb-rank {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.retro .vb-rank-row,
+.retro .vb-rank-legend {
+    display: grid;
+    grid-template-columns: 1.8rem minmax(0, 1fr) 3.6rem 2.6rem 2.2rem;
+    align-items: center;
+    gap: 6px;
+}
+.retro .vb-rank-row {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+}
+.retro .vb-rank-row:last-child {
+    border-bottom: 0;
+}
+.retro .vb-rank-n {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.64rem;
+    color: var(--faint);
+}
+.retro .vb-rank-row:nth-child(-n + 3) .vb-rank-n {
+    color: var(--brand-soft);
+}
+.retro .vb-rank-name {
+    font-size: 0.78rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.retro .vb-rank-xp,
+.retro .vb-rank-meta {
+    font-family: 'JetBrains Mono', monospace;
+    text-align: right;
+}
+.retro .vb-rank-xp {
+    font-size: 0.76rem;
+    color: var(--brand-soft);
+}
+.retro .vb-rank-meta {
+    font-size: 0.62rem;
+    color: var(--faint);
+}
+.retro .vb-rank-legend {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.52rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--faint);
+    text-align: right;
+    margin: 8px 0 2px;
+}
+
+/* histograma por hora */
+.retro .vb-hours {
+    margin-top: 10px;
+}
+.retro .vb-hours-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+}
+.retro .vb-bars {
+    display: grid;
+    grid-template-columns: repeat(24, 1fr);
+    align-items: end;
+    gap: 3px;
+    height: 44px;
+    margin-top: 8px;
+}
+.retro .vb-bar {
+    background: var(--brand);
+    border-radius: 2px 2px 0 0;
+    opacity: 0.55;
+}
+.retro .vb-bar.is-peak {
+    background: var(--brand-2);
+    opacity: 1;
+}
+.retro .vb-hours-axis {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.56rem;
+    color: var(--faint);
+    margin-top: 5px;
+}
+.retro .vb-hours-peak {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--brand-soft);
+}
+
+@media (max-width: 900px) {
+    .retro .vb-cols {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+ | Seção "A He4rt" — apresentação fixa da comunidade, logo depois da capa.
+ ────────────────────────────────────────────────────────────────────────────── */
+
+/*
+ | Linha do tempo desenhada como batimento: cada marco É um pico da onda, não um
+ | ponto sobre uma régua. O deck já abre com um ECG na capa e fecha falando em
+ | coração batendo — a história da comunidade usa a mesma linha.
+ |
+ | Três camadas empilhadas na MESMA coluna (ano em cima, texto embaixo) e a onda
+ | por cima, absoluta. Ano e texto juntos na coluna é o que deixa a tira quebrar
+ | em telas estreitas sem descolar um do outro: some a onda, some o vão, e a
+ | timeline vira lista.
+ */
+.retro .tl {
+    position: relative;
+    margin-top: 34px;
+}
+.retro .tl-line {
+    position: absolute;
+    top: 24px;
+    left: 0;
+    right: 0;
+    /* Casada com a altura do viewBox: mapeamento 1:1 no eixo vertical é o que
+       deixa o ponto (HTML) pousar no ápice do pico (SVG) por um `top` em px. */
+    height: 104px;
+    pointer-events: none;
+}
+.retro .tl-ecg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.retro .tl-ecg path {
+    fill: none;
+    stroke: var(--brand);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 7px rgba(120, 43, 241, 0.75));
+    stroke-dasharray: 4200;
+    stroke-dashoffset: 4200;
+}
+.retro .slide.active .tl-ecg path {
+    animation: retro-draw 2s 0.35s ease-out forwards;
+}
+
+/*
+ | O ponto é HTML, não <circle>: o SVG estica na horizontal (preserveAspectRatio
+ | none) para a onda acompanhar a largura, e um círculo lá dentro viraria elipse.
+ */
+.retro .tl-dot {
+    position: absolute;
+    top: 18px;
+    width: 11px;
+    height: 11px;
+    margin-left: -5.5px;
+    border-radius: 50%;
+    opacity: 0;
+    background: var(--brand-2);
+    box-shadow:
+        0 0 0 4px rgba(196, 75, 255, 0.14),
+        0 0 16px rgba(196, 75, 255, 0.85);
+}
+.retro .slide.active .tl-dot {
+    animation: retro-pop 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(0.7s + var(--tl-i, 0) * 0.16s);
+}
+/* O marco mais recente continua pulsando: a comunidade não parou naquele ano. */
+.retro .slide.active .tl-dot.is-now::after {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    border: 1px solid var(--brand-2);
+    animation: retro-ping 2.4s ease-out infinite;
+    animation-delay: 1.8s;
+}
+@keyframes retro-pop {
+    from {
+        opacity: 0;
+        transform: scale(0.2);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+@keyframes retro-ping {
+    0% {
+        opacity: 0.9;
+        transform: scale(1);
+    }
+    70%,
+    100% {
+        opacity: 0;
+        transform: scale(2.6);
+    }
+}
+
+.retro .tl-cols {
+    display: flex;
+    align-items: flex-start;
+}
+.retro .tl-col {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0 9px;
+    text-align: center;
+}
+.retro .tl-year {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.84rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--brand-soft);
+}
+.retro .tl-text {
+    /* Vão da onda: o texto começa depois da banda do batimento. */
+    margin: 112px 0 0;
+    font-size: 0.79rem;
+    line-height: 1.46;
+    color: var(--muted);
+}
+
+/*
+ | Órbitas — frequência dos encontros. O raio É o dado: quanto mais interna a
+ | órbita, mais vezes aquilo acontece. A volta também: a de dentro gira rápido,
+ | a de fora quase não sai do lugar.
+ */
+.retro .orb {
+    position: relative;
+    width: 100%;
+    max-width: 330px;
+    aspect-ratio: 1;
+    margin: 0 auto;
+}
+.retro .orb-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px dashed rgba(182, 155, 255, 0.26);
+    border-radius: 50%;
+}
+.retro .orb-arm {
+    position: absolute;
+    inset: 0;
+}
+.retro .slide.active .orb-arm {
+    animation: orb-spin var(--orb-dur, 18s) linear infinite;
+}
+@keyframes orb-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+.retro .orb-dot {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    margin-left: -6px;
+    border-radius: 50%;
+    background: var(--orb-color, var(--brand-2));
+    box-shadow: 0 0 16px var(--orb-color, var(--brand-2));
+}
+.retro .orb-label {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -28px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--faint);
+}
+
+.retro .rit-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 330px) minmax(0, 1fr);
+    gap: 56px;
+    align-items: center;
+    margin-top: 38px;
+}
+.retro .rit {
+    display: grid;
+    gap: 22px;
+}
+.retro .rit-item {
+    display: grid;
+    grid-template-columns: 10px minmax(0, 1fr);
+    gap: 14px;
+}
+.retro .rit-bullet {
+    width: 10px;
+    height: 10px;
+    margin-top: 10px;
+    border-radius: 50%;
+    background: var(--rit-color, var(--brand-2));
+    box-shadow: 0 0 12px var(--rit-color, var(--brand-2));
+}
+.retro .rit-head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.retro .rit-title {
+    font-size: 1.16rem;
+    font-weight: 700;
+}
+.retro .rit-when {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--faint);
+}
+.retro .rit-desc {
+    margin: 5px 0 0;
+    font-size: 0.94rem;
+    line-height: 1.5;
+    color: var(--muted);
+}
+
+/*
+ | Eventos — a foto é o argumento. O card é a imagem com uma legenda curta por
+ | baixo; o trilho é o mesmo do carrossel de pessoas. Sem foto (arquivo ainda
+ | não subiu) o fundo degradê segura o lugar em vez de um ícone quebrado.
+ */
+.retro .evt-carousel,
+.retro .evt-empty {
+    margin-top: 38px;
+}
+.retro .evt-carousel .pslide {
+    flex: 0 0 clamp(300px, 34%, 480px);
+}
+.retro .evt-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+    transition:
+        transform 0.25s,
+        border-color 0.25s,
+        box-shadow 0.25s;
+}
+.retro .evt-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--brand);
+    box-shadow: 0 18px 40px rgba(120, 43, 241, 0.18);
+}
+.retro .evt-photo {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    background: linear-gradient(135deg, rgba(120, 43, 241, 0.35), rgba(196, 75, 255, 0.12));
+    color: transparent;
+}
+.retro .evt-meta {
+    padding: 14px 16px 16px;
+}
+.retro .evt-head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.retro .evt-title {
+    font-size: 1.08rem;
+    font-weight: 700;
+}
+.retro .evt-when {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--faint);
+}
+.retro .evt-desc {
+    margin: 5px 0 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--muted);
+}
+
+/*
+ | Canais — constelação. As estrelas dividem a MESMA órbita, equidistantes do
+ | núcleo: a igualdade entre os canais é geométrica, não declarada. Posição de
+ | cada estrela (`--sx`/`--sy`) e ângulo de cada raio vêm da partial, calculados
+ | sobre o total de canais do config — a órbita se redistribui sozinha.
+ */
+.retro .join-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
+    gap: 56px;
+    align-items: center;
+}
+.retro .const {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+}
+.retro .const-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 82%;
+    height: 82%;
+    margin: -41% 0 0 -41%;
+    border: 1px dashed rgba(182, 155, 255, 0.22);
+    border-radius: 50%;
+}
+.retro .slide.active .const-ring {
+    animation: orb-spin 90s linear infinite;
+}
+.retro .const-spoke {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 41%;
+    height: 1px;
+    transform-origin: left center;
+    background: linear-gradient(90deg, rgba(120, 43, 241, 0.35), transparent 85%);
+}
+/* A faixa de energia do raio: invisível até a vez da estrela dele no ciclo. */
+.retro .const-spoke::after {
+    content: '';
+    position: absolute;
+    inset: -1px 0;
+    background: linear-gradient(90deg, var(--ac, var(--brand-2)), transparent 92%);
+    opacity: 0;
+}
+.retro .slide.active .const-spoke::after {
+    animation: const-feed calc(var(--n, 7) * 2.5s) linear infinite;
+    animation-delay: calc(var(--i, 0) * 2.5s);
+}
+.retro .const-core {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 104px;
+    height: 104px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 30%, #2a2140, var(--surface));
+    border: 1px solid rgba(120, 43, 241, 0.55);
+    box-shadow: 0 0 34px -8px rgba(120, 43, 241, 0.6);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 2rem;
+    color: var(--brand-soft);
+}
+.retro .slide.active .const-core {
+    animation: const-beat 2.4s ease-in-out infinite;
+}
+@keyframes const-beat {
+    0%,
+    42%,
+    100% {
+        box-shadow: 0 0 34px -8px rgba(120, 43, 241, 0.6);
+    }
+    16% {
+        box-shadow: 0 0 44px -6px rgba(196, 75, 255, 0.75);
+    }
+}
+.retro .const-star {
+    position: absolute;
+    top: var(--sy);
+    left: var(--sx);
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    width: 104px;
+    text-decoration: none;
+    color: var(--text);
+    text-align: center;
+}
+.retro .const-star-ic {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--brand-soft);
+    transition:
+        border-color 0.25s ease,
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+.retro .const-star:hover .const-star-ic {
+    border-color: var(--ac, var(--brand));
+    background: var(--ac, var(--brand));
+    /* A cor do accent varia do blurple ao branco puro; o ícone assume a cor do
+       fundo do deck, que contrasta com qualquer uma delas. */
+    color: var(--bg);
+    transform: scale(1.12);
+    box-shadow: 0 0 34px -6px var(--ac, var(--brand));
+}
+.retro .const-star-ic svg {
+    width: 23px;
+    height: 23px;
+}
+/*
+ | O ciclo de energia: a cada tique de 2,5s a estrela seguinte "recebe o hover"
+ | por conta própria — um anel sólido na cor do canal, sem desfoque, contorna o
+ | ícone enquanto o raio dela alimenta o núcleo. Realce por contraste, não por
+ | brilho: a forma continua nítida para quem enxerga pouco e não vira fonte de
+ | luz pulsante. O anel vive num pseudo-elemento para o :hover real, que anima
+ | as mesmas propriedades no ícone, continuar respondendo por cima.
+ */
+.retro .const-star-ic::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid var(--ac, var(--brand));
+    opacity: 0;
+}
+.retro .const-star-ic {
+    position: relative;
+}
+.retro .slide.active .const-star-ic::after {
+    animation: const-feed calc(var(--n, 7) * 2.5s) linear infinite;
+    animation-delay: calc(var(--i, 0) * 2.5s);
+}
+/* Janela de ~1/N do ciclo acesa (≈2,5s), com subida e descida suaves; o resto
+   do tempo a estrela espera a volta completar. */
+@keyframes const-feed {
+    0% {
+        opacity: 0;
+    }
+    6% {
+        opacity: 1;
+    }
+    16%,
+    100% {
+        opacity: 0;
+    }
+}
+/* Navegação por teclado recebe o mesmo realce do hover: a estrela focada não
+   pode depender do anel do ciclo para ser encontrada. */
+.retro .const-star:focus-visible {
+    outline: none;
+}
+.retro .const-star:focus-visible .const-star-ic {
+    border-color: var(--ac, var(--brand));
+    background: var(--ac, var(--brand));
+    color: var(--bg);
+    transform: scale(1.12);
+}
+.retro .const-star-name {
+    display: block;
+    font-weight: 600;
+    font-size: 0.82rem;
+    line-height: 1.2;
+}
+.retro .const-star-host {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--muted);
+}
+
+@media (max-width: 900px) {
+    /* Sem largura para a órbita, a constelação vira lista: as estrelas voltam
+       ao fluxo como chips e núcleo, anel e raios — que só existem para desenhar
+       a geometria — saem junto. */
+    .retro .join-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 30px;
+    }
+    .retro .const {
+        aspect-ratio: auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 12px;
+    }
+    .retro .const-ring,
+    .retro .const-spoke,
+    .retro .const-core {
+        display: none;
+    }
+    .retro .const-star {
+        position: static;
+        transform: none;
+        flex-direction: row;
+        width: auto;
+        gap: 11px;
+        text-align: left;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: var(--surface);
+        padding: 10px 12px;
+    }
+    .retro .const-star-ic {
+        width: 38px;
+        height: 38px;
+        flex: none;
+    }
+    .retro .const-star-ic svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* ── ritual da tag He4rt ────────────────────────────────────────────────────
+ |
+ | Revelação por passo. O deck marca `.shown` em cada `[data-reveal]` conforme
+ | quem apresenta avança, então a transição mora aqui e a decisão de QUANDO mora
+ | no JS do deck — nenhum dos dois precisa conhecer o conteúdo do outro.
+ */
+.retro .slide [data-reveal] {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+        opacity 0.5s ease,
+        transform 0.5s ease;
+}
+.retro .slide [data-reveal].shown {
+    opacity: 1;
+    transform: none;
+}
+
+/* A lista de destaques não tem teto (decisão editorial: ninguém fica de fora),
+   então ela — e não a página — é quem rola. */
+.retro .promo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    gap: 14px;
+    margin-top: 22px;
+    max-height: 58cqh;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.retro .promo-card {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    padding: 14px 16px;
+    text-align: left;
+}
+
+.retro .promo-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.retro .promo-avatar {
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow:
+        0 0 0 2px var(--surface),
+        0 0 0 4px rgba(120, 43, 241, 0.45);
+}
+.retro .promo-avatar.big {
+    box-shadow:
+        0 0 0 3px var(--surface),
+        0 0 0 6px var(--brand);
+}
+
+.retro .promo-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+    line-height: 1.2;
+}
+.retro .promo-name.big {
+    font-family: 'Fraunces', serif;
+    font-size: 2.4rem;
+    margin-top: 14px;
+}
+
+.retro .promo-handle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+}
+
+/* Uma faixa por fonte. O nome da plataforma fica colado nos números de propósito:
+   é o que impede a leitura de somar mensagem com PR (ADR-0001). */
+.retro .promo-source {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+}
+
+.retro .promo-source-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--faint);
+}
+
+.retro .promo-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+}
+
+.retro .promo-metric {
+    font-size: 0.84rem;
+    color: var(--muted);
+}
+.retro .promo-metric b {
+    color: var(--text);
+    font-size: 1.02rem;
+    font-weight: 700;
+}
+
+.retro .promo-reason {
+    margin: 12px 0 0;
+    font-size: 0.92rem;
+    color: var(--brand-soft);
+    font-style: italic;
+}
+.retro .promo-reason.big {
+    font-size: 1.25rem;
+    max-width: 46ch;
+    margin-inline: auto;
+}
+
+/* O palco da entrega: um viewport com profundidade. Os cards empilham na mesma
+   célula do grid (o mais alto define a altura) e vivem em planos de Z — quem
+   dita onde cada um está é a coreografia do dolly, mais abaixo. */
+.retro .promo-stage {
+    display: grid;
+    place-items: start center;
+    margin-top: 30px;
+    perspective: 1400px;
+    perspective-origin: 50% 40%;
+}
+
+.retro .promo-hero {
+    grid-area: 1 / 1;
+    width: min(100%, 520px);
+}
+
+.retro .promo-finale {
+    display: none;
+}
+
+.retro .promo-hero-metrics {
+    margin-top: 14px;
+}
+.retro .promo-hero .promo-source {
+    justify-content: center;
+}
+
+/* ── coreografia da entrega da tag: o dolly ─────────────────────────────────
+ |
+ | O deck só liga `.shown`; a encenação mora aqui. O palco tem profundidade e a
+ | câmera viaja: quem ainda não foi anunciado espera longe, fora de foco; no seu
+ | passo, o card chega ao plano focal (rack focus — o blur abre junto com a
+ | viagem); quando o próximo é anunciado, o anterior sai POR TRÁS da câmera. O
+ | passo final é o pull-back: todos voltam, lado a lado, para a foto oficial.
+ |
+ | "Quem já passou" e "é o finale" são lidos do próprio DOM via :has() — o deck
+ | não sabe de nada disso, continua só ligando `.shown` na ordem dos passos.
+ |
+ | A câmera transita nos DOIS sentidos (voltar um passo desfaz a viagem); os
+ | gestos internos do card transitam só no `.shown`, para o retorno ser limpo.
+ */
+.retro .promo-tag .promo-hero[data-reveal] {
+    opacity: 0;
+    transform: translateZ(-980px) translateY(12px);
+    filter: blur(12px);
+    transition:
+        opacity 1.1s cubic-bezier(0.72, 0.02, 0.18, 0.99),
+        transform 1.1s cubic-bezier(0.72, 0.02, 0.18, 0.99),
+        filter 1.1s cubic-bezier(0.72, 0.02, 0.18, 0.99);
+}
+.retro .promo-tag .promo-hero[data-reveal].shown {
+    opacity: 1;
+    transform: translateZ(0);
+    filter: blur(0);
+}
+
+/* Já apresentado: com o próximo em cena, o anterior ultrapassa a câmera. */
+.retro .promo-tag .promo-hero[data-reveal].shown:has(~ .promo-hero.shown) {
+    opacity: 0;
+    transform: translateZ(430px) translateY(-3%);
+    filter: blur(14px);
+    pointer-events: none;
+}
+
+/* O finale: a câmera recua e a fila inteira volta ao plano geral. `--shift`
+   (posição relativa ao centro) vem da view, que sabe quantos cards existem. */
+.retro .promo-tag:has(.promo-finale.shown) .promo-hero[data-reveal].shown,
+.retro .promo-tag:has(.promo-finale.shown) .promo-hero[data-reveal].shown:has(~ .promo-hero.shown) {
+    opacity: 1;
+    transform: translateZ(-300px) translateX(calc(var(--shift, 0) * min(42cqw, 480px))) scale(0.94);
+    filter: blur(0);
+    pointer-events: auto;
+}
+
+.retro .promo-tag .promo-avatar-ring {
+    position: relative;
+    display: inline-block;
+    border-radius: 50%;
+}
+.retro .promo-tag .promo-avatar-ring::after {
+    content: '';
+    position: absolute;
+    inset: -9px;
+    border-radius: 50%;
+    border: 2px solid var(--brand-2);
+    opacity: 0;
+    pointer-events: none;
+}
+.retro .promo-tag .promo-hero.shown .promo-avatar-ring::after {
+    animation: retro-ping 2.6s ease-out infinite;
+    animation-delay: 1.3s;
+}
+
+.retro .promo-tag .promo-hero .promo-avatar.big {
+    opacity: 0;
+    transform: scale(0.72) translateY(14px);
+    filter: blur(5px);
+}
+.retro .promo-tag .promo-hero.shown .promo-avatar.big {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+    transition:
+        opacity 0.5s ease,
+        transform 0.6s cubic-bezier(0.16, 1.1, 0.3, 1.15),
+        filter 0.5s ease;
+    transition-delay: 0.45s;
+}
+
+.retro .promo-tag .promo-hero .promo-name.big,
+.retro .promo-tag .promo-hero .promo-handle,
+.retro .promo-tag .promo-hero .promo-since {
+    opacity: 0;
+    transform: translateY(14px);
+}
+.retro .promo-tag .promo-hero.shown .promo-name.big,
+.retro .promo-tag .promo-hero.shown .promo-handle,
+.retro .promo-tag .promo-hero.shown .promo-since {
+    opacity: 1;
+    transform: none;
+    transition:
+        opacity 0.5s ease,
+        transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.retro .promo-tag .promo-hero.shown .promo-name.big {
+    transition-delay: 0.6s;
+}
+.retro .promo-tag .promo-hero.shown .promo-handle {
+    transition-delay: 0.72s;
+}
+.retro .promo-tag .promo-hero.shown .promo-since {
+    transition-delay: 0.82s;
+}
+
+/* Os números: cada fonte entra na sua vez (`--promo-i` vem da view), e o valor
+   estoura um tique depois da faixa — o olho lê a plataforma antes do número. */
+.retro .promo-tag .promo-hero-metrics .promo-source {
+    opacity: 0;
+    transform: translateY(12px);
+}
+.retro .promo-tag .promo-hero-metrics.shown .promo-source {
+    opacity: 1;
+    transform: none;
+    transition:
+        opacity 0.45s ease,
+        transform 0.45s ease;
+    transition-delay: calc(var(--promo-i, 0) * 0.16s);
+}
+.retro .promo-tag .promo-hero-metrics .promo-metric b {
+    display: inline-block;
+    opacity: 0;
+    transform: scale(0.55);
+}
+.retro .promo-tag .promo-hero-metrics.shown .promo-metric b {
+    opacity: 1;
+    transform: none;
+    transition:
+        opacity 0.4s ease,
+        transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.4);
+    transition-delay: calc(var(--promo-i, 0) * 0.16s + 0.14s);
+}
+
+.retro .promo-tag .promo-reason.big[data-reveal] {
+    transform: translateY(10px) scale(0.98);
+    letter-spacing: 0.02em;
+}
+.retro .promo-tag .promo-reason.big[data-reveal].shown {
+    transform: none;
+    letter-spacing: normal;
+    transition:
+        opacity 0.7s ease,
+        transform 0.7s ease,
+        letter-spacing 0.7s ease;
+}
+
+/* Desde quando a pessoa está aqui — a régua que dá peso ao resto do cartão. */
+.retro .promo-since {
+    margin-top: 9px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+}
+.retro .promo-since b {
+    color: var(--brand-soft);
+    font-weight: 600;
+}
+
+@media (max-width: 900px) {
+    /* Sem largura para o plano geral, o finale abre mão do 3D e empilha os
+       cards — a foto oficial vira coluna, todo mundo continua na tela. */
+    .retro .promo-tag:has(.promo-finale.shown) .promo-stage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 28px;
+        perspective: none;
+    }
+    .retro .promo-tag:has(.promo-finale.shown) .promo-hero[data-reveal].shown,
+    .retro .promo-tag:has(.promo-finale.shown) .promo-hero[data-reveal].shown:has(~ .promo-hero.shown) {
+        transform: none;
+    }
+
+    /* Sem largura para a onda, a timeline vira lista — ano e texto já andam
+       juntos na mesma coluna, então basta soltar a quebra e fechar o vão. */
+    .retro .tl-line {
+        display: none;
+    }
+    .retro .tl-cols {
+        flex-wrap: wrap;
+        gap: 18px 0;
+    }
+    .retro .tl-col {
+        flex: 1 1 45%;
+    }
+    .retro .tl-text {
+        margin-top: 8px;
+    }
+    .retro .rit-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 34px;
+    }
+    .retro .evt-carousel .pslide {
+        flex-basis: 78%;
     }
 }

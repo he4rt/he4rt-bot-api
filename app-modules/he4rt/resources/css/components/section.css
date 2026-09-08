@@ -1,7 +1,8 @@
 .hp-section {
     @apply flex min-h-[100vh] scroll-mt-20 flex-col items-center justify-center lg:scroll-mt-8;
 
+    /* A largura vem do .hp-page; aqui só a pilha vertical da section. */
     .hp-container {
-        @apply container flex h-full flex-col items-center justify-center space-y-12 p-8 lg:p-0;
+        @apply flex h-full flex-col items-center justify-center space-y-12 py-8 lg:py-0;
     }
 }

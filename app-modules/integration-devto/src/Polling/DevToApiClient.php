@@ -31,4 +31,18 @@ final class DevToApiClient
 
         return $response->json() ?? [];
     }
+
+    /** @return array<int, array<string, mixed>> */
+    public function getMyPublishedArticles(string $apiKey, int $page = 1, int $perPage = 30): array
+    {
+        $baseUrl = config('integration-devto.api_base_url');
+
+        $response = Http::withHeaders(['api-key' => $apiKey])
+            ->get($baseUrl.'/articles/me/published', [
+                'per_page' => $perPage,
+                'page' => $page,
+            ]);
+
+        return $response->json() ?? [];
+    }
 }

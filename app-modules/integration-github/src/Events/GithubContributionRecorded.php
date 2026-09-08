@@ -9,9 +9,9 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
 /**
- * Seam for downstream gamification: emitted when a live GitHub contribution is
- * recorded. A future listener (in activity/economy) can resolve the contributor's
- * Character via ExternalIdentity and award coins/xp. integration-github stays decoupled.
+ * Seam de criação: emitida quando uma contribuição inédita é registrada, tanto pelo
+ * webhook quanto pelo backfill. O Tracking a escuta para resolver a identidade
+ * conectada do contribuidor e registrar a contribuição canônica.
  */
 final readonly class GithubContributionRecorded
 {

@@ -2,79 +2,84 @@
 
 declare(strict_types=1);
 
+use He4rt\Contents\Articles\Models\Article as CatalogueArticle;
+use He4rt\Contents\Models\ContentEntry;
+use He4rt\Identity\User\Models\User;
 use He4rt\Portal\Articles\ArticleFeed;
-use He4rt\Portal\Livewire\ArticlesPage;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
+use He4rt\Portal\Articles\ArticlesPage;
 
 use function Pest\Livewire\livewire;
 
-/**
- * @param  array<string, mixed>  $overrides
- * @return array<string, mixed>
- */
-function devToArticle(array $overrides = []): array
+/** @param array<string, mixed> $attributes */
+function catalogueEntry(array $attributes = [], ?CatalogueArticle $detail = null): ContentEntry
 {
-    return array_merge([
-        'id' => 1,
+    $detail ??= CatalogueArticle::factory()->create(['reading_time_minutes' => 4]);
+
+    return ContentEntry::factory()->create([
+        'contentable_type' => 'content_article',
+        'contentable_id' => $detail->id,
+        'author_handle' => 'alguem',
         'title' => 'Um artigo qualquer',
-        'description' => 'Resumo curto vindo da API.',
-        'url' => 'https://dev.to/he4rt/um-artigo-qualquer',
-        'published_at' => now()->subMonth()->toIso8601String(),
-        'positive_reactions_count' => 10,
+        'published_at' => now()->subMonth(),
+        'reactions_count' => 10,
         'comments_count' => 2,
-        'reading_time_minutes' => 4,
-        'cover_image' => 'https://example.test/capa.png',
-        'tag_list' => ['braziliandevs'],
-        'user' => [
-            'name' => 'Alguém da Comunidade',
-            'username' => 'alguem',
-            'profile_image_90' => 'https://example.test/avatar.png',
-        ],
-    ], $overrides);
+        ...$attributes,
+    ]);
 }
 
-beforeEach(function (): void {
-    Cache::flush();
-});
-
-it('lista os artigos da organização com autores e temas', function (): void {
-    Http::fake([
-        'dev.to/api/articles*' => Http::response([
-            devToArticle(['id' => 1, 'title' => 'Índices em produção', 'user' => ['name' => 'Fernando', 'username' => 'fernando', 'profile_image_90' => 'https://example.test/f.png']]),
-            devToArticle(['id' => 2, 'title' => 'Testes que importam', 'tag_list' => ['testing'], 'user' => ['name' => 'Alicia', 'username' => 'alicia', 'profile_image_90' => 'https://example.test/a.png']]),
-        ]),
-    ]);
+it('lista os artigos do catálogo com autores e temas', function (): void {
+    catalogueEntry(['title' => 'Índices em produção', 'author_handle' => 'fernando']);
+    catalogueEntry(['title' => 'Testes que importam', 'author_handle' => 'alicia', 'tags' => ['testing']]);
 
     livewire(ArticlesPage::class)
         ->assertOk()
         ->assertSee('Índices em produção')
         ->assertSee('Testes que importam')
-        ->assertSee('Fernando')
-        ->assertSee('Alicia')
+        ->assertSee('fernando')
+        ->assertSee('alicia')
         ->assertSee('#testing');
 });
 
+it('credita o nome do usuário quando a identidade está vinculada', function (): void {
+    $user = User::factory()->create(['name' => 'Cherry Ramatis', 'username' => 'cherry']);
+
+    catalogueEntry(['author_handle' => 'cherryramatis', 'author_id' => $user->id]);
+
+    $article = resolve(ArticleFeed::class)->articles()[0];
+
+    expect($article->authorName)->toBe('Cherry Ramatis')
+        ->and($article->authorUsername)->toBe('cherryramatis')
+        ->and($article->authorAvatar)->toBe('https://github.com/cherry.png');
+});
+
+it('assina com o handle da fonte quando ninguém vinculou a identidade', function (): void {
+    catalogueEntry(['author_handle' => 'anonimo', 'author_id' => null]);
+
+    $article = resolve(ArticleFeed::class)->articles()[0];
+
+    expect($article->authorName)->toBe('anonimo')
+        ->and($article->authorAvatar)->toBeEmpty();
+});
+
+it('ordena do mais recente para o mais antigo', function (): void {
+    catalogueEntry(['title' => 'Antigo', 'published_at' => now()->subYears(2)]);
+    catalogueEntry(['title' => 'Recente', 'published_at' => now()->subDay()]);
+
+    $titles = array_map(fn (He4rt\Portal\Articles\DTOs\Article $article): string => $article->title, resolve(ArticleFeed::class)->articles());
+
+    expect($titles)->toBe(['Recente', 'Antigo']);
+});
+
 it('elege como destaque o mais reagido dos últimos 12 meses, não o campeão histórico', function (): void {
-    Http::fake([
-        'dev.to/api/articles*' => Http::response([
-            devToArticle(['id' => 1, 'title' => 'Campeão histórico', 'positive_reactions_count' => 565, 'published_at' => now()->subYears(3)->toIso8601String()]),
-            devToArticle(['id' => 2, 'title' => 'Destaque recente', 'positive_reactions_count' => 215, 'published_at' => now()->subMonths(2)->toIso8601String()]),
-        ]),
-    ]);
+    catalogueEntry(['title' => 'Campeão histórico', 'reactions_count' => 565, 'published_at' => now()->subYears(3)]);
+    catalogueEntry(['title' => 'Destaque recente', 'reactions_count' => 215, 'published_at' => now()->subMonths(2)]);
 
-    $highlight = resolve(ArticleFeed::class)->highlight();
-
-    expect($highlight?->title)->toBe('Destaque recente');
+    expect(resolve(ArticleFeed::class)->highlight()?->title)->toBe('Destaque recente');
 });
 
 it('agrega volume e alcance por pessoa', function (): void {
-    Http::fake([
-        'dev.to/api/articles*' => Http::response([
-            devToArticle(['id' => 1, 'positive_reactions_count' => 100]),
-            devToArticle(['id' => 2, 'positive_reactions_count' => 40]),
-        ]),
-    ]);
+    catalogueEntry(['reactions_count' => 100]);
+    catalogueEntry(['reactions_count' => 40]);
 
     $authors = resolve(ArticleFeed::class)->authors();
 
@@ -83,23 +88,34 @@ it('agrega volume e alcance por pessoa', function (): void {
         ->and($authors[0]->reactions)->toBe(140);
 });
 
+it('trata métrica não medida como zero', function (): void {
+    catalogueEntry(['reactions_count' => null, 'comments_count' => null]);
+
+    $article = resolve(ArticleFeed::class)->articles()[0];
+
+    expect($article->reactions)->toBe(0)
+        ->and($article->comments)->toBe(0);
+});
+
 it('preserva a capa nula para a view cair no fallback', function (): void {
-    Http::fake([
-        'dev.to/api/articles*' => Http::response([
-            devToArticle(['id' => 1, 'cover_image' => null]),
-        ]),
-    ]);
+    catalogueEntry(['thumbnail_url' => null]);
 
     expect(resolve(ArticleFeed::class)->articles()[0]->coverImage)->toBeNull();
 });
 
+it('sobrevive a um artigo ainda sem detalhe hidratado', function (): void {
+    $entry = catalogueEntry();
+    $entry->contentable?->update(['description' => null, 'reading_time_minutes' => null]);
+
+    $article = resolve(ArticleFeed::class)->articles()[0];
+
+    expect($article->description)->toBeEmpty()
+        ->and($article->readingMinutes)->toBe(0);
+});
+
 it('mede a fatia do acervo que cada tema carrega', function (): void {
-    Http::fake([
-        'dev.to/api/articles*' => Http::response([
-            devToArticle(['id' => 1, 'tag_list' => ['braziliandevs', 'career']]),
-            devToArticle(['id' => 2, 'tag_list' => ['braziliandevs']]),
-        ]),
-    ]);
+    catalogueEntry(['tags' => ['braziliandevs', 'career']]);
+    catalogueEntry(['tags' => ['braziliandevs']]);
 
     $feed = resolve(ArticleFeed::class);
     $topics = $feed->topics();
@@ -109,70 +125,15 @@ it('mede a fatia do acervo que cada tema carrega', function (): void {
 });
 
 it('responde na rota /artigos', function (): void {
-    Http::fake([
-        'dev.to/api/articles*' => Http::response([devToArticle()]),
-    ]);
+    catalogueEntry();
 
     $this->get('/artigos')
         ->assertOk()
         ->assertSee('Learn in public', escape: false);
 });
 
-it('não derruba a página quando o dev.to falha', function (): void {
-    Http::fake([
-        'dev.to/api/articles*' => Http::response(status: 503),
-    ]);
-
+it('diz que o acervo está vazio em vez de mostrar uma grade em branco', function (): void {
     $this->get('/artigos')
         ->assertOk()
-        ->assertSee('Não deu para carregar o acervo agora.');
-});
-
-it('não guarda em cache um acervo vazio', function (): void {
-    Http::fake([
-        'dev.to/api/articles*' => Http::response([]),
-    ]);
-
-    expect(resolve(ArticleFeed::class)->articles())->toBeEmpty()
-        ->and(Cache::has('portal.articles.devto-org'))->toBeFalse();
-});
-
-it('descarta esquema de URL perigoso vindo da API', function (): void {
-    Http::fake([
-        'dev.to/api/articles*' => Http::response([
-            devToArticle([
-                'url' => 'javascript:alert(document.cookie)',
-                'cover_image' => 'javascript:void(0)',
-                'user' => ['name' => 'X', 'username' => 'x', 'profile_image_90' => 'data:text/html,<script>'],
-            ]),
-        ]),
-    ]);
-
-    $article = resolve(ArticleFeed::class)->articles()[0];
-
-    expect($article->url)->toBeEmpty()
-        ->and($article->coverImage)->toBeNull()
-        ->and($article->authorAvatar)->toBeEmpty();
-});
-
-it('preserva http e https', function (): void {
-    Http::fake([
-        'dev.to/api/articles*' => Http::response([devToArticle(['url' => 'https://dev.to/he4rt/x'])]),
-    ]);
-
-    expect(resolve(ArticleFeed::class)->articles()[0]->url)->toBe('https://dev.to/he4rt/x');
-});
-
-it('serve o acervo obsoleto quando o dev.to cai depois de um sucesso', function (): void {
-    Http::fake(['dev.to/api/articles*' => Http::response([devToArticle(['title' => 'Do cache'])])]);
-    expect(resolve(ArticleFeed::class)->articles())->toHaveCount(1);
-
-    // a partir daqui o dev.to está fora do ar
-    Http::fake(['dev.to/api/articles*' => Http::response(status: 500)]);
-    $this->travel(31)->minutes();
-
-    $this->get('/artigos')
-        ->assertOk()
-        ->assertSee('Do cache')
-        ->assertDontSee('Não deu para carregar o acervo agora.');
+        ->assertSee('Ainda não há artigos por aqui.');
 });
