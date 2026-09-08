@@ -6,6 +6,11 @@
             'active' => request()->routeIs('articles'),
         ],
         [
+            'label' => 'Galeria',
+            'href' => route('gallery', absolute: false),
+            'active' => request()->routeIs('gallery', 'gallery.album'),
+        ],
+        [
             'label' => 'Redes',
             'href' => route('social-links', absolute: false),
             'active' => request()->routeIs('social-links'),

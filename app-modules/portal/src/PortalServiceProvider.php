@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace He4rt\Portal;
 
 use He4rt\Portal\Articles\ArticlesPage;
+use He4rt\Portal\Gallery\AlbumPage;
+use He4rt\Portal\Gallery\GalleryPage;
 use He4rt\Portal\Home\HeroSection;
 use He4rt\Portal\Home\Homepage;
 use He4rt\Portal\Retrospective\CommunityRetrospectivePage;
@@ -64,6 +66,21 @@ class PortalServiceProvider extends ServiceProvider
                     title: 'Artigos da comunidade',
                     description: 'Os artigos publicados pela organização He4rt Developers no dev.to, por tema e por quem escreveu.',
                 );
+
+            Route::get('/galeria', GalleryPage::class)
+                ->name('gallery')
+                ->withHead(
+                    title: 'Galeria da comunidade',
+                    description: 'Fotos dos encontros da He4rt Developers: meetups, workshops, pubs e confraternizações, álbum por álbum.',
+                );
+
+            /*
+             * O <head> do álbum depende do registro (título, descrição, og:image),
+             * então o componente monta o head no mount() em vez de usar withHead().
+             */
+            Route::get('/galeria/{slug}', AlbumPage::class)
+                ->where('slug', '[a-z0-9-]+')
+                ->name('gallery.album');
 
             Route::get('/comunidade/retrospectiva', CommunityRetrospectivePage::class)
                 ->name('community.retrospective')

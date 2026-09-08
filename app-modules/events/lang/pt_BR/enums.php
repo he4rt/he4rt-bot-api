@@ -50,4 +50,11 @@ return [
         'admin' => 'Administrador',
         'system' => 'Sistema',
     ],
+
+    'photo_conversion' => [
+        'thumb' => 'Miniatura',
+        'large' => 'Ampliada',
+        'thumb_description' => 'Recorte 640x480 para cards e grades.',
+        'large_description' => 'Até 1920px no lado maior, para o lightbox.',
+    ],
 ];

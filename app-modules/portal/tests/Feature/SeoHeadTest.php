@@ -125,6 +125,7 @@ it('serve um sitemap XML com as páginas públicas do portal', function (): void
         ->toContain('<?xml version="1.0" encoding="UTF-8"?>')
         ->toContain('<loc>'.route('home').'</loc>')
         ->toContain('<loc>'.route('social-links').'</loc>')
+        ->toContain('<loc>'.route('gallery').'</loc>')
         ->toContain('<loc>'.route('community.retrospective').'</loc>');
 });
 
