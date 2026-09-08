@@ -15,68 +15,74 @@
 <div x-data="articlesFeed(@js($feedItems))" class="pb-20">
     <x-portal::articles.opening-band :stats="$stats" />
 
-    <div class="hp-page grid gap-7 lg:grid-cols-[minmax(0,1fr)_320px]">
-        <div class="min-w-0">
-            @if ($articles === [])
-                {{-- O catálogo é preenchido pelo sync; até a primeira rodada rodar, a
-                     página diz o que houve em vez de fingir que ninguém escreveu. --}}
-                <div class="border-outline-low bg-elevation-01dp flex flex-col items-center gap-3 rounded-lg border border-dashed p-12 text-center">
-                    <p class="text-text-high text-sm font-semibold">Ainda não há artigos por aqui.</p>
-                    <p class="text-text-medium max-w-sm text-xs">
-                        O acervo da comunidade é publicado no dev.to. Enquanto ele não aparece aqui, vá direto
-                        para a organização.
-                    </p>
-                    <x-he4rt::button href="https://dev.to/he4rt" target="_blank" rel="noopener" size="sm">
-                        Abrir no dev.to
-                    </x-he4rt::button>
-                </div>
-            @else
-            @if ($highlight)
+    <div class="hp-page">
+        @if ($articles !== [] && $highlight)
+            {{-- Mesmas colunas do grid abaixo, só para o destaque herdar a largura
+                 da coluna de artigos em vez de ocupar a página inteira. --}}
+            <div class="grid lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-7">
                 <x-portal::articles.featured :article="$highlight" />
-            @endif
-
-            <x-portal::articles.toolbar :topics="$topics" :total="count($articles)" />
-
-            {{-- A grade é o padrão do servidor; o Alpine só troca para lista. Assim a
-                 página nasce com layout correto mesmo antes (ou sem) o JS. --}}
-            <div
-                class="grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(260px,1fr))]"
-                x-bind:class="view === 'list' ? 'is-list !grid-cols-1' : ''"
-            >
-                @foreach ($articles as $index => $article)
-                    <x-portal::articles.card :article="$article" :index="$index" />
-                @endforeach
-            </div>
-
-            <div
-                x-show="visibleCount === 0"
-                x-cloak
-                style="display: none"
-                class="border-outline-low bg-elevation-01dp mt-4 flex flex-col items-center gap-3 rounded-lg border border-dashed p-10 text-center"
-            >
-                <p class="text-text-high text-sm font-semibold">Nenhum artigo com essa combinação.</p>
-                <p class="text-text-medium max-w-sm text-xs">
-                    O tema e a pessoa selecionados não se cruzam no acervo. As duas listas seguem ativas — dá para
-                    trocar o recorte sem sair daqui.
-                </p>
-                <button
-                    type="button"
-                    x-on:click="clearAll()"
-                    class="from-primary to-secondary text-text-light cursor-pointer rounded-md bg-gradient-to-br px-4 py-2 text-xs font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-95"
-                >
-                    limpar tudo
-                </button>
-            </div>
-            @endif
-        </div>
-
-        {{-- No telefone a coluna de pessoas vai para baixo do feed: empilhar 17 linhas
-             acima dos cards custaria a dobra inteira. --}}
-        @if ($authors !== [])
-            <div class="order-last lg:sticky lg:top-4 lg:order-none lg:self-start">
-                <x-portal::articles.author-rail :authors="$authors" />
             </div>
         @endif
+
+        <div class="grid gap-7 lg:grid-cols-[minmax(0,1fr)_320px]">
+            <div class="min-w-0">
+                @if ($articles === [])
+                    {{-- O catálogo é preenchido pelo sync; até a primeira rodada rodar, a
+                         página diz o que houve em vez de fingir que ninguém escreveu. --}}
+                    <div class="border-outline-low bg-elevation-01dp flex flex-col items-center gap-3 rounded-lg border border-dashed p-12 text-center">
+                        <p class="text-text-high text-sm font-semibold">Ainda não há artigos por aqui.</p>
+                        <p class="text-text-medium max-w-sm text-xs">
+                            O acervo da comunidade é publicado no dev.to. Enquanto ele não aparece aqui, vá direto
+                            para a organização.
+                        </p>
+                        <x-he4rt::button href="https://dev.to/he4rt" target="_blank" rel="noopener" size="sm">
+                            Abrir no dev.to
+                        </x-he4rt::button>
+                    </div>
+                @else
+                <x-portal::articles.toolbar :topics="$topics" :total="count($articles)" />
+
+                {{-- A grade é o padrão do servidor; o Alpine só troca para lista. Assim a
+                     página nasce com layout correto mesmo antes (ou sem) o JS. --}}
+                <div
+                    class="grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(260px,1fr))]"
+                    x-bind:class="view === 'list' ? 'is-list !grid-cols-1' : ''"
+                >
+                    @foreach ($articles as $index => $article)
+                        <x-portal::articles.card :article="$article" :index="$index" />
+                    @endforeach
+                </div>
+
+                <div
+                    x-show="visibleCount === 0"
+                    x-cloak
+                    style="display: none"
+                    class="border-outline-low bg-elevation-01dp mt-4 flex flex-col items-center gap-3 rounded-lg border border-dashed p-10 text-center"
+                >
+                    <p class="text-text-high text-sm font-semibold">Nenhum artigo com essa combinação.</p>
+                    <p class="text-text-medium max-w-sm text-xs">
+                        O tema e a pessoa selecionados não se cruzam no acervo. As duas listas seguem ativas — dá para
+                        trocar o recorte sem sair daqui.
+                    </p>
+                    <button
+                        type="button"
+                        x-on:click="clearAll()"
+                        class="from-primary to-secondary text-text-light cursor-pointer rounded-md bg-gradient-to-br px-4 py-2 text-xs font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-95"
+                    >
+                        limpar tudo
+                    </button>
+                </div>
+                @endif
+            </div>
+
+            {{-- No telefone a coluna de pessoas vai para baixo do feed: empilhar 17 linhas
+                 acima dos cards custaria a dobra inteira. --}}
+            @if ($authors !== [])
+                <div class="order-last lg:sticky lg:top-4 lg:order-0 lg:mt-8 lg:self-start">
+                    <x-portal::articles.author-rail :authors="$authors" />
+                </div>
+            @endif
+        </div>
     </div>
 
     {{-- Componente class-based: o Livewire 4 exige @assets/@script para JS de componente.
