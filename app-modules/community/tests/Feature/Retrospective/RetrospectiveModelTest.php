@@ -11,6 +11,7 @@ use He4rt\Community\Retrospective\DTOs\PromotionEntry;
 use He4rt\Community\Retrospective\DTOs\RetrospectiveSnapshot;
 use He4rt\Community\Retrospective\DTOs\SourceFilters;
 use He4rt\Community\Retrospective\DTOs\SourceResult;
+use He4rt\Community\Retrospective\Enums\CoverKind;
 use He4rt\Community\Retrospective\Enums\PromotionStage;
 use He4rt\Community\Retrospective\Enums\RetrospectiveStatus;
 use He4rt\Community\Retrospective\Models\Retrospective;
@@ -192,4 +193,25 @@ it('ordem e on/off de slide continuam sem pedir republicação', function (): vo
     ]);
 
     expect($retrospective->fresh()->needsRepublish())->toBeFalse();
+});
+
+it('numera a edição de onboarding pela ordem do início do período', function (): void {
+    $may = Retrospective::factory()->onboarding()->create(['since' => CarbonImmutable::parse('2026-05-01')]);
+    $july = Retrospective::factory()->onboarding()->create(['since' => CarbonImmutable::parse('2026-07-01')]);
+    $june = Retrospective::factory()->onboarding()->create(['since' => CarbonImmutable::parse('2026-06-01')]);
+    // Retrospectiva comum no meio: não conta como edição do onboarding.
+    Retrospective::factory()->create(['since' => CarbonImmutable::parse('2026-05-15')]);
+
+    expect($may->editionNumber())->toBe(1)
+        ->and($june->editionNumber())->toBe(2)
+        ->and($july->editionNumber())->toBe(3);
+});
+
+it('abre como retrospectiva por padrão e persiste o tipo de capa como enum', function (): void {
+    $default = Retrospective::factory()->create();
+    $onboarding = Retrospective::factory()->onboarding()->create();
+
+    expect($default->fresh()->cover_kind)->toBe(CoverKind::Retrospective)
+        ->and($default->fresh()->deck_config->hosts)->toBeEmpty()
+        ->and($onboarding->fresh()->cover_kind)->toBe(CoverKind::Onboarding);
 });

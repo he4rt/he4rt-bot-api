@@ -7,8 +7,10 @@ namespace He4rt\Community\Database\Factories;
 use Carbon\CarbonImmutable;
 use He4rt\Community\Retrospective\DTOs\DeckConfig;
 use He4rt\Community\Retrospective\DTOs\RetrospectiveSnapshot;
+use He4rt\Community\Retrospective\Enums\CoverKind;
 use He4rt\Community\Retrospective\Enums\RetrospectiveStatus;
 use He4rt\Community\Retrospective\Models\Retrospective;
+use He4rt\Identity\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -28,6 +30,7 @@ final class RetrospectiveFactory extends Factory
             'since' => $since,
             'until' => CarbonImmutable::now(),
             'status' => RetrospectiveStatus::Draft,
+            'cover_kind' => CoverKind::Retrospective,
             'cover_title' => fake()->sentence(3),
             'cover_intro' => fake()->sentence(),
             'closing_text' => fake()->sentence(),
@@ -44,6 +47,19 @@ final class RetrospectiveFactory extends Factory
             'status' => RetrospectiveStatus::Published,
             'published_at' => CarbonImmutable::now(),
             'snapshot' => $snapshot ?? new RetrospectiveSnapshot(),
+        ]);
+    }
+
+    /**
+     * @param  list<User>  $hosts
+     */
+    public function onboarding(array $hosts = []): self
+    {
+        return $this->state(fn (): array => [
+            'cover_kind' => CoverKind::Onboarding,
+            'deck_config' => new DeckConfig()->withHosts(
+                array_map(static fn (User $host): string => $host->id, $hosts),
+            ),
         ]);
     }
 }

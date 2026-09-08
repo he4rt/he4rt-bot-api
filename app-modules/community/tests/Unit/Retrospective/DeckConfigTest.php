@@ -176,3 +176,12 @@ it('preserva as promoções ao mexer em ordem, on/off e exclusions', function ()
     expect($mexido->promotions)->toHaveCount(1)
         ->and($mexido->promotions[0]->userId)->toBe('u1');
 });
+
+it('guarda os apresentadores em ordem, sem repetição, e os preserva nas outras escritas', function (): void {
+    $config = new DeckConfig(order: ['github'])->withHosts(['u2', 'u1', 'u2', '']);
+
+    expect($config->hosts)->toBe(['u2', 'u1'])
+        ->and($config->withSourceVisible('discord', visible: false)->hosts)->toBe(['u2', 'u1'])
+        ->and(DeckConfig::makeFromPayload($config->toArray())->hosts)->toBe(['u2', 'u1'])
+        ->and($config->withHosts([])->hosts)->toBeEmpty();
+});

@@ -223,17 +223,18 @@
                 <x-panel-admin::retrospective.filmstrip-group :label="\He4rt\PanelAdmin\Filament\Resources\Retrospectives\Support\InspectorMode::Cover->getLabel()" :icon="\He4rt\PanelAdmin\Filament\Resources\Retrospectives\Support\InspectorMode::Cover->getIcon()">
                     <x-panel-admin::retrospective.filmstrip-thumb
                         :index="0"
-                        label="Abertura"
+                        :label="$deck['coverKind']->getLabel()"
                         :selection="\He4rt\PanelAdmin\Filament\Resources\Retrospectives\Support\InspectorMode::Cover->value"
-                    >
-                        <x-portal::retro.slides.cover
-                            :sources="$deck['sources']"
-                            :since="$deck['since']"
-                            :until="$deck['until']"
-                            :coverTitle="$deck['coverTitle']"
-                            :coverIntro="$deck['coverIntro']"
-                        />
-                    </x-panel-admin::retrospective.filmstrip-thumb>
+                        :view="\He4rt\Portal\Retrospective\SlideView::cover($deck['coverKind'])"
+                        :props="[
+                            'since' => $deck['since'],
+                            'until' => $deck['until'],
+                            'edition' => $deck['edition'],
+                            'hosts' => $deck['hosts'],
+                            'coverTitle' => $deck['coverTitle'],
+                            'coverIntro' => $deck['coverIntro'],
+                        ]"
+                    />
                 </x-panel-admin::retrospective.filmstrip-group>
 
                 {{-- A He4rt: seção fixa do portal. Sem on/off e sem ordem — não é

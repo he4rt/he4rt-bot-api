@@ -395,6 +395,56 @@
         transform: scale(1.08);
     }
 }
+/* apresentadores da capa de onboarding */
+.retro .cover-hosts {
+    margin-top: 26px;
+}
+.retro .cover-host-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+.retro .cover-host {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 18px 8px 8px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    text-align: left;
+}
+.retro .cover-host img {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow:
+        0 0 0 2px var(--surface),
+        0 0 0 4px rgba(120, 43, 241, 0.45);
+}
+.retro .cover-host-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+.retro .cover-host-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--brand-soft);
+}
+.retro .cover-host-name {
+    font-weight: 600;
+    color: var(--text);
+}
+.retro .cover-host-handle {
+    font-size: 0.86rem;
+    color: var(--muted);
+}
 .retro .hint {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.78rem;
@@ -2160,6 +2210,72 @@
 }
 
 /*
+ | Eventos — a foto é o argumento. O card é a imagem com uma legenda curta por
+ | baixo; o trilho é o mesmo do carrossel de pessoas. Sem foto (arquivo ainda
+ | não subiu) o fundo degradê segura o lugar em vez de um ícone quebrado.
+ */
+.retro .evt-carousel,
+.retro .evt-empty {
+    margin-top: 38px;
+}
+.retro .evt-carousel .pslide {
+    flex: 0 0 clamp(300px, 34%, 480px);
+}
+.retro .evt-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+    transition:
+        transform 0.25s,
+        border-color 0.25s,
+        box-shadow 0.25s;
+}
+.retro .evt-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--brand);
+    box-shadow: 0 18px 40px rgba(120, 43, 241, 0.18);
+}
+.retro .evt-photo {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    background: linear-gradient(135deg, rgba(120, 43, 241, 0.35), rgba(196, 75, 255, 0.12));
+    color: transparent;
+}
+.retro .evt-meta {
+    padding: 14px 16px 16px;
+}
+.retro .evt-head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.retro .evt-title {
+    font-size: 1.08rem;
+    font-weight: 700;
+}
+.retro .evt-when {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--faint);
+}
+.retro .evt-desc {
+    margin: 5px 0 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--muted);
+}
+
+/*
  | Canais — constelação. As estrelas dividem a MESMA órbita, equidistantes do
  | núcleo: a igualdade entre os canais é geométrica, não declarada. Posição de
  | cada estrela (`--sx`/`--sy`) e ângulo de cada raio vêm da partial, calculados
@@ -2732,5 +2848,8 @@
     .retro .rit-grid {
         grid-template-columns: minmax(0, 1fr);
         gap: 34px;
+    }
+    .retro .evt-carousel .pslide {
+        flex-basis: 78%;
     }
 }

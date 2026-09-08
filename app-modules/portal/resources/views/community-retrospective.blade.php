@@ -5,12 +5,16 @@
     @if ($noData)
         <x-portal::retro.slides.empty />
     @else
-        <x-portal::retro.slides.cover
-            :since="$since"
-            :until="$until"
-            :coverTitle="$coverTitle ?? null"
-            :coverIntro="$coverIntro ?? null"
-        />
+        {{-- Uma capa por público: a de retrospectiva abre com balanço, a de
+             onboarding recebe quem chegou. O resto do deck é o mesmo. --}}
+        @include(SlideView::cover($coverKind), [
+            'since' => $since,
+            'until' => $until,
+            'edition' => $edition ?? null,
+            'hosts' => $hosts ?? [],
+            'coverTitle' => $coverTitle ?? null,
+            'coverIntro' => $coverIntro ?? null,
+        ])
 
         {{-- Quem a He4rt é, antes dos números de quem ela fez. Seção fixa: não
              vem do snapshot nem passa pelo ComposeDeck, então nenhuma curadoria

@@ -51,6 +51,28 @@ final readonly class PromotablePeople
         return $user instanceof User ? self::label($user) : null;
     }
 
+    /**
+     * Versão em lote do labelFor, para o select múltiplo: uma query para a
+     * lista inteira, e ids que não são UUID saem antes de chegar ao Postgres.
+     *
+     * @param  array<array-key, mixed>  $userIds
+     * @return array<string, string> userId => label
+     */
+    public static function labelsFor(array $userIds): array
+    {
+        $valid = array_values(array_filter($userIds, static fn (mixed $id): bool => is_string($id) && Str::isUuid($id)));
+
+        if ($valid === []) {
+            return [];
+        }
+
+        return User::query()
+            ->whereIn('id', $valid)
+            ->get(['id', 'name', 'username'])
+            ->mapWithKeys(fn (User $user): array => [$user->id => self::label($user)])
+            ->all();
+    }
+
     public static function label(User $user): string
     {
         return $user->name.' (@'.$user->username.')';

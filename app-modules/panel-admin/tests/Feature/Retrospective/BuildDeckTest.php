@@ -16,6 +16,7 @@ use He4rt\Community\Retrospective\DTOs\PromotionMetricGroup;
 use He4rt\Community\Retrospective\DTOs\RetrospectiveSnapshot;
 use He4rt\Community\Retrospective\DTOs\SourceFilters;
 use He4rt\Community\Retrospective\DTOs\SourceResult;
+use He4rt\Community\Retrospective\Enums\CoverKind;
 use He4rt\Community\Retrospective\Enums\PromotionStage;
 use He4rt\Community\Retrospective\Enums\RetrospectiveStatus;
 use He4rt\Community\Retrospective\Jobs\CompileRetrospectiveSnapshot;
@@ -284,6 +285,50 @@ test('salva capa e período nas colunas da edição', function (): void {
         ->and($fresh->hide_bots)->toBeFalse();
 });
 
+test('salva a capa de onboarding com apresentadores em ordem e limpa a lista ao voltar', function (): void {
+    $hosts = collect(['hostdev' => 'Daniel Reis', 'cohost' => 'Maria Silva'])
+        ->map(function (string $name, string $username): User {
+            $user = User::factory()->create(['name' => $name, 'username' => $username]);
+            ExternalIdentity::factory()->create([
+                'model_id' => $user->id,
+                'provider' => IdentityProvider::GitHub,
+                'metadata' => ['username' => $username],
+            ]);
+
+            return $user;
+        });
+    $retrospective = Retrospective::factory()->create();
+
+    $page = livewire(BuildDeck::class, ['record' => $retrospective->id])
+        ->call('select', 'cover')
+        ->fillForm([
+            'cover_kind' => CoverKind::Onboarding->value,
+            'hosts' => [$hosts['cohost']->id, $hosts['hostdev']->id],
+        ])
+        ->call('save')
+        ->assertHasNoFormErrors();
+
+    $fresh = $retrospective->fresh();
+    $deck = $page->instance()->deck();
+
+    expect($fresh->cover_kind)->toBe(CoverKind::Onboarding)
+        ->and($fresh->deck_config->hosts)->toBe([$hosts['cohost']->id, $hosts['hostdev']->id])
+        ->and($page->instance()->viewPath())
+        ->toBe('app-modules/portal/resources/views/components/retro/slides/cover/onboarding.blade.php')
+        ->and(array_map(fn ($host): string => $host->name, $deck['hosts']))->toBe(['Maria Silva', 'Daniel Reis'])
+        ->and($deck['edition'])->toBe(1);
+
+    $page
+        ->fillForm(['cover_kind' => CoverKind::Retrospective->value])
+        ->call('save')
+        ->assertHasNoFormErrors();
+
+    $fresh = $retrospective->fresh();
+
+    expect($fresh->cover_kind)->toBe(CoverKind::Retrospective)
+        ->and($fresh->deck_config->hosts)->toBeEmpty();
+});
+
 test('a capa exige título', function (): void {
     $retrospective = Retrospective::factory()->create();
 
@@ -509,7 +554,7 @@ test('o arquivo acompanha a troca de slide', function (): void {
     $page->call('select', InspectorMode::Cover->value);
 
     expect($page->instance()->viewPath())
-        ->toBe('app-modules/portal/resources/views/components/retro/slides/cover.blade.php');
+        ->toBe('app-modules/portal/resources/views/components/retro/slides/cover/retrospective.blade.php');
 });
 
 test('bloco de fonte não anuncia arquivo: quem tem view é o slide', function (): void {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace He4rt\PanelAdmin\Filament\Resources\Retrospectives\Support;
 
+use He4rt\Community\Retrospective\Enums\CoverKind;
 use He4rt\Portal\Retrospective\SlideView;
 
 /**
@@ -18,10 +19,10 @@ use He4rt\Portal\Retrospective\SlideView;
  */
 final class InspectorViewPath
 {
-    public static function for(InspectorSelection $selection): ?string
+    public static function for(InspectorSelection $selection, CoverKind $coverKind): ?string
     {
         $view = match ($selection->mode) {
-            InspectorMode::Cover => SlideView::cover(),
+            InspectorMode::Cover => SlideView::cover($coverKind),
             InspectorMode::About => SlideView::about($selection->requireTarget()),
             InspectorMode::Closing => SlideView::closing(),
             InspectorMode::Slide, InspectorMode::Promotion => SlideView::kind($selection->requireTarget()),

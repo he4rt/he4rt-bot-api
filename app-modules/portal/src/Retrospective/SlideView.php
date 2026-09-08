@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace He4rt\Portal\Retrospective;
 
+use He4rt\Community\Retrospective\Enums\CoverKind;
 use Illuminate\Support\Facades\View;
 
 /**
@@ -22,9 +23,13 @@ final class SlideView
         return 'portal::retro.slides.'.str_replace('_', '-', $kind);
     }
 
-    public static function cover(): string
+    /**
+     * Uma capa por público (CoverKind): a mesma convenção dos kinds, com o caso
+     * do enum virando o arquivo dentro de `slides/cover/`.
+     */
+    public static function cover(CoverKind $kind = CoverKind::Retrospective): string
     {
-        return 'portal::components.retro.slides.cover';
+        return 'portal::components.retro.slides.cover.'.$kind->value;
     }
 
     public static function closing(): string

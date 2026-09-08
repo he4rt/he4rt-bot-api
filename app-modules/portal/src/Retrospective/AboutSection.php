@@ -28,6 +28,7 @@ final class AboutSection
     {
         return [
             new AboutSlide('manifest', 'A He4rt'),
+            new AboutSlide('events', 'Eventos'),
             new AboutSlide('rituals', 'Iniciativas'),
             new AboutSlide('join', 'Onde entrar'),
         ];

@@ -22,6 +22,7 @@ final readonly class DeckConfig
      * @param  list<string>  $hiddenSlides  kinds de slide ocultados (ex.: "github.repos")
      * @param  array<string, list<string>>  $exclusions  refs escondidos por key de fonte (ex.: ["github" => ["pr:142"]])
      * @param  list<PromotionEntry>  $promotions  as pessoas do slide da tag He4rt, na ordem de exibição
+     * @param  list<string>  $hosts  ids de quem apresenta o onboarding, na ordem de exibição
      */
     public function __construct(
         public array $order = [],
@@ -29,6 +30,7 @@ final readonly class DeckConfig
         public array $hiddenSlides = [],
         public array $exclusions = [],
         public array $promotions = [],
+        public array $hosts = [],
     ) {}
 
     /**
@@ -50,6 +52,7 @@ final readonly class DeckConfig
             hiddenSlides: self::stringList($payload['hidden_slides'] ?? []),
             exclusions: $exclusions,
             promotions: self::promotionList($payload['promotions'] ?? []),
+            hosts: self::stringList($payload['hosts'] ?? []),
         );
     }
 
@@ -67,6 +70,7 @@ final readonly class DeckConfig
                 static fn (PromotionEntry $entry): array => $entry->toArray(),
                 $this->promotions,
             ),
+            'hosts' => $this->hosts,
         ];
     }
 
@@ -110,6 +114,7 @@ final readonly class DeckConfig
             hiddenSlides: $this->hiddenSlides,
             exclusions: $this->exclusions,
             promotions: $this->promotions,
+            hosts: $this->hosts,
         );
     }
 
@@ -125,6 +130,7 @@ final readonly class DeckConfig
             hiddenSlides: $this->toggled($this->hiddenSlides, $kind, hidden: !$visible),
             exclusions: $this->exclusions,
             promotions: $this->promotions,
+            hosts: $this->hosts,
         );
     }
 
@@ -139,6 +145,7 @@ final readonly class DeckConfig
             hiddenSlides: $this->hiddenSlides,
             exclusions: $this->exclusions,
             promotions: $this->promotions,
+            hosts: $this->hosts,
         );
     }
 
@@ -165,6 +172,7 @@ final readonly class DeckConfig
             hiddenSlides: $this->hiddenSlides,
             exclusions: $exclusions,
             promotions: $this->promotions,
+            hosts: $this->hosts,
         );
     }
 
@@ -222,6 +230,26 @@ final readonly class DeckConfig
             hiddenSlides: $this->hiddenSlides,
             exclusions: $this->exclusions,
             promotions: [...$others, ...$entries],
+            hosts: $this->hosts,
+        );
+    }
+
+    /**
+     * Quem apresenta o onboarding, na ordem do operador. Curadoria de
+     * apresentação como o texto da capa: não entra no snapshot e não pede
+     * republicar (ADR-0002). Só a capa de onboarding lê isto.
+     *
+     * @param  list<string>  $hosts
+     */
+    public function withHosts(array $hosts): self
+    {
+        return new self(
+            order: $this->order,
+            hiddenSources: $this->hiddenSources,
+            hiddenSlides: $this->hiddenSlides,
+            exclusions: $this->exclusions,
+            promotions: $this->promotions,
+            hosts: array_values(array_unique($this->normalizedRefs($hosts))),
         );
     }
 

@@ -7,7 +7,10 @@ use He4rt\Community\Retrospective\Actions\CompileSnapshot;
 use He4rt\Community\Retrospective\DTOs\DeckConfig;
 use He4rt\Community\Retrospective\DTOs\Period;
 use He4rt\Community\Retrospective\DTOs\SourceFilters;
+use He4rt\Community\Retrospective\Enums\CoverKind;
 use He4rt\Community\Retrospective\Models\Retrospective;
+use He4rt\Identity\ExternalIdentity\Enums\IdentityProvider;
+use He4rt\Identity\ExternalIdentity\Models\ExternalIdentity;
 use He4rt\Identity\User\Models\User;
 use He4rt\IntegrationGithub\Enums\ContributionType;
 use He4rt\IntegrationGithub\Models\GithubContribution;
@@ -32,6 +35,61 @@ function publishRetrospective(array $overrides = []): Retrospective
         'until' => $until,
     ], $overrides));
 }
+
+it('abre como onboarding quando a edição pede, com edição e apresentadores', function (): void {
+    GithubContribution::factory()->create([
+        'actor_login' => 'maria', 'actor_id' => 42, 'type' => ContributionType::Pr,
+        'external_ref' => 'pr:1', 'occurred_at' => '2026-06-02', 'metadata' => ['state' => 'open', 'merged' => false],
+    ]);
+    $hosts = collect(['hostdev' => 'Daniel Reis', 'cohost' => 'Maria Silva'])
+        ->map(function (string $name, string $username): User {
+            $user = User::factory()->create(['name' => $name, 'username' => $username]);
+            ExternalIdentity::factory()->create([
+                'model_id' => $user->id,
+                'provider' => IdentityProvider::GitHub,
+                'metadata' => ['username' => $username],
+            ]);
+
+            return $user;
+        });
+
+    // Uma edição de onboarding anterior: a publicada vira a 2ª.
+    Retrospective::factory()->onboarding()->create([
+        'since' => CarbonImmutable::parse('2026-05-01'),
+        'until' => CarbonImmutable::parse('2026-05-31'),
+    ]);
+
+    publishRetrospective([
+        'cover_kind' => CoverKind::Onboarding,
+        'deck_config' => new DeckConfig()->withHosts([$hosts['hostdev']->id, $hosts['cohost']->id]),
+        'cover_title' => null,
+    ]);
+
+    test()->get('/comunidade/retrospectiva')
+        ->assertOk()
+        ->assertSee('data-label="Boas-vindas"', escape: false)
+        ->assertSee('2ª EDIÇÃO')
+        ->assertSee('Bem-vindo à He4rt')
+        ->assertSee('Quem apresenta hoje')
+        ->assertSeeInOrder(['Daniel Reis', '@hostdev', 'Maria Silva', '@cohost'])
+        ->assertSee('https://github.com/hostdev.png')
+        ->assertDontSee('data-label="Abertura"', escape: false);
+});
+
+it('mantém a capa de retrospectiva por padrão, sem apresentador', function (): void {
+    GithubContribution::factory()->create([
+        'actor_login' => 'maria', 'actor_id' => 42, 'type' => ContributionType::Pr,
+        'external_ref' => 'pr:1', 'occurred_at' => '2026-06-02', 'metadata' => ['state' => 'open', 'merged' => false],
+    ]);
+    publishRetrospective(['cover_title' => null]);
+
+    test()->get('/comunidade/retrospectiva')
+        ->assertOk()
+        ->assertSee('data-label="Abertura"', escape: false)
+        ->assertSee('Quem fez a He4rt')
+        ->assertDontSee('Quem apresenta')
+        ->assertDontSee('EDIÇÃO');
+});
 
 it('mostra o estado vazio quando não há edição publicada', function (): void {
     test()->get('/comunidade/retrospectiva')
@@ -127,6 +185,10 @@ it('apresenta a He4rt entre a capa e os números', function (): void {
         ->assertSee('A He4rt bate desde 2018')
         ->assertSee('4noobs')
         ->assertSee('class="tl-ecg"', escape: false)
+        // Eventos presenciais: fotos fixas num carrossel, logo depois do manifesto.
+        ->assertSee('Não somos só uma comunidade online')
+        ->assertSee('images/retro/events/')
+        ->assertSeeInOrder(['A He4rt bate desde 2018', 'Não somos só uma comunidade online', 'Reunião Semanal'])
         // Iniciativas, com a órbita ligada à lista pela cor.
         ->assertSee('Reunião Semanal')
         ->assertSee('Spaces')
@@ -164,5 +226,8 @@ it('não anuncia marco que ainda não tinha acontecido no recorte', function ():
         ->assertOk()
         ->assertSee('He4rt Conf')
         ->assertDontSee('Primeiro meetup presencial')
-        ->assertDontSee('LaravelDaySP');
+        ->assertDontSee('LaravelDaySP')
+        // O slide de eventos segue a mesma régua: sem foto de evento futuro.
+        ->assertDontSee('images/retro/events/')
+        ->assertSee('ainda era só online');
 });
