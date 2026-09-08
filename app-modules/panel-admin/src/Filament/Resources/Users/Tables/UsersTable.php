@@ -15,10 +15,12 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use He4rt\Identity\Authorization\Enums\UserRole;
 use He4rt\Identity\User\Enums\UserSituation;
 use He4rt\Identity\User\Models\User;
 use He4rt\PanelAdmin\Moderation\Resources\ModerationCaseResource;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\Permission\Models\Role;
 
 class UsersTable
 {
@@ -43,6 +45,13 @@ class UsersTable
                     ->label('Situação')
                     ->badge()
                     ->state(fn (User $record): UserSituation => $record->situation),
+
+                TextColumn::make('roles.name')
+                    ->label('Papéis')
+                    ->badge()
+                    ->formatStateUsing(fn (string $state): string => UserRole::from($state)->getLabel())
+                    ->color(fn (string $state): array => UserRole::from($state)->getColor())
+                    ->placeholder('—'),
 
                 TextColumn::make('suspended_until')
                     ->label('Suspenso até')
@@ -93,6 +102,11 @@ class UsersTable
                                 ->orWhere('suspended_until', '<=', now())),
                         default => $query,
                     }),
+
+                SelectFilter::make('roles')
+                    ->label('Papel')
+                    ->relationship('roles', 'name')
+                    ->getOptionLabelFromRecordUsing(fn (Role $record): string => UserRole::from($record->name)->getLabel()),
 
                 TernaryFilter::make('is_donator')
                     ->label('Apoiador'),

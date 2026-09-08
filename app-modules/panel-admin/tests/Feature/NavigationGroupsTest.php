@@ -11,9 +11,7 @@ use He4rt\PanelAdmin\Enums\NavigationGroup as NavGroup;
 use function Pest\Laravel\actingAs;
 
 beforeEach(function (): void {
-    config(['he4rt.admins' => 'danielhe4rt']);
-
-    actingAs(User::factory()->create(['username' => 'danielhe4rt']));
+    actingAs(User::factory()->superAdmin()->create());
 
     Filament::setCurrentPanel(Filament::getPanel('admin'));
 });

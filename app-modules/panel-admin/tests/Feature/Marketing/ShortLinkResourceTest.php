@@ -47,11 +47,10 @@ function admin(): User
 
 beforeEach(function (): void {
     config([
-        'he4rt.admins' => 'danielhe4rt',
         'app.display_timezone' => 'America/Sao_Paulo',
     ]);
 
-    $this->actingAs(User::factory()->create(['username' => 'danielhe4rt']));
+    $this->actingAs(User::factory()->superAdmin()->create(['username' => 'danielhe4rt']));
 
     Filament::setCurrentPanel(Filament::getPanel('admin'));
 });

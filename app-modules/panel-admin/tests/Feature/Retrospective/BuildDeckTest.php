@@ -38,9 +38,7 @@ use Tests\Support\Retrospective\PlainRetrospectiveSource;
 use function Pest\Livewire\livewire;
 
 beforeEach(function (): void {
-    $user = User::factory()->create(['username' => 'danielhe4rt']);
-
-    config(['he4rt.admins' => 'danielhe4rt']);
+    $user = User::factory()->superAdmin()->create();
 
     $this->actingAs($user);
 

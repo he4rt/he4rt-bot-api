@@ -18,14 +18,13 @@ use function Pest\Livewire\livewire;
 
 beforeEach(function (): void {
     config([
-        'he4rt.admins' => 'danielhe4rt',
         'app.display_timezone' => 'America/Sao_Paulo',
     ]);
 
     Storage::fake('public');
     runMediaConversionsInline();
 
-    $this->admin = User::factory()->create(['username' => 'danielhe4rt']);
+    $this->admin = User::factory()->superAdmin()->create();
 
     $this->actingAs($this->admin);
 

@@ -17,10 +17,8 @@ test('admin login page renders', function (): void {
         ->assertOk();
 });
 
-test('authenticated admin can access admin panel', function (): void {
-    $user = User::factory()->create(['username' => 'danielhe4rt']);
-
-    config(['he4rt.admins' => 'danielhe4rt']);
+test('super admin can access admin panel', function (): void {
+    $user = User::factory()->superAdmin()->create();
 
     $this
         ->actingAs($user)
@@ -28,24 +26,30 @@ test('authenticated admin can access admin panel', function (): void {
         ->assertOk();
 });
 
-test('admin user can access panel via canAccessPanel', function (): void {
-    $user = User::factory()->create(['username' => 'danielhe4rt']);
+test('super admin can access panel via canAccessPanel in production', function (): void {
+    $user = User::factory()->superAdmin()->create();
 
-    config(['he4rt.admins' => 'danielhe4rt']);
+    app()->detectEnvironment(fn () => 'production');
 
     $panel = Filament::getPanel('admin');
 
     expect($user->canAccessPanel($panel))->toBeTrue();
 });
 
-test('non-admin user cannot access admin panel in production', function (): void {
-    $user = User::factory()->create(['username' => 'regular-user']);
-
-    config(['he4rt.admins' => 'danielhe4rt']);
+test('user without role cannot access admin panel in production', function (): void {
+    $user = User::factory()->create();
 
     app()->detectEnvironment(fn () => 'production');
 
     $panel = Filament::getPanel('admin');
 
     expect($user->canAccessPanel($panel))->toBeFalse();
+});
+
+test('user without role can access admin panel outside production', function (): void {
+    $user = User::factory()->create();
+
+    $panel = Filament::getPanel('admin');
+
+    expect($user->canAccessPanel($panel))->toBeTrue();
 });

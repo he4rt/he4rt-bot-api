@@ -15,9 +15,7 @@ use He4rt\PanelAdmin\Filament\Resources\Retrospectives\Tables\RetrospectivesTabl
 use function Pest\Livewire\livewire;
 
 beforeEach(function (): void {
-    $user = User::factory()->create(['username' => 'danielhe4rt']);
-
-    config(['he4rt.admins' => 'danielhe4rt']);
+    $user = User::factory()->superAdmin()->create();
 
     $this->actingAs($user);
 
