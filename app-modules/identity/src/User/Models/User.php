@@ -13,6 +13,7 @@ use He4rt\Activity\Tracking\Concerns\HasInteractions;
 use He4rt\Gamification\Character\Models\Character;
 use He4rt\Identity\Database\Factories\UserFactory;
 use He4rt\Identity\ExternalIdentity\Models\ExternalIdentity;
+use He4rt\Identity\User\Concerns\HasProfileImages;
 use He4rt\Identity\User\Enums\UserSituation;
 use He4rt\Identity\User\Observers\UserObserver;
 use He4rt\Profile\Models\Profile;
@@ -54,6 +55,7 @@ final class User extends Authenticatable implements FilamentUser, HasMedia, HasN
     /** @use HasFactory<UserFactory> */
     use HasFactory;
     use HasInteractions;
+    use HasProfileImages;
     use HasUuids;
     use InteractsWithMedia;
     use Notifiable;
@@ -94,13 +96,7 @@ final class User extends Authenticatable implements FilamentUser, HasMedia, HasN
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('avatar')
-            ->singleFile()
-            ->useDisk('public');
-
-        $this->addMediaCollection('cover')
-            ->singleFile()
-            ->useDisk('public');
+        $this->registerProfileImageCollections();
     }
 
     public function canAccessPanel(Panel $panel): bool

@@ -1,7 +1,7 @@
 @props(['articles'])
 
 @if ($articles !== [])
-    <section class="hp-section" id="artigos">
+    <section class="hp-section pb-10 lg:pb-14" id="artigos">
         <div class="hp-page hp-container">
             <x-he4rt::headline align="center" size="md" :keywords="['comunidade']">
                 <x-slot:badge>

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace He4rt\PanelApp\Pages;
 
 use App\Geo\Support\GeoLocation;
+use App\Support\UploadLimit;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
@@ -14,6 +15,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\ViewField;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Actions;
@@ -26,7 +28,9 @@ use Filament\Schemas\JsContent;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Width;
 use He4rt\Gamification\Character\Models\Character;
+use He4rt\Identity\User\Enums\ProfileImage;
 use He4rt\Identity\User\Models\User;
+use He4rt\PanelApp\Rules\UnconvertedImageSize;
 use He4rt\Profile\Actions\SyncProfileSkills;
 use He4rt\Profile\Actions\ToggleAvailability;
 use He4rt\Profile\Actions\UpsertProfile;
@@ -39,6 +43,7 @@ use He4rt\Profile\Enums\SocialPlatform;
 use He4rt\Profile\Enums\StartAvailability;
 use He4rt\Profile\Models\Profile;
 use He4rt\Profile\Models\Skill;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -47,6 +52,10 @@ use Livewire\WithFileUploads;
 /**
  * @property-read Schema $form
  * @property-read Schema $birthdateForm
+ * @property-read string|null $avatarPreviewUrl
+ * @property-read string|null $coverPreviewUrl
+ * @property-read int $avatarFocalY
+ * @property-read int $coverFocalY
  */
 class ProfilePage extends Page
 {
@@ -478,83 +487,22 @@ class ProfilePage extends Page
 
     public function editAvatarAction(): Action
     {
-        return Action::make('editAvatar')
-            ->label(__('panel-app::profile.actions.change_avatar'))
-            ->modalHeading(__('panel-app::profile.actions.change_avatar'))
-            ->modalSubmitActionLabel(__('panel-app::profile.actions.save_avatar'))
-            ->modalSubmitAction(fn (Action $action) => $action->color('primary'))
-            ->schema([
-                FileUpload::make('avatar')
-                    ->label(__('panel-app::profile.fields.avatar'))
-                    ->avatar()
-                    ->imageEditor()
-                    ->circleCropper()
-                    ->imageEditorAspectRatioOptions(['1:1'])
-                    ->storeFiles(condition: false)
-                    ->required()
-                    ->maxSize(2_048),
-            ])
-            ->action(function (array $data): void {
-                $avatar = $data['avatar'] ?? null;
-
-                if (is_string($avatar)) {
-                    $avatar = TemporaryUploadedFile::createFromLivewire($avatar);
-                }
-
-                if (!$avatar instanceof TemporaryUploadedFile) {
-                    return;
-                }
-
-                $this->replaceMedia('avatar', $avatar);
-
-                Notification::make()
-                    ->success()
-                    ->title(__('panel-app::profile.notifications.avatar_updated'))
-                    ->send();
-            });
+        return $this->imageUploadAction('editAvatar', ProfileImage::Avatar);
     }
 
     public function editCoverAction(): Action
     {
-        return Action::make('editCover')
-            ->label(__('panel-app::profile.actions.change_cover'))
-            ->modalHeading(__('panel-app::profile.actions.change_cover'))
-            ->modalSubmitActionLabel(__('panel-app::profile.actions.save_cover'))
-            ->modalSubmitAction(fn (Action $action) => $action->color('primary'))
-            ->schema([
-                FileUpload::make('cover')
-                    ->label(__('panel-app::profile.fields.cover'))
-                    ->image()
-                    ->panelAspectRatio('3:1')
-                    ->imageEditor()
-                    ->imageAspectRatio('3:1')
-                    ->imageEditorAspectRatioOptions(['3:1'])
-                    ->automaticallyCropImagesToAspectRatio()
-                    ->automaticallyResizeImagesMode('cover')
-                    ->automaticallyResizeImagesToWidth('1800')
-                    ->automaticallyResizeImagesToHeight('600')
-                    ->storeFiles(condition: false)
-                    ->required()
-                    ->maxSize(4_096),
-            ])
-            ->action(function (array $data): void {
-                $cover = $data['cover'] ?? null;
+        return $this->imageUploadAction('editCover', ProfileImage::Cover);
+    }
 
-                if (is_string($cover)) {
-                    $cover = TemporaryUploadedFile::createFromLivewire($cover);
-                }
+    public function adjustAvatarAction(): Action
+    {
+        return $this->imageFramingAction('adjustAvatar', ProfileImage::Avatar);
+    }
 
-                if (!$cover instanceof TemporaryUploadedFile) {
-                    return;
-                }
-
-                $this->replaceMedia('cover', $cover);
-
-                Notification::make()
-                    ->success()
-                    ->title(__('panel-app::profile.notifications.cover_updated'))
-                    ->send();
-            });
+    public function adjustCoverAction(): Action
+    {
+        return $this->imageFramingAction('adjustCover', ProfileImage::Cover);
     }
 
     public function getRecord(): Profile
@@ -587,12 +535,36 @@ class ProfilePage extends Page
     }
 
     #[Computed]
+    public function coverAspectRatio(): string
+    {
+        return ProfileImage::Cover->cssAspectRatio();
+    }
+
+    #[Computed]
+    public function coverFocalY(): int
+    {
+        /** @var User $user */
+        $user = auth()->user()->fresh();
+
+        return $user->imageFocalY(ProfileImage::Cover);
+    }
+
+    #[Computed]
+    public function avatarFocalY(): int
+    {
+        /** @var User $user */
+        $user = auth()->user()->fresh();
+
+        return $user->imageFocalY(ProfileImage::Avatar);
+    }
+
+    #[Computed]
     public function avatarPreviewUrl(): ?string
     {
         /** @var User $user */
         $user = auth()->user()->fresh();
 
-        return $user->getFirstMediaUrl('avatar') ?: null;
+        return $user->imageUrl(ProfileImage::Avatar);
     }
 
     #[Computed]
@@ -601,28 +573,241 @@ class ProfilePage extends Page
         /** @var User $user */
         $user = auth()->user()->fresh();
 
-        return $user->getFirstMediaUrl('cover') ?: null;
+        return $user->imageUrl(ProfileImage::Cover);
     }
 
     public function removeAvatar(): void
     {
-        auth()->user()->clearMediaCollection('avatar');
+        $this->removeImage(ProfileImage::Avatar);
     }
 
     public function removeCover(): void
     {
-        auth()->user()->clearMediaCollection('cover');
+        $this->removeImage(ProfileImage::Cover);
     }
 
-    private function replaceMedia(string $collection, TemporaryUploadedFile $file): void
+    /**
+     * Escolhe qual faixa vertical da imagem aparece no recorte da tela.
+     *
+     * Existe para o que nao passa pelo editor: recortar um GIF achataria a
+     * animacao, entao ele e servido inteiro e o enquadramento vira CSS.
+     */
+    private function imageFramingAction(string $name, ProfileImage $image): Action
+    {
+        return Action::make($name)
+            ->label(__('panel-app::profile.actions.adjust_'.$image->value))
+            ->modalHeading(__('panel-app::profile.actions.adjust_'.$image->value))
+            ->modalDescription(__('panel-app::profile.hints.adjust_framing'))
+            ->modalSubmitActionLabel(__('panel-app::profile.actions.save_framing'))
+            ->modalSubmitAction(fn (Action $action) => $action->color('primary'))
+            ->modalWidth(Width::TwoExtraLarge)
+            ->visible(fn (): bool => filled($this->imagePreviewUrl($image)))
+            ->schema([
+                ViewField::make('focal_y')
+                    ->hiddenLabel()
+                    ->view('panel-app::components.image-focal-picker')
+                    ->viewData([
+                        'imageUrl' => $this->imagePreviewUrl($image),
+                        'aspectRatio' => $image->cssAspectRatio(),
+                        'isCircle' => $image === ProfileImage::Avatar,
+                    ])
+                    ->default(function () use ($image): int {
+                        /** @var User $user */
+                        $user = auth()->user();
+
+                        return $user->imageFocalY($image);
+                    }),
+            ])
+            ->action(function (array $data) use ($image): void {
+                $focalY = $data['focal_y'] ?? null;
+
+                /** @var User $user */
+                $user = auth()->user();
+                $user->setImageFocalY($image, is_numeric($focalY) ? (int) $focalY : ProfileImage::DEFAULT_FOCAL_Y);
+
+                $this->refreshImageComputeds();
+
+                Notification::make()
+                    ->success()
+                    ->title(__('panel-app::profile.notifications.framing_updated'))
+                    ->send();
+            });
+    }
+
+    /**
+     * Upload com recorte na proporcao da imagem. O editor do Filament roda no
+     * browser antes do upload, entao a validacao de dimensao abaixo mede o
+     * resultado do recorte, e nao o arquivo bruto.
+     */
+    private function imageUploadAction(string $name, ProfileImage $image): Action
+    {
+        $limits = $this->imageLimits($image);
+
+        return Action::make($name)
+            ->label(__('panel-app::profile.actions.change_'.$image->value))
+            ->modalHeading(__('panel-app::profile.actions.change_'.$image->value))
+            ->modalSubmitActionLabel(__('panel-app::profile.actions.save_'.$image->value))
+            ->modalSubmitAction(fn (Action $action) => $action->color('primary'))
+            // O autofocus do modal cai no input do FilePond, que responde ao
+            // foco abrindo o seletor de arquivos; com o focus trap reaplicando
+            // o foco, o dialogo do sistema reabre em loop.
+            ->modalAutofocus(condition: false)
+            ->schema([
+                $this->imageUploadField($image, $limits),
+            ])
+            ->action(function (array $data) use ($image): void {
+                $file = $data[$image->value] ?? null;
+
+                if (is_string($file)) {
+                    $file = TemporaryUploadedFile::createFromLivewire($file);
+                }
+
+                if (!$file instanceof UploadedFile) {
+                    return;
+                }
+
+                /** @var User $user */
+                $user = auth()->user();
+                $user->putImage($image, $file);
+
+                $this->refreshImageComputeds();
+
+                Notification::make()
+                    ->success()
+                    ->title(__('panel-app::profile.notifications.'.$image->value.'_updated'))
+                    ->send();
+
+                // Sem conversao a imagem vai inteira para a tela, e ai o
+                // enquadramento e que decide o que aparece. Emenda o ajuste no
+                // mesmo fluxo em vez de exigir que o usuario ache o botao.
+                if ($user->imageNeedsFraming($image)) {
+                    $this->replaceMountedAction($this->framingActionName($image));
+                }
+            });
+    }
+
+    /**
+     * Limites de upload da imagem, em KB para as regras e em MB para o texto.
+     *
+     * O teto anunciado nunca passa do que o php.ini aceita, senao o PHP recusa
+     * o arquivo antes da validacao e o que sobra na tela e "failed to upload".
+     *
+     * @return array{width: int, height: int, min_width: int, min_height: int, max_kb: int, unconverted_max_kb: int, max_mb: float, gif_mb: float, formats: string}
+     */
+    private function imageLimits(ProfileImage $image): array
+    {
+        $maxKilobytes = UploadLimit::kilobytes($image->maxKilobytes());
+        $unconvertedMaxKilobytes = min($maxKilobytes, ProfileImage::unconvertedMaxKilobytes());
+
+        return [
+            'width' => $image->width(),
+            'height' => $image->height(),
+            'min_width' => $image->minWidth(),
+            'min_height' => $image->minHeight(),
+            'max_kb' => $maxKilobytes,
+            'unconverted_max_kb' => $unconvertedMaxKilobytes,
+            'max_mb' => round($maxKilobytes / 1_024, 1),
+            'gif_mb' => round($unconvertedMaxKilobytes / 1_024, 1),
+            'formats' => ProfileImage::formatLabels(),
+        ];
+    }
+
+    /**
+     * @param  array{width: int, height: int, min_width: int, min_height: int, max_kb: int, unconverted_max_kb: int, max_mb: float, gif_mb: float, formats: string}  $limits
+     */
+    private function imageUploadField(ProfileImage $image, array $limits): FileUpload
+    {
+        $field = match ($image) {
+            ProfileImage::Avatar => FileUpload::make($image->value)->avatar(),
+            ProfileImage::Cover => FileUpload::make($image->value)
+                ->image()
+                ->panelAspectRatio($image->aspectRatio()),
+        };
+
+        return $field
+            ->label(__('panel-app::profile.fields.'.$image->value))
+            // O teto do GIF só entra no texto quando ele é de fato menor: no
+            // ambiente onde o limite geral já é o mesmo, repetir confunde.
+            ->helperText(__(
+                $limits['unconverted_max_kb'] < $limits['max_kb']
+                    ? 'panel-app::profile.hints.image_upload_with_gif_limit'
+                    : 'panel-app::profile.hints.image_upload',
+                $limits,
+            ))
+            // imageAspectRatio() fica desligado de proposito. Ele instala uma
+            // regra Rule::dimensions()->ratio() que exige a proporcao exata,
+            // com tolerancia menor que um pixel. Como o editor recorta no
+            // canvas e arredonda, o arquivo chega fora da razao por 1px e a
+            // validacao reprova com "invalid image dimensions", que e o erro
+            // generico da issue #458. Quem enquadra e a conversion.
+            ->imageAspectRatio(ratio: null)
+            ->automaticallyCropImagesToAspectRatio(condition: false)
+            ->imageEditor()
+            // Sem imageAspectRatio, e o viewport que trava o recorte na
+            // proporcao certa dentro do editor.
+            ->imageEditorViewportWidth($image->width())
+            ->imageEditorViewportHeight($image->height())
+            ->imageEditorAspectRatioOptions([$image->aspectRatio()])
+            // Sem alvo de redimensionamento: o editor usa esses valores no
+            // getCroppedCanvas(), entao com eles o recorte sairia sempre no
+            // tamanho alvo, esticado no canvas do browser, e a validacao de
+            // dimensao minima nunca falharia. Quem estica e a conversion.
+            ->automaticallyResizeImagesToWidth(width: null)
+            ->automaticallyResizeImagesToHeight(height: null)
+            ->acceptedFileTypes(ProfileImage::mimeTypes())
+            ->maxSize($limits['max_kb'])
+            ->rules([
+                sprintf(
+                    'dimensions:min_width=%d,min_height=%d',
+                    $image->minWidth(),
+                    $image->minHeight(),
+                ),
+                new UnconvertedImageSize($limits['unconverted_max_kb']),
+            ])
+            ->validationMessages([
+                'dimensions' => __('panel-app::profile.validation.image_dimensions', $limits),
+                // O GIF chega ate aqui quando o usuario burla o filtro do
+                // seletor de arquivos. Sem esta mensagem, o erro que aparece
+                // e o generico do Laravel.
+                'mimetypes' => __('panel-app::profile.validation.image_mimetypes', $limits),
+            ])
+            ->storeFiles(condition: false)
+            ->required();
+    }
+
+    private function removeImage(ProfileImage $image): void
     {
         /** @var User $user */
         $user = auth()->user();
-        $extension = $file->getClientOriginalExtension() ?: $file->guessExtension() ?: 'jpg';
-        $user->clearMediaCollection($collection);
-        $user->addMedia($file->getRealPath())
-            ->usingFileName(Str::uuid()->toString().'.'.$extension)
-            ->toMediaCollection($collection);
+        $user->removeImage($image);
+
+        $this->refreshImageComputeds();
+    }
+
+    private function framingActionName(ProfileImage $image): string
+    {
+        return match ($image) {
+            ProfileImage::Avatar => 'adjustAvatar',
+            ProfileImage::Cover => 'adjustCover',
+        };
+    }
+
+    private function imagePreviewUrl(ProfileImage $image): ?string
+    {
+        return match ($image) {
+            ProfileImage::Avatar => $this->avatarPreviewUrl,
+            ProfileImage::Cover => $this->coverPreviewUrl,
+        };
+    }
+
+    private function refreshImageComputeds(): void
+    {
+        unset(
+            $this->avatarPreviewUrl,
+            $this->coverPreviewUrl,
+            $this->avatarFocalY,
+            $this->coverFocalY,
+        );
     }
 
     /**
