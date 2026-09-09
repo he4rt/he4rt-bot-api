@@ -24,7 +24,7 @@ it('implementa os contratos Filament para todos os casos', function (TimelineRea
         ->and($reaction->getLabel())->toBeString()->not->toBeEmpty()
         ->and($reaction->getColor())->toBeArray()->not->toBeEmpty()
         ->and($reaction->getDescription())->toBeString()->not->toBeEmpty()
-        ->and($reaction->emoji())->toBeString()->not->toBeEmpty();
+        ->and($reaction->getEmoji())->toBeString()->not->toBeEmpty();
 })->with(TimelineReaction::cases());
 
 it('devolve o rótulo pt-BR de cada reação', function (): void {
@@ -37,12 +37,12 @@ it('devolve o rótulo pt-BR de cada reação', function (): void {
 });
 
 it('devolve o glifo de cada reação', function (): void {
-    expect(TimelineReaction::Like->emoji())->toBe('👍')
-        ->and(TimelineReaction::Love->emoji())->toBe('❤️')
-        ->and(TimelineReaction::Laugh->emoji())->toBe('😂')
-        ->and(TimelineReaction::Celebrate->emoji())->toBe('🎉')
-        ->and(TimelineReaction::Fire->emoji())->toBe('🔥')
-        ->and(TimelineReaction::Sad->emoji())->toBe('😢');
+    expect(TimelineReaction::Like->getEmoji())->toBe('👍')
+        ->and(TimelineReaction::Love->getEmoji())->toBe('❤️')
+        ->and(TimelineReaction::Laugh->getEmoji())->toBe('😂')
+        ->and(TimelineReaction::Celebrate->getEmoji())->toBe('🎉')
+        ->and(TimelineReaction::Fire->getEmoji())->toBe('🔥')
+        ->and(TimelineReaction::Sad->getEmoji())->toBe('😢');
 });
 
 it('não repete cor, rótulo, descrição nem glifo entre os casos', function (): void {
@@ -51,7 +51,7 @@ it('não repete cor, rótulo, descrição nem glifo entre os casos', function ()
     $colors = array_map(fn (TimelineReaction $r): string => serialize($r->getColor()), $cases);
     $labels = array_map(fn (TimelineReaction $r): string => $r->getLabel(), $cases);
     $descriptions = array_map(fn (TimelineReaction $r): string => $r->getDescription(), $cases);
-    $emojis = array_map(fn (TimelineReaction $r): string => $r->emoji(), $cases);
+    $emojis = array_map(fn (TimelineReaction $r): string => $r->getEmoji(), $cases);
 
     expect(array_unique($colors))->toHaveCount(6)
         ->and(array_unique($labels))->toHaveCount(6)

@@ -67,7 +67,7 @@ enum TimelineReaction: string implements HasColor, HasDescription, HasLabel
         };
     }
 
-    public function emoji(): string
+    public function getEmoji(): string
     {
         return match ($this) {
             self::Like => '👍',
