@@ -27,7 +27,8 @@ final class EnrichUserOnFirstLogin
             $updates['name'] = $oauthUser->name;
         }
 
-        $canUpdateUsername = $oauthUser->username !== $user->username
+        $canUpdateUsername = $user->username_manually_set_at === null
+            && $oauthUser->username !== $user->username
             && !User::query()
                 ->where('username', $oauthUser->username)
                 ->where('id', '!=', $user->id)

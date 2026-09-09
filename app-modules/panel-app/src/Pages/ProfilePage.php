@@ -7,9 +7,11 @@ namespace He4rt\PanelApp\Pages;
 use App\Geo\Support\GeoLocation;
 use App\Support\UploadLimit;
 use BackedEnum;
+use Closure;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -28,8 +30,11 @@ use Filament\Schemas\JsContent;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Width;
 use He4rt\Gamification\Character\Models\Character;
+use He4rt\Identity\User\Actions\UpdateUsername;
 use He4rt\Identity\User\Enums\ProfileImage;
+use He4rt\Identity\User\Exceptions\UsernameException;
 use He4rt\Identity\User\Models\User;
+use He4rt\Identity\User\ValueObjects\UsernameValidator;
 use He4rt\PanelApp\Rules\UnconvertedImageSize;
 use He4rt\Profile\Actions\SyncProfileSkills;
 use He4rt\Profile\Actions\ToggleAvailability;
@@ -44,6 +49,7 @@ use He4rt\Profile\Enums\StartAvailability;
 use He4rt\Profile\Models\Profile;
 use He4rt\Profile\Models\Skill;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -503,6 +509,79 @@ class ProfilePage extends Page
     public function adjustCoverAction(): Action
     {
         return $this->imageFramingAction('adjustCover', ProfileImage::Cover);
+    }
+
+    public function editUsernameAction(): Action
+    {
+        return Action::make('editUsername')
+            ->label(__('panel-app::profile.actions.change_username'))
+            ->modalHeading(__('panel-app::profile.actions.change_username'))
+            ->modalDescription(__('panel-app::profile.hints.username_modal_description'))
+            ->modalSubmitActionLabel(__('panel-app::profile.actions.save_username'))
+            ->modalSubmitAction(fn (Action $action) => $action->color('primary'))
+            ->modalWidth(Width::Medium)
+            ->schema([
+                Placeholder::make('admin_warning')
+                    ->hiddenLabel()
+                    ->visible(fn (): bool => auth()->user()?->isAdmin() ?? false)
+                    ->content(new HtmlString(view('panel-app::components.username-admin-warning')->render())),
+                TextInput::make('username')
+                    ->label(__('panel-app::profile.fields.username'))
+                    ->prefix('@')
+                    ->default(fn (): string => auth()->user()->username)
+                    ->required()
+                    ->rules([
+                        fn (): Closure => function (string $attribute, mixed $value, Closure $fail): void {
+                            if (!is_string($value)) {
+                                $fail(__('panel-app::profile.hints.username_rules_title'));
+
+                                return;
+                            }
+
+                            /** @var User|null $user */
+                            $user = auth()->user();
+
+                            try {
+                                UsernameValidator::validate($value, $user);
+                            } catch (UsernameException $usernameException) {
+                                $fail($usernameException->getMessage());
+                            }
+                        },
+                    ]),
+                Placeholder::make('username_rules')
+                    ->hiddenLabel()
+                    ->content(new HtmlString(view('panel-app::components.username-rules')->render())),
+            ])
+            ->action(function (array $data, Action $action): void {
+                /** @var User $user */
+                $user = auth()->user();
+
+                $rawUsername = $data['username'] ?? '';
+                $newUsername = is_string($rawUsername) ? $rawUsername : '';
+
+                try {
+                    $updated = resolve(UpdateUsername::class)->handle($user, $newUsername);
+                    auth()->setUser($updated);
+                    filament()->auth()->setUser($updated);
+                } catch (UsernameException $usernameException) {
+                    Notification::make()
+                        ->danger()
+                        ->title(__('panel-app::profile.notifications.username_error'))
+                        ->body($usernameException->getMessage())
+                        ->send();
+
+                    $this->addError('mountedActionsData.0.username', $usernameException->getMessage());
+                    $this->addError('data.username', $usernameException->getMessage());
+                    $this->addError('username', $usernameException->getMessage());
+
+                    $action->halt();
+                }
+
+                Notification::make()
+                    ->success()
+                    ->title(__('panel-app::profile.notifications.username_updated'))
+                    ->send();
+            });
     }
 
     public function getRecord(): Profile

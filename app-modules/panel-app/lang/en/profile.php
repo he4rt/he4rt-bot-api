@@ -47,6 +47,7 @@ return [
         'willing_to_relocate' => 'Willing to relocate',
         'has_disability' => 'Person with a disability',
         'employment_types' => 'Employment type',
+        'username' => 'Username (@)',
     ],
 
     'placeholders' => [
@@ -67,6 +68,16 @@ return [
         'has_disability' => 'Sensitive information — used only for affirmative-action roles.',
         'expected_salary' => 'Monthly amount in BRL. Private, used only in proposals.',
         'skills' => 'Pick your skills and set your level and years of experience for each.',
+        'username_modal_description' => 'Choose a new unique handle for your community profile.',
+        'username_cooldown_notice' => 'You will only be able to change your @ again after 7 days.',
+        'username_rules_title' => 'Rules for your @',
+        'username_rule_length' => 'Between 2 and 32 characters long (automatically converted to lowercase).',
+        'username_rule_characters' => 'Allowed: letters (a-z), numbers (0-9), dots (.), hyphens (-), and underscores (_).',
+        'username_rule_format' => 'Must start and end with a letter or number (no symbols at edges).',
+        'username_rule_consecutive' => 'No consecutive special characters allowed (e.g. .. or --).',
+        'username_rule_cooldown' => 'Regular members can change once every 7 days (admins are exempt).',
+        'admin_warning_title' => 'Administrator Notice',
+        'admin_warning_body' => 'If your production admin permissions rely on HE4RT_ADMINS_USERNAMES on the server, remember to update the environment variable after changing your handle.',
     ],
 
     'validation' => [
@@ -82,11 +93,13 @@ return [
         'add_skill' => 'Add skill',
         'change_avatar' => 'Change photo',
         'change_cover' => 'Change cover',
+        'change_username' => 'Change @',
         'adjust_avatar' => 'Adjust photo framing',
         'adjust_cover' => 'Adjust framing',
         'save_framing' => 'Save framing',
         'save_avatar' => 'Save photo',
         'save_cover' => 'Save cover',
+        'save_username' => 'Save @',
     ],
 
     'notifications' => [
@@ -94,6 +107,8 @@ return [
         'avatar_updated' => 'Photo updated successfully!',
         'cover_updated' => 'Cover updated successfully!',
         'framing_updated' => 'Framing saved!',
+        'username_updated' => 'Username updated successfully!',
+        'username_error' => 'Could not update @',
         'no_profile' => 'Profile not found for this tenant.',
     ],
 

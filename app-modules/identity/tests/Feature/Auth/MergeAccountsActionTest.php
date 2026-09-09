@@ -159,3 +159,42 @@ test('skips username update on old user when it would collide', function (): voi
     $oldUser->refresh();
     expect($oldUser->username)->toBe('old-user');
 });
+
+test('does not overwrite old user username when old user has username_manually_set_at', function (): void {
+    $oldUser = User::factory()->create([
+        'username' => 'manual-old-username',
+        'first_login_at' => null,
+        'username_manually_set_at' => now()->subMonth(),
+    ]);
+    $currentUser = User::factory()->create([
+        'username' => 'current-username',
+        'name' => 'Current Name',
+    ]);
+
+    $action = new MergeAccountsAction();
+    $action->execute($currentUser, $oldUser);
+
+    expect($oldUser->refresh()->username)->toBe('manual-old-username');
+});
+
+test('copies username_manually_set_at when currentUser has manual username', function (): void {
+    $manualTimestamp = now()->subDays(10);
+    $oldUser = User::factory()->create([
+        'username' => 'legacy-user',
+        'first_login_at' => null,
+        'username_manually_set_at' => null,
+    ]);
+    $currentUser = User::factory()->create([
+        'username' => 'manual-current-username',
+        'name' => 'Manual Current',
+        'username_manually_set_at' => $manualTimestamp,
+        'username_updated_at' => $manualTimestamp,
+    ]);
+
+    $action = new MergeAccountsAction();
+    $action->execute($currentUser, $oldUser);
+
+    $oldUser->refresh();
+    expect($oldUser->username)->toBe('manual-current-username')
+        ->and($oldUser->username_manually_set_at->toIso8601String())->toBe($manualTimestamp->toIso8601String());
+});

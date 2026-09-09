@@ -44,7 +44,9 @@ class MergeDuplicateDiscordProfilesCommand extends Command
 
     private function runFromPairsFile(MergeDuplicateDiscordUserAction $merge, string $path): int
     {
-        $absolute = str_starts_with($path, '/') ? $path : base_path($path);
+        $absolute = is_file($path)
+            ? $path
+            : (str_starts_with($path, '/') || preg_match('/^[A-Za-z]:[\\\\\/]/', $path) ? $path : base_path($path));
 
         if (!is_file($absolute)) {
             error('Arquivo de pares nao encontrado: '.$absolute);

@@ -120,8 +120,30 @@
             </div>
         </div>
 
-        {{-- Nickname + Birthdate --}}
-        <div class="grid grid-cols-1 items-start gap-4 sm:grid-cols-2">
+        {{-- Username + Nickname + Birthdate --}}
+        <div class="grid grid-cols-1 items-start gap-4 sm:grid-cols-3">
+            <div>
+                <div class="mb-1 flex items-center justify-between">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {{ __('panel-app::profile.fields.username') }}
+                    </label>
+                    <button
+                        type="button"
+                        wire:click="mountAction('editUsername')"
+                        class="cursor-pointer text-xs font-medium text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 transition-colors"
+                    >
+                        {{ __('panel-app::profile.actions.change_username') }}
+                    </button>
+                </div>
+                <div
+                    wire:click="mountAction('editUsername')"
+                    class="fi-input flex cursor-pointer items-center justify-between rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-700 shadow-sm transition-colors hover:border-purple-500 dark:border-white/10 dark:bg-white/5 dark:text-gray-300 dark:hover:border-purple-500"
+                    title="{{ __('panel-app::profile.actions.change_username') }}"
+                >
+                    <span class="font-medium text-gray-900 dark:text-white">{{ '@' }}{{ auth()->user()->username }}</span>
+                    <x-heroicon-m-pencil-square class="h-4 w-4 text-gray-400 dark:text-gray-500" />
+                </div>
+            </div>
             <div>
                 <label for="nickname" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
                     {{ __('panel-app::profile.fields.nickname') }}

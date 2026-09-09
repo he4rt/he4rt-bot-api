@@ -47,6 +47,7 @@ return [
         'willing_to_relocate' => 'Disposto a mudar de cidade',
         'has_disability' => 'Pessoa com deficiência (PcD)',
         'employment_types' => 'Tipo de contratação',
+        'username' => 'Nome de usuário (@)',
     ],
 
     'placeholders' => [
@@ -67,6 +68,16 @@ return [
         'expected_salary' => 'Valor mensal em R$. Informação privada, usada apenas em propostas.',
         'skills' => 'Selecione suas skills e informe o nível e os anos de experiência em cada uma.',
         'city' => 'Se sua cidade não estiver na listagem, pesquise.',
+        'username_modal_description' => 'Escolha um novo identificador único para seu perfil na comunidade.',
+        'username_cooldown_notice' => 'Você só poderá alterar seu @ novamente após 7 dias.',
+        'username_rules_title' => 'Regras para o @',
+        'username_rule_length' => 'Entre 2 e 32 caracteres (convertido automaticamente para minúsculo).',
+        'username_rule_characters' => 'Permitido letras (a-z), números (0-9), ponto (.), hífen (-) e sublinhado (_).',
+        'username_rule_format' => 'Deve começar e terminar com letra ou número (sem símbolos nas extremidades).',
+        'username_rule_consecutive' => 'Proibido símbolos especiais consecutivos (ex: .. ou --).',
+        'username_rule_cooldown' => 'Usuários comuns podem alterar apenas a cada 7 dias (administradores têm alteração livre).',
+        'admin_warning_title' => 'Aviso para Administradores',
+        'admin_warning_body' => 'Se suas permissões administrativas em produção dependerem de HE4RT_ADMINS_USERNAMES no servidor, lembre-se de atualizar a variável de ambiente após a alteração.',
     ],
 
     'validation' => [
@@ -82,11 +93,13 @@ return [
         'add_skill' => 'Adicionar skill',
         'change_avatar' => 'Alterar foto',
         'change_cover' => 'Alterar capa',
+        'change_username' => 'Alterar @',
         'adjust_avatar' => 'Ajustar enquadramento da foto',
         'adjust_cover' => 'Ajustar enquadramento',
         'save_framing' => 'Salvar enquadramento',
         'save_avatar' => 'Salvar foto',
         'save_cover' => 'Salvar capa',
+        'save_username' => 'Salvar @',
     ],
 
     'notifications' => [
@@ -94,6 +107,8 @@ return [
         'avatar_updated' => 'Foto atualizada com sucesso!',
         'cover_updated' => 'Capa atualizada com sucesso!',
         'framing_updated' => 'Enquadramento salvo!',
+        'username_updated' => 'Nome de usuário atualizado com sucesso!',
+        'username_error' => 'Não foi possível alterar o @',
         'no_profile' => 'Perfil não encontrado para este tenant.',
     ],
 
