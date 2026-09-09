@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasDescription;
 use Filament\Support\Contracts\HasLabel;
 use He4rt\Activity\Reaction\Enums\TimelineReaction;
 
@@ -15,9 +17,13 @@ it('tem exatamente os seis casos do conjunto fixo', function (): void {
         ->and(TimelineReaction::Sad->value)->toBe('sad');
 });
 
-it('implementa o contrato HasLabel', function (TimelineReaction $reaction): void {
-    expect($reaction)->toBeInstanceOf(HasLabel::class)
+it('implementa os contratos Filament para todos os casos', function (TimelineReaction $reaction): void {
+    expect($reaction)->toBeInstanceOf(HasColor::class)
+        ->toBeInstanceOf(HasDescription::class)
+        ->toBeInstanceOf(HasLabel::class)
         ->and($reaction->getLabel())->toBeString()->not->toBeEmpty()
+        ->and($reaction->getColor())->toBeArray()->not->toBeEmpty()
+        ->and($reaction->getDescription())->toBeString()->not->toBeEmpty()
         ->and($reaction->emoji())->toBeString()->not->toBeEmpty();
 })->with(TimelineReaction::cases());
 
@@ -37,6 +43,20 @@ it('devolve o glifo de cada reação', function (): void {
         ->and(TimelineReaction::Celebrate->emoji())->toBe('🎉')
         ->and(TimelineReaction::Fire->emoji())->toBe('🔥')
         ->and(TimelineReaction::Sad->emoji())->toBe('😢');
+});
+
+it('não repete cor, rótulo, descrição nem glifo entre os casos', function (): void {
+    $cases = TimelineReaction::cases();
+
+    $colors = array_map(fn (TimelineReaction $r): string => serialize($r->getColor()), $cases);
+    $labels = array_map(fn (TimelineReaction $r): string => $r->getLabel(), $cases);
+    $descriptions = array_map(fn (TimelineReaction $r): string => $r->getDescription(), $cases);
+    $emojis = array_map(fn (TimelineReaction $r): string => $r->emoji(), $cases);
+
+    expect(array_unique($colors))->toHaveCount(6)
+        ->and(array_unique($labels))->toHaveCount(6)
+        ->and(array_unique($descriptions))->toHaveCount(6)
+        ->and(array_unique($emojis))->toHaveCount(6);
 });
 
 it('devolve null para valor fora do conjunto', function (): void {

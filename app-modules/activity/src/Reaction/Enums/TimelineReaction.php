@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace He4rt\Activity\Reaction\Enums;
 
 use App\Enums\Concerns\StringifyEnum;
+use Filament\Support\Colors\Color;
+use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasDescription;
 use Filament\Support\Contracts\HasLabel;
 
 /**
  * Conjunto fechado de reações da timeline web. O banco guarda só o value;
- * rótulo e glifo vivem aqui e nunca são persistidos.
+ * rótulo, cor e glifo vivem aqui e nunca são persistidos.
  */
-enum TimelineReaction: string implements HasLabel
+enum TimelineReaction: string implements HasColor, HasDescription, HasLabel
 {
     use StringifyEnum;
 
@@ -31,6 +34,36 @@ enum TimelineReaction: string implements HasLabel
             self::Celebrate => 'Parabéns',
             self::Fire => 'Fogo',
             self::Sad => 'Triste',
+        };
+    }
+
+    /**
+     * Conjunto não-ordenado: não há ramp claro->danger. Cada cor puxa a do
+     * próprio glifo, para o rótulo textual não brigar com o emoji ao lado.
+     *
+     * @return array<int, string>
+     */
+    public function getColor(): array
+    {
+        return match ($this) {
+            self::Like => Color::Sky,
+            self::Love => Color::Rose,
+            self::Laugh => Color::Amber,
+            self::Celebrate => Color::Violet,
+            self::Fire => Color::Orange,
+            self::Sad => Color::Slate,
+        };
+    }
+
+    public function getDescription(): string
+    {
+        return match ($this) {
+            self::Like => 'Concorda ou apoia sem muito peso',
+            self::Love => 'Guardou carinho pelo conteúdo',
+            self::Laugh => 'Achou graça',
+            self::Celebrate => 'Comemora uma conquista de alguém da comunidade',
+            self::Fire => 'Reconhece que o conteúdo ficou excelente',
+            self::Sad => 'Solidariza com uma notícia difícil',
         };
     }
 
