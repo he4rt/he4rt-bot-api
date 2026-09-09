@@ -65,8 +65,8 @@ class AdminPanelProvider extends PanelProvider
             ->userMenuItems([
                 'profile' => fn (Action $action): Action => $action
                     ->label(__('app.user_menu.my_profile'))
-->url(ProfilePage::getUrl(panel: FilamentPanel::App->value))
-->icon(null),
+                    ->url(ProfilePage::getUrl(panel: FilamentPanel::App->value))
+                    ->icon(icon: null),
             ])
             ->authMiddleware([
                 Authenticate::class,
