@@ -10,6 +10,7 @@ use He4rt\Events\Event\Models\Event;
 use He4rt\Events\Gallery\DTOs\Photo;
 use He4rt\Events\Gallery\Enums\PhotoConversion;
 use He4rt\Events\Gallery\Support\PhotosRelation;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -137,19 +138,22 @@ final class Album extends Model implements HasMedia
     }
 
     /** @param  Builder<self>  $query */
-    protected function scopePublished(Builder $query): void
+    #[Scope]
+    protected function published(Builder $query): void
     {
         $query->whereNotNull('published_at')->where('published_at', '<=', now());
     }
 
     /** @param  Builder<self>  $query */
-    protected function scopeWithPhotos(Builder $query): void
+    #[Scope]
+    protected function withPhotos(Builder $query): void
     {
         $query->whereHas('photos');
     }
 
     /** @param  Builder<self>  $query */
-    protected function scopeChronological(Builder $query): void
+    #[Scope]
+    protected function chronological(Builder $query): void
     {
         $query->latest('happened_at')->latest();
     }

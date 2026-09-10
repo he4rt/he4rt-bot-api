@@ -9,12 +9,14 @@ use He4rt\Events\Event\Models\Event;
 use He4rt\PanelApp\Pages\EventPage;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 final class MyEventsList extends Component
 {
     /** @return Collection<int, Enrollment> */
-    public function getEnrollmentsProperty(): Collection
+    #[Computed]
+    public function enrollments(): Collection
     {
         return Enrollment::query()
             ->with(['event'])
