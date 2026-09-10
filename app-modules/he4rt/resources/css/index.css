@@ -16,7 +16,6 @@
 @import './components/heading.css' layer(components);
 @import './components/text.css' layer(components);
 @import './components/icon.css' layer(components);
-@import './components/ticket.css' layer(components);
 @import './components/contribution-panorama.css' layer(components);
 @import './components/partials/author.css' layer(components);
 @import './components/partials/footer.css' layer(components);

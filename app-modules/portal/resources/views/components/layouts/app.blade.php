@@ -5,6 +5,7 @@
     {{-- title, viewport, description, canonical, Open Graph, favicon e JSON-LD: laravel/head (App\Support\Seo\SiteHead + metadata das rotas em PortalServiceProvider) --}}
     @head
     @vite (['app-modules/he4rt/resources/css/theme.css'])
+    {{ Vite::fonts(['satoshi', 'fira-code']) }}
     @fluxAppearance
 </head>
 <body class="min-h-screen antialiased">

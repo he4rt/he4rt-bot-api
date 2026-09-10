@@ -4,7 +4,7 @@
     }
 
     body {
-        @apply bg-elevation-surface text-text-high;
+        @apply bg-elevation-surface text-text-high font-family-primary;
     }
 
     html {
