@@ -39,20 +39,29 @@ jobs:
           persist-credentials: false
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2.37.2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
           php-version: ${{ inputs.PHP_VERSION }}
           extensions: ${{ inputs.PHP_EXTENSIONS }}
           ini-values: ${{ inputs.PHP_INI_PROPERTIES }}
-          coverage: xdebug
+          coverage: none
           tools: composer:v2
 
       - name: Install composer dependencies
-        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # v4.0.0
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
         with:
           composer-options: ${{ inputs.COMPOSER_FLAGS }}
           custom-cache-key: ${{ inputs.CACHE_KEY }}
 
+      - name: Cache PHPStan results
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: .cache/phpstan
+          key: phpstan-${{ inputs.CACHE_KEY }}-${{ hashFiles('phpstan.neon', 'phpstan.modules.php', 'phpstan.ignore.neon') }}-${{ github.run_id }}
+          restore-keys: |
+            phpstan-${{ inputs.CACHE_KEY }}-${{ hashFiles('phpstan.neon', 'phpstan.modules.php', 'phpstan.ignore.neon') }}-
+            phpstan-${{ inputs.CACHE_KEY }}-
+
       - name: Run Phpstan
         run: |
-          vendor/bin/phpstan analyse --ansi --error-format=github
+          vendor/bin/phpstan analyse --ansi --error-format=github --memory-limit=1G

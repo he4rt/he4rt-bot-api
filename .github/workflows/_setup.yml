@@ -1,0 +1,74 @@
+name: Setup
+
+on:
+  workflow_call:
+    outputs:
+      CACHE_KEY:
+        value: ${{ jobs.setup.outputs.CACHE_KEY }}
+      PHP_VERSION:
+        value: ${{ jobs.setup.outputs.PHP_VERSION }}
+      PHP_EXTENSIONS:
+        value: ${{ jobs.setup.outputs.PHP_EXTENSIONS }}
+      PHP_INI_PROPERTIES:
+        value: ${{ jobs.setup.outputs.PHP_INI_PROPERTIES }}
+      COMPOSER_FLAGS:
+        value: ${{ jobs.setup.outputs.COMPOSER_FLAGS }}
+
+permissions: {}
+
+jobs:
+  setup:
+    name: Run
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    outputs:
+      CACHE_KEY: ${{ steps.cache.outputs.key }}
+      PHP_VERSION: ${{ steps.setup.outputs.PHP_VERSION }}
+      PHP_EXTENSIONS: ${{ steps.setup.outputs.PHP_EXTENSIONS }}
+      PHP_INI_PROPERTIES: ${{ steps.setup.outputs.PHP_INI_PROPERTIES }}
+      COMPOSER_FLAGS: ${{ steps.setup.outputs.COMPOSER_FLAGS }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup job outputs
+        id: setup
+        run: |
+          echo "PHP_VERSION=8.4" >> "$GITHUB_OUTPUT"
+          echo "PHP_EXTENSIONS=mbstring,pdo,pdo_pgsql,xml,ctype,fileinfo,json,curl,openssl,dom,zip" >> "$GITHUB_OUTPUT"
+          echo "PHP_INI_PROPERTIES=post_max_size=256M,upload_max_filesize=256M" >> "$GITHUB_OUTPUT"
+          echo "COMPOSER_FLAGS=--prefer-dist --optimize-autoloader" >> "$GITHUB_OUTPUT"
+
+      - name: Create cache key
+        id: cache
+        shell: bash
+        env:
+          RUNNER_OS: ${{ runner.os }}
+          RUNNER_ARCH: ${{ runner.arch }}
+          HASHED_COMPOSER_LOCK: ${{ hashFiles('composer.lock') }}
+        run: |
+          composer_hash=${HASHED_COMPOSER_LOCK}
+          os_lower=$(echo ${RUNNER_OS} | tr '[:upper:]' '[:lower:]')
+          arch_lower=$(echo ${RUNNER_ARCH} | tr '[:upper:]' '[:lower:]')
+          combined_key="${os_lower}-${arch_lower}-composer-${composer_hash}"
+          echo "key=${combined_key}" >> "$GITHUB_OUTPUT"
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: ${{ steps.setup.outputs.PHP_VERSION }}
+          extensions: ${{ steps.setup.outputs.PHP_EXTENSIONS }}
+          ini-values: ${{ steps.setup.outputs.PHP_INI_PROPERTIES }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Install composer dependencies
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
+        with:
+          composer-options: ${{ steps.setup.outputs.COMPOSER_FLAGS }}
+          custom-cache-key: ${{ steps.cache.outputs.key }}
