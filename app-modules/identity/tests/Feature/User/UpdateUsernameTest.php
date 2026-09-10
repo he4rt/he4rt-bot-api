@@ -12,6 +12,10 @@ beforeEach(function (): void {
     config()->set('app.display_timezone', 'America/Sao_Paulo');
 });
 
+afterEach(function (): void {
+    Date::setTestNow();
+});
+
 test('updates username with lowercase normalization and sets timestamps', function (): void {
     $user = User::factory()->create([
         'username' => 'originaluser',
@@ -46,18 +50,20 @@ test('preserves username_manually_set_at on subsequent updates after cooldown', 
 test('throws exception when cooldown is still active', function (): void {
     Date::setTestNow('2026-09-08 12:00:00');
 
-    $user = User::factory()->create([
-        'username' => 'currentuser',
-        'username_manually_set_at' => now()->subDays(3),
-        'username_updated_at' => now()->subDays(3),
-    ]);
+    try {
+        $user = User::factory()->create([
+            'username' => 'currentuser',
+            'username_manually_set_at' => now()->subDays(3),
+            'username_updated_at' => now()->subDays(3),
+        ]);
 
-    $action = resolve(UpdateUsername::class);
+        $action = resolve(UpdateUsername::class);
 
-    expect(fn () => $action->handle($user, 'newhandle'))
-        ->toThrow(UsernameException::class, '12/09/2026 09:00'); // 2026-09-08 12:00 UTC - 3 days + 7 days = 2026-09-12 12:00 UTC = 09:00 America/Sao_Paulo
-
-    Date::setTestNow();
+        expect(fn () => $action->handle($user, 'newhandle'))
+            ->toThrow(UsernameException::class, '12/09/2026 09:00'); // 2026-09-08 12:00 UTC - 3 days + 7 days = 2026-09-12 12:00 UTC = 09:00 America/Sao_Paulo
+    } finally {
+        Date::setTestNow();
+    }
 });
 
 test('allows update after 7 days cooldown has elapsed', function (): void {

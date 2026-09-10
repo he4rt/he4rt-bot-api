@@ -382,3 +382,19 @@ test('profile page shows validation error when username has invalid format', fun
     'too short' => 'a',
     'reserved word' => 'admin',
 ]);
+
+test('profile page localizes username error in english', function (): void {
+    app()->setLocale('en');
+
+    $component = livewire(ProfilePage::class)
+        ->callAction('editUsername', [
+            'username' => 'invalid!',
+        ])
+        ->assertHasActionErrors(['username']);
+
+    expect($component->errors()->all())->toContain(
+        __('panel-app::profile.validation.username_invalid_format', [
+            'reason' => __('panel-app::profile.validation.username_reason_characters'),
+        ])
+    );
+});

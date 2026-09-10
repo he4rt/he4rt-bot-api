@@ -84,6 +84,15 @@ return [
         'image_dimensions' => 'A imagem, depois do recorte, precisa ter no mínimo :min_width × :min_height px. O recomendado é :width × :height px.',
         'image_mimetypes' => 'Formato não suportado. Envie uma imagem :formats.',
         'image_unconverted_max_size' => 'GIF pode ter no máximo :gif_mb MB. Como ele é exibido do jeito que chega, sem compressão, o arquivo pesa em cada visita ao perfil.',
+        'username_already_taken' => 'O @:username já está em uso por outro membro.',
+        'username_invalid_format' => 'Formato de @ inválido: :reason.',
+        'username_cooldown_active' => 'Você só poderá alterar seu @ novamente a partir de :date.',
+        'username_same_as_current' => 'O novo @ deve ser diferente do atual.',
+        'username_reserved' => 'O @:username está reservado para o sistema e não pode ser utilizado.',
+        'username_reason_length' => 'o tamanho deve ter entre 2 e 32 caracteres',
+        'username_reason_characters' => 'apenas letras, números, sublinhado (_), hífen (-) e ponto (.) são permitidos',
+        'username_reason_edges' => 'não pode começar ou terminar com caracteres especiais',
+        'username_reason_consecutive' => 'não pode conter caracteres especiais consecutivos',
     ],
 
     'actions' => [

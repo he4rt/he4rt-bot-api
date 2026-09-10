@@ -84,6 +84,15 @@ return [
         'image_dimensions' => 'After cropping, the image must be at least :min_width × :min_height px. The recommended size is :width × :height px.',
         'image_mimetypes' => 'Unsupported format. Upload a :formats image.',
         'image_unconverted_max_size' => 'A GIF can be at most :gif_mb MB. It is served exactly as it arrives, with no compression, so the file weighs on every profile visit.',
+        'username_already_taken' => 'The handle @:username is already in use by another member.',
+        'username_invalid_format' => 'Invalid handle format: :reason.',
+        'username_cooldown_active' => 'You will only be able to change your @ again starting on :date.',
+        'username_same_as_current' => 'The new @ must be different from the current one.',
+        'username_reserved' => 'The handle @:username is reserved for the system and cannot be used.',
+        'username_reason_length' => 'length must be between 2 and 32 characters',
+        'username_reason_characters' => 'only letters, numbers, underscores (_), hyphens (-), and dots (.) are allowed',
+        'username_reason_edges' => 'cannot start or end with special characters',
+        'username_reason_consecutive' => 'cannot contain consecutive special characters',
     ],
 
     'actions' => [

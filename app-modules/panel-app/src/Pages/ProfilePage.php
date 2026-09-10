@@ -544,7 +544,7 @@ class ProfilePage extends Page
                             try {
                                 UsernameValidator::validate($value, $user);
                             } catch (UsernameException $usernameException) {
-                                $fail($usernameException->getMessage());
+                                $fail($usernameException->getLocalizedMessage());
                             }
                         },
                     ]),
@@ -564,15 +564,17 @@ class ProfilePage extends Page
                     auth()->setUser($updated);
                     filament()->auth()->setUser($updated);
                 } catch (UsernameException $usernameException) {
+                    $errorMessage = $usernameException->getLocalizedMessage();
+
                     Notification::make()
                         ->danger()
                         ->title(__('panel-app::profile.notifications.username_error'))
-                        ->body($usernameException->getMessage())
+                        ->body($errorMessage)
                         ->send();
 
-                    $this->addError('mountedActionsData.0.username', $usernameException->getMessage());
-                    $this->addError('data.username', $usernameException->getMessage());
-                    $this->addError('username', $usernameException->getMessage());
+                    $this->addError('mountedActionsData.0.username', $errorMessage);
+                    $this->addError('data.username', $errorMessage);
+                    $this->addError('username', $errorMessage);
 
                     $action->halt();
                 }
