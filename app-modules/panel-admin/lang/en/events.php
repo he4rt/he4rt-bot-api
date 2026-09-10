@@ -12,6 +12,7 @@ return [
         'type' => 'Type',
         'location' => 'Location',
         'description' => 'Description',
+        'cover' => 'Cover',
         'starts_at' => 'Starts At',
         'ends_at' => 'Ends At',
         'status' => 'Status',

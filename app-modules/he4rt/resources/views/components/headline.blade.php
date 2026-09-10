@@ -4,6 +4,7 @@
     "size" => "lg",
     "animation" => "fade-up",
     "keywords" => [],
+    "titleTag" => "h1",
 ])
 
 @php
@@ -64,7 +65,7 @@
 
         <div class="hp-headline-content space-y-4">
             @isset($title)
-                <h1
+                <{{ $titleTag }}
                     {{ $title->attributes->class(["hp-headline-title", "delay-100" => $animate]) }}
                     @if ($animate)
                         x-show="shown"
@@ -85,7 +86,7 @@
                             {{ " " }}
                         @endunless
                     @endforeach
-                </h1>
+                </{{ $titleTag }}>
             @endisset
 
             @isset($subtitle)
