@@ -24,6 +24,7 @@
 /public/hot
 /public/css
 /public/fonts
+/public/fonts-manifest.dev.json
 /public/js
 /public/storage
 /storage/*.key
