@@ -16,10 +16,7 @@ it('responde 200 na home', function (): void {
 });
 
 it('exibe o logo He4rt animado no hero', function (): void {
-    get('/')
-        ->assertOk()
-        ->assertSee('he4rt-logo', escape: false)
-        ->assertSee('class="led', escape: false);
+    get('/')->assertOk()->assertSeeHtml('he4rt-logo')->assertSeeHtml('class="led');
 });
 
 it('usa o layout do portal com suporte ao tema do sistema', function (): void {
@@ -58,13 +55,9 @@ it('omite a seção de artigos quando o catálogo está vazio', function (): voi
 });
 
 it('leva para o acervo pela navbar', function (): void {
-    get('/')
-        ->assertOk()
-        ->assertSee('href="/artigos"', escape: false);
+    get('/')->assertOk()->assertSeeHtml('href="/artigos"');
 });
 
 it('leva para a galeria pela navbar', function (): void {
-    get('/')
-        ->assertOk()
-        ->assertSee('href="/galeria"', escape: false);
+    get('/')->assertOk()->assertSeeHtml('href="/galeria"');
 });

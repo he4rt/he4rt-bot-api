@@ -83,5 +83,5 @@ it('renderiza as duas visualizações a partir do panorama', function (): void {
 it('não monta a seção na home enquanto o desenho não é aprovado', function (): void {
     Interaction::factory()->count(4)->ofType(ActivityType::PrMerged)->create();
 
-    get('/')->assertOk()->assertDontSee('id="contribuicoes"', escape: false);
+    get('/')->assertOk()->assertDontSeeHtml('id="contribuicoes"');
 });

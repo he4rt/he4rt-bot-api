@@ -14,6 +14,12 @@ use He4rt\Identity\ExternalIdentity\Models\ExternalIdentity;
 use He4rt\Identity\User\Models\User;
 use He4rt\IntegrationGithub\Enums\ContributionType;
 use He4rt\IntegrationGithub\Models\GithubContribution;
+use Livewire\Livewire;
+
+// Os assets Livewire (@assets) vivem num registry estático por processo. Sem
+// zerar, o script da página de artigos — que roda antes na suíte — vaza para o
+// deck e o assertDontSee('Recorte') do FAB casa com um comentário desse script.
+beforeEach(fn () => Livewire::flushState());
 
 /**
  * Congela o snapshot do período fixo (junho/2026) a partir das fontes vivas e cria

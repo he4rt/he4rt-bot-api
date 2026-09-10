@@ -196,12 +196,12 @@ function isBannedCast(string $cast): bool
     return in_array($cast, BANNED_CASTS, strict: true) || in_array($bare, BANNED_CASTS, strict: true);
 }
 
-it('encontra models para inspecionar', function (): void {
+arch('encontra models para inspecionar', function (): void {
     // Sem esta guarda, um erro de caminho faria o teste passar sem olhar nada.
     expect(concreteModels())->not->toBeEmpty();
 });
 
-it('não permite cast de array solto fora da allowlist', function (): void {
+arch('não permite cast de array solto fora da allowlist', function (): void {
     $violations = [];
 
     foreach (concreteModels() as $model) {
@@ -229,7 +229,7 @@ it('não permite cast de array solto fora da allowlist', function (): void {
     ));
 });
 
-it('mantém a allowlist honesta: nada listado que já foi resolvido', function (): void {
+arch('mantém a allowlist honesta: nada listado que já foi resolvido', function (): void {
     $stale = [];
 
     foreach (ALLOWED_LOOSE_CASTS as $model => $attributes) {
