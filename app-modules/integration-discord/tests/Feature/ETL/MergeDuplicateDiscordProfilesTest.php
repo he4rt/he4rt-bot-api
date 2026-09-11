@@ -216,3 +216,16 @@ test('respects --limit option', function (): void {
 
     expect($remaining)->toBe(1);
 });
+
+test('does not overwrite oldUser username when username_manually_set_at is set', function (): void {
+    $orphan = User::factory()->create([
+        'username' => 'custom-set-name',
+        'username_manually_set_at' => now()->subMonth(),
+        'created_at' => '2025-08-10 00:00:00',
+    ]);
+    [$newUser] = makeImportedDup('49615312957476864', '_tats', ['legacy_username' => 'custom-set-name']);
+
+    Artisan::call('discord:merge-duplicate-profiles', ['--from-date' => '2026-05-01']);
+
+    expect(User::query()->find($orphan->id)->username)->toBe('custom-set-name');
+});

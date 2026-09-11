@@ -345,3 +345,56 @@ test('profile page uploads cover through action modal', function (): void {
     expect($media)->not->toBeNull()
         ->and($media?->collection_name)->toBe('cover');
 });
+
+test('profile page allows updating username through editUsername action modal', function (): void {
+    livewire(ProfilePage::class)
+        ->callAction('editUsername', [
+            'username' => 'new_cool_handle',
+        ])
+        ->assertHasNoActionErrors()
+        ->assertNotified(__('panel-app::profile.notifications.username_updated'))
+        ->assertSee('@new_cool_handle');
+
+    expect($this->user->fresh()->username)->toBe('new_cool_handle');
+});
+
+test('profile page halts action and sends danger notification on username error', function (): void {
+    livewire(ProfilePage::class)
+        ->callAction('editUsername', [
+            'username' => $this->user->username,
+        ])
+        ->assertActionHalted('editUsername')
+        ->assertNotified()
+        ->assertHasErrors(['mountedActionsData.0.username']);
+});
+
+test('profile page shows validation error when username has invalid format', function (string $invalidUsername): void {
+    livewire(ProfilePage::class)
+        ->callAction('editUsername', [
+            'username' => $invalidUsername,
+        ])
+        ->assertHasActionErrors(['username']);
+})->with([
+    'contains special characters' => 'teste!',
+    'starts with special character' => '_teste',
+    'ends with special character' => 'teste-',
+    'consecutive special characters' => 'teste..teste',
+    'too short' => 'a',
+    'reserved word' => 'admin',
+]);
+
+test('profile page localizes username error in english', function (): void {
+    app()->setLocale('en');
+
+    $component = livewire(ProfilePage::class)
+        ->callAction('editUsername', [
+            'username' => 'invalid!',
+        ])
+        ->assertHasActionErrors(['username']);
+
+    expect($component->errors()->all())->toContain(
+        __('panel-app::profile.validation.username_invalid_format', [
+            'reason' => __('panel-app::profile.validation.username_reason_characters'),
+        ])
+    );
+});

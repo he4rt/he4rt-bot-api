@@ -113,3 +113,19 @@ test('does not overwrite email with null', function (): void {
     expect($result->email)->toBe('existing@example.com')
         ->and($result->first_login_at)->not->toBeNull();
 });
+
+test('does not overwrite username when username_manually_set_at is present', function (): void {
+    $user = User::factory()->create([
+        'username' => 'custom-username',
+        'first_login_at' => null,
+        'username_manually_set_at' => now()->subDay(),
+    ]);
+
+    $action = new EnrichUserOnFirstLogin();
+    $result = $action->execute(
+        $user,
+        makeOAuthUserForEnrich(username: 'oauth-username'),
+    );
+
+    expect($result->username)->toBe('custom-username');
+});

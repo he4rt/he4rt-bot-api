@@ -44,6 +44,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property CarbonInterface|null $suspended_until
  * @property CarbonInterface|null $banned_at
  * @property CarbonInterface|null $first_login_at
+ * @property CarbonInterface|null $username_manually_set_at
+ * @property CarbonInterface|null $username_updated_at
  * @property string|null $remember_token
  * @property CarbonInterface|null $created_at
  * @property CarbonInterface|null $updated_at
@@ -69,6 +71,15 @@ final class User extends Authenticatable implements FilamentUser, HasMedia, HasN
     public function isSuperAdmin(): bool
     {
         return $this->hasRole(UserRole::SuperAdmin);
+    }
+
+    public function isAdmin(): bool
+    {
+        $admins = array_filter(explode(',', (string) config('he4rt.admins', '')));
+
+        return $this->isSuperAdmin()
+            || in_array($this->username, $admins, strict: true)
+            || in_array($this->id, $admins, strict: true);
     }
 
     /**
@@ -154,6 +165,8 @@ final class User extends Authenticatable implements FilamentUser, HasMedia, HasN
             'suspended_until' => 'datetime',
             'banned_at' => 'datetime',
             'first_login_at' => 'datetime',
+            'username_manually_set_at' => 'datetime',
+            'username_updated_at' => 'datetime',
         ];
     }
 

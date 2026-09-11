@@ -51,7 +51,8 @@ final class MergeAccountsAction
             $updates['name'] = $source->name;
         }
 
-        $canUpdateUsername = $source->username !== $target->username
+        $canUpdateUsername = $target->username_manually_set_at === null
+            && $source->username !== $target->username
             && !User::query()
                 ->where('username', $source->username)
                 ->where('id', '!=', $target->id)
@@ -59,12 +60,16 @@ final class MergeAccountsAction
 
         if ($canUpdateUsername) {
             $updates['username'] = $source->username;
+            if ($source->username_manually_set_at !== null) {
+                $updates['username_manually_set_at'] = $source->username_manually_set_at;
+                $updates['username_updated_at'] = $source->username_updated_at;
+            }
         }
 
         try {
             DB::transaction(fn () => $target->update($updates));
         } catch (UniqueConstraintViolationException) {
-            unset($updates['username']);
+            unset($updates['username'], $updates['username_manually_set_at'], $updates['username_updated_at']);
             $target->update($updates);
         }
     }

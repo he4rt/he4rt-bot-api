@@ -10,6 +10,8 @@ return [
         'minimum_level_for_retro' => env('HE4RT_SEASON_MIN_LEVEL', 3),
     ],
     'server_key' => env('HE4RT_BOT_SECRET', 'he4rt'),
+    'admins' => env('HE4RT_ADMINS_USERNAMES', ''),
+    'username_cooldown_days' => (int) env('HE4RT_USERNAME_COOLDOWN_DAYS', 7),
 
     /*
      * Quando a He4rt começou. Data única para qualquer lugar que precise contar a

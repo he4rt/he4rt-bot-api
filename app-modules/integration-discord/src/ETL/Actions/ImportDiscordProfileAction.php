@@ -79,7 +79,8 @@ final class ImportDiscordProfileAction
     {
         $changes = [];
 
-        $usernameChanged = $user->username !== $dto->username
+        $usernameChanged = $user->username_manually_set_at === null
+            && $user->username !== $dto->username
             && !User::query()
                 ->where('username', $dto->username)
                 ->where('id', '!=', $user->id)

@@ -422,3 +422,28 @@ test('it links discord identity to portal user matching username when no identit
 
     expect((string) $identity->model_id)->toBe((string) $portalUser->id);
 });
+
+test('it does not overwrite username when user has username_manually_set_at', function (): void {
+    $action = resolve(ImportDiscordProfileAction::class);
+
+    $user = User::factory()->create([
+        'username' => 'manual_custom_handle',
+        'username_manually_set_at' => now()->subDays(5),
+    ]);
+
+    ExternalIdentity::factory()->create([
+        'provider' => IdentityProvider::Discord,
+        'external_account_id' => '999999',
+        'model_type' => (new User)->getMorphClass(),
+        'model_id' => $user->id,
+    ]);
+
+    $action->handle(
+        DiscordProfileDTO::fromDump(discordProfile([
+            'user' => ['id' => '999999', 'username' => 'new_discord_handle'],
+            'connected_accounts' => [],
+        ])),
+    );
+
+    expect($user->fresh()->username)->toBe('manual_custom_handle');
+});

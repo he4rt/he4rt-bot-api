@@ -47,6 +47,7 @@ return [
         'willing_to_relocate' => 'Disposto a mudar de cidade',
         'has_disability' => 'Pessoa com deficiência (PcD)',
         'employment_types' => 'Tipo de contratação',
+        'username' => 'Nome de usuário (@)',
     ],
 
     'placeholders' => [
@@ -67,12 +68,31 @@ return [
         'expected_salary' => 'Valor mensal em R$. Informação privada, usada apenas em propostas.',
         'skills' => 'Selecione suas skills e informe o nível e os anos de experiência em cada uma.',
         'city' => 'Se sua cidade não estiver na listagem, pesquise.',
+        'username_modal_description' => 'Escolha um novo identificador único para seu perfil na comunidade.',
+        'username_cooldown_notice' => 'Você só poderá alterar seu @ novamente após 7 dias.',
+        'username_rules_title' => 'Regras para o @',
+        'username_rule_length' => 'Entre 2 e 32 caracteres (convertido automaticamente para minúsculo).',
+        'username_rule_characters' => 'Permitido letras (a-z), números (0-9), ponto (.), hífen (-) e sublinhado (_).',
+        'username_rule_format' => 'Deve começar e terminar com letra ou número (sem símbolos nas extremidades).',
+        'username_rule_consecutive' => 'Proibido símbolos especiais consecutivos (ex: .. ou --).',
+        'username_rule_cooldown' => 'Usuários comuns podem alterar apenas a cada 7 dias (administradores têm alteração livre).',
+        'admin_warning_title' => 'Aviso para Administradores',
+        'admin_warning_body' => 'Se suas permissões administrativas em produção dependerem de HE4RT_ADMINS_USERNAMES no servidor, lembre-se de atualizar a variável de ambiente após a alteração.',
     ],
 
     'validation' => [
         'image_dimensions' => 'A imagem, depois do recorte, precisa ter no mínimo :min_width × :min_height px. O recomendado é :width × :height px.',
         'image_mimetypes' => 'Formato não suportado. Envie uma imagem :formats.',
         'image_unconverted_max_size' => 'GIF pode ter no máximo :gif_mb MB. Como ele é exibido do jeito que chega, sem compressão, o arquivo pesa em cada visita ao perfil.',
+        'username_already_taken' => 'O @:username já está em uso por outro membro.',
+        'username_invalid_format' => 'Formato de @ inválido: :reason.',
+        'username_cooldown_active' => 'Você só poderá alterar seu @ novamente a partir de :date.',
+        'username_same_as_current' => 'O novo @ deve ser diferente do atual.',
+        'username_reserved' => 'O @:username está reservado para o sistema e não pode ser utilizado.',
+        'username_reason_length' => 'o tamanho deve ter entre 2 e 32 caracteres',
+        'username_reason_characters' => 'apenas letras, números, sublinhado (_), hífen (-) e ponto (.) são permitidos',
+        'username_reason_edges' => 'não pode começar ou terminar com caracteres especiais',
+        'username_reason_consecutive' => 'não pode conter caracteres especiais consecutivos',
     ],
 
     'actions' => [
@@ -82,11 +102,13 @@ return [
         'add_skill' => 'Adicionar skill',
         'change_avatar' => 'Alterar foto',
         'change_cover' => 'Alterar capa',
+        'change_username' => 'Alterar @',
         'adjust_avatar' => 'Ajustar enquadramento da foto',
         'adjust_cover' => 'Ajustar enquadramento',
         'save_framing' => 'Salvar enquadramento',
         'save_avatar' => 'Salvar foto',
         'save_cover' => 'Salvar capa',
+        'save_username' => 'Salvar @',
     ],
 
     'notifications' => [
@@ -94,6 +116,8 @@ return [
         'avatar_updated' => 'Foto atualizada com sucesso!',
         'cover_updated' => 'Capa atualizada com sucesso!',
         'framing_updated' => 'Enquadramento salvo!',
+        'username_updated' => 'Nome de usuário atualizado com sucesso!',
+        'username_error' => 'Não foi possível alterar o @',
         'no_profile' => 'Perfil não encontrado para este tenant.',
     ],
 

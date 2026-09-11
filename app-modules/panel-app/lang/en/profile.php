@@ -47,6 +47,7 @@ return [
         'willing_to_relocate' => 'Willing to relocate',
         'has_disability' => 'Person with a disability',
         'employment_types' => 'Employment type',
+        'username' => 'Username (@)',
     ],
 
     'placeholders' => [
@@ -67,12 +68,31 @@ return [
         'has_disability' => 'Sensitive information — used only for affirmative-action roles.',
         'expected_salary' => 'Monthly amount in BRL. Private, used only in proposals.',
         'skills' => 'Pick your skills and set your level and years of experience for each.',
+        'username_modal_description' => 'Choose a new unique handle for your community profile.',
+        'username_cooldown_notice' => 'You will only be able to change your @ again after 7 days.',
+        'username_rules_title' => 'Rules for your @',
+        'username_rule_length' => 'Between 2 and 32 characters long (automatically converted to lowercase).',
+        'username_rule_characters' => 'Allowed: letters (a-z), numbers (0-9), dots (.), hyphens (-), and underscores (_).',
+        'username_rule_format' => 'Must start and end with a letter or number (no symbols at edges).',
+        'username_rule_consecutive' => 'No consecutive special characters allowed (e.g. .. or --).',
+        'username_rule_cooldown' => 'Regular members can change once every 7 days (admins are exempt).',
+        'admin_warning_title' => 'Administrator Notice',
+        'admin_warning_body' => 'If your production admin permissions rely on HE4RT_ADMINS_USERNAMES on the server, remember to update the environment variable after changing your handle.',
     ],
 
     'validation' => [
         'image_dimensions' => 'After cropping, the image must be at least :min_width × :min_height px. The recommended size is :width × :height px.',
         'image_mimetypes' => 'Unsupported format. Upload a :formats image.',
         'image_unconverted_max_size' => 'A GIF can be at most :gif_mb MB. It is served exactly as it arrives, with no compression, so the file weighs on every profile visit.',
+        'username_already_taken' => 'The handle @:username is already in use by another member.',
+        'username_invalid_format' => 'Invalid handle format: :reason.',
+        'username_cooldown_active' => 'You will only be able to change your @ again starting on :date.',
+        'username_same_as_current' => 'The new @ must be different from the current one.',
+        'username_reserved' => 'The handle @:username is reserved for the system and cannot be used.',
+        'username_reason_length' => 'length must be between 2 and 32 characters',
+        'username_reason_characters' => 'only letters, numbers, underscores (_), hyphens (-), and dots (.) are allowed',
+        'username_reason_edges' => 'cannot start or end with special characters',
+        'username_reason_consecutive' => 'cannot contain consecutive special characters',
     ],
 
     'actions' => [
@@ -82,11 +102,13 @@ return [
         'add_skill' => 'Add skill',
         'change_avatar' => 'Change photo',
         'change_cover' => 'Change cover',
+        'change_username' => 'Change @',
         'adjust_avatar' => 'Adjust photo framing',
         'adjust_cover' => 'Adjust framing',
         'save_framing' => 'Save framing',
         'save_avatar' => 'Save photo',
         'save_cover' => 'Save cover',
+        'save_username' => 'Save @',
     ],
 
     'notifications' => [
@@ -94,6 +116,8 @@ return [
         'avatar_updated' => 'Photo updated successfully!',
         'cover_updated' => 'Cover updated successfully!',
         'framing_updated' => 'Framing saved!',
+        'username_updated' => 'Username updated successfully!',
+        'username_error' => 'Could not update @',
         'no_profile' => 'Profile not found for this tenant.',
     ],
 

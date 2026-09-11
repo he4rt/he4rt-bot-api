@@ -139,7 +139,17 @@
                     </span>
                 @endif
             </div>
-            <p class="text-sm text-gray-500 dark:text-gray-400">{{ '@' }}{{ $username }}</p>
+            <div class="flex items-center gap-1.5">
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ '@' }}{{ $username }}</p>
+                <button
+                    type="button"
+                    wire:click="mountAction('editUsername')"
+                    class="inline-flex cursor-pointer items-center text-gray-400 hover:text-purple-600 dark:text-gray-500 dark:hover:text-purple-400 transition-colors"
+                    title="{{ __('panel-app::profile.actions.change_username') }}"
+                >
+                    <x-heroicon-m-pencil-square class="h-3.5 w-3.5" />
+                </button>
+            </div>
             @if ($location)
                 <p class="mt-0.5 flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500">
                     <x-heroicon-m-map-pin class="h-3 w-3" />
