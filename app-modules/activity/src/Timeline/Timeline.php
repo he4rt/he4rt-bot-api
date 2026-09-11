@@ -7,6 +7,7 @@ namespace He4rt\Activity\Timeline;
 use Carbon\CarbonInterface;
 use He4rt\Activity\Database\Factories\TimelineFactory;
 use He4rt\Activity\Reaction\Concerns\HasReactions;
+use He4rt\Activity\Reaction\Models\UserReaction;
 use He4rt\Identity\User\Models\User;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -65,6 +66,12 @@ final class Timeline extends Model
     public function children(): HasMany
     {
         return $this->hasMany(self::class, 'parent_id');
+    }
+
+    /** @return HasMany<UserReaction, $this> */
+    public function userReactions(): HasMany
+    {
+        return $this->hasMany(UserReaction::class);
     }
 
     protected static function newFactory(): TimelineFactory
