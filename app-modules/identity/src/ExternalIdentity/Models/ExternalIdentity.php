@@ -97,8 +97,9 @@ final class ExternalIdentity extends Model
 
     /**
      * Identidade que uma pessoa realmente conectou, e não um registro criado por
-     * ingestão. As datas sozinhas não separam os dois: a ETL também preenche
-     * connected_at. O que só existe no fluxo OAuth é a credencial.
+     * ingestão. As datas sozinhas não separam os dois porque registros históricos
+     * da ETL também podem ter connected_at. O que só existe no fluxo de autenticação
+     * é a credencial.
      *
      * @param  Builder<self>  $query
      */

@@ -28,6 +28,7 @@ use He4rt\IntegrationDiscord\ETL\DTOs\DiscordMessageDTO;
 use He4rt\IntegrationDiscord\ETL\DTOs\DiscordMessageReactionDTO;
 use He4rt\IntegrationDiscord\ETL\DTOs\DiscordModerationEventDTO;
 use He4rt\IntegrationDiscord\ETL\DTOs\DiscordVoiceLogDTO;
+use Illuminate\Support\Facades\Crypt;
 use Ramsey\Uuid\Uuid;
 
 // ── Helpers ──────────────────────────────────────────────────────
@@ -465,7 +466,106 @@ test('it persists full author raw payload into external_identity metadata', func
     expect($identity->metadata['author']['avatar'] ?? null)->toBe('abc123')
         ->and($identity->metadata['author']['discriminator'] ?? null)->toBe('0001')
         ->and($identity->metadata['author']['public_flags'] ?? null)->toBe(64)
-        ->and($identity->metadata['author']['username'] ?? null)->toBe('letsch1');
+        ->and($identity->metadata['author']['username'] ?? null)->toBe('letsch1')
+        ->and($identity->metadata['username'] ?? null)->toBe('letsch1')
+        ->and($identity->metadata['global_name'] ?? null)->toBe('letsch')
+        ->and($identity->metadata['avatar'] ?? null)->toBe('abc123');
+});
+
+test('message import fills missing canonical metadata without overwriting an existing identity', function (): void {
+    $identity = createTestIdentity('253642464697516033', 'letsch1');
+    $connectedAt = now()->subHour()->startOfSecond();
+    $identity->update([
+        'credentials' => ClientAccessManager::make(
+            accessToken: Crypt::encrypt('oauth-token'),
+        ),
+        'connected_at' => $connectedAt,
+    ]);
+    $ownerId = $identity->model_id;
+
+    resolve(ImportDiscordMessageAction::class)->handle(
+        DiscordMessageDTO::fromDump(discordMessage([
+            'author' => [
+                'id' => '253642464697516033',
+                'username' => 'changed-in-message',
+                'global_name' => 'Changed in message',
+                'avatar' => 'changed-avatar',
+            ],
+        ])),
+    );
+
+    $identity->refresh();
+
+    expect($identity->metadata['user'])->toBe([
+        'username' => 'letsch1',
+        'discriminator' => '0',
+    ])
+        ->and($identity->metadata)->toMatchArray([
+            'username' => 'letsch1',
+            'global_name' => 'Changed in message',
+            'avatar' => 'changed-avatar',
+        ])
+        ->and($identity->credentials->getAccessToken())->toBe('oauth-token')
+        ->and($identity->connected_at?->equalTo($connectedAt))->toBeTrue()
+        ->and((string) $identity->model_id)->toBe((string) $ownerId);
+});
+
+test('message import preserves canonical profile fields and explicit null avatar', function (): void {
+    $user = User::factory()->create(['username' => 'profile-user']);
+    $connectedAt = now()->subHour()->startOfSecond();
+    $identity = ExternalIdentity::factory()->morphFor()->create([
+        'model_id' => $user->id,
+        'provider' => IdentityProvider::Discord,
+        'external_account_id' => '253642464697516033',
+        'credentials' => ClientAccessManager::make(
+            accessToken: Crypt::encrypt('oauth-token'),
+        ),
+        'connected_at' => $connectedAt,
+        'metadata' => [
+            'username' => 'profile-user',
+            'global_name' => 'Profile Name',
+            'avatar' => null,
+            'user' => [
+                'username' => 'profile-user',
+                'global_name' => 'Profile Name',
+                'avatar' => null,
+                'public_flags' => 64,
+            ],
+        ],
+    ]);
+
+    resolve(ImportDiscordMessageAction::class)->handle(
+        DiscordMessageDTO::fromDump(discordMessage([
+            'author' => [
+                'id' => '253642464697516033',
+                'username' => 'message-user',
+                'global_name' => 'Message Name',
+                'avatar' => 'message-avatar',
+            ],
+        ])),
+    );
+
+    $identity->refresh();
+
+    expect($identity->metadata)->toMatchArray([
+        'username' => 'profile-user',
+        'global_name' => 'Profile Name',
+        'avatar' => null,
+        'user' => [
+            'username' => 'profile-user',
+            'global_name' => 'Profile Name',
+            'avatar' => null,
+            'public_flags' => 64,
+        ],
+    ])
+        ->and($identity->metadata['author'])->toMatchArray([
+            'username' => 'message-user',
+            'global_name' => 'Message Name',
+            'avatar' => 'message-avatar',
+        ])
+        ->and($identity->credentials->getAccessToken())->toBe('oauth-token')
+        ->and($identity->connected_at?->equalTo($connectedAt))->toBeTrue()
+        ->and((string) $identity->model_id)->toBe((string) $user->id);
 });
 
 test('it parses sent_at from discord timestamp', function (): void {

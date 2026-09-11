@@ -32,13 +32,11 @@ test('connection hub merge modal explains which account is kept and absorbed', f
     session()->put('oauth_merge_pending', [
         'conflicting_user_id' => $keptUser->id,
         'provider' => IdentityProvider::Discord->value,
+        'provider_id' => 'discord-123',
         'credentials' => [],
-        'oauth_user' => [
-            'provider_id' => 'discord-123',
+        'metadata' => [
             'username' => 'discord-user',
-            'name' => 'Discord User',
-            'email' => null,
-            'avatar_url' => null,
+            'global_name' => 'Discord User',
         ],
     ]);
 

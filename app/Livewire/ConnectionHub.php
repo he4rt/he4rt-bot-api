@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use Filament\Notifications\Notification;
-use He4rt\Identity\Auth\Actions\MergeAccountsAction;
+use He4rt\Identity\Auth\Actions\ConfirmOAuthMerge;
+use He4rt\Identity\Auth\Actions\ResolvePendingOAuthMerge;
+use He4rt\Identity\Auth\DTOs\PendingOAuthMergeDTO;
 use He4rt\Identity\ExternalIdentity\Actions\ConnectApiKeyIdentity;
 use He4rt\Identity\ExternalIdentity\Enums\CredentialsType;
 use He4rt\Identity\ExternalIdentity\Enums\IdentityProvider;
@@ -15,6 +17,7 @@ use He4rt\Identity\User\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -24,8 +27,8 @@ class ConnectionHub extends Component
 
     public bool $showMergeModal = false;
 
-    /** @var array<string, mixed>|null */
-    public ?array $mergeData = null;
+    #[Locked]
+    public ?string $mergeTargetId = null;
 
     public bool $showApiKeyModal = false;
 
@@ -114,15 +117,13 @@ class ConnectionHub extends Component
         $this->resetValidation();
     }
 
-    public function confirmMerge(MergeAccountsAction $action): void
-    {
-        if ($this->mergeData === null) {
-            return;
-        }
+    public function confirmMerge(
+        ConfirmOAuthMerge $action,
+        ResolvePendingOAuthMerge $resolvePendingMerge,
+    ): void {
+        $pending = $resolvePendingMerge->execute(session()->get('oauth_merge_pending'));
 
-        $oldUser = User::query()->find($this->mergeData['conflicting_user_id']);
-
-        if (!$oldUser instanceof User) {
+        if (!$pending instanceof PendingOAuthMergeDTO) {
             $this->cancelMerge();
 
             return;
@@ -131,11 +132,17 @@ class ConnectionHub extends Component
         /** @var User $currentUser */
         $currentUser = auth()->user();
 
-        $action->execute($currentUser, $oldUser);
+        $oldUser = $action->execute($currentUser, $pending);
+
+        if (!$oldUser instanceof User) {
+            $this->cancelMerge();
+
+            return;
+        }
 
         session()->forget('oauth_merge_pending');
         $this->showMergeModal = false;
-        $this->mergeData = null;
+        $this->mergeTargetId = null;
 
         Auth::login($oldUser);
 
@@ -151,7 +158,7 @@ class ConnectionHub extends Component
     {
         session()->forget('oauth_merge_pending');
         $this->showMergeModal = false;
-        $this->mergeData = null;
+        $this->mergeTargetId = null;
     }
 
     public function disconnect(IdentityProvider $provider): void
@@ -209,11 +216,11 @@ class ConnectionHub extends Component
     {
         $pending = session()->get('oauth_merge_pending');
 
-        if ($pending === null) {
+        if (!is_array($pending) || !is_string($pending['conflicting_user_id'] ?? null)) {
             return;
         }
 
-        $this->mergeData = $pending;
+        $this->mergeTargetId = $pending['conflicting_user_id'];
         $this->showMergeModal = true;
     }
 
@@ -222,11 +229,11 @@ class ConnectionHub extends Component
      */
     private function getMergeTarget(): ?array
     {
-        if ($this->mergeData === null) {
+        if ($this->mergeTargetId === null) {
             return null;
         }
 
-        $user = User::query()->find($this->mergeData['conflicting_user_id']);
+        $user = User::query()->find($this->mergeTargetId);
 
         if (!$user instanceof User) {
             return null;

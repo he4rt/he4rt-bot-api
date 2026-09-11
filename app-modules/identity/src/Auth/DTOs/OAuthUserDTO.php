@@ -23,6 +23,16 @@ abstract class OAuthUserDTO
      */
     abstract public static function make(OAuthAccessDTO $credentials, array $payload): self;
 
+    /** @return array<string, mixed> */
+    public function toMetadata(): array
+    {
+        return [
+            ...($this->email !== null ? ['email' => $this->email] : []),
+            ...($this->avatarUrl !== null ? ['avatar' => $this->avatarUrl] : []),
+            'username' => $this->username,
+        ];
+    }
+
     /**
      * @return array<string, mixed>
      */

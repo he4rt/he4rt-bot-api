@@ -2,12 +2,19 @@
 
 declare(strict_types=1);
 
+use He4rt\Identity\Auth\Actions\AttachProviderToUser;
+use He4rt\Identity\ExternalIdentity\Data\ClientAccessManager;
 use He4rt\Identity\ExternalIdentity\Enums\IdentityProvider;
 use He4rt\Identity\ExternalIdentity\Models\ExternalIdentity;
 use He4rt\Identity\User\Models\User;
+use He4rt\IntegrationDiscord\ETL\Actions\ImportDiscordMessageAction;
 use He4rt\IntegrationDiscord\ETL\Actions\ImportDiscordProfileAction;
 use He4rt\IntegrationDiscord\ETL\DTOs\ConnectedAccountDTO;
+use He4rt\IntegrationDiscord\ETL\DTOs\DiscordMessageDTO;
 use He4rt\IntegrationDiscord\ETL\DTOs\DiscordProfileDTO;
+use He4rt\IntegrationDiscord\OAuth\DiscordOAuthAccessDTO;
+use He4rt\IntegrationDiscord\OAuth\DiscordOAuthUser;
+use Illuminate\Support\Facades\Crypt;
 
 /**
  * @param  array<string, mixed>  $overrides
@@ -193,14 +200,237 @@ test('it stores complete discord metadata in external identity', function (): vo
         ->and($metadata['legacy_username'])->toBe('Tats#0927');
 });
 
-test('it sets connected_at to null when guild_member joined_at is absent', function (): void {
-    $profile = discordProfile(['guild_member' => ['joined_at' => null]]);
+test('it does not treat a guild join as an authenticated connection', function (): void {
+    $profile = discordProfile();
     $dto = DiscordProfileDTO::fromDump($profile);
 
     $action = resolve(ImportDiscordProfileAction::class);
     $identity = $action->handle($dto);
 
-    expect($identity->connected_at)->toBeNull();
+    expect($dto->joinedAt)->not->toBeNull()
+        ->and($identity->connected_at)->toBeNull()
+        ->and($identity->credentials->getAccessToken())->toBeNull();
+});
+
+test('profile import preserves oauth credentials connection state and owner', function (): void {
+    $user = User::factory()->create(['username' => '_tats']);
+    $connectedBy = User::factory()->create();
+    $connectedAt = now()->subDay()->startOfSecond();
+
+    $existing = ExternalIdentity::factory()->morphFor()->create([
+        'model_id' => $user->id,
+        'provider' => IdentityProvider::Discord,
+        'external_account_id' => '49615312957476864',
+        'credentials' => ClientAccessManager::make(
+            accessToken: Crypt::encrypt('oauth-token'),
+            refreshToken: Crypt::encrypt('oauth-refresh'),
+        ),
+        'connected_by' => $connectedBy->id,
+        'connected_at' => $connectedAt,
+        'metadata' => [
+            'email' => 'discord@example.com',
+            'username' => '_tats',
+            'avatar' => 'https://cdn.discordapp.com/avatars/49615312957476864/oauth.png',
+        ],
+    ]);
+
+    $identity = resolve(ImportDiscordProfileAction::class)->handle(
+        DiscordProfileDTO::fromDump(discordProfile([
+            'user' => ['email' => 'profile-must-not-replace@example.com'],
+            'connected_accounts' => [],
+        ])),
+    );
+
+    expect($identity->id)->toBe($existing->id)
+        ->and((string) $identity->model_id)->toBe((string) $user->id)
+        ->and((string) $identity->connected_by)->toBe((string) $connectedBy->id)
+        ->and($identity->connected_at?->equalTo($connectedAt))->toBeTrue()
+        ->and($identity->credentials->getAccessToken())->toBe('oauth-token')
+        ->and($identity->credentials->getRefreshToken())->toBe('oauth-refresh')
+        ->and($identity->metadata)->toMatchArray([
+            'email' => 'discord@example.com',
+            'username' => '_tats',
+            'global_name' => 'Madruguinha',
+            'avatar' => '7638814994b449231c5ff17dd84500bd',
+        ])
+        ->and($identity->metadata)->toHaveKeys(['user', 'badges', 'guild_member']);
+});
+
+test('profile import preserves an avatar when the snapshot omits it and clears it when explicitly null', function (): void {
+    $user = User::factory()->create(['username' => '_tats']);
+    ExternalIdentity::factory()->morphFor()->create([
+        'model_id' => $user->id,
+        'provider' => IdentityProvider::Discord,
+        'external_account_id' => '49615312957476864',
+        'metadata' => [
+            'username' => '_tats',
+            'avatar' => 'known-avatar',
+        ],
+    ]);
+
+    $profileWithoutAvatar = discordProfile(['connected_accounts' => []]);
+    unset($profileWithoutAvatar['user']['avatar']);
+
+    $identity = resolve(ImportDiscordProfileAction::class)->handle(
+        DiscordProfileDTO::fromDump($profileWithoutAvatar),
+    );
+
+    expect($identity->metadata['avatar'])->toBe('known-avatar');
+
+    $identity = resolve(ImportDiscordProfileAction::class)->handle(
+        DiscordProfileDTO::fromDump(discordProfile([
+            'user' => ['avatar' => null],
+            'connected_accounts' => [],
+        ])),
+    );
+
+    expect($identity->metadata)->toHaveKey('avatar', value: null);
+});
+
+test('oauth connection preserves profile snapshot and fills canonical metadata', function (): void {
+    $profileIdentity = resolve(ImportDiscordProfileAction::class)->handle(
+        DiscordProfileDTO::fromDump(discordProfile(['connected_accounts' => []])),
+    );
+
+    $access = DiscordOAuthAccessDTO::make([
+        'access_token' => 'new-access-token',
+        'refresh_token' => 'new-refresh-token',
+        'expires_in' => 3_600,
+    ]);
+    $oauthUser = DiscordOAuthUser::make($access, [
+        'id' => '49615312957476864',
+        'username' => '_tats_oauth',
+        'global_name' => 'Madruguinha OAuth',
+        'email' => 'discord@example.com',
+        'avatar' => 'oauth-avatar',
+    ]);
+
+    $identity = resolve(AttachProviderToUser::class)->execute(
+        $profileIdentity->user,
+        $oauthUser,
+        $access,
+    );
+
+    expect($identity->id)->toBe($profileIdentity->id)
+        ->and($identity->credentials->getAccessToken())->toBe('new-access-token')
+        ->and($identity->connected_at)->not->toBeNull()
+        ->and($identity->metadata)->toMatchArray([
+            'email' => 'discord@example.com',
+            'username' => '_tats_oauth',
+            'global_name' => 'Madruguinha OAuth',
+            'avatar' => 'https://cdn.discordapp.com/avatars/49615312957476864/oauth-avatar.png',
+        ])
+        ->and($identity->metadata)->toHaveKeys(['user', 'badges', 'guild_member']);
+});
+
+test('oauth connection clears a profile avatar only when Discord explicitly returns null', function (): void {
+    $profileIdentity = resolve(ImportDiscordProfileAction::class)->handle(
+        DiscordProfileDTO::fromDump(discordProfile(['connected_accounts' => []])),
+    );
+
+    $access = DiscordOAuthAccessDTO::make([
+        'access_token' => 'new-access-token',
+        'refresh_token' => 'new-refresh-token',
+        'expires_in' => 3_600,
+    ]);
+    $oauthUser = DiscordOAuthUser::make($access, [
+        'id' => '49615312957476864',
+        'username' => '_tats',
+        'global_name' => 'Madruguinha',
+        'email' => 'discord@example.com',
+        'avatar' => null,
+    ]);
+
+    $identity = resolve(AttachProviderToUser::class)->execute(
+        $profileIdentity->user,
+        $oauthUser,
+        $access,
+    );
+
+    expect($identity->metadata)->toHaveKey('avatar', value: null)
+        ->and($identity->metadata['user']['avatar'])->toBe('7638814994b449231c5ff17dd84500bd')
+        ->and($identity->credentials->getAccessToken())->toBe('new-access-token');
+});
+
+test('profile import enriches an identity created from a message without replacing its owner', function (): void {
+    resolve(ImportDiscordMessageAction::class)->handle(
+        DiscordMessageDTO::fromDump([
+            'id' => 'message-1',
+            'channel_id' => 'channel-1',
+            'timestamp' => '2026-08-25T10:00:00.000000+00:00',
+            'content' => 'hello',
+            'author' => [
+                'id' => '49615312957476864',
+                'username' => '_tats',
+                'global_name' => 'Old display name',
+                'avatar' => 'old-avatar',
+            ],
+        ]),
+    );
+
+    $messageIdentity = ExternalIdentity::query()
+        ->where('provider', IdentityProvider::Discord)
+        ->where('external_account_id', '49615312957476864')
+        ->firstOrFail();
+    $ownerId = $messageIdentity->model_id;
+
+    $identity = resolve(ImportDiscordProfileAction::class)->handle(
+        DiscordProfileDTO::fromDump(discordProfile(['connected_accounts' => []])),
+    );
+
+    expect($identity->id)->toBe($messageIdentity->id)
+        ->and((string) $identity->model_id)->toBe((string) $ownerId)
+        ->and($identity->metadata['author'])->toMatchArray([
+            'username' => '_tats',
+            'global_name' => 'Old display name',
+            'avatar' => 'old-avatar',
+        ])
+        ->and($identity->metadata)->toMatchArray([
+            'username' => '_tats',
+            'global_name' => 'Madruguinha',
+            'avatar' => '7638814994b449231c5ff17dd84500bd',
+        ])
+        ->and($identity->metadata)->toHaveKeys(['user', 'badges', 'guild_member']);
+});
+
+test('profile import preserves an authenticated connected account', function (): void {
+    $user = User::factory()->create(['username' => '_tats']);
+    ExternalIdentity::factory()->morphFor()->create([
+        'model_id' => $user->id,
+        'provider' => IdentityProvider::Discord,
+        'external_account_id' => '49615312957476864',
+    ]);
+
+    $connectedAt = now()->subHour()->startOfSecond();
+    $twitch = ExternalIdentity::factory()->morphFor()->create([
+        'model_id' => $user->id,
+        'provider' => IdentityProvider::Twitch,
+        'external_account_id' => '81085454',
+        'credentials' => ClientAccessManager::make(
+            accessToken: Crypt::encrypt('twitch-token'),
+        ),
+        'connected_at' => $connectedAt,
+        'metadata' => [
+            'email' => 'twitch@example.com',
+            'username' => 'oauth-name',
+        ],
+    ]);
+
+    resolve(ImportDiscordProfileAction::class)->handle(
+        DiscordProfileDTO::fromDump(discordProfile()),
+    );
+
+    $twitch->refresh();
+
+    expect((string) $twitch->model_id)->toBe((string) $user->id)
+        ->and($twitch->credentials->getAccessToken())->toBe('twitch-token')
+        ->and($twitch->connected_at?->equalTo($connectedAt))->toBeTrue()
+        ->and($twitch->metadata)->toMatchArray([
+            'email' => 'twitch@example.com',
+            'username' => 'oauth-name',
+            'name' => 'fewerygor',
+            'verified' => true,
+        ]);
 });
 
 test('it creates external identities for each connected account', function (): void {

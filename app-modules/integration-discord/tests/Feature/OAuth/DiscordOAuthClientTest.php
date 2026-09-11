@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use He4rt\Identity\ExternalIdentity\Enums\IdentityProvider;
 use He4rt\IntegrationDiscord\OAuth\DiscordOAuthAccessDTO;
 use He4rt\IntegrationDiscord\OAuth\DiscordOAuthClient;
 use He4rt\IntegrationDiscord\OAuth\DiscordOAuthUser;
@@ -61,7 +62,76 @@ it('gets authenticated user and returns DiscordOAuthUser', function (): void {
         ->and($result->username)->toBe('testuser')
         ->and($result->name)->toBe('Test User')
         ->and($result->email)->toBe('test@example.com')
-        ->and($result->providerId)->toBe('123456789');
+        ->and($result->providerId)->toBe('123456789')
+        ->and($result->toMetadata())->toBe([
+            'email' => 'test@example.com',
+            'avatar' => 'https://cdn.discordapp.com/avatars/123456789/abc123.png',
+            'username' => 'testuser',
+            'global_name' => 'Test User',
+        ]);
+});
+
+it('normalizes an authenticated Discord user without email or avatar', function (): void {
+    $credentials = DiscordOAuthAccessDTO::make([
+        'access_token' => 'test-access-token',
+        'refresh_token' => 'test-refresh-token',
+        'expires_in' => 604_800,
+    ]);
+
+    $user = DiscordOAuthUser::make($credentials, [
+        'id' => '123456789',
+        'username' => 'testuser',
+        'global_name' => null,
+        'avatar' => null,
+    ]);
+
+    expect($user->email)->toBeNull()
+        ->and($user->avatarUrl)->toBeNull()
+        ->and($user->toMetadata())->toBe([
+            'avatar' => null,
+            'username' => 'testuser',
+            'global_name' => 'testuser',
+        ]);
+});
+
+it('omits an unavailable avatar from authenticated user metadata', function (): void {
+    $credentials = DiscordOAuthAccessDTO::make([
+        'access_token' => 'test-access-token',
+        'refresh_token' => 'test-refresh-token',
+        'expires_in' => 604_800,
+    ]);
+
+    $user = DiscordOAuthUser::make($credentials, [
+        'id' => '123456789',
+        'username' => 'testuser',
+        'global_name' => 'Test User',
+    ]);
+
+    expect($user->avatarUrl)->toBeNull()
+        ->and($user->toMetadata())->not->toHaveKey('avatar');
+});
+
+it('keeps the previous seven argument constructor compatible', function (): void {
+    $credentials = DiscordOAuthAccessDTO::make([
+        'access_token' => 'test-access-token',
+        'refresh_token' => 'test-refresh-token',
+        'expires_in' => 604_800,
+    ]);
+
+    $user = new DiscordOAuthUser(
+        $credentials,
+        '123456789',
+        IdentityProvider::Discord,
+        'testuser',
+        'Test User',
+        email: null,
+        avatarUrl: null,
+    );
+
+    expect($user->toMetadata())->toBe([
+        'username' => 'testuser',
+        'global_name' => 'Test User',
+    ]);
 });
 
 it('generates correct redirect url', function (): void {

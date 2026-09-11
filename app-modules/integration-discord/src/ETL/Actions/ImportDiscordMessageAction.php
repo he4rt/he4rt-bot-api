@@ -20,6 +20,7 @@ use He4rt\Identity\ExternalIdentity\Enums\IdentityProvider;
 use He4rt\Identity\ExternalIdentity\Models\ExternalIdentity;
 use He4rt\Identity\User\Models\User;
 use He4rt\IntegrationDiscord\ETL\DTOs\DiscordMessageDTO;
+use He4rt\IntegrationDiscord\Identity\DiscordIdentityMetadata;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -423,6 +424,16 @@ final class ImportDiscordMessageAction
             ->first();
 
         if ($identity) {
+            $metadata = DiscordIdentityMetadata::mergeMessage(
+                $identity->metadata ?? [],
+                $dto,
+            )->toArray();
+
+            if ($metadata !== ($identity->metadata ?? [])) {
+                $identity->metadata = $metadata;
+                $identity->save();
+            }
+
             return $identity;
         }
 
@@ -441,7 +452,7 @@ final class ImportDiscordMessageAction
             'type' => IdentityProvider::Discord->getType(),
             'credentials_type' => CredentialsType::OAuth2,
             'credentials' => ClientAccessManager::make(),
-            'metadata' => ['author' => $dto->authorRaw],
+            'metadata' => DiscordIdentityMetadata::fromMessage($dto)->toArray(),
         ]);
     }
 

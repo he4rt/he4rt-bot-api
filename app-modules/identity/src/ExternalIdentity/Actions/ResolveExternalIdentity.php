@@ -28,7 +28,6 @@ final class ResolveExternalIdentity
                     'email' => $dto->email,
                     'avatar' => $dto->avatar,
                 ]),
-                'connected_at' => now(),
             ]
         );
     }

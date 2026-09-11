@@ -11,7 +11,7 @@ use He4rt\Identity\ExternalIdentity\Models\ExternalIdentity;
 use He4rt\Identity\User\Models\User;
 use He4rt\IntegrationDiscord\ETL\DTOs\ConnectedAccountDTO;
 use He4rt\IntegrationDiscord\ETL\DTOs\DiscordProfileDTO;
-use Illuminate\Support\Facades\Date;
+use He4rt\IntegrationDiscord\Identity\DiscordIdentityMetadata;
 use Illuminate\Support\Facades\Log;
 use Ramsey\Uuid\Uuid;
 
@@ -21,21 +21,26 @@ final class ImportDiscordProfileAction
     {
         $user = $this->resolveUser($dto);
 
-        $discordIdentity = ExternalIdentity::query()->updateOrCreate(
-            [
-                'provider' => IdentityProvider::Discord,
-                'external_account_id' => $dto->discordId,
-            ],
-            [
+        $discordIdentity = ExternalIdentity::query()->firstOrNew([
+            'provider' => IdentityProvider::Discord,
+            'external_account_id' => $dto->discordId,
+        ]);
+
+        if (!$discordIdentity->exists) {
+            $discordIdentity->forceFill([
                 'model_type' => (new User)->getMorphClass(),
                 'model_id' => $user->id,
                 'type' => IdentityProvider::Discord->getType(),
                 'credentials_type' => CredentialsType::OAuth2,
                 'credentials' => ClientAccessManager::make(),
-                'connected_at' => $dto->joinedAt ? Date::parse($dto->joinedAt) : null,
-                'metadata' => $dto->metadata,
-            ],
-        );
+            ]);
+        }
+
+        $discordIdentity->metadata = DiscordIdentityMetadata::mergeProfile(
+            $discordIdentity->metadata ?? [],
+            $dto,
+        )->toArray();
+        $discordIdentity->save();
 
         foreach ($dto->connectedAccounts as $account) {
             $this->upsertConnectedAccount($account, $user, $dto);
@@ -123,20 +128,21 @@ final class ImportDiscordProfileAction
             return;
         }
 
-        ExternalIdentity::query()->updateOrCreate(
-            [
+        $identity = $existing ?? new ExternalIdentity;
+
+        if (!$identity->exists) {
+            $identity->forceFill([
                 'provider' => $account->provider,
                 'external_account_id' => $account->externalAccountId,
-            ],
-            [
                 'model_type' => (new User)->getMorphClass(),
                 'model_id' => $user->id,
                 'type' => $account->provider->getType(),
                 'credentials_type' => CredentialsType::OAuth2,
                 'credentials' => ClientAccessManager::make(),
-                'connected_at' => $dto->joinedAt ? Date::parse($dto->joinedAt) : null,
-                'metadata' => $account->metadata,
-            ],
-        );
+            ]);
+        }
+
+        $identity->metadata = array_replace($identity->metadata ?? [], $account->metadata);
+        $identity->save();
     }
 }
