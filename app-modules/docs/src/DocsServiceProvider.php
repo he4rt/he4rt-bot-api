@@ -41,7 +41,7 @@ class DocsServiceProvider extends ServiceProvider
             GuideStrategy::class,
         ], 'docs.strategies');
 
-        $this->app->bind(BuildDocumentTreeAction::class, static function (Application $app): BuildDocumentTreeAction {
+        $this->app->bind(static function (Application $app): BuildDocumentTreeAction {
             /** @var iterable<DocumentTypeStrategyContract> $strategies */
             $strategies = $app->tagged('docs.strategies');
 

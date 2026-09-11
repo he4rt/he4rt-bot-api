@@ -7,13 +7,10 @@ namespace He4rt\Community\Retrospective\Jobs;
 use He4rt\Community\Retrospective\Actions\CompileSnapshot;
 use He4rt\Community\Retrospective\Enums\RetrospectiveStatus;
 use He4rt\Community\Retrospective\Models\Retrospective;
-use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\Attributes\Timeout;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -28,10 +25,7 @@ use Throwable;
 #[Timeout(timeout: 600)]
 final class CompileRetrospectiveSnapshot implements ShouldBeUniqueUntilProcessing, ShouldQueue
 {
-    use Dispatchable;
-    use InteractsWithQueue;
     use Queueable;
-    use SerializesModels;
 
     public function __construct(public Retrospective $retrospective) {}
 

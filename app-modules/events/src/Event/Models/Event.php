@@ -11,6 +11,7 @@ use He4rt\Events\Enrollment\Models\Enrollment;
 use He4rt\Events\Enrollment\Models\EnrollmentPolicy;
 use He4rt\Events\Event\Enums\EventStatus;
 use He4rt\Events\Event\Enums\EventType;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -88,25 +89,29 @@ final class Event extends Model
     }
 
     /** @param  Builder<self>  $query */
-    protected function scopePublished(Builder $query): void
+    #[Scope]
+    protected function published(Builder $query): void
     {
         $query->where('status', EventStatus::Published);
     }
 
     /** @param  Builder<self>  $query */
-    protected function scopeViewableByParticipant(Builder $query): void
+    #[Scope]
+    protected function viewableByParticipant(Builder $query): void
     {
         $query->whereIn('status', EventStatus::viewableByParticipant());
     }
 
     /** @param  Builder<self>  $query */
-    protected function scopeUpcoming(Builder $query): void
+    #[Scope]
+    protected function upcoming(Builder $query): void
     {
         $query->where('starts_at', '>', now());
     }
 
     /** @param  Builder<self>  $query */
-    protected function scopeActive(Builder $query): void
+    #[Scope]
+    protected function active(Builder $query): void
     {
         $query->where('status', EventStatus::Published)
             ->where('ends_at', '>', now());

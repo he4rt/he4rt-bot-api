@@ -6,15 +6,12 @@ namespace He4rt\Events\Closure\Jobs;
 
 use He4rt\Events\Closure\Actions\CloseEventAction;
 use He4rt\Events\Event\Models\Event;
-use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\Attributes\Backoff;
 use Illuminate\Queue\Attributes\Tries;
 use Illuminate\Queue\Attributes\UniqueFor;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -23,10 +20,7 @@ use Throwable;
 #[UniqueFor(uniqueFor: 1_800)]
 final class ProcessEventClosureJob implements ShouldBeUnique, ShouldQueue
 {
-    use Dispatchable;
-    use InteractsWithQueue;
     use Queueable;
-    use SerializesModels;
 
     public function __construct(public readonly string $eventId) {}
 

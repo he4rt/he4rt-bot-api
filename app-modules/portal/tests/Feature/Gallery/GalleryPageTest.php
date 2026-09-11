@@ -115,7 +115,5 @@ it('responde 404 para rascunho, álbum vazio e slug desconhecido', function (): 
 it('marca a galeria como ativa na navbar do álbum', function (): void {
     Album::factory()->published()->withPhotos(1)->create(['slug' => 'ativo']);
 
-    get('/galeria/ativo')
-        ->assertOk()
-        ->assertSee('href="/galeria"', escape: false);
+    get('/galeria/ativo')->assertOk()->assertSeeHtml('href="/galeria"');
 });

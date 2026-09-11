@@ -2,6 +2,10 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="vendor/autoload.php"
+         cacheDirectory=".cache/pest"
+         recordTestRunHistory="true"
+         failOnEmptyTestSuite="false"
+         failOnPhpunitWarning="false"
          colors="true">
     <testsuites>
         <testsuite name="Unit">
@@ -12,6 +16,10 @@
             <directory>tests/Feature</directory>
             <directory>app-modules/*/tests/Feature</directory>
         </testsuite>
+        <testsuite name="Arch">
+            <directory>tests/Arch</directory>
+            <directory>app-modules/*/tests/Arch</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>
@@ -20,7 +28,7 @@
         </include>
     </source>
     <php>
-        <ini name="memory_limit" value="2G"/>
+        <ini name="memory_limit" value="-1"/>
         <env name="APP_ENV" value="testing"/>
     </php>
 </phpunit>

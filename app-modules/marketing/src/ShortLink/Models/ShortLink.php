@@ -14,6 +14,7 @@ use He4rt\Marketing\ShortLink\Observers\ShortLinkObserver;
 use He4rt\Marketing\ShortLink\ValueObjects\TagList;
 use He4rt\Marketing\ShortLink\ValueObjects\UtmParameters;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -93,10 +94,11 @@ final class ShortLink extends Model
     /**
      * Only the links that can redirect right now.
      *
-     * @param  Builder<$this>  $query
-     * @return Builder<$this>
+     * @param  Builder<self>  $query
+     * @return Builder<self>
      */
-    protected function scopeRedirectable(Builder $query): Builder
+    #[Scope]
+    protected function redirectable(Builder $query): Builder
     {
         return $query
             ->where('active', operator: true)

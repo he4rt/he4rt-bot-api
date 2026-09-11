@@ -1,6 +1,0 @@
-.hp-section {
-    .hp-container {
-        @apply max-w-none sm:max-w-none md:max-w-none lg:max-w-none xl:max-w-none;
-        @apply p-6 sm:p-12 md:p-16 lg:p-20 xl:p-32;
-    }
-}

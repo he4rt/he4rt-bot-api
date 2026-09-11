@@ -1,6 +1,6 @@
 {
     "preset": "laravel",
-    "cache-file": ".pint.result.cache",
+    "cache-file": ".cache/pint/result.cache",
     "rules": {
         "operator_linebreak": true,
         "no_unused_imports": true,

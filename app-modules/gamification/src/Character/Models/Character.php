@@ -97,16 +97,21 @@ final class Character extends Model
         return CharacterFactory::new();
     }
 
-    protected function getRankingAttribute(): int
+    /**
+     * @return Attribute<int, never>
+     */
+    protected function ranking(): Attribute
     {
-        $position = $this->newQuery()
-            ->orderByDesc('experience')
-            ->pluck('id')
-            ->filter(fn ($id) => $id === $this->getKey())
-            ->keys()
-            ->first();
+        return Attribute::make(get: function (): int {
+            $position = $this->newQuery()
+                ->orderByDesc('experience')
+                ->pluck('id')
+                ->filter(fn ($id) => $id === $this->getKey())
+                ->keys()
+                ->first();
 
-        return (int) $position + 1;
+            return (int) $position + 1;
+        });
     }
 
     /**

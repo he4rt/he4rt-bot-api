@@ -12,6 +12,7 @@
     {{-- O design system do deck, o mesmo do portal. Todo ele é escopado sob
          `.retro`, então entra no painel sem alcançar nada do Filament. --}}
     @vite(['app-modules/portal/resources/css/retrospective.css'])
+    {{ Vite::fonts(['fraunces', 'hanken-grotesk', 'jetbrains-mono']) }}
 
     {{--
         Altura fixa: o builder é uma FERRAMENTA, não um documento. Rolar a página

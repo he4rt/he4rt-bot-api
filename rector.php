@@ -11,51 +11,52 @@ use Rector\Config\RectorConfig;
 use Rector\Transform\Rector\ArrayDimFetch\ArrayDimFetchToMethodCallRector;
 use Rector\TypeDeclaration\Rector\ArrowFunction\AddArrowFunctionReturnTypeRector;
 use RectorLaravel\Rector\Class_\AddHasFactoryToModelsRector;
-use RectorLaravel\Rector\Class_\BackoffPropertyToBackoffAttributeRector;
-use RectorLaravel\Rector\Class_\ConnectionPropertyToConnectionAttributeRector;
-use RectorLaravel\Rector\Class_\DelayPropertyToDelayAttributeRector;
-use RectorLaravel\Rector\Class_\DeleteWhenMissingModelsPropertyToDeleteWhenMissingModelsAttributeRector;
-use RectorLaravel\Rector\Class_\FailOnTimeoutPropertyToFailOnTimeoutAttributeRector;
-use RectorLaravel\Rector\Class_\JobConnectionPropertyToJobConnectionAttributeRector;
-use RectorLaravel\Rector\Class_\MaxExceptionsPropertyToMaxExceptionsAttributeRector;
-use RectorLaravel\Rector\Class_\ModelCastsPropertyToCastsMethodRector;
-use RectorLaravel\Rector\Class_\QueuePropertyToQueueAttributeRector;
-use RectorLaravel\Rector\Class_\ReplaceExpectsMethodsInTestsRector;
-use RectorLaravel\Rector\Class_\StopOnFirstFailurePropertyToStopOnFirstFailureAttributeRector;
-use RectorLaravel\Rector\Class_\TablePropertyToTableAttributeRector;
-use RectorLaravel\Rector\Class_\TimeoutPropertyToTimeoutAttributeRector;
-use RectorLaravel\Rector\Class_\TriesPropertyToTriesAttributeRector;
-use RectorLaravel\Rector\Class_\UniqueForPropertyToUniqueForAttributeRector;
-use RectorLaravel\Rector\Class_\WithoutIncrementingPropertyToWithoutIncrementingAttributeRector;
-use RectorLaravel\Rector\Class_\WithoutTimestampsPropertyToWithoutTimestampsAttributeRector;
+use RectorLaravel\Rector\Class_\AliasesPropertyToAliasesAttributeRector;
+use RectorLaravel\Rector\Class_\AppendsPropertyToAppendsAttributeRector;
+use RectorLaravel\Rector\Class_\CollectedByPropertyToCollectedByAttributeRector;
+use RectorLaravel\Rector\Class_\CollectsPropertyToCollectsAttributeRector;
+use RectorLaravel\Rector\Class_\CommandHiddenPropertyToHiddenAttributeRector;
+use RectorLaravel\Rector\Class_\DateFormatPropertyToDateFormatAttributeRector;
+use RectorLaravel\Rector\Class_\DescriptionPropertyToDescriptionAttributeRector;
+use RectorLaravel\Rector\Class_\EmptyGuardedPropertyToUnguardedAttributeRector;
+use RectorLaravel\Rector\Class_\ErrorBagPropertyToErrorBagAttributeRector;
+use RectorLaravel\Rector\Class_\FillablePropertyToFillableAttributeRector;
+use RectorLaravel\Rector\Class_\GuardedPropertyToGuardedAttributeRector;
+use RectorLaravel\Rector\Class_\HelpPropertyToHelpAttributeRector;
+use RectorLaravel\Rector\Class_\HiddenPropertyToHiddenAttributeRector;
+use RectorLaravel\Rector\Class_\PreserveKeysPropertyToPreserveKeysAttributeRector;
+use RectorLaravel\Rector\Class_\RouteKeyMethodToRouteKeyAttributeRector;
+use RectorLaravel\Rector\Class_\SignaturePropertyToSignatureAttributeRector;
+use RectorLaravel\Rector\Class_\TouchesPropertyToTouchesAttributeRector;
+use RectorLaravel\Rector\Class_\VisiblePropertyToVisibleAttributeRector;
 use RectorLaravel\Rector\Coalesce\ApplyDefaultInsteadOfNullCoalesceRector;
 use RectorLaravel\Rector\Empty_\EmptyToBlankAndFilledFuncRector;
 use RectorLaravel\Rector\FuncCall\ConfigToTypedConfigMethodCallRector;
-use RectorLaravel\Rector\MethodCall\RefactorBlueprintGeometryColumnsRector;
-use RectorLaravel\Rector\PropertyFetch\ReplaceFakerInstanceWithHelperRector;
 use RectorLaravel\Set\LaravelSetList;
 
 $laravel13Attributes = [
+    // Console
+    AliasesPropertyToAliasesAttributeRector::class,
+    CommandHiddenPropertyToHiddenAttributeRector::class,
+    DescriptionPropertyToDescriptionAttributeRector::class,
+    HelpPropertyToHelpAttributeRector::class,
+    SignaturePropertyToSignatureAttributeRector::class,
     // Eloquent
-    TablePropertyToTableAttributeRector::class,
-    ConnectionPropertyToConnectionAttributeRector::class,
-    WithoutIncrementingPropertyToWithoutIncrementingAttributeRector::class,
-    WithoutTimestampsPropertyToWithoutTimestampsAttributeRector::class,
-
+    AppendsPropertyToAppendsAttributeRector::class,
+    CollectedByPropertyToCollectedByAttributeRector::class,
+    DateFormatPropertyToDateFormatAttributeRector::class,
+    EmptyGuardedPropertyToUnguardedAttributeRector::class,
+    FillablePropertyToFillableAttributeRector::class,
+    GuardedPropertyToGuardedAttributeRector::class,
+    HiddenPropertyToHiddenAttributeRector::class,
+    RouteKeyMethodToRouteKeyAttributeRector::class,
+    TouchesPropertyToTouchesAttributeRector::class,
+    VisiblePropertyToVisibleAttributeRector::class,
+    // API Resource
+    CollectsPropertyToCollectsAttributeRector::class,
+    PreserveKeysPropertyToPreserveKeysAttributeRector::class,
     // Form Request
-    StopOnFirstFailurePropertyToStopOnFirstFailureAttributeRector::class,
-
-    // Queue
-    TriesPropertyToTriesAttributeRector::class,
-    TimeoutPropertyToTimeoutAttributeRector::class,
-    BackoffPropertyToBackoffAttributeRector::class,
-    MaxExceptionsPropertyToMaxExceptionsAttributeRector::class,
-    JobConnectionPropertyToJobConnectionAttributeRector::class,
-    QueuePropertyToQueueAttributeRector::class,
-    DelayPropertyToDelayAttributeRector::class,
-    DeleteWhenMissingModelsPropertyToDeleteWhenMissingModelsAttributeRector::class,
-    FailOnTimeoutPropertyToFailOnTimeoutAttributeRector::class,
-    UniqueForPropertyToUniqueForAttributeRector::class,
+    ErrorBagPropertyToErrorBagAttributeRector::class,
 ];
 
 return RectorConfig::configure()
@@ -65,11 +66,13 @@ return RectorConfig::configure()
         __DIR__.'/config',
         __DIR__.'/database',
         __DIR__.'/routes',
+        __DIR__.'/lang',
         __DIR__.'/tests',
         __DIR__.'/app-modules/*/src',
         __DIR__.'/app-modules/*/config',
         __DIR__.'/app-modules/*/database',
         __DIR__.'/app-modules/*/routes',
+        __DIR__.'/app-modules/*/lang',
         __DIR__.'/app-modules/*/tests',
     ])
     ->withSkip([
@@ -78,15 +81,17 @@ return RectorConfig::configure()
         PostIncDecToPreIncDecRector::class,
         ArrayDimFetchToMethodCallRector::class,
         UsesToExtendRector::class,
+        ...$laravel13Attributes,
         __DIR__.'/bootstrap/cache',
     ])
-    ->withCache(cacheDirectory: __DIR__.'/.rector.result.cache', cacheClass: FileCacheStorage::class)
-    ->withImportNames(removeUnusedImports: true)
+    ->withCache(cacheDirectory: __DIR__.'/.cache/rector', cacheClass: FileCacheStorage::class)
+    ->withImportNames()
     ->withRootFiles()
     ->withPhpSets(php84: true)
     ->withComposerBased(laravel: true)
     ->withBootstrapFiles([__DIR__.'/vendor/larastan/larastan/bootstrap.php'])
     ->withPHPStanConfigs([__DIR__.'/phpstan.neon'])
+    ->reportUnusedSkips()
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,
@@ -104,12 +109,7 @@ return RectorConfig::configure()
     ->withRules([
         ApplyDefaultInsteadOfNullCoalesceRector::class,
         EmptyToBlankAndFilledFuncRector::class,
-        ModelCastsPropertyToCastsMethodRector::class,
-        RefactorBlueprintGeometryColumnsRector::class,
-        ReplaceExpectsMethodsInTestsRector::class,
-        ReplaceFakerInstanceWithHelperRector::class,
         ConfigToTypedConfigMethodCallRector::class,
-        ...$laravel13Attributes,
     ])
     ->withSets([
         LaravelSetList::LARAVEL_ARRAYACCESS_TO_METHOD_CALL,
@@ -124,7 +124,6 @@ return RectorConfig::configure()
         LaravelSetList::LARAVEL_TESTING,
         LaravelSetList::LARAVEL_TYPE_DECLARATIONS,
         PestSetList::CODING_STYLE,
-        LaravelSetList::LARAVEL_130_WITHOUT_ATTRIBUTES,
     ])
     ->withConfiguredRule(ChainExpectCallsRector::class, [
         ChainExpectCallsRector::MERGE_DIFFERENT_VARIABLES => false,

@@ -15,16 +15,12 @@ beforeEach(function (): void {
  * Filament (App\Providers\FilamentServiceProvider) é o que fecha essa porta.
  */
 it('marca as telas de painel como noindex', function (string $uri): void {
-    get($uri)
-        ->assertOk()
-        ->assertSee('<meta name="robots" content="noindex, nofollow" />', escape: false);
+    get($uri)->assertOk()->assertSeeHtml('<meta name="robots" content="noindex, nofollow" />');
 })->with([
     'login do admin' => '/admin/login',
     'login do app' => '/app/login',
 ]);
 
 it('não marca o portal público como noindex', function (): void {
-    get('/')
-        ->assertOk()
-        ->assertDontSee('content="noindex', escape: false);
+    get('/')->assertOk()->assertDontSeeHtml('content="noindex');
 });

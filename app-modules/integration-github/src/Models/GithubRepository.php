@@ -7,6 +7,7 @@ namespace He4rt\IntegrationGithub\Models;
 use Carbon\CarbonInterface;
 use He4rt\IntegrationGithub\Database\Factories\GithubRepositoryFactory;
 use He4rt\IntegrationGithub\Enums\PurposeType;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -53,7 +54,8 @@ final class GithubRepository extends Model
      * @param  Builder<self>  $query
      * @return Builder<self>
      */
-    protected function scopeEnabled(Builder $query): Builder
+    #[Scope]
+    protected function enabled(Builder $query): Builder
     {
         return $query->where('enabled', operator: true);
     }

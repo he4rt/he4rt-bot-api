@@ -20,7 +20,7 @@ class ModerationServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../config/moderation.php', 'moderation');
 
-        $this->app->singleton(PlatformRegistry::class, static function (): PlatformRegistry {
+        $this->app->singleton(static function (): PlatformRegistry {
             $registry = new PlatformRegistry();
             $registry->register(Platform::Web, WebModerationAdapter::class);
 

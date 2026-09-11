@@ -11,6 +11,7 @@ use He4rt\Activity\Tracking\Enums\ActivityType;
 use He4rt\Activity\Tracking\Enums\AttributionMethod;
 use He4rt\Identity\ExternalIdentity\Models\ExternalIdentity;
 use He4rt\Identity\User\Models\User;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -98,17 +99,19 @@ final class Interaction extends Model
     }
 
     /**
-     * @param  Builder<$this>  $query
+     * @param  Builder<self>  $query
      */
-    protected function scopeVisible(Builder $query): void
+    #[Scope]
+    protected function visible(Builder $query): void
     {
         $query->whereNull('hidden_at');
     }
 
     /**
-     * @param  Builder<$this>  $query
+     * @param  Builder<self>  $query
      */
-    protected function scopeHidden(Builder $query): void
+    #[Scope]
+    protected function hidden(Builder $query): void
     {
         $query->whereNotNull('hidden_at');
     }
