@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use He4rt\Marketing\ShortLink\Jobs\RecordShortLinkClick;
 use He4rt\Marketing\ShortLink\Models\ShortLink;
+use Illuminate\Foundation\Vite;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Queue;
 
@@ -37,8 +38,7 @@ it('redireciona com 302 e anexa o UTM configurado no link', function (): void {
         ->withUtm(['utm_source' => 'discord', 'utm_medium' => 'post'])
         ->create(['destination_url' => 'https://discord.gg/he4rt']);
 
-    get('/l/'.$link->slug)
-        ->assertStatus(302)
+    get('/l/'.$link->slug)->assertFound()
         ->assertHeader('Location', 'https://discord.gg/he4rt?utm_source=discord&utm_medium=post');
 });
 
@@ -47,15 +47,14 @@ it('deixa o UTM que veio no clique ganhar do configurado no link', function (): 
         ->withUtm(['utm_source' => 'discord'])
         ->create(['destination_url' => 'https://he4rt.dev/evento']);
 
-    get('/l/'.$link->slug.'?utm_source=twitter')
-        ->assertStatus(302)
+    get('/l/'.$link->slug.'?utm_source=twitter')->assertFound()
         ->assertHeader('Location', 'https://he4rt.dev/evento?utm_source=twitter');
 });
 
 it('despacha o registro do clique no caminho feliz', function (): void {
     $link = ShortLink::factory()->create(['destination_url' => 'https://he4rt.dev']);
 
-    get('/l/'.$link->slug)->assertStatus(302);
+    get('/l/'.$link->slug)->assertFound();
 
     Queue::assertPushed(RecordShortLinkClick::class, 1);
 });
@@ -68,9 +67,13 @@ it('devolve 404 e não registra clique nenhum em desfecho morto', function (stri
 
 it('responde exatamente a mesma página nos quatro desfechos mortos', function (): void {
     $bodies = collect(['inexistente', 'desativado', 'vencido', 'soft-deletado'])
-        ->map(fn (string $case): string => get('/l/'.portalDeadShortLinkSlug($case))
-            ->assertNotFound()
-            ->getContent())
+        ->map(function (string $case): string {
+            resolve(Vite::class)->flush();
+
+            return get('/l/'.portalDeadShortLinkSlug($case))
+                ->assertNotFound()
+                ->getContent();
+        })
         ->unique();
 
     expect($bodies)->toHaveCount(1);
@@ -78,17 +81,11 @@ it('responde exatamente a mesma página nos quatro desfechos mortos', function (
 
 it('mostra a página de marca com os dois CTAs quando o link não resolve', function (): void {
     get('/l/nunca-existiu-z9x8w')
-        ->assertNotFound()
-        ->assertSee('Esse link não está mais disponível')
-        ->assertSee(route('home'), escape: false)
-        ->assertSee(config()->string('he4rt.social_media.discord.url'), escape: false);
+        ->assertNotFound()->assertSee('Esse link não está mais disponível')->assertSeeHtml(route('home'))->assertSeeHtml(config()->string('he4rt.social_media.discord.url'));
 });
 
 it('mantém a página de link morto fora do índice de busca', function (): void {
-    get('/l/nunca-existiu-z9x8w')
-        ->assertNotFound()
-        ->assertSee('<meta name="robots" content="noindex, follow">', escape: false)
-        ->assertSee('<title>Link indisponível - '.config()->string('app.name').'</title>', escape: false);
+    get('/l/nunca-existiu-z9x8w')->assertNotFound()->assertSeeHtml('<meta name="robots" content="noindex, follow">')->assertSeeHtml('<title>Link indisponível - '.config()->string('app.name').'</title>');
 });
 
 it('não casa slug com maiúscula, porque o canônico é minúsculo', function (): void {

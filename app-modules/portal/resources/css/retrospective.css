@@ -2,7 +2,6 @@
  | Design system do deck da retrospectiva — escopado sob `.retro` para não vazar
  | para o resto do portal. Estética: roxo cósmico He4rt, Fraunces/Hanken/JetBrains.
  */
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 /*
  | Deck embutido (Deck Builder do painel). O deck se posiciona `fixed` porque no

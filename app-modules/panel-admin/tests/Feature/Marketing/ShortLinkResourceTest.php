@@ -239,7 +239,7 @@ test('flipping the bots toggle changes the island keys, which is what remounts t
     $humansOnly = array_map($page->instance()->islandKey(...), $islands);
 
     foreach ($humansOnly as $key) {
-        $page->assertSee($key, escape: false);
+        $page->assertSeeHtml($key);
     }
 
     $page->set('filters.'.ViewShortLink::INCLUDE_BOTS, true);
@@ -249,11 +249,11 @@ test('flipping the bots toggle changes the island keys, which is what remounts t
     expect($withBots)->not->toBe($humansOnly);
 
     foreach ($withBots as $key) {
-        $page->assertSee($key, escape: false);
+        $page->assertSeeHtml($key);
     }
 
     foreach ($humansOnly as $key) {
-        $page->assertDontSee($key, escape: false);
+        $page->assertDontSeeHtml($key);
     }
 });
 

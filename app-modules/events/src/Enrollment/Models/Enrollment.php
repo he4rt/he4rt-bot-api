@@ -11,6 +11,7 @@ use He4rt\Events\Database\Factories\EnrollmentFactory;
 use He4rt\Events\Enrollment\Enums\EnrollmentStatus;
 use He4rt\Events\Event\Models\Event;
 use He4rt\Identity\User\Models\User;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -97,20 +98,23 @@ final class Enrollment extends Model
         return EnrollmentFactory::new();
     }
 
-    /** @param  Builder<Enrollment>  $query */
-    protected function scopeConfirmed(Builder $query): void
+    /** @param Builder<self> $query */
+    #[Scope]
+    protected function confirmed(Builder $query): void
     {
         $query->where('status', EnrollmentStatus::Confirmed);
     }
 
-    /** @param  Builder<Enrollment>  $query */
-    protected function scopeWaitlisted(Builder $query): void
+    /** @param Builder<self> $query */
+    #[Scope]
+    protected function waitlisted(Builder $query): void
     {
         $query->where('status', EnrollmentStatus::Waitlisted);
     }
 
-    /** @param  Builder<Enrollment>  $query */
-    protected function scopeActive(Builder $query): void
+    /** @param Builder<self> $query */
+    #[Scope]
+    protected function active(Builder $query): void
     {
         $query->whereIn('status', [
             EnrollmentStatus::Confirmed,

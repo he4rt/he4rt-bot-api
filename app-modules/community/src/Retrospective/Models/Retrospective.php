@@ -14,6 +14,7 @@ use He4rt\Community\Retrospective\DTOs\RetrospectiveSnapshot;
 use He4rt\Community\Retrospective\DTOs\SourceFilters;
 use He4rt\Community\Retrospective\Enums\CoverKind;
 use He4rt\Community\Retrospective\Enums\RetrospectiveStatus;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -134,10 +135,11 @@ final class Retrospective extends Model
     }
 
     /**
-     * @param  Builder<Retrospective>  $query
-     * @return Builder<Retrospective>
+     * @param  Builder<self>  $query
+     * @return Builder<self>
      */
-    protected function scopePublished(Builder $query): Builder
+    #[Scope]
+    protected function published(Builder $query): Builder
     {
         return $query->where('status', RetrospectiveStatus::Published->value);
     }

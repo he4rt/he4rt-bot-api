@@ -25,9 +25,7 @@ it('declara uma og:image própria, absoluta e dimensionada na home', function ()
 });
 
 it('autoriza preview de imagem grande para o card de resultado', function (): void {
-    get('/')
-        ->assertOk()
-        ->assertSee('<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">', escape: false);
+    get('/')->assertOk()->assertSeeHtml('<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">');
 });
 
 it('serve o arquivo de og:image em 1200x630', function (): void {
@@ -71,9 +69,7 @@ it('usa o título exato da home, sem repetir a marca no sufixo', function (): vo
 });
 
 it('aplica o sufixo da marca nas demais páginas', function (): void {
-    get('/redes')
-        ->assertOk()
-        ->assertSee('<title>Nossas redes - '.config('app.name').'</title>', escape: false);
+    get('/redes')->assertOk()->assertSeeHtml('<title>Nossas redes - '.config('app.name').'</title>');
 });
 
 it('descreve a página de redes com texto próprio, não o default do site', function (): void {

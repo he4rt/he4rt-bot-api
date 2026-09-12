@@ -25,12 +25,13 @@ jobs:
   tests:
     name: 'Shard ${{ matrix.shard }}/2'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     permissions:
       contents: read
     concurrency:
       group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-tests-${{ matrix.shard }}
       cancel-in-progress: true
+
     strategy:
       fail-fast: false
       matrix:
@@ -38,7 +39,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:18-alpine # zizmor: ignore[unpinned-images] — ephemeral CI test DB; tracking the patch tag keeps it updated (dependabot doesn't bump service-container images)
+        image: postgres:18-alpine # zizmor: ignore[unpinned-images] — ephemeral CI test DB
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -60,7 +61,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2.37.2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
           php-version: ${{ inputs.PHP_VERSION }}
           extensions: ${{ inputs.PHP_EXTENSIONS }}
@@ -77,24 +78,10 @@ jobs:
           echo "::add-matcher::${RUNNER_TOOL_CACHE}/phpunit.json"
 
       - name: Install composer dependencies
-        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # v4.0.0
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
         with:
           composer-options: ${{ inputs.COMPOSER_FLAGS }}
           custom-cache-key: ${{ inputs.CACHE_KEY }}
-
-      - name: Install Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          package-manager-cache: false
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-
-      - name: Install node dependencies
-        run: |
-          npm ci
-
-      - name: Build Assets
-        run: npm run build
 
       - name: Prepare test env
         run: |

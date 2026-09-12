@@ -37,7 +37,7 @@ it('abre cada link externo em nova aba com rel seguro', function (): void {
 });
 
 it('exibe o logo He4rt animado', function (): void {
-    get('/redes')->assertSee('he4rt-logo', escape: false);
+    get('/redes')->assertSeeHtml('he4rt-logo');
 });
 
 it('exibe o título e o acento de marca de cada link', function (): void {
@@ -52,15 +52,11 @@ it('exibe o título e o acento de marca de cada link', function (): void {
 
 it('expõe o link de Redes sociais na navbar', function (): void {
     get('/redes')
-        ->assertOk()
-        ->assertSee('Redes sociais')
-        ->assertSee('/redes', escape: false);
+        ->assertOk()->assertSee('Redes sociais')->assertSeeHtml('/redes');
 });
 
 it('aplica a animação de entrada (logo desenha + conteúdo em cascata)', function (): void {
-    get('/redes')
-        ->assertSee('links-reveal', escape: false)
-        ->assertSee('links-trace-draw', escape: false);
+    get('/redes')->assertSeeHtml('links-reveal')->assertSeeHtml('links-trace-draw');
 });
 
 it('usa cores compatíveis com light mode na página de redes', function (): void {

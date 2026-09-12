@@ -1,8 +1,5 @@
-reject:
-  # Peer-dependency conflicts with prettier-plugin-blade
-  - '@prettier/plugin-php'
-  - 'prettier-plugin-tailwindcss'
 interactive: true
+packageManager: npm
 format:
   - group
   - repo
