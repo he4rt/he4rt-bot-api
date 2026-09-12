@@ -6,6 +6,7 @@ namespace App\Providers\Filament;
 
 use App\Enums\FilamentPanel;
 use App\Http\Middleware\SetApplicationLocale;
+use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -54,6 +55,12 @@ class AppPanelProvider extends PanelProvider
                 EventPage::class,
                 ThreadPage::class,
                 ProfilePage::class,
+            ])
+            ->userMenuItems([
+                'profile' => fn (Action $action): Action => $action
+                    ->label(__('app.user_menu.my_profile'))
+                    ->url(ProfilePage::getUrl())
+                    ->icon(icon: null),
             ])
             ->middleware([
                 EncryptCookies::class,

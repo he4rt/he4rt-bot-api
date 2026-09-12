@@ -7,6 +7,7 @@ namespace He4rt\Identity\User\Models;
 use App\Concerns\HasAddress;
 use Carbon\CarbonInterface;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use He4rt\Activity\Tracking\Concerns\HasInteractions;
@@ -54,7 +55,7 @@ use Spatie\Permission\Traits\HasRoles;
 #[UseFactory(factoryClass: UserFactory::class)]
 #[Table(name: 'users')]
 #[Hidden('password', 'remember_token', 'email_verified_at')]
-final class User extends Authenticatable implements FilamentUser, HasMedia, HasName
+final class User extends Authenticatable implements FilamentUser, HasAvatar, HasMedia, HasName
 {
     use HasAddress;
     /** @use HasFactory<UserFactory> */
@@ -113,10 +114,9 @@ final class User extends Authenticatable implements FilamentUser, HasMedia, HasN
         };
     }
 
-    public function getFilamentAvatarUrl(): string
+    public function getFilamentAvatarUrl(): ?string
     {
-
-        return sprintf('https://github.com/%s.png', $this->username);
+        return $this->getFirstMediaUrl('avatar') ?: null;
     }
 
     /**

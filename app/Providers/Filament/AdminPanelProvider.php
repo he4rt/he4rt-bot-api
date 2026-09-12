@@ -7,6 +7,7 @@ namespace App\Providers\Filament;
 use App\Enums\FilamentPanel;
 use App\Filament\Pages\Login;
 use App\Http\Middleware\SetApplicationLocale;
+use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -15,6 +16,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use He4rt\PanelAdmin\Pages\Dashboard;
+use He4rt\PanelApp\Pages\ProfilePage;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -59,6 +61,12 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->pages([
                 Dashboard::class,
+            ])
+            ->userMenuItems([
+                'profile' => fn (Action $action): Action => $action
+                    ->label(__('app.user_menu.my_profile'))
+                    ->url(ProfilePage::getUrl(panel: FilamentPanel::App->value))
+                    ->icon(icon: null),
             ])
             ->authMiddleware([
                 Authenticate::class,

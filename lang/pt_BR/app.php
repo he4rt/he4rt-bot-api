@@ -9,4 +9,8 @@ return [
         'portuguese' => 'Português (Brasil)',
         'portuguese_short' => 'PT-BR',
     ],
+
+    'user_menu' => [
+        'my_profile' => 'Meu perfil',
+    ],
 ];
